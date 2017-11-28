@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password',
     ];
 
     /**
@@ -27,4 +28,28 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the concerts for the user.
+     */
+    public function concerts()
+    {
+        return $this->belongsToMany('App\Concert');
+    }
+
+    /**
+     * Get the concerts the user has created.
+     */
+    public function concertsCreated()
+    {
+        return $this->hasMany('App\Concert');
+    }
+
+    /**
+     * Get the voices that the user sings.
+     */
+    public function voices()
+    {
+        return $this->belongsToMany('App\Voice');
+    }
 }
