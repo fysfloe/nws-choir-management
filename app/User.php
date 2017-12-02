@@ -42,7 +42,7 @@ class User extends Authenticatable
      */
     public function concertsCreated()
     {
-        return $this->hasMany('App\Concert');
+        return $this->hasMany('App\Concert', 'created_by');
     }
 
     /**

@@ -12,8 +12,18 @@ class Concert extends Model
      * @var array
      */
     protected $fillable = [
-        'title'
+        'title', 'slug', 'created_by'
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * Get the dates for the concert.
@@ -36,7 +46,7 @@ class Concert extends Model
      */
     public function creator()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'created_by');
     }
 
     /**

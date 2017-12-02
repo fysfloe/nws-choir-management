@@ -16,6 +16,7 @@ class CreateVoicesTable extends Migration
         Schema::create('voices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
         });

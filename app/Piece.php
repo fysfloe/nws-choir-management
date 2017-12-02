@@ -13,9 +13,20 @@ class Piece extends Model
      */
     protected $fillable = [
         'title',
+        'slug',
         'composer',
         'year'
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * Get the concerts where this piece was sung.

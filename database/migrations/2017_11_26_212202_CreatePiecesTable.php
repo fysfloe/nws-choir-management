@@ -16,6 +16,7 @@ class CreatePiecesTable extends Migration
         Schema::create('pieces', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->string('slug');
             $table->string('composer')->nullable();
             $table->string('year')->nullable();
             $table->softDeletes();

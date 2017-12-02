@@ -12,8 +12,18 @@ class Voice extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name', 'slug'
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * Get the singers for this voice.

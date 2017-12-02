@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Concert;
+use App\Http\Requests\StoreConcert;
+
+use Auth;
+
 class ConcertController extends Controller
 {
     /**
@@ -13,7 +18,11 @@ class ConcertController extends Controller
      */
     public function index()
     {
-        //
+        $concerts = Concert::where('deleted_at', '=', null)->get();
+
+        return view('concert.index')->with([
+            'concerts' => $concerts
+        ]);
     }
 
     /**
@@ -23,7 +32,7 @@ class ConcertController extends Controller
      */
     public function create()
     {
-        //
+        return view('concert.create');
     }
 
     /**
@@ -32,9 +41,15 @@ class ConcertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreConcert $request)
     {
-        //
+        $concert = $request->all();
+        //$concert['created_by'] = Auth::user()->id;
+        //$concert = new Concert($concert);
+
+        Auth::user()->concertsCreated()->create($concert);
+
+        return redirect('concerts');
     }
 
     /**
