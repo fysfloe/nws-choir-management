@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class ConcertDate extends Model
 {
@@ -21,5 +22,10 @@ class ConcertDate extends Model
     public function concert()
     {
         return $this->belongsTo('App\Concert');
+    }
+
+    public function getDateAttribute()
+    {
+        return Carbon::parse($this->attributes['date']);
     }
 }

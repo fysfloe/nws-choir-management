@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Concert;
-use App\Http\Requests\StoreConcert;
-
+use App\Rehearsal;
+use App\Http\Requests\StoreRehearsal;
 use Auth;
 
-class ConcertController extends Controller
+class RehearsalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +17,10 @@ class ConcertController extends Controller
      */
     public function index()
     {
-        $concerts = Concert::where('deleted_at', '=', null)->with('dates')->get();
+        $rehearsals = Rehearsal::where('deleted_at', '=', null)->get();
 
-        return view('concert.index')->with([
-            'concerts' => $concerts
+        return view('rehearsal.index')->with([
+            'rehearsals' => $rehearsals
         ]);
     }
 
@@ -32,7 +31,7 @@ class ConcertController extends Controller
      */
     public function create()
     {
-        return view('concert.create');
+        return view('rehearsal.create');
     }
 
     /**
@@ -41,21 +40,13 @@ class ConcertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreConcert $request)
+    public function store(StoreRehearsal $request)
     {
-        $concert = $request->all();
-        $dates = $concert['dates'];
+        $rehearsal = $request->all();
 
-        $concert['slug'] = str_slug($concert['title'], '-');
+        $rehearsal = Auth::user()->rehearsalsCreated()->create($rehearsal);
 
-        $concert = Auth::user()->concertsCreated()->create($concert);
-
-        foreach ($dates as $date) {
-            $date = ['date' => $date];
-            $concert->dates()->create($date);
-        }
-
-        return redirect('concerts');
+        return redirect('rehearsals');
     }
 
     /**
@@ -64,11 +55,9 @@ class ConcertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Concert $concert)
+    public function show($id)
     {
-        return view('concert.show')->with([
-            'concert' => $concert
-        ]);
+        //
     }
 
     /**
@@ -77,11 +66,9 @@ class ConcertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Concert $concert)
+    public function edit($id)
     {
-        return view('concert.edit')->with([
-            'concert' => $concert
-        ]);
+        //
     }
 
     /**
@@ -104,6 +91,28 @@ class ConcertController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $rehearsal = Rehearsal::find($id);
+
+        $rehearsal->delete();
+
+        return redirect()->back();
+    }
+
+    public function accept(Rehearsal $rehearsal)
+    {
+        $user = Auth::user();
+
+        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
+
+        return redirect()->back();
+    }
+
+    public function decline(Rehearsal $rehearsal)
+    {
+        $user = Auth::user();
+
+        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
+
+        return redirect()->back();
     }
 }

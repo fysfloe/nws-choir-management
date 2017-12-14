@@ -69,5 +69,27 @@ class CreateRolesAndPermissions extends Command
 
             $admin->attachPermission($manageConcerts);
         }
+
+        // Create the manageUsers permission.
+        if (!Permission::where('name', '=', 'manageUsers')->first()) {
+            $manageUsers = new Permission();
+            $manageUsers->name = 'manageUsers';
+            $manageUsers->display_name = 'Manage Users';
+            $manageUsers->description = 'Create, edit and delete users.';
+            $manageUsers->save();
+
+            $admin->attachPermission($manageUsers);
+        }
+
+        // Create the manageRehearsals permission.
+        if (!Permission::where('name', '=', 'manageRehearsals')->first()) {
+            $manageRehearsals = new Permission();
+            $manageRehearsals->name = 'manageRehearsals';
+            $manageRehearsals->display_name = 'Manage Rehearsals';
+            $manageRehearsals->description = 'Create, edit and delete rehearsals.';
+            $manageRehearsals->save();
+
+            $admin->attachPermission($manageRehearsals);
+        }
     }
 }

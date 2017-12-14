@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="{{ asset('fonts/open-iconic-bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -26,7 +27,8 @@
                 <ul class="navbar-nav mr-auto">
                     @guest
                     @else
-                        <li class="nav-item"><a class="nav-link" href="{{ route('concerts') }}">Concerts</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('concerts') }}">{{ trans('Concerts') }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('rehearsals') }}">{{ trans('Rehearsals') }}</a></li>
                         @if (Auth::user()->hasRole('admin'))
                             <li class="nav-item"><a class="nav-link" href="{{ url('/admin/users') }}">Users</a></li>
                         @endif

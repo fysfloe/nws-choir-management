@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Concert;
-use App\Http\Requests\StoreConcert;
-
+use App\User;
+use App\Role;
 use Auth;
 
-class ConcertController extends Controller
+use App\Http\Requests\StoreUser;
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +19,9 @@ class ConcertController extends Controller
      */
     public function index()
     {
-        $concerts = Concert::where('deleted_at', '=', null)->with('dates')->get();
+        $users = User::where('id', '!=', Auth::user()->id)->where('deleted_at', null)->get();
 
-        return view('concert.index')->with([
-            'concerts' => $concerts
-        ]);
+        return view('user.index')->with(['users' => $users]);
     }
 
     /**
@@ -32,7 +31,7 @@ class ConcertController extends Controller
      */
     public function create()
     {
-        return view('concert.create');
+        return view('user.create');
     }
 
     /**
@@ -41,21 +40,23 @@ class ConcertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreConcert $request)
+    public function store(StoreUser $request)
     {
-        $concert = $request->all();
-        $dates = $concert['dates'];
+        $data = $request->all();
 
-        $concert['slug'] = str_slug($concert['title'], '-');
+        $user  = User::create([
+            'firstname' => $data['firstname'],
+            'surname' => $data['surname'],
+            'email' => $data['email'],
+            'gender' => $data['gender'],
+            'password' => bcrypt($data['password']),
+        ]);
 
-        $concert = Auth::user()->concertsCreated()->create($concert);
+        $memberRole = Role::where('name', '=', 'member')->first();
 
-        foreach ($dates as $date) {
-            $date = ['date' => $date];
-            $concert->dates()->create($date);
-        }
+        $user->roles()->attach($memberRole->id);;
 
-        return redirect('concerts');
+        return redirect('/admin/users');
     }
 
     /**
@@ -64,11 +65,9 @@ class ConcertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Concert $concert)
+    public function show($id)
     {
-        return view('concert.show')->with([
-            'concert' => $concert
-        ]);
+        //
     }
 
     /**
@@ -77,11 +76,9 @@ class ConcertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Concert $concert)
+    public function edit($id)
     {
-        return view('concert.edit')->with([
-            'concert' => $concert
-        ]);
+        //
     }
 
     /**

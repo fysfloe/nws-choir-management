@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password',
+        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password', 'country_id'
     ];
 
     /**
@@ -38,6 +38,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the rehearsals for the user.
+     */
+    public function rehearsals()
+    {
+        return $this->belongsToMany('App\Rehearsal', 'user_rehearsal')->withTimestamps();
+    }
+
+    /**
      * Get the concerts the user has created.
      */
     public function concertsCreated()
@@ -46,10 +54,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the concerts the user has created.
+     */
+    public function rehearsalsCreated()
+    {
+        return $this->hasMany('App\Rehearsal', 'created_by');
+    }
+
+    /**
      * Get the voices that the user sings.
      */
     public function voices()
     {
         return $this->belongsToMany('App\Voice');
+    }
+
+    /**
+     * Get the users citizenship.
+     */
+    public function citizenship()
+    {
+        return $this->belongsTo('Webpatser\Countries');
     }
 }

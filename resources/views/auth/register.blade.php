@@ -2,20 +2,20 @@
 
 @section('content')
     <header class="page-header">
-        <h2>Register</h2>
+        <h2>{{ trans('Register') }}</h2>
     </header>
 
     <form method="POST" action="{{ route('register') }}" novalidate>
         {{ csrf_field() }}
 
         <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-            <label for="firstname" class="control-label">First Name</label>
+            <label for="firstname" class="control-label">{{ trans('First Name') }}</label>
 
 
             <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
 
             @if ($errors->has('firstname'))
-                <span class="help-block">
+                <span class="help-block text-danger">
                     <strong>{{ $errors->first('firstname') }}</strong>
                 </span>
             @endif
@@ -27,7 +27,7 @@
             <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required autofocus>
 
             @if ($errors->has('surname'))
-                <span class="help-block">
+                <span class="help-block text-danger">
                     <strong>{{ $errors->first('surname') }}</strong>
                 </span>
             @endif
@@ -39,7 +39,7 @@
             <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
             @if ($errors->has('email'))
-                <span class="help-block">
+                <span class="help-block text-danger">
                     <strong>{{ $errors->first('email') }}</strong>
                 </span>
             @endif
@@ -62,31 +62,46 @@
             </div>
 
             @if ($errors->has('gender'))
-                <span class="help-block">
+                <span class="help-block text-danger">
                     <strong>{{ $errors->first('gender') }}</strong>
                 </span>
             @endif
         </div>
 
         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <label for="password" class="control-label">Password</label>
+            <label for="password" class="control-label">{{ trans('Password') }}</label>
             <input id="password" type="password" class="form-control" name="password" required>
 
             @if ($errors->has('password'))
-                <span class="help-block">
+                <span class="help-block text-danger">
                     <strong>{{ $errors->first('password') }}</strong>
                 </span>
             @endif
         </div>
 
         <div class="form-group">
-            <label for="password-confirm" class="control-label">Confirm Password</label>
+            <label for="password-confirm" class="control-label">{{ trans('Confirm Password') }}</label>
             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
         </div>
 
         <div class="form-group">
+            <div class="form-check">
+                <label for="accept-toc" class="form-check-label">
+                    <input id="accept-toc" type="checkbox" class="form-check-input" name="accept-toc" required>
+                    {{ trans('I hereby accept the terms and conditions.') }}
+                </label>
+            </div>
+
+            @if ($errors->has('accept-toc'))
+                <span class="help-block text-danger">
+                    <strong>{{ $errors->first('accept-toc') }}</strong>
+                </span>
+            @endif
+        </div>
+
+        <div class="form-group">
             <button type="submit" class="btn btn-primary">
-                Register
+                {{ trans('Register') }}
             </button>
         </div>
     </form>

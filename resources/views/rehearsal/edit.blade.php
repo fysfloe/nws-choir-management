@@ -3,10 +3,10 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ trans('Create a new concert') }}</h2>
+        <h2><span class="light">{{ trans('Edit') }}:</span> {{ $concert->title }}</h2>
     </header>
 
-    {{ Form::model(new App\Concert(), ['route' => 'concert.store']) }}
+    {{ Form::model($concert, ['route' => 'concert.update']) }}
         @include('concert._form')
     {{ Form::close() }}
 

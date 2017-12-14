@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConcertDatesTable extends Migration
+class CreateUserRehearsalTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateConcertDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('concert_dates', function (Blueprint $table) {
-            $table->increments('id');
-            $table->datetime('date');
-            $table->integer('concert_id')->unsigned();
-            $table->softDeletes();
+        Schema::create('user_rehearsal', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned();
+            $table->integer('rehearsal_id')->unsigned();
+            $table->boolean('accepted');
             $table->timestamps();
+
+            $table->primary(['user_id', 'rehearsal_id']);
         });
     }
 
@@ -29,6 +30,6 @@ class CreateConcertDatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('concert_dates');
+        Schema::dropIfExists('user_rehearsal');
     }
 }

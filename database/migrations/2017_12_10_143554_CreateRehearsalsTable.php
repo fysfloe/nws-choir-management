@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConcertDatesTable extends Migration
+class CreateRehearsalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateConcertDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('concert_dates', function (Blueprint $table) {
+        Schema::create('rehearsals', function (Blueprint $table) {
             $table->increments('id');
             $table->datetime('date');
-            $table->integer('concert_id')->unsigned();
+            $table->integer('created_by')->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateConcertDatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('concert_dates');
+        Schema::dropIfExists('rehearsals');
     }
 }

@@ -14,7 +14,7 @@
                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
 
                 @if ($errors->has('email'))
-                    <span class="help-block">
+                    <span class="help-block text-danger">
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
                 @endif
@@ -28,7 +28,7 @@
                 <input id="password" type="password" class="form-control" name="password" required>
 
                 @if ($errors->has('password'))
-                    <span class="help-block">
+                    <span class="help-block text-danger">
                         <strong>{{ $errors->first('password') }}</strong>
                     </span>
                 @endif

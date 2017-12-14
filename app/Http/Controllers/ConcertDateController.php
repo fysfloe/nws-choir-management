@@ -5,24 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Concert;
-use App\Http\Requests\StoreConcert;
+use App\ConcertDate;
 
-use Auth;
-
-class ConcertController extends Controller
+class ConcertDateController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Concert $concert)
     {
-        $concerts = Concert::where('deleted_at', '=', null)->with('dates')->get();
+        $dates = $concert->dates()->get();
 
-        return view('concert.index')->with([
-            'concerts' => $concerts
-        ]);
+        dd($dates);
     }
 
     /**
@@ -32,7 +28,7 @@ class ConcertController extends Controller
      */
     public function create()
     {
-        return view('concert.create');
+        //
     }
 
     /**
@@ -41,21 +37,9 @@ class ConcertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreConcert $request)
+    public function store(Request $request)
     {
-        $concert = $request->all();
-        $dates = $concert['dates'];
-
-        $concert['slug'] = str_slug($concert['title'], '-');
-
-        $concert = Auth::user()->concertsCreated()->create($concert);
-
-        foreach ($dates as $date) {
-            $date = ['date' => $date];
-            $concert->dates()->create($date);
-        }
-
-        return redirect('concerts');
+        //
     }
 
     /**
@@ -64,11 +48,9 @@ class ConcertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Concert $concert)
+    public function show($id)
     {
-        return view('concert.show')->with([
-            'concert' => $concert
-        ]);
+        //
     }
 
     /**
@@ -77,11 +59,9 @@ class ConcertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Concert $concert)
+    public function edit($id)
     {
-        return view('concert.edit')->with([
-            'concert' => $concert
-        ]);
+        //
     }
 
     /**

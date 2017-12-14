@@ -7,6 +7,9 @@
 
 require('./bootstrap');
 
+global.moment = require('moment');
+require('tempusdominus-bootstrap-4');
+
 window.Vue = require('vue');
 
 /**
@@ -19,4 +22,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 
 const app = new Vue({
     el: '#app'
+});
+
+$(function () {
+    $('.add-date').on('click', function (e) {
+        e.preventDefault();
+        console.log($(this).closest('input[type="datetime-local"]'));
+        $(this).prev('input[type="datetime-local"]').clone().insertBefore($(this));
+    });
 });
