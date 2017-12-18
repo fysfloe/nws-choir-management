@@ -38,7 +38,7 @@ class Piece extends Model
 
     public function voices()
     {
-        $this->hasMany('App\Voice');
+        $this->belongsToMany('App\Voice');
     }
 
     public function singers()

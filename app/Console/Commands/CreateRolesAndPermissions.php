@@ -91,5 +91,16 @@ class CreateRolesAndPermissions extends Command
 
             $admin->attachPermission($manageRehearsals);
         }
+
+        // Create the manageVoices permission.
+        if (!Permission::where('name', '=', 'manageVoices')->first()) {
+            $manageVoices = new Permission();
+            $manageVoices->name = 'manageVoices';
+            $manageVoices->display_name = 'Manage Voices';
+            $manageVoices->description = 'Create, edit and delete voices.';
+            $manageVoices->save();
+
+            $admin->attachPermission($manageVoices);
+        }
     }
 }

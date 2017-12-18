@@ -66,7 +66,7 @@ class User extends Authenticatable
      */
     public function voices()
     {
-        return $this->belongsToMany('App\Voice');
+        return $this->belongsToMany('App\Voice', 'user_voice');
     }
 
     /**

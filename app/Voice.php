@@ -30,7 +30,7 @@ class Voice extends Model
      */
     public function singers()
     {
-        return $this->hasMany('App\User');
+        return $this->belongsToMany('App\User', 'user_voice');
     }
 
     public function pieces()

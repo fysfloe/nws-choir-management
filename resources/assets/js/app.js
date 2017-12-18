@@ -27,7 +27,10 @@ const app = new Vue({
 $(function () {
     $('.add-date').on('click', function (e) {
         e.preventDefault();
-        console.log($(this).closest('input[type="datetime-local"]'));
         $(this).prev('input[type="datetime-local"]').clone().insertBefore($(this));
+    });
+
+    $('body').on('click', '[data-toggle="modal"]', function(){
+        $($(this).data('target') + ' .modal-body').load($(this).attr('href'));
     });
 });

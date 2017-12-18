@@ -20,7 +20,7 @@
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a>
+            <a class="navbar-brand" href="{{ url('/dashboard') }}">{{ config('app.name', 'Chorganizer') }}</a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
@@ -31,6 +31,9 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('rehearsals') }}">{{ trans('Rehearsals') }}</a></li>
                         @if (Auth::user()->hasRole('admin'))
                             <li class="nav-item"><a class="nav-link" href="{{ url('/admin/users') }}">Users</a></li>
+                        @endif
+                        @if (Auth::user()->can('manageVoices'))
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/admin/voices') }}">Voices</a></li>
                         @endif
                     @endguest
                 </ul>
@@ -64,6 +67,8 @@
                 @endguest
             </ul>
         </nav>
+
+        @include('layouts.modals')
 
         <section class="container">
             @yield('content')
