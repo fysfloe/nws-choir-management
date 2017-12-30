@@ -1,10 +1,11 @@
 .btn-default {
-    border: 0.1rem solid $lightgrey;
+    border: 0.1rem solid $darkgrey;
+    font-weight: bold;
     background: white;
     color: $darkgrey;
 
     &:hover {
-        background: $lightgrey;
+        background: lighten($lightgrey, 15);
         color: black;
     }
 }

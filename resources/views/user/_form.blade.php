@@ -71,6 +71,6 @@
     </div>
 
     <div class="form-group">
-        {{ Form::button(trans('Save Concert'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
+        {{ Form::button(trans('Save User'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
     </div>
 </form>

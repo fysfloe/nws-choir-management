@@ -102,5 +102,7 @@ class CreateRolesAndPermissions extends Command
 
             $admin->attachPermission($manageVoices);
         }
+
+        $this->info('Created roles and permissions!');
     }
 }

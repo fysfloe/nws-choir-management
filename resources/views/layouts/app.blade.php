@@ -16,7 +16,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-faded">
+        <nav class="navbar navbar-expand-md navbar-dark">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,19 +24,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
-                    @guest
-                    @else
-                        <li class="nav-item"><a class="nav-link" href="{{ route('concerts') }}">{{ trans('Concerts') }}</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('rehearsals') }}">{{ trans('Rehearsals') }}</a></li>
-                        @if (Auth::user()->hasRole('admin'))
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/admin/users') }}">Users</a></li>
-                        @endif
-                        @if (Auth::user()->can('manageVoices'))
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/admin/voices') }}">Voices</a></li>
-                        @endif
-                    @endguest
-                </ul>
+                <div class="mr-auto">&nbsp;</div>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
@@ -52,27 +40,86 @@
 
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li class="dropdown-item">
+                                    <a href="{{ route('profile.edit', Auth::user()->id) }}">
+                                        {{ trans('My Profile') }}
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
                                     <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
+                                        onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                        {{ trans('Logout') }}
+                                    </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                @endguest
-            </ul>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endguest
+                </ul>
+            </div>
         </nav>
 
         @include('layouts.modals')
 
-        <section class="container">
-            @yield('content')
-        </section>
+        <div class="wrapper">
+            <nav id="sidebar">
+                <ul class="navbar-nav">
+                    @guest
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('concerts') }}">
+                                <span class="oi oi-musical-note"></span>&nbsp;
+                                {{ trans('Concerts') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rehearsals') }}">
+                                <span class="oi oi-infinity"></span>&nbsp;
+                                {{ trans('Rehearsals') }}
+                            </a>
+                        </li>
+                        @if (Auth::user()->can('manageUsers'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/admin/users') }}">
+                                    <span class="oi oi-people"></span>&nbsp;
+                                    {{ trans('Users') }}
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('manageVoices'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/admin/voices') }}">
+                                    <span class="oi oi-pulse"></span>&nbsp;
+                                    {{ trans('Voices') }}
+                                </a>
+                            </li>
+                        @endif
+                    @endguest
+                </ul>
+            </nav>
+            <section id="content" class="container">
+                <div class="flash-message">
+                    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                        @if(Session::has('alert-' . $msg))
+                            <p class="alert alert-{{ $msg }}">
+                                {{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            </p>
+                        @endif
+                    @endforeach
+                </div> <!-- .flash-message -->
+
+                @if (isset($errors) && count($errors) > 0)
+                    <p class="alert alert-danger">
+                        {{ trans('There were errors with your input. Check the form.') }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </p>
+                @endif
+
+                @yield('content')
+            </section>
+        </div>
     </div>
 
     <!-- Scripts -->

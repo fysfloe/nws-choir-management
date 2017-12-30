@@ -53,5 +53,7 @@ class CreateAdminUser extends Command
         $admin = Role::where('name', '=', 'admin')->first();
 
         $user->attachRole($admin);
+
+        $this->info('Created admin user!');
     }
 }

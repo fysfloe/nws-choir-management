@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Barlow:300,400,600,700,800);/*@preserve
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700);/*@preserve
  * Tempus Dominus Bootstrap4 v5.0.0-alpha8 (https://tempusdominus.github.io/bootstrap-4/)
  * Copyright 2016-2017 Jonathan Peterson
  * Licensed under MIT (https://github.com/tempusdominus/bootstrap-3/blob/master/LICENSE)
@@ -237,7 +237,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Barlow", sans-serif;
+  --font-family-sans-serif: "Roboto", sans-serif;
   --font-family-monospace: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -349,13 +349,13 @@ section {
 
 body {
   margin: 0;
-  font-family: "Barlow", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.6;
   color: #212529;
   text-align: left;
-  background-color: #f5f8fa;
+  background-color: white;
 }
 
 [tabindex="-1"]:focus {
@@ -809,7 +809,7 @@ mark,
 
 .img-thumbnail {
   padding: 0.25rem;
-  background-color: #f5f8fa;
+  background-color: white;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
   -webkit-transition: all 0.2s ease-in-out;
@@ -2189,7 +2189,7 @@ pre code {
 }
 
 .table .table {
-  background-color: #f5f8fa;
+  background-color: white;
 }
 
 .table-sm th,
@@ -2355,7 +2355,7 @@ pre code {
 }
 
 .table .thead-dark th {
-  color: #f5f8fa;
+  color: white;
   background-color: #212529;
   border-color: #32383e;
 }
@@ -2367,7 +2367,7 @@ pre code {
 }
 
 .table-dark {
-  color: #f5f8fa;
+  color: white;
   background-color: #212529;
 }
 
@@ -4121,8 +4121,8 @@ tbody.collapse.show {
 }
 
 .custom-control-input:focus ~ .custom-control-indicator {
-  -webkit-box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-          box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  -webkit-box-shadow: 0 0 0 1px white, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          box-shadow: 0 0 0 1px white, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .custom-control-input:active ~ .custom-control-indicator {
@@ -4361,8 +4361,8 @@ tbody.collapse.show {
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   color: #495057;
-  background-color: #f5f8fa;
-  border-color: #ddd #ddd #f5f8fa;
+  background-color: white;
+  border-color: #ddd #ddd white;
 }
 
 .nav-tabs .dropdown-menu {
@@ -6134,7 +6134,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Barlow", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -6259,7 +6259,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Barlow", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -9926,15 +9926,61 @@ a.text-dark:hover {
   max-width: 30rem;
 }
 
+.col > .form-group {
+  max-width: 100%;
+  width: 100%;
+}
+
+input.date {
+  margin-bottom: 0.5em;
+}
+
 .btn-default {
-  border: 0.1rem solid #ccc;
+  border: 0.1rem solid #2c2e33;
+  font-weight: bold;
   background: white;
-  color: #666;
+  color: #2c2e33;
 }
 
 .btn-default:hover {
-  background: #ccc;
+  background: white;
   color: black;
+}
+
+.loader {
+  border: 0.33em solid #f3f3f3;
+  border-top: 0.33em solid #3498db;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  -webkit-animation: spin 1.25s linear infinite;
+  animation: spin 1.25s linear infinite;
+  display: block;
+  margin: 1rem auto;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
 }
 
 .list-table {
@@ -9944,9 +9990,8 @@ a.text-dark:hover {
 .list-table header {
   font-weight: bold;
   padding: 0.5rem 0;
-  margin: 0;
-  -webkit-box-shadow: 0 0.2rem 0.2rem -0.1rem #ccc;
-          box-shadow: 0 0.2rem 0.2rem -0.1rem #ccc;
+  -webkit-box-shadow: 0 0.2rem 0.2rem -0.1rem #f5f8fa;
+          box-shadow: 0 0.2rem 0.2rem -0.1rem #f5f8fa;
 }
 
 .list-table ul {
@@ -9956,9 +10001,172 @@ a.text-dark:hover {
 }
 
 .list-table ul li {
-  margin: 0;
   padding: 0.5rem 0;
-  border-bottom: 0.05rem solid #f2f2f2;
+  border-bottom: 0.1em solid white;
+}
+
+.list-table ul li:hover {
+  background: #f5f8fa;
+}
+
+.list-table a.list-sort {
+  font-size: 0.75rem;
+  color: #b1c8d8;
+}
+
+.list-table a.list-sort:first-of-type {
+  margin-left: 0.5em;
+}
+
+.list-table a.list-sort.active {
+  color: inherit;
+}
+
+.list-table a.list-sort .oi {
+  font-size: 0.6rem;
+  margin: 0 -0.125rem;
+}
+
+.no-results {
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  border: 0.1em dotted #d3e0e9;
+}
+
+.filters {
+  position: relative;
+  padding: 0.5em;
+  background: #f5f8fa;
+  font-size: 0.8em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+}
+
+.filters a.show-filters {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  text-align: right;
+}
+
+.filters .active-filters {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.filters .active-filters li {
+  display: inline-block;
+  position: relative;
+  padding-right: 1.33em;
+}
+
+.filters .active-filters li.badge-default {
+  color: white;
+  background: #8fb1c7;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.filters .active-filters li:hover {
+  cursor: pointer;
+}
+
+.filters .active-filters li:after {
+  content: "\D7";
+  display: block;
+  position: absolute;
+  right: 0.5em;
+  top: 0.25em;
+}
+
+#filtersInner {
+  width: 100%;
+}
+
+.filter-form {
+  margin-top: 1em;
+  padding: 0.5em;
+  border: 0.1em dotted #c2d4e1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.filter-form .form-group {
+  margin: 0 0.5em 0 0;
+}
+
+.filter-form .form-group select.form-control,
+.filter-form .form-group input {
+  font-size: 1em;
+  width: auto;
+  height: 2.5em;
+}
+
+.filter-form .form-group label {
+  margin: 0;
+}
+
+.navbar-dark .navbar-brand {
+  font-weight: 800;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+}
+
+#app .navbar {
+  background: #2c2e33;
+  padding: 0 1rem;
+}
+
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+}
+
+.wrapper #sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh;
+  background: #f5f8fa;
+  border-right: 0.05rem solid #e4ecf2;
+}
+
+.wrapper #sidebar .nav-item {
+  border-bottom: 0.05rem solid #e4ecf2;
+}
+
+.wrapper #sidebar .nav-item .nav-link {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  color: #2c2e33;
+  -webkit-transition: background 0.2s ease;
+  transition: background 0.2s ease;
+}
+
+.wrapper #sidebar .nav-item .nav-link:hover,
+.wrapper #sidebar .nav-item .nav-link:focus,
+.wrapper #sidebar .nav-item .nav-link.active {
+  background: #e4ecf2;
+}
+
+.wrapper #content {
+  padding: 1rem 2rem;
 }
 
 header.page-header {
@@ -9968,6 +10176,7 @@ header.page-header {
 header.page-header h2 {
   display: inline;
   margin-right: 1rem;
+  color: #2c2e33;
 }
 
 header.page-header .btn-sm,
@@ -9975,6 +10184,10 @@ header.page-header .btn-group-sm > .btn {
   position: relative;
   bottom: 0.4rem;
   font-size: 0.75rem;
+}
+
+header.page-header .light {
+  color: #b1c8d8;
 }
 
 .form-inline {
@@ -9994,11 +10207,30 @@ label.control-label {
 }
 
 .oi {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   top: 0;
 }
 
 .light {
-  color: #ccc;
+  color: #f5f8fa;
+}
+
+.tab-content {
+  padding-top: 2rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-bottom: 0.1em solid #c2d4e1;
+  padding-bottom: 0.25rem;
+  margin-bottom: 1em;
+}
+
+.side-box {
+  padding: 1rem;
+  background: #f5f8fa;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
 }
 

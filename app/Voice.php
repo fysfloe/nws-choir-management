@@ -37,4 +37,15 @@ class Voice extends Model
     {
         return $this->belongsToMany('App\Piece');
     }
+
+    public static function getListForSelect()
+    {
+        $voices = [];
+
+        foreach (self::all() as $voice) {
+            $voices[$voice->id] = $voice->name;
+        }
+
+        return $voices;
+    }
 }

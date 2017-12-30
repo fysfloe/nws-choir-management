@@ -15,7 +15,8 @@
         <div class="list-table">
             <header class="row">
                 <div class="col-md-8">{{ trans('User') }}</div>
-                <div class="col-md-4">{{ trans('Role') }}</div>
+                <div class="col-md-2">{{ trans('Voice') }}</div>
+                <div class="col-md-2">{{ trans('Role') }}</div>
             </header>
 
             <ul class="users">
@@ -24,7 +25,14 @@
                         <div class="col-md-8">
                             <a href="{{ route('users.show', $user->id) }}">{{ $user->firstname }} {{ $user->surname }}</a>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
+                            @if (count($user->voices) > 0)
+                                {{ $user->voices->first()->name }}
+                            @else
+                                <a href="{{ route('voice.showSet', $user->id) }}">{{ trans('Set Voice') }}</a>
+                            @endif
+                        </div>
+                        <div class="col-md-2">
                             @foreach($user->roles as $role)
                                 {{ $role->display_name }}&nbsp;
                             @endforeach

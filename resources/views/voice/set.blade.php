@@ -1,22 +1,28 @@
-@extends('layouts.app')
+@extends('layouts.modal')
 
-@section('content')
+@section('title')
+    @if ($user->id === Auth::user()->id)
+        {{ trans('Set your voice') }}
+    @else
+        {{ trans('Set voice for') }}: <span class="text-muted">{{ $user->firstname }} {{ $user->surname }}</span>
+    @endif
+@endsection
 
-    <header class="page-header">
-        <h2>{{ trans('Set Voice') }}</h2>
-    </header>
-
+@section('body')
     {{ Form::open(['route' => 'voice.set']) }}
-        <input type="hidden" name="user" value="{{ Auth::user()->id }}">
+        <input type="hidden" name="user" value="{{ $user->id }}">
 
         <div class="form-group">
             {{ Form::label('voice', trans('Voice'), ['class' => 'control-label']) }}
-            {{ Form::select('voice', $voices, $voice->id, ['class' => 'form-control']) }}
-        </div>
-
-        <div class="form-group">
-            {{ Form::button(trans('Set Voice'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
+            {{ Form::select('voice', $voices, $voice ? $voice->id : null, ['class' => 'form-control']) }}
         </div>
     {{ Form::close() }}
+@endsection
 
+@section('save')
+    {{ trans('Set Voice') }}
+@endsection
+
+@section('close')
+    {{ trans('Cancel') }}
 @endsection

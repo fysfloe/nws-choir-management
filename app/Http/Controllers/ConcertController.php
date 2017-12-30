@@ -8,6 +8,7 @@ use App\Concert;
 use App\Http\Requests\StoreConcert;
 
 use Auth;
+use DB;
 
 class ConcertController extends Controller
 {
@@ -16,12 +17,38 @@ class ConcertController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $concerts = Concert::where('deleted_at', '=', null)->with('dates')->get();
+        $sort = $request->get('sort');
+
+        if (!$sort) $sort = 'nextDate';
+
+        $dir = $request->get('dir');
+        $search = $request->get('search');
+
+        $query = "SELECT concerts.*, MIN(concert_dates.date) AS nextDate "
+            . "FROM concerts JOIN concert_dates ON concerts.id = concert_dates.concert_id ";
+
+        $query .= "WHERE concerts.deleted_at IS NULL AND concerts.title LIKE '%$search%' ";
+
+        if ($request->get('show') === 'old') {
+            $query .= "AND concert_dates.date < NOW() ";
+        } else if ($request->get('show') === 'new' || !$request->get('show')) {
+            $query .= "AND concert_dates.date >= NOW() ";
+        }
+
+        $query .= "GROUP BY concerts.id ORDER BY $sort $dir";
+
+        $concerts = Concert::fromQuery($query);
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) $activeFilters[$key] = $val;
+        }
 
         return view('concert.index')->with([
-            'concerts' => $concerts
+            'concerts' => $concerts,
+            'activeFilters' => $activeFilters
         ]);
     }
 
@@ -51,8 +78,10 @@ class ConcertController extends Controller
         $concert = Auth::user()->concertsCreated()->create($concert);
 
         foreach ($dates as $date) {
-            $date = ['date' => $date];
-            $concert->dates()->create($date);
+            if ($date !== null) {
+                $date = ['date' => $date];
+                $concert->dates()->create($date);
+            }
         }
 
         return redirect('concerts');
@@ -104,6 +133,30 @@ class ConcertController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $concert = Concert::find($id);
+
+        $concert->delete();
+
+        return redirect()->back();
+    }
+
+    public function addDate($id)
+    {
+        return view('concert.addDate')->with(['concertId' => $id]);
+    }
+
+    public function saveDate(Request $request)
+    {
+        $concert = Concert::find($request->get('concertId'));
+        $dates = $request->get('dates');
+
+        foreach ($dates as $date) {
+            if ($date !== null) {
+                $date = ['date' => $date];
+                $concert->dates()->create($date);
+            }
+        }
+
+        return redirect('concerts');
     }
 }

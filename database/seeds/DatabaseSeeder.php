@@ -16,7 +16,12 @@ class DatabaseSeeder extends Seeder
         $this->call('CountriesSeeder');
         $this->command->info('Seeded the countries!');
 
-        $this->call('UsersSeeder');
-        $this->command->info('Seeded the users!');
+        // $this->call('UsersSeeder');
+        // $this->command->info('Seeded the users!');
+
+        $this->call([
+            VoicesSeeder::class,
+        ]);
+        $this->command->info('Seeded the voices!');
     }
 }

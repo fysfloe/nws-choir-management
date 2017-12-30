@@ -22,7 +22,7 @@ class Concert extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'created_by'
+        'title', 'description', 'slug', 'created_by'
     ];
 
     /**
@@ -40,7 +40,16 @@ class Concert extends Model
      */
     public function dates()
     {
-        return $this->hasMany('App\ConcertDate');
+        return $this->hasMany('App\ConcertDate')
+            ->orderBy('date');
+    }
+
+    public function nextDate()
+    {
+        return $this->hasMany('App\ConcertDate')
+            ->where('date', '>=', new \DateTime())
+            ->orderBy('date')
+            ->first();
     }
 
     /**

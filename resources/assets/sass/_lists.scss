@@ -5,8 +5,6 @@
     header {
         font-weight: bold;
         padding: 0.5rem 0;
-        margin: 0;
-        // border-bottom: 0.1rem solid $lightgrey;
         box-shadow: 0 0.2rem 0.2rem -0.1rem $lightgrey;
     }
 
@@ -16,9 +14,36 @@
         list-style: none;
 
         li {
-            margin: 0;
             padding: 0.5rem 0;
-            border-bottom: 0.05rem solid lighten($lightgrey, 15);
+            border-bottom: 0.1em solid lighten($lightgrey, 15);
+
+            &:hover {
+                background: $lightgrey;
+            }
         }
     }
+
+    a.list-sort {
+        font-size: 0.75rem;
+        color: darken($lightgrey, 20);
+
+        &:first-of-type {
+            margin-left: 0.5em;
+        }
+
+        &.active {
+            color: inherit;
+        }
+
+        .oi {
+            font-size: 0.6rem;
+            margin: 0 -0.125rem;
+        }
+    }
+}
+
+.no-results {
+    padding: 0.5em 1em;
+    margin-top: 1em;
+    border: 0.1em dotted darken($lightgrey, 10);
 }

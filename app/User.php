@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password', 'country_id'
+        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password', 'country_id', 'phone', 'address_id'
     ];
 
     /**
@@ -70,10 +70,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the users primary voice.
+     */
+    public function voice()
+    {
+        return $this->belongsToMany('App\Voice', 'user_voice')->wherePivot('primary', '=', true)->first();
+    }
+
+    /**
      * Get the users citizenship.
      */
     public function citizenship()
     {
-        return $this->belongsTo('Webpatser\Countries');
+        return $this->belongsTo('Webpatser\Countries\Countries');
+    }
+
+    /**
+     * Get the users address.
+     */
+    public function address()
+    {
+        return $this->belongsTo('App\Address');
     }
 }

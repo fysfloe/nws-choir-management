@@ -96,22 +96,20 @@ class VoiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $voice = Voice::find($id);
+
+        $voice->delete();
+
+        return redirect()->back();
     }
 
-    public function showSet()
+    public function showSet(User $user)
     {
-        $voices = Voice::all();
-        $voiceChoices = [];
-
-        foreach($voices as $voice) {
-            $voiceChoices[$voice->id] = $voice->name;
-        }
-
-        $voice = Auth::user()->voices()->first();
+        $voice = $user->voices()->first();
 
         return view('voice.set')->with([
-            'voices' => $voiceChoices,
+            'user' => $user,
+            'voices' => Voice::getListForSelect(),
             'voice' => $voice
         ]);
     }
@@ -121,7 +119,9 @@ class VoiceController extends Controller
         $user = User::find($request->get('user'));
         $voice = Voice::find($request->get('voice'));
 
-        $user->voices()->attach($voice);
+        $user->voices()->attach($voice, ['primary' => true]);
+
+        $request->session()->flash('alert-success', trans('Voice successfully set.'));
 
         return redirect()->back();
     }

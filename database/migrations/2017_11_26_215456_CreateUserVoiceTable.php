@@ -16,6 +16,7 @@ class CreateUserVoiceTable extends Migration
         Schema::create('user_voice', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('voice_id')->unsigned();
+            $table->boolean('primary')->default(false);
             $table->timestamps();
 
             $table->primary(['user_id', 'voice_id']);
