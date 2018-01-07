@@ -158,5 +158,8 @@
     "All registered users already attend the rehearsal.": "Alle registrierten Benutzer haben bereits für die Probe zugesagt.",
     "All registered users already attend the concert.": "Alle registrierten Benutzer haben bereits für das Konzert zugesagt.",
     "Voice successfully set.": "Stimme erfolgreich gesetzt.",
-    "Role successfully set.": "Rolle erfolgreich gesetzt."
+    "Role successfully set.": "Rolle erfolgreich gesetzt.",
+    "Archive": "Archivieren",
+    "Do you really want to archive this user?": "Diesen Benutzer wirklich archivieren?",
+    "User successfully archived.": "Benutzer erfolgreich archiviert."
 }

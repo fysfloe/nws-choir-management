@@ -45,6 +45,11 @@
                             <a href="{{ route('profile.edit', $user->id) }}" class="btn-link btn-sm">
                                 <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit Profile') }}"></span>
                             </a>
+                            {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to archive this user?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['users.destroy', $user]]) !!}
+                                <button type="submit" class="btn-link">
+                                    <span class="oi oi-box" data-toggle="tooltip" title="{{ __('Archive') }}"></span>
+                                </button>
+                            {!! Form::close() !!}
                         </div>
                         <div class="col-md-2">
                             @if ($user->voice)
