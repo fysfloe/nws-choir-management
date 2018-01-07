@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Webpatser\Countries\Countries;
 
 class CountriesSeeder extends Seeder {
 
