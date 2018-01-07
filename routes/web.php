@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
         // Route::get('/', 'AdminController@welcome');
         Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
+        Route::get('/users/export', 'UserController@export')->name('users.export');
         // Concerts
         Route::get('/concerts/create', 'ConcertController@create')->name('concert.create');
         Route::post('/concerts/store', 'ConcertController@store')->name('concert.store');

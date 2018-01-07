@@ -9,6 +9,8 @@ use App\Role;
 use App\Voice;
 use App\Concert;
 
+use App\Services\GetFilteredUsersService;
+
 use Auth;
 
 use App\Http\Requests\StoreUser;
@@ -29,46 +31,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->get('sort');
+        $filters = $request->all();
 
-        if (!$sort) $sort = 'id';
-
-        $dir = $request->get('dir');
-        $search = $request->get('search');
-        $voices = $request->get('voices');
-        $concerts = $request->get('concerts');
-
-        $query = "SELECT users.* "
-            . "FROM users ";
-
-        $query .= " LEFT JOIN user_concert ON users.id = user_concert.user_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = $request->get('age-from');
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = $request->get('age-to');
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND users.voice_id IN ($voices) ";
-        }
-        if ($concerts !== null && count($concerts) > 0) {
-            $concerts = implode(',', $concerts);
-            $query .= "AND user_concert.concert_id IN ($concerts) AND user_concert.accepted = 1 ";
-        }
-
-        $query .= "GROUP BY users.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
+        $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
         $activeFilters = [];
         foreach ($request->all() as $key => $val) {
@@ -192,5 +157,22 @@ class UserController extends Controller
         $request->session()->flash('alert-success', __('User successfully archived.'));
 
         return redirect()->back();
+    }
+
+    public function export(Request $request)
+    {
+        dd('foo');
+
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
+
+        Excel::create('user_export', function ($excel) use ($users) {
+            $excel->sheet('users', function($sheet) use ($users) {
+
+                $sheet->fromArray($users);
+
+            });
+        })->download('csv');
     }
 }

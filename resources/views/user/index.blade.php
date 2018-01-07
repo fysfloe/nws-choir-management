@@ -8,6 +8,9 @@
             <a class="btn btn-default btn-sm" href="{{ route('users.create') }}">
                 {{ __('New User') }}
             </a>
+            <a class="btn btn-default btn-sm" href="{{ route('users.export', app('request')->all()) }}">
+                {{ __('Export') }}
+            </a>
         @endpermission
     </header>
 

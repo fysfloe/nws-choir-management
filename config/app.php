@@ -170,6 +170,7 @@ return [
          * Package Service Providers...
          */
         Creitive\Breadcrumbs\BreadcrumbsServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -232,6 +233,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Breadcrumbs' => Creitive\Breadcrumbs\Facades\Breadcrumbs::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
