@@ -37,7 +37,7 @@ class ConcertController extends Controller
         $dir = $request->get('dir');
         $search = $request->get('search');
 
-        $query = "SELECT concerts.id, concerts.title, concerts.created_by, MIN(concert_dates.date) AS nextDate "
+        $query = "SELECT concerts.* MIN(concert_dates.date) AS nextDate "
             . "FROM concerts LEFT JOIN concert_dates ON concerts.id = concert_dates.concert_id ";
 
         $query .= "WHERE concerts.deleted_at IS NULL AND concerts.title LIKE '%$search%' ";
