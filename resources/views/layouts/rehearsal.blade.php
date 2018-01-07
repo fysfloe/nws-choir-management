@@ -3,7 +3,7 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ $rehearsal->__toString() }}</h2>
+        <h2>{!! $rehearsal->__toString() !!}</h2>
 
         <div class="btn-group accept-decline" role="group" aria-label="{{ __('Accept or decline') }}">
             <a href="{{ route('rehearsal.accept', $rehearsal) }}" class="btn btn-sm {{ $rehearsal->promises->contains(Auth::user()) ? 'btn-success' : 'btn-default' }}">
