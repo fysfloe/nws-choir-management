@@ -48,7 +48,7 @@ class ConcertController extends Controller
             $query .= "AND concert_dates.date >= NOW() ";
         }
 
-        $query .= "GROUP BY concerts.* ORDER BY $sort $dir";
+        $query .= "GROUP BY concerts.id, concerts.title ORDER BY $sort $dir";
 
         $concerts = Concert::fromQuery($query);
 
