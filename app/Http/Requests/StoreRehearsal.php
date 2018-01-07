@@ -24,7 +24,10 @@ class StoreRehearsal extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required'
+            'date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'place' => 'required'
         ];
     }
 }

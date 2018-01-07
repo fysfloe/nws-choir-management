@@ -15,7 +15,10 @@ class CreateRehearsalsTable extends Migration
     {
         Schema::create('rehearsals', function (Blueprint $table) {
             $table->increments('id');
-            $table->datetime('date');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('place');
             $table->integer('created_by')->unsigned();
             $table->integer('semester_id')->unsigned()->nullable();
             $table->softDeletes();
