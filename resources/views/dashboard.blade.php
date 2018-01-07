@@ -79,7 +79,7 @@
                                             data-toggle="tooltip"
                                             title="{{ $rehearsal->promises->contains(Auth::user()->id) ? __('You are attending!') : ($rehearsal->denials->contains(Auth::user()->id) ? __('You are not attending.') : __('You didn\'t tell us yet, if you are attending this rehearsal.')) }}"
                                         ></span>&nbsp;
-                                        <a href="{{ route('rehearsal.show', $rehearsal) }}">{{ $rehearsal->__toString() }}</a>
+                                        <a href="{{ route('rehearsal.show', $rehearsal) }}">{!! $rehearsal->__toString() !!}</a>
                                     </li>
                                 @endforeach
                             </ul>

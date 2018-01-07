@@ -120,7 +120,7 @@ class ConcertController extends Controller
 
         if ($semester) {
             foreach ($semester->participants as $user) {
-                $concert->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $user->voice ? $user->voice->id : null, 'accepted' => $user->accepted]]);
+                $concert->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $user->voice ? $user->voice->id : null, 'accepted' => $user->pivot->accepted]]);
             }
         }
 
