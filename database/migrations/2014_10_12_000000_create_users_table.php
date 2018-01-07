@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('country_id')->unsigned()->nullable();
             $table->integer('address_id')->unsigned()->nullable();
+            $table->integer('voice_id')->unsigned()->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

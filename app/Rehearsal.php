@@ -16,7 +16,7 @@ class Rehearsal extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'created_by'
+        'date', 'created_by', 'semester_id'
     ];
 
     /**
@@ -41,6 +41,16 @@ class Rehearsal extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Get the users for the rehearsal.
+     */
+    public function participants()
+    {
+        return $this->belongsToMany('App\User', 'user_rehearsal')
+            ->withPivot('accepted')
+            ->withTimestamps();
+    }
+
     public function promises()
     {
         return $this->belongsToMany('App\User', 'user_rehearsal')
@@ -56,5 +66,18 @@ class Rehearsal extends Model
     public function getDateAttribute()
     {
         return Carbon::parse($this->attributes['date']);
+    }
+
+    public function semester()
+    {
+        $this->belongsTo('App\Semester');
+    }
+
+    public function __toString()
+    {
+        $dateString = "<span class='oi oi-calendar text-muted'></span>&nbsp;" . $this->date->format('d.m.Y') . "&nbsp;";
+        $dateString .= "<span class='oi oi-clock text-muted'></span>&nbsp;" . $this->date->format('H:i');
+
+        return $dateString;
     }
 }

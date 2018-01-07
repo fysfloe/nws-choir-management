@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'de',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +169,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Creitive\Breadcrumbs\BreadcrumbsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -230,6 +231,7 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Breadcrumbs' => Creitive\Breadcrumbs\Facades\Breadcrumbs::class,
 
     ],
 

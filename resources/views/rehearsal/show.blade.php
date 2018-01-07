@@ -1,14 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.rehearsal')
 
-@section('content')
+@section('rehearsalContent')
 
-    <header class="page-header">
-        <h2>{{ $concert->title }}</h2>
-        @permission('manageConcerts')
-            <a class="btn btn-default btn-sm" href="{{ route('concert.edit', $concert) }}">
-                {{ trans('Edit') }}
-            </a>
-        @endpermission
-    </header>
+    <!-- Info -->
+    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+        <small class="text-muted">{{ __('No info available.') }}</small>
+    </div>
 
 @endsection

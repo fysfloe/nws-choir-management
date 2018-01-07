@@ -3,7 +3,7 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ trans('Create a new voice') }}</h2>
+        <h2>{{ __('Create a new voice') }}</h2>
     </header>
 
     {{ Form::model(new App\Voice(), ['route' => 'voices.store']) }}

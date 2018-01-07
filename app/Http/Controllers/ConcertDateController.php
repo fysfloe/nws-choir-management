@@ -16,9 +16,7 @@ class ConcertDateController extends Controller
      */
     public function index(Concert $concert)
     {
-        $dates = $concert->dates()->get();
-
-        dd($dates);
+        //
     }
 
     /**

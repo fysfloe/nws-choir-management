@@ -30,7 +30,12 @@ class Voice extends Model
      */
     public function singers()
     {
-        return $this->belongsToMany('App\User', 'user_voice');
+        return $this->hasMany('App\User', 'user_voice');
+    }
+
+    public function users()
+    {
+        return $this->hasMany('App\User');
     }
 
     public function pieces()
@@ -38,11 +43,17 @@ class Voice extends Model
         return $this->belongsToMany('App\Piece');
     }
 
+    public function concerts()
+    {
+        return $this->belongsToMany('App\Concert')
+            ->withPivot('number');
+    }
+
     public static function getListForSelect()
     {
         $voices = [];
 
-        foreach (self::all() as $voice) {
+        foreach (self::where('deleted_at', null)->get() as $voice) {
             $voices[$voice->id] = $voice->name;
         }
 

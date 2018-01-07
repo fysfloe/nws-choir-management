@@ -16,6 +16,8 @@ class CreateUserConcertTable extends Migration
         Schema::create('user_concert', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('concert_id')->unsigned();
+            $table->integer('voice_id')->unsigned()->nullable();
+            $table->boolean('accepted')->nullable();
             $table->timestamps();
 
             $table->primary(['user_id', 'concert_id']);

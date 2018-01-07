@@ -22,7 +22,7 @@ class Concert extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'slug', 'created_by'
+        'title', 'description', 'slug', 'created_by', 'semester_id'
     ];
 
     /**
@@ -57,7 +57,9 @@ class Concert extends Model
      */
     public function participants()
     {
-        return $this->hasMany('App\User');
+        return $this->belongsToMany('App\User', 'user_concert')
+            ->withPivot('accepted', 'voice_id')
+            ->withTimestamps();
     }
 
     /**
@@ -74,5 +76,30 @@ class Concert extends Model
     public function pieces()
     {
         return $this->hasMany('App\Piece');
+    }
+
+    public function promises()
+    {
+        return $this->belongsToMany('App\User', 'user_concert')
+            ->withPivot('accepted', 'voice_id')
+            ->wherePivot('accepted', true);
+    }
+
+    public function denials()
+    {
+        return $this->belongsToMany('App\User', 'user_concert')
+            ->wherePivot('accepted', false);
+    }
+
+    public function voices()
+    {
+        return $this->belongsToMany('App\Voice')
+            ->withPivot('number')
+            ->withTimestamps();
+    }
+
+    public function voiceCount($voice_id)
+    {
+        return $this->promises()->wherePivot('voice_id', $voice_id)->count();
     }
 }

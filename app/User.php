@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password', 'country_id', 'phone', 'address_id'
+        'firstname', 'surname', 'gender', 'birthdate', 'email', 'password', 'country_id', 'phone', 'address_id', 'voice_id'
     ];
 
     /**
@@ -54,6 +54,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the semesters the user has created.
+     */
+    public function semestersCreated()
+    {
+        return $this->hasMany('App\Semester', 'created_by');
+    }
+
+    /**
      * Get the concerts the user has created.
      */
     public function rehearsalsCreated()
@@ -66,7 +74,8 @@ class User extends Authenticatable
      */
     public function voices()
     {
-        return $this->belongsToMany('App\Voice', 'user_voice');
+        return $this->belongsToMany('App\Voice', 'user_voice')
+            ->withTimestamps();
     }
 
     /**
@@ -74,7 +83,7 @@ class User extends Authenticatable
      */
     public function voice()
     {
-        return $this->belongsToMany('App\Voice', 'user_voice')->wherePivot('primary', '=', true)->first();
+        return $this->belongsTo('App\Voice');
     }
 
     /**
@@ -82,7 +91,7 @@ class User extends Authenticatable
      */
     public function citizenship()
     {
-        return $this->belongsTo('Webpatser\Countries\Countries');
+        return $this->belongsTo('Webpatser\Countries\Countries', 'country_id');
     }
 
     /**

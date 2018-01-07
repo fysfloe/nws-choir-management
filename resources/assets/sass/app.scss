@@ -1,6 +1,6 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700|Pacifico');
 
 // Variables
 @import "variables";
@@ -9,6 +9,7 @@ $enable-flex: true !default;
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-multiselect/dist/css/bootstrap-multiselect.css";
 
 // Bootstrap datetimepicker
 @import "~tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.css";
@@ -19,17 +20,18 @@ $enable-flex: true !default;
 
 @import "lists";
 @import "filters";
+@import "concert";
+@import "voices";
+@import "dashboard";
 
 .navbar-dark .navbar-brand {
-    font-weight: 800;
-    letter-spacing: 0.2rem;
-    text-transform: uppercase;
+    font-family: "Pacifico", cursive;
     font-size: 1.25rem;
 }
 
 #app {
     .navbar {
-        background: $darkgrey;
+        background: $brand-primary;
         padding: 0 1rem;
     }
 }
@@ -75,7 +77,8 @@ header {
         h2 {
             display: inline;
             margin-right: 1rem;
-            color: $darkgrey;
+            color: $brand-primary;
+            font-weight: bold;
         }
 
         .btn-sm {
@@ -86,6 +89,10 @@ header {
 
         .light {
             color: darken($lightgrey, 20);
+        }
+
+        .btn-group {
+            vertical-align: inherit;
         }
     }
 }
@@ -131,8 +138,52 @@ h3 {
     margin-bottom: 1em;
 }
 
+h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    a {
+        text-transform: none;
+    }
+}
+
 .side-box {
     padding: 1rem;
     background: $lightgrey;
     align-self: flex-start;
+
+    h3 {
+        margin-bottom: 0.5em;
+    }
+}
+
+ul.breadcrumbs {
+    font-size: 0.8em;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > li {
+        display: inline-block;
+        margin-right: 0.25em;
+
+        a {
+            color: $brand-primary;
+        }
+    }
+}
+
+.margin-top {
+    margin-top: $default-margin-size;
+}
+
+.margin-bottom {
+    margin-bottom: $default-margin-size;
+}
+
+.alert-sm {
+    font-size: 0.8em;
+    padding: 0.5em;
+    font-weight: bold;
 }

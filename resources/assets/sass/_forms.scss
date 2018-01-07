@@ -10,3 +10,20 @@
 input.date {
     margin-bottom: 0.5em;
 }
+
+.multiselect {
+    &.btn-default {
+        border: 1px solid #ced4da;
+        color: #495057;
+    }
+}
+
+.multiselect-container {
+    > li > a {
+        color: inherit;
+
+        > label {
+            padding: 0 0.5em;
+        }
+    }
+}

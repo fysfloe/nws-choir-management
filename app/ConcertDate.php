@@ -28,4 +28,12 @@ class ConcertDate extends Model
     {
         return Carbon::parse($this->attributes['date']);
     }
+
+    public function __toString()
+    {
+        $dateString = "<span class='oi oi-calendar text-muted'></span>&nbsp;" . $this->date->format('d.m.Y') . "&nbsp;";
+        $dateString .= "<span class='oi oi-clock text-muted'></span>&nbsp;" . $this->date->format('H:i');
+
+        return $dateString;
+    }
 }

@@ -1,5 +1,5 @@
     <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-        {{ Form::label('firstname', trans('First Name'), ['class' => 'control-label']) }}
+        {{ Form::label('firstname', __('First Name'), ['class' => 'control-label']) }}
         {{ Form::text('firstname', old('firstname'), ['class' => 'form-control']) }}
 
         @if ($errors->has('firstname'))
@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }}">
-        {{ Form::label('surname', trans('Surname'), ['class' => 'control-label']) }}
+        {{ Form::label('surname', __('Surname'), ['class' => 'control-label']) }}
         {{ Form::text('surname', old('surname'), ['class' => 'form-control']) }}
 
         @if ($errors->has('surname'))
@@ -21,7 +21,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-        {{ Form::label('email', trans('E-Mail Address'), ['class' => 'control-label']) }}
+        {{ Form::label('email', __('E-Mail Address'), ['class' => 'control-label']) }}
         {{ Form::email('email', old('email'), ['class' => 'form-control']) }}
 
         @if ($errors->has('email'))
@@ -32,18 +32,18 @@
     </div>
 
     <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-        <label for="gender" class="control-label">{{ trans('Gender') }}</label>
+        <div><label for="gender" class="control-label">{{ __('Gender') }}</label></div>
 
-        <div class="form-check">
+        <div class="form-check-inline">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" name="gender" value="f" @if (old('gender') === 'f') {{ 'checked="checked"' }} @endif required>
-                {{ trans('female') }}
+                {{ __('female') }}
             </label>
         </div>
-        <div class="form-check">
+        <div class="form-check-inline">
             <label class="form-check-label">
                 <input type="radio" class="form-check-input" name="gender" value="m" @if (old('gender') === 'f') {{ 'checked="checked"' }} @endif required>
-                {{ trans('male') }}
+                {{ __('male') }}
             </label>
         </div>
 
@@ -55,7 +55,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-        {{ Form::label('password', trans('Password'), ['class' => 'control-label']) }}
+        {{ Form::label('password', __('Password'), ['class' => 'control-label']) }}
         {{ Form::password('password', ['class' => 'form-control']) }}
 
         @if ($errors->has('password'))
@@ -66,11 +66,11 @@
     </div>
 
     <div class="form-group">
-        {{ Form::label('password_confirmation', trans('Confirm Password'), ['class' => 'control-label']) }}
+        {{ Form::label('password_confirmation', __('Confirm Password'), ['class' => 'control-label']) }}
         {{ Form::password('password_confirmation', ['class' => 'form-control']) }}
     </div>
 
     <div class="form-group">
-        {{ Form::button(trans('Save User'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
+        {{ Form::button(__('Save User'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
     </div>
 </form>

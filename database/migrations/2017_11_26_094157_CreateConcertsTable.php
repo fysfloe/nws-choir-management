@@ -16,9 +16,10 @@ class CreateConcertsTable extends Migration
         Schema::create('concerts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('slug');
-            $table->integer('created_by')->unsigned();
+            $table->integer('created_by')->unsigned()->nullable();
+            $table->integer('semester_id')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

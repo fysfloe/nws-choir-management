@@ -6,22 +6,87 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Role;
+use App\Voice;
+
 use Auth;
 
 use App\Http\Requests\StoreUser;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->breadcrumbs->addCrumb(__('Users'), 'users');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('id', '!=', Auth::user()->id)->where('deleted_at', null)->get();
+        $sort = $request->get('sort');
 
-        return view('user.index')->with(['users' => $users]);
+        if (!$sort) $sort = 'id';
+
+        $dir = $request->get('dir');
+        $search = $request->get('search');
+        $voices = $request->get('voices');
+
+        $query = "SELECT users.* "
+            . "FROM users ";
+
+        $query .= "WHERE users.deleted_at IS NULL AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+
+        $ageFrom = $request->get('age-from');
+        if ($ageFrom) {
+            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
+            $query .= "AND users.birthdate < '$minDate' ";
+        }
+
+        $ageTo = $request->get('age-to');
+        if ($ageTo) {
+            $ageTo += 1;
+            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
+            $query .= "AND users.birthdate >= '$maxDate' ";
+        }
+        if (count($voices) > 0) {
+            $voices = implode(',', $voices);
+            $query .= "AND users.voice_id IN ($voices) ";
+        }
+
+        $query .= "GROUP BY users.id ORDER BY $sort $dir";
+
+        $users = User::fromQuery($query);
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        $voices = Voice::getListForSelect();
+
+        return view('user.index')->with([
+            'users' => $users,
+            'activeFilters' => $activeFilters,
+            'voices' => $voices,
+            'route' => 'users.index',
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
     }
 
     /**
@@ -31,7 +96,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        $this->breadcrumbs->addCrumb(__('New User'), 'create');
+
+        return view('user.create')->with([
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
     }
 
     /**

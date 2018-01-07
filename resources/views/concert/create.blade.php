@@ -3,7 +3,7 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ trans('Create a new concert') }}</h2>
+        <h2>{{ __('Create a new concert') }}</h2>
     </header>
 
     {{ Form::model(new App\Concert(), ['route' => 'concert.store']) }}

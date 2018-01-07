@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700);/*@preserve
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700|Pacifico);.multiselect-container{position:absolute;list-style-type:none;margin:0;padding:0}.multiselect-container .input-group{margin:5px}.multiselect-container>li{padding:0}.multiselect-container>li>a.multiselect-all label{font-weight:700}.multiselect-container>li.multiselect-group label{margin:0;padding:3px 20px 3px 20px;height:100%;font-weight:700}.multiselect-container>li.multiselect-group-clickable label{cursor:pointer}.multiselect-container>li>a{padding:0}.multiselect-container>li>a>label{margin:0;height:100%;cursor:pointer;font-weight:400;padding:3px 20px 3px 40px}.multiselect-container>li>a>label.radio,.multiselect-container>li>a>label.checkbox{margin:0}.multiselect-container>li>a>label>input[type=checkbox]{margin-bottom:5px}.btn-group>.btn-group:nth-child(2)>.multiselect.btn{border-top-left-radius:4px;border-bottom-left-radius:4px}.form-inline .multiselect-container label.checkbox,.form-inline .multiselect-container label.radio{padding:3px 20px 3px 40px}.form-inline .multiselect-container li a label.checkbox input[type=checkbox],.form-inline .multiselect-container li a label.radio input[type=radio]{margin-left:-20px;margin-right:0}/*@preserve
  * Tempus Dominus Bootstrap4 v5.0.0-alpha8 (https://tempusdominus.github.io/bootstrap-4/)
  * Copyright 2016-2017 Jonathan Peterson
  * Licensed under MIT (https://github.com/tempusdominus/bootstrap-3/blob/master/LICENSE)
@@ -9935,6 +9935,19 @@ input.date {
   margin-bottom: 0.5em;
 }
 
+.multiselect.btn-default {
+  border: 1px solid #ced4da;
+  color: #495057;
+}
+
+.multiselect-container > li > a {
+  color: inherit;
+}
+
+.multiselect-container > li > a > label {
+  padding: 0 0.5em;
+}
+
 .btn-default {
   border: 0.1rem solid #2c2e33;
   font-weight: bold;
@@ -9984,7 +9997,10 @@ input.date {
 }
 
 .list-table {
+  padding: 0 15px;
   background: white;
+  margin-top: 1em;
+  border: 0.05rem solid #e4ecf2;
 }
 
 .list-table header {
@@ -10048,6 +10064,7 @@ input.date {
   -webkit-box-direction: normal;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
+  margin-bottom: 1em;
 }
 
 .filters a.show-filters {
@@ -10107,7 +10124,8 @@ input.date {
 }
 
 .filter-form .form-group select.form-control,
-.filter-form .form-group input {
+.filter-form .form-group input:not([type="checkbox"]),
+.filter-form .form-group .multiselect {
   font-size: 1em;
   width: auto;
   height: 2.5em;
@@ -10117,15 +10135,101 @@ input.date {
   margin: 0;
 }
 
+.filter-form .form-group .btn-group {
+  display: block;
+}
+
+.filter-form .age-filter label {
+  display: block;
+}
+
+.filter-form .age-filter .form-control {
+  display: inline-block;
+}
+
+#info .accept-decline {
+  margin-bottom: 2em;
+}
+
+.description,
+#voices {
+  padding-top: 1em;
+}
+
+.side-box ul.dates,
+.side-box ul.voices {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edit-voices > small {
+  display: block;
+}
+
+.edit-voices ul.voices {
+  list-style: none;
+  margin: 0 0 1em;
+  padding: 0;
+  display: inline-block;
+}
+
+.edit-voices ul.voices li {
+  display: inline-block;
+  position: relative;
+  padding-right: 1.33em;
+}
+
+.edit-voices ul.voices li.badge-default {
+  color: white;
+  background: #8fb1c7;
+  font-weight: normal;
+}
+
+.edit-voices ul.voices li:hover {
+  cursor: pointer;
+}
+
+.edit-voices ul.voices li:after {
+  content: "\D7";
+  display: block;
+  position: absolute;
+  right: 0.5em;
+  top: 0.25em;
+}
+
+.set-user-voice small {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.dashboard ul.todos,
+.dashboard ul.concerts,
+.dashboard ul.rehearsals {
+  margin: 1em 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dashboard ul.todos > li,
+.dashboard ul.concerts > li,
+.dashboard ul.rehearsals > li {
+  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
+  border-bottom: 0.05rem solid #e4ecf2;
+}
+
+.dashboard ul.todos {
+  font-size: 0.8em;
+}
+
 .navbar-dark .navbar-brand {
-  font-weight: 800;
-  letter-spacing: 0.2rem;
-  text-transform: uppercase;
+  font-family: "Pacifico", cursive;
   font-size: 1.25rem;
 }
 
 #app .navbar {
-  background: #2c2e33;
+  background: #149EB5;
   padding: 0 1rem;
 }
 
@@ -10176,7 +10280,8 @@ header.page-header {
 header.page-header h2 {
   display: inline;
   margin-right: 1rem;
-  color: #2c2e33;
+  color: #149EB5;
+  font-weight: bold;
 }
 
 header.page-header .btn-sm,
@@ -10188,6 +10293,10 @@ header.page-header .btn-group-sm > .btn {
 
 header.page-header .light {
   color: #b1c8d8;
+}
+
+header.page-header .btn-group {
+  vertical-align: inherit;
 }
 
 .form-inline {
@@ -10227,10 +10336,54 @@ h3 {
   margin-bottom: 1em;
 }
 
+h4 {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+h4 a {
+  text-transform: none;
+}
+
 .side-box {
   padding: 1rem;
   background: #f5f8fa;
   -ms-flex-item-align: start;
       align-self: flex-start;
+}
+
+.side-box h3 {
+  margin-bottom: 0.5em;
+}
+
+ul.breadcrumbs {
+  font-size: 0.8em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.breadcrumbs > li {
+  display: inline-block;
+  margin-right: 0.25em;
+}
+
+ul.breadcrumbs > li a {
+  color: #149EB5;
+}
+
+.margin-top {
+  margin-top: 1em;
+}
+
+.margin-bottom {
+  margin-bottom: 1em;
+}
+
+.alert-sm {
+  font-size: 0.8em;
+  padding: 0.5em;
+  font-weight: bold;
 }
 

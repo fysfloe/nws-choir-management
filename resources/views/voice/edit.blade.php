@@ -3,7 +3,7 @@
 @section('content')
 
     <header class="page-header">
-        <h2><span class="light">{{ trans('Edit') }}:</span> {{ $voice->name }}</h2>
+        <h2><span class="light">{{ __('Edit') }}:</span> {{ $voice->name }}</h2>
     </header>
 
     {{ Form::model($voice, ['method' => 'PATCH', 'route' => ['voices.update', $voice]]) }}

@@ -15,7 +15,8 @@ class AddForeignKeysToConcertsTable extends Migration
     {
         Schema::table('concerts', function(Blueprint $table)
         {
-            $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('semester_id')->references('id')->on('semesters')->onUpdate('cascade')->onDelete('set null');
         });
     }
 
@@ -29,6 +30,7 @@ class AddForeignKeysToConcertsTable extends Migration
         Schema::table('concerts', function(Blueprint $table)
         {
             $table->dropForeign('concerts_created_by_foreign');
+            $table->dropForeign('concerts_semester_id_foreign');
         });
     }
 }

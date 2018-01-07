@@ -16,7 +16,7 @@ class CreateUserRehearsalTable extends Migration
         Schema::create('user_rehearsal', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('rehearsal_id')->unsigned();
-            $table->boolean('accepted');
+            $table->boolean('accepted')->nullable();
             $table->timestamps();
 
             $table->primary(['user_id', 'rehearsal_id']);

@@ -1,6 +1,8 @@
 .list-table {
-    // padding: 0 0.5rem;
+    padding: 0 15px;
     background: white;
+    margin-top: 1em;
+    border: 0.05rem solid darken($lightgrey, 5);
 
     header {
         font-weight: bold;

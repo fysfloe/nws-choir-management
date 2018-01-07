@@ -3,10 +3,10 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ trans('Voices') }}</h2>
+        <h2>{{ __('Voices') }}</h2>
         @permission('manageVoices')
             <a class="btn btn-default btn-sm" href="{{ route('voices.create') }}">
-                {{ trans('New Voice') }}
+                {{ __('New Voice') }}
             </a>
         @endpermission
     </header>
@@ -14,8 +14,8 @@
     @if(count($voices) > 0)
         <div class="list-table">
             <header class="row">
-                <div class="col-md-8">{{ trans('Name') }}</div>
-                <div class="col-md-2">{{ trans('Singers') }}</div>
+                <div class="col-md-8">{{ __('Name') }}</div>
+                <div class="col-md-2">{{ __('Singers') }}</div>
                 <div class="col-md-2">&nbsp;</div>
             </header>
 
@@ -26,17 +26,17 @@
                             {{ $voice->name }}
                         </div>
                         <div class="col-md-2">
-                            {{ count($voice->singers) }}
+                            {{ count($voice->users) }}
                         </div>
                         <div class="col-md-2">
                             @permission('manageVoices')
                                 <a href="{{ route('voices.edit', $voice) }}">
-                                    <span class="oi oi-pencil" title="{{ trans('Edit') }}" aria-hidden="true"></span>
+                                    <span class="oi oi-pencil" title="{{ __('Edit') }}" aria-hidden="true"></span>
                                 </a>
 
-                                {!! Form::open(['onsubmit' => 'return confirm("' . trans('Do you really want to delete this voice?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['voices.destroy', $voice->id]]) !!}
+                                {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this voice?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['voices.destroy', $voice->id]]) !!}
                                     <button type="submit" class="btn-link text-danger">
-                                        <span class="oi oi-trash" title="{{ trans('Delete') }}" aria-hidden="true"></span>
+                                        <span class="oi oi-trash" title="{{ __('Delete') }}" aria-hidden="true"></span>
                                     </button>
 						        {!! Form::close() !!}
                             @endpermission
@@ -46,7 +46,7 @@
             </ul>
         </div>
     @else
-        <div class="no-results">{{ trans('No voices found.') }}</div>
+        <div class="no-results">{{ __('No voices found.') }}</div>
     @endif
 
 @endsection

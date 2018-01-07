@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -57,7 +57,7 @@ class RegisterController extends Controller
             'accept-toc' => 'required',
         ],
         [
-            'accept-toc.required' => trans('Please accept the terms and conditions.')
+            'accept-toc.required' => __('Please accept the terms and conditions.')
         ]);
     }
 

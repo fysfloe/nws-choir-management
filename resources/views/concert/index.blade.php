@@ -3,10 +3,10 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ trans('Concerts') }}</h2>
+        <h2>{{ __('Concerts') }}</h2>
         @permission('manageConcerts')
             <a class="btn btn-default btn-sm" href="{{ route('concert.create') }}">
-                {{ trans('New Concert') }}
+                {{ __('New Concert') }}
             </a>
         @endpermission
     </header>
@@ -26,7 +26,7 @@
                     </a>
                 </div>
                 <div class="col-md-4">
-                    {{ trans('Title') }}
+                    {{ __('Title') }}
                     <a class="list-sort {{ app('request')->input('sort') === 'title' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('concerts', ['sort' => 'title', 'dir' => 'ASC']) }}">
                         <span class="oi oi-caret-top"></span>
                     </a>
@@ -35,7 +35,7 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    {{ trans('Date') }}
+                    {{ __('Date') }}
                     <a class="list-sort {{ app('request')->input('sort') === 'nextDate' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('concerts', ['sort' => 'nextDate', 'dir' => 'ASC']) }}">
                         <span class="oi oi-caret-top"></span>
                     </a>
@@ -43,7 +43,11 @@
                         <span class="oi oi-caret-bottom"></span>
                     </a>
                 </div>
-                <div class="col-md-2">{{ trans('Created by') }}</div>
+                <div class="col-md-2">
+                    @permission('manageConcerts')
+                        {{ __('Created by') }}
+                    @endpermission
+                </div>
                 <div class="col-md-2">&nbsp;</div>
             </header>
 
@@ -62,25 +66,28 @@
                                     <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->nextDate), 'd.m.Y') }}&nbsp;
                                     <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->nextDate), 'H:i') }}
                                 @else
-                                    <span class="text-muted">({{ trans('No dates specified') }})</span>
+                                    <span class="text-muted">({{ __('No dates specified') }})</span>
                                 @endif
-                                <a href="{{ route('concert.addDate', ['concert' => $concert->id]) }}" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
-                                    <span class="oi oi-plus" title="{{ trans('Add date') }}" aria-hidden="true"></span>
-                                </a>
+                                @if (Auth::user()->can('manageConcerts'))
+                                    <a href="{{ route('concert.addDate', $concert) }}" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
+                                        <span class="oi oi-plus" data-toggle="tooltip" title="{{ __('Add date') }}" aria-hidden="true"></span>
+                                    </a>
+                                @endif
                             </small>
                         </div>
                         <div class="col-md-2">
-                            {{ $concert->creator->firstname }} {{ $concert->creator->surname }}
+                            @permission('manageConcerts')
+                                {{ $concert->creator->firstname }} {{ $concert->creator->surname }}
+                            @endpermission
                         </div>
                         <div class="col-md-2">
-                            <a href="{{ route('concert.edit', $concert) }}">
-                                <span class="oi oi-pencil" title="{{ trans('Edit') }}" aria-hidden="true"></span>
-                            </a>
-                            {!! Form::open(['onsubmit' => 'return confirm("' . trans('Do you really want to delete this concert?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['concert.delete', $concert->id]]) !!}
-                                <button type="submit" class="btn-link text-danger">
-                                    <span class="oi oi-trash" title="{{ trans('Delete') }}" aria-hidden="true"></span>
-                                </button>
-                            {!! Form::close() !!}
+                            @permission('manageConcerts')
+                                {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this concert?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['concert.delete', $concert->id]]) !!}
+                                    <button type="submit" class="btn-link text-danger">
+                                        <span class="oi oi-trash" title="{{ __('Delete') }}" aria-hidden="true"></span>
+                                    </button>
+                                {!! Form::close() !!}
+                            @endpermission
                         </div>
                     </li>
                 @endforeach
@@ -88,7 +95,7 @@
         </div>
     @else
         <div class="no-results">
-            <small class="text-muted">{{ trans('No concerts found.') }}</small>
+            <small class="text-muted">{{ __('No concerts found.') }}</small>
         </div>
     @endif
 

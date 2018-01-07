@@ -17,6 +17,7 @@ class AddForeignKeysToUsersTable extends Migration
         {
             $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('restrict');
             $table->foreign('address_id')->references('id')->on('addresses')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('voice_id')->references('id')->on('voices')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 
@@ -31,6 +32,7 @@ class AddForeignKeysToUsersTable extends Migration
         {
             $table->dropForeign('users_country_id_foreign');
             $table->dropForeign('users_address_id_foreign');
+            $table->dropForeign('users_voice_id_foreign');
         });
     }
 }

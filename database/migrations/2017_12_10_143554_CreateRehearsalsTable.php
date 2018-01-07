@@ -17,6 +17,7 @@ class CreateRehearsalsTable extends Migration
             $table->increments('id');
             $table->datetime('date');
             $table->integer('created_by')->unsigned();
+            $table->integer('semester_id')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

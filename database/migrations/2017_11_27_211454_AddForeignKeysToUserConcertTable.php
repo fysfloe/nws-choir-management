@@ -19,6 +19,8 @@ class AddForeignKeysToUserConcertTable extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('concert_id')->references('id')->on('concerts')
                 ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('voice_id')->references('id')->on('voices')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -33,6 +35,7 @@ class AddForeignKeysToUserConcertTable extends Migration
         {
             $table->dropForeign('user_concert_user_id_foreign');
             $table->dropForeign('user_concert_concert_id_foreign');
+            $table->dropForeign('user_concert_voice_id_foreign');
         });
     }
 }

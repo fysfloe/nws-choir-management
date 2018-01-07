@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Chorganizer') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('fonts/open-iconic-bootstrap.css') }}" rel="stylesheet">
@@ -41,14 +41,14 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li class="dropdown-item">
                                     <a href="{{ route('profile.edit', Auth::user()->id) }}">
-                                        {{ trans('My Profile') }}
+                                        {{ __('My Profile') }}
                                     </a>
                                 </li>
                                 <li class="dropdown-item">
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
-                                        {{ trans('Logout') }}
+                                        {{ __('Logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -70,22 +70,28 @@
                     @guest
                     @else
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard') }}">
+                                <span class="oi oi-dashboard"></span>&nbsp;
+                                {{ __('Dashboard') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('concerts') }}">
                                 <span class="oi oi-musical-note"></span>&nbsp;
-                                {{ trans('Concerts') }}
+                                {{ __('Concerts') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('rehearsals') }}">
                                 <span class="oi oi-infinity"></span>&nbsp;
-                                {{ trans('Rehearsals') }}
+                                {{ __('Rehearsals') }}
                             </a>
                         </li>
                         @if (Auth::user()->can('manageUsers'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/admin/users') }}">
                                     <span class="oi oi-people"></span>&nbsp;
-                                    {{ trans('Users') }}
+                                    {{ __('Users') }}
                                 </a>
                             </li>
                         @endif
@@ -93,7 +99,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/admin/voices') }}">
                                     <span class="oi oi-pulse"></span>&nbsp;
-                                    {{ trans('Voices') }}
+                                    {{ __('Voices') }}
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('manageSemesters'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/admin/semesters') }}">
+                                    <span class="oi oi-calendar"></span>&nbsp;
+                                    {{ __('Semesters') }}
                                 </a>
                             </li>
                         @endif
@@ -113,8 +127,12 @@
 
                 @if (isset($errors) && count($errors) > 0)
                     <p class="alert alert-danger">
-                        {{ trans('There were errors with your input. Check the form.') }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ __('There were errors with your input. Check the form.') }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     </p>
+                @endif
+
+                @if (isset($breadcrumbs))
+                    {!! $breadcrumbs->render() !!}
                 @endif
 
                 @yield('content')

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Semester;
+
 class HomeController extends Controller
 {
     /**
@@ -23,6 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $currentSemester = Semester::current();
+
+        return view('dashboard')->with([
+            'currentSemester' => $currentSemester
+        ]);
     }
 }

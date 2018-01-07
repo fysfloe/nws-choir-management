@@ -3,11 +3,11 @@
 @section('content')
 
     <header class="page-header">
-        <h2><span class="light">{{ trans('Edit') }}:</span> {{ $concert->title }}</h2>
+        <h2><span class="light">{{ __('Edit') }}:</span> {{ date_format(date_create($rehearsal->date), 'd.m.Y') }}</h2>
     </header>
 
-    {{ Form::model($concert, ['route' => 'concert.update']) }}
-        @include('concert._form')
+    {{ Form::model($rehearsal, ['route' => 'rehearsal.update']) }}
+        @include('rehearsal._form')
     {{ Form::close() }}
 
 @endsection

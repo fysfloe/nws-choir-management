@@ -103,6 +103,17 @@ class CreateRolesAndPermissions extends Command
             $admin->attachPermission($manageVoices);
         }
 
+        // Create the manageSemesters permission.
+        if (!Permission::where('name', '=', 'manageSemesters')->first()) {
+            $manageSemesters = new Permission();
+            $manageSemesters->name = 'manageSemesters';
+            $manageSemesters->display_name = 'Manage Semesters';
+            $manageSemesters->description = 'Create, edit and delete semesters.';
+            $manageSemesters->save();
+
+            $admin->attachPermission($manageSemesters);
+        }
+
         $this->info('Created roles and permissions!');
     }
 }

@@ -105,23 +105,20 @@ class VoiceController extends Controller
 
     public function showSet(User $user)
     {
-        $voice = $user->voices()->first();
-
         return view('voice.set')->with([
             'user' => $user,
-            'voices' => Voice::getListForSelect(),
-            'voice' => $voice
+            'voices' => Voice::getListForSelect()
         ]);
     }
 
-    public function set(Request $request)
+    public function set(Request $request, User $user)
     {
-        $user = User::find($request->get('user'));
-        $voice = Voice::find($request->get('voice'));
+        $voice_id = $request->get('voice');
 
-        $user->voices()->attach($voice, ['primary' => true]);
+        $user->voice_id = $voice_id;
+        $user->save();
 
-        $request->session()->flash('alert-success', trans('Voice successfully set.'));
+        $request->session()->flash('alert-success', __('Voice successfully set.'));
 
         return redirect()->back();
     }

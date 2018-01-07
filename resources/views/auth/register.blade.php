@@ -2,14 +2,14 @@
 
 @section('content')
     <header class="page-header">
-        <h2>{{ trans('Register') }}</h2>
+        <h2>{{ __('Register') }}</h2>
     </header>
 
     <form method="POST" action="{{ route('register') }}" novalidate>
         {{ csrf_field() }}
 
         <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-            <label for="firstname" class="control-label">{{ trans('First Name') }}</label>
+            <label for="firstname" class="control-label">{{ __('First Name') }}</label>
 
 
             <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }}">
-            <label for="surname" class="control-label">{{ trans('Surname') }}</label>
+            <label for="surname" class="control-label">{{ __('Surname') }}</label>
 
             <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required autofocus>
 
@@ -34,7 +34,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label for="email" class="control-label">{{ trans('E-Mail Address') }}</label>
+            <label for="email" class="control-label">{{ __('E-Mail Address') }}</label>
 
             <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
@@ -46,18 +46,18 @@
         </div>
 
         <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-            <label for="gender" class="control-label">{{ trans('Gender') }}</label>
+            <label for="gender" class="control-label">{{ __('Gender') }}</label>
 
             <div class="form-check">
                 <label class="form-check-label">
                     <input type="radio" class="form-check-input" name="gender" value="f" @if (old('gender') === 'f') {{ 'checked="checked"' }} @endif required>
-                    {{ trans('female') }}
+                    {{ __('female') }}
                 </label>
             </div>
             <div class="form-check">
                 <label class="form-check-label">
                     <input type="radio" class="form-check-input" name="gender" value="m" @if (old('gender') === 'f') {{ 'checked="checked"' }} @endif required>
-                    {{ trans('male') }}
+                    {{ __('male') }}
                     </label>
             </div>
 
@@ -69,7 +69,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <label for="password" class="control-label">{{ trans('Password') }}</label>
+            <label for="password" class="control-label">{{ __('Password') }}</label>
             <input id="password" type="password" class="form-control" name="password" required>
 
             @if ($errors->has('password'))
@@ -80,7 +80,7 @@
         </div>
 
         <div class="form-group">
-            <label for="password-confirm" class="control-label">{{ trans('Confirm Password') }}</label>
+            <label for="password-confirm" class="control-label">{{ __('Confirm Password') }}</label>
             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
         </div>
 
@@ -88,7 +88,7 @@
             <div class="form-check">
                 <label for="accept-toc" class="form-check-label">
                     <input id="accept-toc" type="checkbox" class="form-check-input" name="accept-toc" required>
-                    {{ trans('I hereby accept the terms and conditions.') }}
+                    {{ __('I hereby accept the terms and conditions.') }}
                 </label>
             </div>
 
@@ -101,7 +101,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary">
-                {{ trans('Register') }}
+                {{ __('Register') }}
             </button>
         </div>
     </form>
