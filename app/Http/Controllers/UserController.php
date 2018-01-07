@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Voice;
+use App\Concert;
 
 use Auth;
 
@@ -35,9 +36,12 @@ class UserController extends Controller
         $dir = $request->get('dir');
         $search = $request->get('search');
         $voices = $request->get('voices');
+        $concerts = $request->get('concerts');
 
         $query = "SELECT users.* "
             . "FROM users ";
+
+        $query .= " LEFT JOIN user_concert ON users.id = user_concert.user_id ";
 
         $query .= "WHERE users.deleted_at IS NULL AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
@@ -57,6 +61,10 @@ class UserController extends Controller
             $voices = implode(',', $voices);
             $query .= "AND users.voice_id IN ($voices) ";
         }
+        if ($concerts !== null && count($concerts) > 0) {
+            $concerts = implode(',', $concerts);
+            $query .= "AND user_concert.concert_id IN ($concerts) AND user_concert.accepted = 1 ";
+        }
 
         $query .= "GROUP BY users.id ORDER BY $sort $dir";
 
@@ -72,6 +80,13 @@ class UserController extends Controller
                     }
 
                     $activeFilters['voices'] = implode(', ', $voices);
+                } else if ($key === 'concerts') {
+                    $concerts = [];
+                    foreach ($val as $concert_id) {
+                        $concerts[] = Concert::find($concert_id)->title;
+                    }
+
+                    $activeFilters['concerts'] = implode(', ', $concerts);
                 } else {
                     $activeFilters[$key] = $val;
                 }
@@ -79,11 +94,13 @@ class UserController extends Controller
         }
 
         $voices = Voice::getListForSelect();
+        $concerts = Concert::getListForSelect();
 
         return view('user.index')->with([
             'users' => $users,
             'activeFilters' => $activeFilters,
             'voices' => $voices,
+            'concerts' => $concerts,
             'route' => 'users.index',
             'breadcrumbs' => $this->breadcrumbs
         ]);

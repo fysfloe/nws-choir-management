@@ -102,4 +102,15 @@ class Concert extends Model
     {
         return $this->promises()->wherePivot('voice_id', $voice_id)->count();
     }
+
+    public static function getListForSelect()
+    {
+        $concerts = [];
+
+        foreach (self::where('deleted_at', null)->get() as $concert) {
+            $concerts[$concert->id] = $concert->title;
+        }
+
+        return $concerts;
+    }
 }

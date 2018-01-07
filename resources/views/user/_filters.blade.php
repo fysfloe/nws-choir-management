@@ -21,6 +21,18 @@
         </select>
     </div>
 
+    @if (isset($concerts))
+        <div class="form-group">
+            {{ Form::label('concerts[]', __('Concerts'), ['class' => 'control-label']) }}
+
+            <select name="concerts[]" class="form-control" multiple="multiple">
+                @foreach($concerts as $key => $concert)
+                    <option value="{{ $key }}" @if (app('request')->input('concerts') && in_array($key, app('request')->input('concerts'))) {{ 'selected="selected"' }} @endif>{{ $concert }}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
+
     <div class="form-group age-filter">
         {{ Form::label('age', __('Age'), ['class' => 'control-label']) }}
         {{ Form::number('age-from', old('age-from'), ['class' => 'form-control', 'min' => 10, 'max' => 110, 'placeholder' => __('Min')]) }}
