@@ -138,7 +138,7 @@ class SemesterController extends Controller
             $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
             $query .= "AND users.birthdate >= '$maxDate' ";
         }
-        if (count($voices) > 0) {
+        if ($voices !== null && count($voices) > 0) {
             $voices = implode(',', $voices);
             $query .= "AND users.voice IN ($voices) ";
         }
