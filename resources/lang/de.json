@@ -26,6 +26,7 @@
     "e.g.": "z.B.",
     "Add another voice": "Neue Stimme hinzufügen",
     "Save Concert": "Konzert speichern",
+    "Concert": "Konzert",
     "Add dates": "Termine hinzufügen",
     "Add date": "Termin hinzufügen",
     "Add another date": "Einen weiteren Termin hinzufügen",
@@ -171,5 +172,8 @@
     "Present": "Anwesend",
     "Excused": "Entschuldigt",
     "Unexcused": "Unentschuldigt",
-    "Do you really want to archive these users?": "Diese Benutzer wirklich archivieren?"
+    "Do you really want to archive these users?": "Diese Benutzer wirklich archivieren?",
+    "Add one or more voices and the number of singers needed.": "Eine oder mehrere Stimmen und die Anzahl der benötigten SängerInnen hinzufügen.",
+    "No voices set.": "Keine Stimmen hinzugefügt.",
+    "No rehearsals for this concert found.": "Keine Proben für dieses Konzert gefunden."
 }

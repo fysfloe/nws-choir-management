@@ -21,8 +21,9 @@
                         {{ __('Created by') }}
                     @endpermission
                 </div>
-                <div class="col-md-2">&nbsp;</div>
-                <div class="col-md-2">&nbsp;</div>
+                <div class="col-md-2">{{ __('Concert') }}</div>
+                <div class="col-md-1">&nbsp;</div>
+                <div class="col-md-1">&nbsp;</div>
             </header>
 
             <ul class="rehearsals">
@@ -43,6 +44,13 @@
                             @endpermission
                         </div>
                         <div class="col-md-2">
+                            @if ($rehearsal->concert)
+                                {{ $rehearsal->concert->title }}
+                            @else
+                                -
+                            @endif
+                        </div>
+                        <div class="col-md-1">
                             <div class="btn-group" role="group" aria-label="{{ __('Accept or decline') }}">
                                 <a href="{{ route('rehearsal.accept', $rehearsal) }}" class="btn btn-sm {{ $rehearsal->promises->contains(Auth::user()) ? 'btn-success' : 'btn-default' }}">
                                     <span class="oi oi-check" title="{{ __('Accept') }}" aria-hidden="true"></span>
@@ -52,7 +60,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             @permission('manageRehearsals')
                                 <a href="{{ route('rehearsal.edit', $rehearsal) }}">
                                     <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}" aria-hidden="true"></span>

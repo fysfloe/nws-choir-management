@@ -25,6 +25,28 @@
                         </li>
                     @endforeach
                 </ul>
+
+                <h3 class="mt-4">{{ __('Rehearsals') }}</h3>
+                @if (count($concert->rehearsals) > 0)
+                    <ul class="rehearsals">
+                    @foreach ($concert->rehearsals as $rehearsal)
+                        <li>
+                            {!! $rehearsal->__toString() !!}&nbsp;
+                            <a href="{{ route('rehearsal.show', $rehearsal) }}">
+                                <span class="oi oi-eye" data-toggle="tooltip" title="{{ __('Show') }}"></span>
+                            </a>
+                        </li>
+                    @endforeach
+                    </ul>
+                @else
+                    <small class="text-muted">{{ __('No rehearsals for this concert found.') }}</small>
+                @endif
+
+                @permission('manageRehearsals')
+                <a class="btn btn-default btn-sm mt-2" href="{{ route('rehearsal.create', ['semester' => $concert->semester->id, 'concert' => $concert->id]) }}">
+                    {{ __('Add a rehearsal') }}
+                </a>
+                @endpermission
             </div>
         </div>
     </div>

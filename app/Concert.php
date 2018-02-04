@@ -103,6 +103,16 @@ class Concert extends Model
         return $this->promises()->wherePivot('voice_id', $voice_id)->count();
     }
 
+    public function rehearsals()
+    {
+        return $this->hasMany('App\Rehearsal');
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo('App\Semester');
+    }
+
     public static function getListForSelect()
     {
         $concerts = [];

@@ -8,6 +8,7 @@ use App\Rehearsal;
 use App\Semester;
 use App\User;
 use App\Voice;
+use App\Concert;
 
 use App\Http\Requests\StoreRehearsal;
 use Auth;
@@ -52,8 +53,12 @@ class RehearsalController extends Controller
         $nullOption = [null => __('--- Please choose ---')];
         $semesters = $nullOption + $semesters;
 
+        $concerts = Concert::getListForSelect();
+        $concerts = $nullOption + $concerts;
+
         return view('rehearsal.create')->with([
             'breadcrumbs' => $this->breadcrumbs,
+            'concerts' => $concerts,
             'semesters' => $semesters
         ]);
     }

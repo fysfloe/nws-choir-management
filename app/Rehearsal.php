@@ -16,7 +16,7 @@ class Rehearsal extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id'
+        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'concert_id'
     ];
 
     /**
@@ -102,13 +102,18 @@ class Rehearsal extends Model
 
     public function semester()
     {
-        $this->belongsTo('App\Semester');
+        return $this->belongsTo('App\Semester');
+    }
+
+    public function concert()
+    {
+        return $this->belongsTo('App\Concert');
     }
 
     public function __toString()
     {
         $dateString = "<span class='oi oi-calendar text-muted'></span>&nbsp;" . $this->date->format('d.m.Y') . "&nbsp;";
-        // $dateString .= "<span class='oi oi-clock text-muted'></span>&nbsp;" . date_format(date_create($this->start_time), 'H:i') . '–' . date_format(date_create($this->end_time), 'H:i');
+        $dateString .= "<span class='oi oi-clock text-muted'></span>&nbsp;" . date_format(date_create($this->start_time), 'H:i') . '–' . date_format(date_create($this->end_time), 'H:i');
 
         return $dateString;
     }

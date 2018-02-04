@@ -46,7 +46,7 @@
 
         <div class="form-group col-4{{ $errors->has('voiceNumber') ? ' has-error' : '' }}">
             {{ Form::label('voiceNumbers[]', __('Singers needed'), ['class' => 'control-label']) }}
-            {{ Form::number('voiceNumbers[]', null, ['class' => 'form-control', 'min' => 1, 'max' => 99, 'placeholder' => __('e.g.') . ' 10')]) }}
+            {{ Form::number('voiceNumbers[]', null, ['class' => 'form-control', 'min' => 1, 'max' => 99, 'placeholder' => __('e.g.') . ' 10']) }}
         </div><!-- .form-group -->
     </div><!-- .row -->
 

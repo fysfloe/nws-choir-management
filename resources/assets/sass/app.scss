@@ -220,3 +220,17 @@ a.dropdown-toggle {
     text-decoration: none;
     color: inherit;
 }
+
+.nav-tabs {
+    .nav-item {
+        a {
+            color: $brand-primary;
+
+            &.active {
+                background: $brand-primary;
+                color: white;
+                border-color: darken($lightgrey, 15);
+            }
+        }
+    }
+}

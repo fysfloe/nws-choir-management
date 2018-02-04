@@ -53,6 +53,17 @@
     @endif
 </div><!-- .form-group -->
 
+<div class="form-group{{ $errors->has('concert_id') ? ' has-error' : '' }}">
+    {{ Form::label('concert_id', __('Concert'), ['class' => 'control-label']) }}
+    {{ Form::select('concert_id', $concerts, old('concert_id') ? old('concert_id') : (isset($rehearsal) ? $rehearsal->concert_id : ($app->request->get('concert') ? $app->request->get('concert') : null)), ['class' => 'form-control']) }}
+
+    @if ($errors->has('concert_id'))
+        <span class="help-block text-danger">
+            <strong>{{ $errors->first('concert_id') }}</strong>
+        </span>
+    @endif
+</div><!-- .form-group -->
+
 <div class="form-group">
     {{ Form::button(__('Save Rehearsal'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
 </div>

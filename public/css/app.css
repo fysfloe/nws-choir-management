@@ -10195,7 +10195,8 @@ input.date {
 }
 
 .side-box ul.dates,
-.side-box ul.voices {
+.side-box ul.voices,
+.side-box ul.rehearsals {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -10456,5 +10457,15 @@ ul.breadcrumbs > li a {
 a.dropdown-toggle {
   text-decoration: none;
   color: inherit;
+}
+
+.nav-tabs .nav-item a {
+  color: #149EB5;
+}
+
+.nav-tabs .nav-item a.active {
+  background: #149EB5;
+  color: white;
+  border-color: #c2d4e1;
 }
 
