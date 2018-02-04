@@ -28,7 +28,9 @@ class RehearsalController extends Controller
      */
     public function index()
     {
-        $rehearsals = Rehearsal::where('deleted_at', '=', null)->get();
+        $date = new \DateTime();
+
+        $rehearsals = Rehearsal::where([['deleted_at', '=', null], ['date', '>=', date_format($date, 'Y-m-d')]])->get();
 
         return view('rehearsal.index')->with([
             'rehearsals' => $rehearsals,
@@ -74,7 +76,7 @@ class RehearsalController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Rehearsal  $rehearsal
      * @return \Illuminate\Http\Response
      */
     public function show(Rehearsal $rehearsal)
@@ -88,6 +90,13 @@ class RehearsalController extends Controller
         ]);
     }
 
+    /**
+     * Display the rehearsals participants.
+     *
+     * @param  Request   $request   [description]
+     * @param  Rehearsal $rehearsal [description]
+     * @return [type]               [description]
+     */
     public function participants(Request $request, Rehearsal $rehearsal)
     {
         $this->breadcrumbs->addCrumb($rehearsal->__toString(), $rehearsal);
@@ -165,9 +174,20 @@ class RehearsalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Rehearsal $rehearsal)
     {
-        //
+        $this->breadcrumbs->addCrumb(__('Edit Rehearsal'), null);
+
+        $semesters = Semester::getListForSelect();
+
+        $nullOption = [null => __('--- Please choose ---')];
+        $semesters = $nullOption + $semesters;
+
+        return view('rehearsal.edit')->with([
+            'breadcrumbs' => $this->breadcrumbs,
+            'rehearsal' => $rehearsal,
+            'semesters' => $semesters
+        ]);
     }
 
     /**
@@ -177,9 +197,13 @@ class RehearsalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Rehearsal $rehearsal)
     {
-        //
+        $rehearsalInput = $request->all();
+
+        $rehearsal->update($rehearsalInput);
+
+        return redirect()->route('rehearsal.show', $rehearsal);
     }
 
     /**
@@ -197,20 +221,53 @@ class RehearsalController extends Controller
         return redirect()->back();
     }
 
-    public function accept(Rehearsal $rehearsal)
+    public function accept(Request $request, Rehearsal $rehearsal)
     {
         $user = Auth::user();
 
-        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
+        $date = new \DateTime();
+
+        if ($rehearsal->date >= $date) {
+            $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
+        } else {
+            $request->session()->flash('alert-danger', __('Cannot accept or decline a rehearsal in the past.'));
+        }
 
         return redirect()->back();
     }
 
-    public function decline(Rehearsal $rehearsal)
+    public function decline(Request $request, Rehearsal $rehearsal)
     {
         $user = Auth::user();
 
-        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
+        $date = new \DateTime();
+
+        if ($rehearsal->date >= $date) {
+            $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
+        } else {
+            $request->session()->flash('alert-danger', __('Cannot accept or decline a rehearsal in the past.'));
+        }
+
+        return redirect()->back();
+    }
+
+    public function ajaxConfirm(Request $request, Rehearsal $rehearsal, User $user)
+    {
+        $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
+
+        return response('', 200);
+    }
+
+    public function ajaxExcuse(Request $request, Rehearsal $rehearsal, User $user)
+    {
+        $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
+
+        return response('', 200);
+    }
+
+    public function ajaxSetUnexcused(Request $request, Rehearsal $rehearsal, User $user)
+    {
+        $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
 
         return redirect()->back();
     }

@@ -13,6 +13,8 @@ use App\Services\GetFilteredUsersService;
 
 use Auth;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Http\Requests\StoreUser;
 
 class UserController extends Controller
@@ -161,8 +163,6 @@ class UserController extends Controller
 
     public function export(Request $request)
     {
-        dd('foo');
-
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
@@ -174,5 +174,18 @@ class UserController extends Controller
 
             });
         })->download('csv');
+    }
+
+    public function multiArchive(Request $request)
+    {
+        $users = User::find($request->get('users'));
+
+        foreach ($users as $user) {
+            $user->delete();
+        }
+
+        $request->session()->flash('alert-success', __('Users successfully archived.'));
+
+        return redirect()->back();
     }
 }

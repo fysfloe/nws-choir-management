@@ -17,6 +17,9 @@ class CreateUserRehearsalTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('rehearsal_id')->unsigned();
             $table->boolean('accepted')->nullable();
+            $table->boolean('confirmed')->nullable();
+            $table->boolean('excused')->nullable();
+            $table->string('excuse')->nullable();
             $table->timestamps();
 
             $table->primary(['user_id', 'rehearsal_id']);

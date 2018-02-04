@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
     {{ Form::label('date', __('Date'), ['class' => 'control-label']) }}
-    <input type="date" name="date" id="date" value="{{ old('date') ? old('date') : (isset($rehearsal) ? $rehearsal->date : null) }}" class="form-control">
+    <input type="date" name="date" id="date" value="{{ old('date') ? old('date') : (isset($rehearsal) ? $rehearsal->date->format('Y-m-d') : null) }}" class="form-control">
 
     @if ($errors->has('date'))
         <span class="help-block text-danger">

@@ -122,4 +122,31 @@ class VoiceController extends Controller
 
         return redirect()->back();
     }
+
+    public function showSetMulti(Request $request)
+    {
+        $users = $request->get('users');
+
+        return view('voice.setMulti')->with([
+            'users' => $users,
+            'voices' => Voice::getListForSelect()
+        ]);
+    }
+
+    public function setMulti(Request $request)
+    {
+        $users = json_decode($request->get('users'));
+        $voice_id = $request->get('voice');
+
+        $users = User::find($users);
+
+        foreach ($users as $user) {
+            $user->voice_id = $voice_id;
+            $user->save();
+        }
+
+        $request->session()->flash('alert-success', __('Voice successfully set.'));
+
+        return redirect()->back();
+    }
 }

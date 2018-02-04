@@ -17016,6 +17016,85 @@ $(function () {
             $helpText.hide();
         }
     });
+
+    $('body').on('click', 'a.ajax', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+
+        $this.removeClass($this.data('unclicked-class'));
+        $this.addClass($this.data('clicked-class'));
+        $this.addClass('clicked');
+
+        $this.parents('.btn-group').find('.btn').each(function () {
+            $that = $(this);
+            if (!$this.is($that)) {
+                $that.removeClass($that.data('clicked-class'));
+                $that.removeClass('clicked');
+                $that.addClass($that.data('unclicked-class'));
+            }
+        });
+
+        $.ajax({
+            url: $this.attr('href')
+        }).done(function (data) {});
+    });
+
+    $('body').on('click', 'input[type="checkbox"].check-all', function () {
+        var $listTable = $(this).closest('.list-table');
+        var $checkboxes = $listTable.find('[name="' + $(this).data('controls') + '"]');
+
+        $checkboxes.prop('checked', $(this).prop('checked'));
+        var $dropdown = $listTable.find('.dropdown');
+
+        $dropdown.toggleClass('active');
+
+        updateActionLinks();
+    });
+
+    var toggleListCheckbox = function toggleListCheckbox() {
+        var $listTable = $(this).closest('.list-table');
+        var $checkboxes = $listTable.find('input[name="users[]"]');
+        var checked = false;
+
+        $checkboxes.each(function () {
+            if ($(this).prop('checked')) {
+                checked = true;
+            }
+        });
+
+        var $dropdown = $listTable.find('.dropdown');
+
+        if (checked) {
+            $dropdown.addClass('active');
+        } else {
+            $dropdown.removeClass('active');
+            $('input[type="checkbox"].check-all').prop('checked', false);
+        }
+
+        updateActionLinks();
+    };
+
+    var updateActionLinks = function updateActionLinks() {
+        var $actionLinks = $('.list-actions .dropdown-menu a');
+
+        $actionLinks.each(function () {
+            var href = $(this).data('href');
+            href += '?' + $('input[name="users[]"]').serialize();
+
+            $(this).attr('href', href);
+        });
+    };
+
+    $('body').on('click', 'input[name="users[]"]', toggleListCheckbox);
+
+    $('body').on('click', '.list-table li.row', function (event) {
+        if ($(event.target).is('div')) {
+            var $checkbox = $(this).find('input[type="checkbox"]');
+            $checkbox.prop('checked', !$checkbox.prop('checked'));
+            toggleListCheckbox.bind($checkbox)();
+        }
+    });
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 

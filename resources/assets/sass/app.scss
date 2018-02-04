@@ -46,10 +46,10 @@ $enable-flex: true !default;
         min-height: 100vh;
 
         background: $lightgrey;
-        border-right: 0.05rem solid darken($lightgrey, 5);
+        border-right: $light-border;
 
         .nav-item {
-            border-bottom: 0.05rem solid darken($lightgrey, 5);
+            border-bottom: $light-border;
 
             .nav-link {
                 font-size: 0.8rem;
@@ -186,4 +186,37 @@ ul.breadcrumbs {
     font-size: 0.8em;
     padding: 0.5em;
     font-weight: bold;
+}
+
+.btn-xs {
+    padding: 0.1rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.dropdown-menu {
+    padding: 0;
+    border-radius: 0;
+    margin: 0;
+    border: $light-border;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 0.75rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background: none;
+    border: 0;
+    font-size: 0.8em;
+}
+
+a.dropdown-toggle {
+    text-decoration: none;
+    color: inherit;
 }

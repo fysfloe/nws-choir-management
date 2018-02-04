@@ -10005,9 +10005,39 @@ input.date {
 
 .list-table header {
   font-weight: bold;
-  padding: 0.5rem 0;
-  -webkit-box-shadow: 0 0.2rem 0.2rem -0.1rem #f5f8fa;
-          box-shadow: 0 0.2rem 0.2rem -0.1rem #f5f8fa;
+  -webkit-box-shadow: 0 0.2rem 0.2rem -0.1rem #d3e0e9;
+          box-shadow: 0 0.2rem 0.2rem -0.1rem #d3e0e9;
+}
+
+.list-table header > div {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.list-table header > div.has-checkbox {
+  padding: 0 15px;
+}
+
+.list-table header > div.has-checkbox input[type="checkbox"] {
+  margin: 15px 0;
+}
+
+.list-table header .dropdown {
+  display: none;
+}
+
+.list-table header .dropdown.active {
+  display: inline-block;
+}
+
+.list-table header .dropdown .dropdown-toggle {
+  display: inline-block;
+  padding: 9px 5px;
+}
+
+.list-table header .dropdown .dropdown-toggle:hover,
+.list-table header .dropdown .dropdown-toggle:focus {
+  background: #f5f8fa;
 }
 
 .list-table ul {
@@ -10018,11 +10048,11 @@ input.date {
 
 .list-table ul li {
   padding: 0.5rem 0;
-  border-bottom: 0.1em solid white;
 }
 
 .list-table ul li:hover {
   background: #f5f8fa;
+  cursor: pointer;
 }
 
 .list-table a.list-sort {
@@ -10041,6 +10071,14 @@ input.date {
 .list-table a.list-sort .oi {
   font-size: 0.6rem;
   margin: 0 -0.125rem;
+}
+
+.list-table .btn-group .btn .info-text {
+  display: none;
+}
+
+.list-table .btn-group .btn.clicked .info-text {
+  display: inline;
 }
 
 .no-results {
@@ -10385,5 +10423,38 @@ ul.breadcrumbs > li a {
   font-size: 0.8em;
   padding: 0.5em;
   font-weight: bold;
+}
+
+.btn-xs {
+  padding: 0.1rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
+.dropdown-menu {
+  padding: 0;
+  border-radius: 0;
+  margin: 0;
+  border: 0.05rem solid #e4ecf2;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 0.75rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  font-size: 0.8em;
+}
+
+a.dropdown-toggle {
+  text-decoration: none;
+  color: inherit;
 }
 

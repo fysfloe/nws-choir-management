@@ -11,6 +11,10 @@ use App\Semester;
 
 use App\Http\Requests\StoreConcert;
 
+use App\Services\GetFilteredUsersService;
+
+use Maatwebsite\Excel\Facades\Excel;
+
 use Auth;
 use DB;
 
@@ -148,44 +152,9 @@ class ConcertController extends Controller
     {
         $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
 
-        $sort = $request->get('sort');
+        $filters = $request->all();
 
-        if (!$sort) $sort = 'id';
-
-        $dir = $request->get('dir');
-        $search = $request->get('search');
-        $voices = $request->get('voices');
-
-        $query = "SELECT users.*, voices.name as voiceName "
-            . "FROM users
-            LEFT OUTER JOIN user_concert ON users.id = user_concert.user_id
-            LEFT OUTER JOIN voices ON voices.id = user_concert.voice_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL
-        AND user_concert.concert_id = $concert->id
-        AND user_concert.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = $request->get('age-from');
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = $request->get('age-to');
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND voices.id IN ($voices) ";
-        }
-
-        $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
+        $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
         $activeFilters = [];
         foreach ($request->all() as $key => $val) {
@@ -422,6 +391,34 @@ class ConcertController extends Controller
         return redirect()->route('concert.participants', $concert);
     }
 
+    public function showSetUserVoices(Request $request, Concert $concert)
+    {
+        $users = $request->get('users');
+
+        return view('concert.setUserVoices')->with([
+            'concert' => $concert,
+            'users' => $users,
+            'voices' => Voice::getListForSelect()
+        ]);
+    }
+
+    public function setUserVoices(Request $request, Concert $concert)
+    {
+        $users = json_decode($request->get('users'));
+        $voice_id = $request->get('voice');
+
+        $users = User::find($users);
+
+        foreach ($users as $user) {
+            $concert->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $voice_id]]);
+            $user->voices()->syncWithoutDetaching([$voice_id]);
+        }
+
+        $request->session()->flash('alert-success', __('Voice successfully set.'));
+
+        return redirect()->route('concert.participants', $concert);
+    }
+
     public function showAddUser(Request $request, Concert $concert)
     {
         $concertUsers = $concert->promises()->pluck('id')->toArray();
@@ -450,5 +447,20 @@ class ConcertController extends Controller
         }
 
         return redirect()->route('concert.participants', $concert);
+    }
+
+    public function exportParticipants(Request $request, Concert $concert)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
+
+        Excel::create('user_export', function ($excel) use ($users) {
+            $excel->sheet('users', function($sheet) use ($users) {
+
+                $sheet->fromArray($users);
+
+            });
+        })->download('csv');
     }
 }

@@ -42,9 +42,11 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
         // Route::get('/', 'AdminController@welcome');
-        Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
         Route::get('/users/export', 'UserController@export')->name('users.export');
+        Route::get('/users/multi-archive', 'UserController@multiArchive')->name('users.multiArchive');
+        Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
         // Concerts
+        Route::get('/concert/export-participants/{concert}', 'ConcertController@exportParticipants')->name('concert.exportParticipants');
         Route::get('/concerts/create', 'ConcertController@create')->name('concert.create');
         Route::post('/concerts/store', 'ConcertController@store')->name('concert.store');
         Route::get('/concert/edit/{concert}', 'ConcertController@edit')->name('concert.edit');
@@ -56,22 +58,31 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/concert/{concert}/editVoices', 'ConcertController@editVoices')->name('concert.editVoices');
         Route::get('/concert/{concert}/removeVoice/{voice}', 'ConcertController@removeVoice')->name('concert.removeVoice');
         Route::get('/concert/{concert}/setVoice/{user}', 'ConcertController@showSetUserVoice')->name('concert.showSetUserVoice');
+        Route::get('/concert/{concert}/setVoice', 'ConcertController@showSetUserVoices')->name('concert.showSetUserVoices');
         Route::post('/concert/{concert}/setVoice/{user}', 'ConcertController@setUserVoice')->name('concert.setUserVoice');
+        Route::post('/concert/{concert}/setVoice', 'ConcertController@setUserVoices')->name('concert.setUserVoices');
         Route::get('/concert/{concert}/addUser', 'ConcertController@showAddUser')->name('concert.showAddUser');
         Route::post('/concert/{concert}/addUser', 'ConcertController@addUser')->name('concert.addUser');
         // Rehearsals
         Route::get('/rehearsals/create', 'RehearsalController@create')->name('rehearsal.create');
         Route::post('/rehearsals/store', 'RehearsalController@store')->name('rehearsal.store');
         Route::get('/rehearsal/edit/{rehearsal}', 'RehearsalController@edit')->name('rehearsal.edit');
-        Route::post('/rehearsal/update', 'RehearsalController@update')->name('rehearsal.update');
+        Route::post('/rehearsal/update/{rehearsal}', 'RehearsalController@update')->name('rehearsal.update');
         Route::delete('/rehearsal/delete', 'RehearsalController@destroy')->name('rehearsal.delete');
         Route::get('/rehearsal/{rehearsal}/addUser', 'RehearsalController@showAddUser')->name('rehearsal.showAddUser');
         Route::post('/rehearsal/{rehearsal}/addUser', 'RehearsalController@addUser')->name('rehearsal.addUser');
+        Route::get('/rehearsal/{rehearsal}/ajaxConfirm/{user}', 'RehearsalController@ajaxConfirm')->name('rehearsal.confirm');
+        Route::get('/rehearsal/{rehearsal}/ajaxExcuse/{user}', 'RehearsalController@ajaxExcuse')->name('rehearsal.excuse');
+        Route::get('/rehearsal/{rehearsal}/ajaxSetUnexcused/{user}', 'RehearsalController@ajaxSetUnexcused')->name('rehearsal.setUnexcused');
         // Voices
         Route::resource('/voices', 'VoiceController');
+        Route::get('/voice/set', 'VoiceController@showSetMulti')->name('voice.showSetMulti');
+        Route::post('/voice/set', 'VoiceController@setMulti')->name('voice.setMulti');
         // Roles
         Route::get('/role/set/{user}', 'RoleController@showSet')->name('role.showSet');
-        Route::post('/role/set', 'RoleController@set')->name('role.set');
+        Route::post('/role/set', 'RoleController@setMulti')->name('role.set');
+        Route::get('/role/set', 'RoleController@showSetMulti')->name('role.showSetMulti');
+        Route::post('/role/set', 'RoleController@setMulti')->name('role.setMulti');
         // Semesters
         Route::resource('/semesters', 'SemesterController');
         Route::get('/semesters/{semester}/addUser', 'SemesterController@showAddUser')->name('semester.showAddUser');

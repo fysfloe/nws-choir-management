@@ -51,4 +51,45 @@ class GetFilteredUsersService {
 
         return $users;
     }
+
+    public function concertParticipants($concert, $filters, $search, $sort = null, $dir)
+    {
+        if (!$sort) $sort = 'id';
+
+        $voices = isset($filters['voices']) ? $filters['voices'] : null;
+        $concerts = isset($filters['concerts']) ? $filters['concerts'] : null;
+
+        $query = "SELECT users.*, voices.name as voiceName "
+            . "FROM users
+            LEFT OUTER JOIN user_concert ON users.id = user_concert.user_id
+            LEFT OUTER JOIN voices ON voices.id = user_concert.voice_id ";
+
+        $query .= "WHERE users.deleted_at IS NULL
+        AND user_concert.concert_id = $concert->id
+        AND user_concert.accepted = 1
+        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+
+        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
+        if ($ageFrom) {
+            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
+            $query .= "AND users.birthdate < '$minDate' ";
+        }
+
+        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
+        if ($ageTo) {
+            $ageTo += 1;
+            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
+            $query .= "AND users.birthdate >= '$maxDate' ";
+        }
+        if ($voices !== null && count($voices) > 0) {
+            $voices = implode(',', $voices);
+            $query .= "AND voices.id IN ($voices) ";
+        }
+
+        $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";
+
+        $users = User::fromQuery($query);
+
+        return $users;
+    }
 }

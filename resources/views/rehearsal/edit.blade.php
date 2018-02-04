@@ -6,7 +6,7 @@
         <h2><span class="light">{{ __('Edit') }}:</span> {{ date_format(date_create($rehearsal->date), 'd.m.Y') }}</h2>
     </header>
 
-    {{ Form::model($rehearsal, ['route' => 'rehearsal.update']) }}
+    {{ Form::model($rehearsal, ['route' => ['rehearsal.update', $rehearsal]]) }}
         @include('rehearsal._form')
     {{ Form::close() }}
 

@@ -62,6 +62,7 @@
     "No voices set": "Keine Stimmen gesetzt",
     "Set voice for": "Stimme setzen für",
     "You are setting the voice for this user for this concert. To set the primary voice, edit the user in the main users list.": "Die Stimme wird für diesen Benutzer in diesem Konzert gesetzt. Die primäre Stimme kann in der allgemeinen Benutzerliste geändert werden.",
+    "You are setting the voices for the selected users for this concert. To set the primary voice, edit the users in the main users list.": "Die Stimme wird für diese Benutzer in diesem Konzert gesetzt. Die primäre Stimme kann in der allgemeinen Benutzerliste geändert werden.",
     "No description added.": "Keine Beschreibung hinzugefügt.",
     "Date(s)": "Termin(e)",
     "Dashboard": "Dashboard",
@@ -161,5 +162,14 @@
     "Role successfully set.": "Rolle erfolgreich gesetzt.",
     "Archive": "Archivieren",
     "Do you really want to archive this user?": "Diesen Benutzer wirklich archivieren?",
-    "User successfully archived.": "Benutzer erfolgreich archiviert."
+    "User successfully archived.": "Benutzer erfolgreich archiviert.",
+    "Start Time": "Startzeit",
+    "End Time": "Endzeit",
+    "Place": "Ort",
+    "Time": "Zeit",
+    "Cannot accept or decline a rehearsal in the past.": "Diese Probe ist bereits vorbei. Du kannst daher nicht zu- oder absagen.",
+    "Present": "Anwesend",
+    "Excused": "Entschuldigt",
+    "Unexcused": "Unentschuldigt",
+    "Do you really want to archive these users?": "Diese Benutzer wirklich archivieren?"
 }

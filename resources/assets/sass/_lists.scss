@@ -6,8 +6,37 @@
 
     header {
         font-weight: bold;
-        padding: 0.5rem 0;
-        box-shadow: 0 0.2rem 0.2rem -0.1rem $lightgrey;
+        box-shadow: 0 0.2rem 0.2rem -0.1rem darken($lightgrey, 10);
+
+        > div {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+
+            &.has-checkbox {
+                padding: 0 15px;
+
+                input[type="checkbox"] {
+                    margin: 15px 0;
+                }
+            }
+        }
+
+        .dropdown {
+            display: none;
+
+            &.active {
+                display: inline-block;
+            }
+
+            .dropdown-toggle {
+                display: inline-block;
+                padding: 9px 5px;
+
+                &:hover, &:focus {
+                    background: $lightgrey;
+                }
+            }
+        }
     }
 
     ul {
@@ -17,10 +46,10 @@
 
         li {
             padding: 0.5rem 0;
-            border-bottom: 0.1em solid lighten($lightgrey, 15);
 
             &:hover {
                 background: $lightgrey;
+                cursor: pointer;
             }
         }
     }
@@ -40,6 +69,20 @@
         .oi {
             font-size: 0.6rem;
             margin: 0 -0.125rem;
+        }
+    }
+
+    .btn-group {
+        .btn {
+            .info-text {
+                display: none;
+            }
+
+            &.clicked {
+                .info-text {
+                    display: inline;
+                }
+            }
         }
     }
 }
