@@ -280,6 +280,12 @@ class SemesterController extends Controller
 
         $semester->participants()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
+        if (count($semester->projects) > 0) {
+            foreach ($semester->projects as $project) {
+                $project->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice ? $user->voice->id : null]]);
+            }
+        }
+
         if (count($semester->concerts) > 0) {
             foreach ($semester->concerts as $concert) {
                 $concert->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice ? $user->voice->id : null]]);

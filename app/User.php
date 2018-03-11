@@ -46,6 +46,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the concerts for the user.
+     */
+    public function projects()
+    {
+        return $this->belongsToMany('App\Project');
+    }
+
+    /**
      * Get the rehearsals for the user.
      */
     public function rehearsals()
@@ -70,11 +78,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the concerts the user has created.
+     * Get the rehearsals the user has created.
      */
     public function rehearsalsCreated()
     {
         return $this->hasMany('App\Rehearsal', 'created_by');
+    }
+
+    /**
+     * Get the projects the user has created.
+     */
+    public function projectsCreated()
+    {
+        return $this->hasMany('App\Project', 'created_by');
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Concert;
 use App\User;
 use App\Voice;
 use App\Semester;
+use App\Project;
 
 use App\Http\Requests\StoreConcert;
 
@@ -36,20 +37,20 @@ class ConcertController extends Controller
     {
         $sort = $request->get('sort');
 
-        if (!$sort) $sort = 'nextDate';
+        if (!$sort) $sort = 'date';
 
         $dir = $request->get('dir');
         $search = $request->get('search');
 
-        $query = "SELECT concerts.*, MIN(concert_dates.date) AS nextDate "
-            . "FROM concerts LEFT JOIN concert_dates ON concerts.id = concert_dates.concert_id ";
+        $query = "SELECT concerts.* "
+            . "FROM concerts ";
 
         $query .= "WHERE concerts.deleted_at IS NULL AND concerts.title LIKE '%$search%' ";
 
         if ($request->get('show') === 'old') {
-            $query .= "AND concert_dates.date < NOW() ";
+            $query .= "AND concerts.date < NOW() ";
         } else if ($request->get('show') === 'new' || !$request->get('show')) {
-            $query .= "AND concert_dates.date >= NOW() ";
+            $query .= "AND concerts.date >= NOW() ";
         }
 
         $query .= "GROUP BY concerts.id ORDER BY $sort $dir";
@@ -79,13 +80,16 @@ class ConcertController extends Controller
 
         $voices = Voice::getListForSelect();
         $semesters = Semester::getListForSelect();
+        $projects = Project::getListForSelect();
 
         $nullOption = [null => __('--- Please choose ---')];
         $semesters = $nullOption + $semesters;
+        $projects = $nullOption + $projects;
 
         return view('concert.create')->with([
             'voices' => $voices,
             'semesters' => $semesters,
+            'projects' => $projects,
             'breadcrumbs' => $this->breadcrumbs
         ]);
     }
@@ -99,20 +103,12 @@ class ConcertController extends Controller
     public function store(StoreConcert $request)
     {
         $concert = $request->all();
-        $dates = $concert['dates'];
         $voices = $concert['voices'];
         $voiceNumbers = $concert['voiceNumbers'];
 
         $concert['slug'] = str_slug($concert['title'], '-');
 
         $concert = Auth::user()->concertsCreated()->create($concert);
-
-        foreach ($dates as $date) {
-            if ($date !== null) {
-                $date = ['date' => $date];
-                $concert->dates()->create($date);
-            }
-        }
 
         foreach ($voices as $key => $voice) {
             if ($voice !== null && $voiceNumbers[$key] !== null) {
@@ -208,13 +204,16 @@ class ConcertController extends Controller
 
         $semesters = Semester::getListForSelect();
         $voices = Voice::getListForSelect();
+        $projects = Project::getListForSelect();
 
         $nullOption = [null => __('--- Please choose ---')];
         $semesters = $nullOption + $semesters;
+        $projects = $nullOption + $projects;
 
         return view('concert.edit')->with([
             'concert' => $concert,
             'semesters' => $semesters,
+            'projects' => $projects,
             'voices' => $voices,
             'breadcrumbs' => $this->breadcrumbs
         ]);
@@ -231,20 +230,12 @@ class ConcertController extends Controller
     {
         $concert = Concert::find($id);
         $input = $request->all();
-        $dates = $input['dates'];
         $voices = $concert['voices'];
         $voiceNumbers = $concert['voiceNumbers'];
 
         $input['slug'] = str_slug($input['title'], '-');
 
         $concert = $concert->update($input);
-
-        foreach ($dates as $date) {
-            if ($date !== null) {
-                $date = ['date' => $date];
-                $concert->dates()->syncWithoutDetaching($date);
-            }
-        }
 
         foreach ($voices as $key => $voice) {
             if ($voice !== null && $voiceNumbers[$key] !== null) {
@@ -268,25 +259,6 @@ class ConcertController extends Controller
         $concert->delete();
 
         return redirect()->back();
-    }
-
-    public function addDate(Concert $concert)
-    {
-        return view('concert.addDate')->with(['concert' => $concert]);
-    }
-
-    public function saveDate(Request $request, Concert $concert)
-    {
-        $dates = $request->get('dates');
-
-        foreach ($dates as $date) {
-            if ($date !== null) {
-                $date = ['date' => $date];
-                $concert->dates()->create($date);
-            }
-        }
-
-        return redirect('concerts');
     }
 
     public function accept(Request $request, Concert $concert)

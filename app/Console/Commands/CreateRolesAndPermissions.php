@@ -114,6 +114,17 @@ class CreateRolesAndPermissions extends Command
             $admin->attachPermission($manageSemesters);
         }
 
+        // Create the manageProjects permission.
+        if (!Permission::where('name', '=', 'manageProjects')->first()) {
+            $manageProjects = new Permission();
+            $manageProjects->name = 'manageProjects';
+            $manageProjects->display_name = 'Manage Projects';
+            $manageProjects->description = 'Create, edit and delete projects.';
+            $manageProjects->save();
+
+            $admin->attachPermission($manageProjects);
+        }
+
         $this->info('Created roles and permissions!');
     }
 }

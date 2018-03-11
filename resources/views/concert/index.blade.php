@@ -36,10 +36,10 @@
                 </div>
                 <div class="col-md-3">
                     {{ __('Date') }}
-                    <a class="list-sort {{ app('request')->input('sort') === 'nextDate' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('concerts', ['sort' => 'nextDate', 'dir' => 'ASC']) }}">
+                    <a class="list-sort {{ app('request')->input('sort') === 'date' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('concerts', ['sort' => 'date', 'dir' => 'ASC']) }}">
                         <span class="oi oi-caret-top"></span>
                     </a>
-                    <a class="list-sort {{ app('request')->input('sort') === 'nextDate' && app('request')->input('dir') === 'DESC' ? 'active' : '' }}" href="{{ route('concerts', ['sort' => 'nextDate', 'dir' => 'DESC']) }}">
+                    <a class="list-sort {{ app('request')->input('sort') === 'date' && app('request')->input('dir') === 'DESC' ? 'active' : '' }}" href="{{ route('concerts', ['sort' => 'date', 'dir' => 'DESC']) }}">
                         <span class="oi oi-caret-bottom"></span>
                     </a>
                 </div>
@@ -62,16 +62,10 @@
                         </div>
                         <div class="col-md-3">
                             <small>
-                                @if (count($concert->dates))
-                                    <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->nextDate), 'd.m.Y') }}&nbsp;
-                                    <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->nextDate), 'H:i') }}
-                                @else
-                                    <span class="text-muted">({{ __('No dates specified') }})</span>
-                                @endif
-                                @if (Auth::user()->can('manageConcerts'))
-                                    <a href="{{ route('concert.addDate', $concert) }}" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
-                                        <span class="oi oi-plus" data-toggle="tooltip" title="{{ __('Add date') }}" aria-hidden="true"></span>
-                                    </a>
+                                <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
+                                <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
+                                @if ($concert->end_time)
+                                    – {{ date_format(date_create($concert->end_time), 'H:i') }}
                                 @endif
                             </small>
                         </div>

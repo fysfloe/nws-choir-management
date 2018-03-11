@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col">
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-            {{ Form::label('title', __('Concert title'), ['class' => 'control-label']) }}
+            {{ Form::label('title', __('Project title'), ['class' => 'control-label']) }}
             {{ Form::text('title', old('title'), ['class' => 'form-control']) }}
 
             @if ($errors->has('title'))
@@ -32,58 +32,9 @@
                 </span>
             @endif
         </div><!-- .form-group -->
-
-        <div class="form-group{{ $errors->has('project_id') ? ' has-error' : '' }}">
-            {{ Form::label('project_id', __('Project'), ['class' => 'control-label']) }}
-            {{ Form::select('project_id', $projects, old('project_id') ? old('project_id') : ($app->request->get('project') ? $app->request->get('project') : null), ['class' => 'form-control']) }}
-
-            @if ($errors->has('project_id'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('project_id') }}</strong>
-                </span>
-            @endif
-        </div><!-- .form-group -->
     </div><!-- .col -->
 
     <div class="col side-box">
-        <h3>
-            <span class="oi oi-calendar"></span>
-            {{ __('Date') }}
-        </h3>
-
-        <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
-            {{ Form::label('date', __('Date'), ['class' => 'control-label']) }}
-            <input type="date" name="date" id="date" value="{{ old('date') ? old('date') : (isset($concert) ? date_format(date_create($concert->date), 'Y-m-d') : null) }}" class="form-control">
-
-            @if ($errors->has('date'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('date') }}</strong>
-                </span>
-            @endif
-        </div>
-
-        <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
-            {{ Form::label('start_time', __('Start Time'), ['class' => 'control-label']) }}
-            <input type="time" name="start_time" id="start_time" value="{{ old('start_time') ? old('start_time') : (isset($concert) ? $concert->start_time : null) }}" class="form-control">
-
-            @if ($errors->has('start_time'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('start_time') }}</strong>
-                </span>
-            @endif
-        </div>
-
-        <div class="form-group{{ $errors->has('end_time') ? ' has-error' : '' }}">
-            {{ Form::label('end_time', __('End Time'), ['class' => 'control-label']) }}
-            <input type="time" name="end_time" id="end_time" value="{{ old('end_time') ? old('end_time') : (isset($concert) ? $concert->end_time : null) }}" class="form-control">
-
-            @if ($errors->has('end_time'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('end_time') }}</strong>
-                </span>
-            @endif
-        </div>
-
         <h3>
             <span class="oi oi-pulse"></span>
             {{ __('Voices') }}
@@ -111,5 +62,5 @@
 </div><!-- .row -->
 
 <div class="form-group">
-    {{ Form::button(__('Save Concert'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
+    {{ Form::button(__('Save Project'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
 </div>

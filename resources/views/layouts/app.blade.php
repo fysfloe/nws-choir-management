@@ -76,6 +76,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('projects') }}">
+                                <span class="oi oi-project"></span>&nbsp;
+                                {{ __('Projects') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('concerts') }}">
                                 <span class="oi oi-musical-note"></span>&nbsp;
                                 {{ __('Concerts') }}

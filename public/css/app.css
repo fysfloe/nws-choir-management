@@ -10202,6 +10202,12 @@ input.date {
   list-style: none;
 }
 
+ul.concerts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .edit-voices > small {
   display: block;
 }

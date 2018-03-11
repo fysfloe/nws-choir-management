@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreConcert extends FormRequest
+class StoreProject extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreConcert extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('manageConcerts');
+        return $this->user()->can('manageProjects');
     }
 
     /**
@@ -24,9 +24,7 @@ class StoreConcert extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'date' => 'required',
-            'start_time' => 'required'
+            'title' => 'required|max:255'
         ];
     }
 }

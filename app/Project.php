@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Concert extends Model
+class Project extends Model
 {
     use SoftDeletes;
 
@@ -22,7 +22,7 @@ class Concert extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'slug', 'date', 'start_time', 'end_time', 'created_by', 'semester_id', 'project_id'
+        'title', 'description', 'slug', 'created_by', 'semester_id'
     ];
 
     /**
@@ -36,42 +36,44 @@ class Concert extends Model
     }
 
     /**
-     * Get the users for the concert.
+     * Get the users for the project.
      */
     public function participants()
     {
-        return $this->belongsToMany('App\User', 'user_concert')
+        return $this->belongsToMany('App\User', 'user_project')
             ->withPivot('accepted', 'voice_id')
             ->withTimestamps();
     }
 
     /**
-     * Get the user that created the concert.
+     * Get the user that created the project.
      */
     public function creator()
     {
         return $this->belongsTo('App\User', 'created_by');
     }
 
-    /**
-     * Get the pieces for the concert.
-     */
-    public function pieces()
-    {
-        return $this->hasMany('App\Piece');
-    }
-
     public function promises()
     {
-        return $this->belongsToMany('App\User', 'user_concert')
+        return $this->belongsToMany('App\User', 'user_project')
             ->withPivot('accepted', 'voice_id')
             ->wherePivot('accepted', true);
     }
 
     public function denials()
     {
-        return $this->belongsToMany('App\User', 'user_concert')
+        return $this->belongsToMany('App\User', 'user_project')
             ->wherePivot('accepted', false);
+    }
+
+    public function rehearsals()
+    {
+        return $this->hasMany('App\Rehearsal');
+    }
+
+    public function concerts()
+    {
+        return $this->hasMany('App\Concert');
     }
 
     public function voices()
@@ -86,11 +88,6 @@ class Concert extends Model
         return $this->promises()->wherePivot('voice_id', $voice_id)->count();
     }
 
-    public function project()
-    {
-        return $this->belongsTo('App\Project');
-    }
-
     public function semester()
     {
         return $this->belongsTo('App\Semester');
@@ -98,12 +95,12 @@ class Concert extends Model
 
     public static function getListForSelect()
     {
-        $concerts = [];
+        $projects = [];
 
-        foreach (self::where('deleted_at', null)->get() as $concert) {
-            $concerts[$concert->id] = $concert->title;
+        foreach (self::where('deleted_at', null)->get() as $project) {
+            $projects[$project->id] = $project->title;
         }
 
-        return $concerts;
+        return $projects;
     }
 }

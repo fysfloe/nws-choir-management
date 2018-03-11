@@ -25,6 +25,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/concert/{concert}/voices', 'ConcertController@voices')->name('concert.voices');
     Route::get('/concert/accept/{concert}', 'ConcertController@accept')->name('concert.accept');
     Route::get('/concert/decline/{concert}', 'ConcertController@decline')->name('concert.decline');
+
+    Route::get('/projects', 'ProjectController@index')->name('projects');
+    Route::get('/project/{project}', 'ProjectController@show')->name('project.show');
+    Route::get('/project/{project}/participants', 'ProjectController@participants')->name('project.participants');
+    Route::get('/project/{project}/voices', 'ProjectController@voices')->name('project.voices');
+    Route::get('/project/accept/{project}', 'ProjectController@accept')->name('project.accept');
+    Route::get('/project/decline/{project}', 'ProjectController@decline')->name('project.decline');
+
     Route::get('/rehearsals', 'RehearsalController@index')->name('rehearsals');
     Route::get('/rehearsal/{rehearsal}', 'RehearsalController@show')->name('rehearsal.show');
     Route::get('/rehearsal/{rehearsal}/participants', 'RehearsalController@participants')->name('rehearsal.participants');
@@ -35,7 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/semester/accept/{semester}', 'SemesterController@accept')->name('semester.accept');
     Route::get('/semester/decline/{semester}', 'SemesterController@decline')->name('semester.decline');
 
-    Route::get('/profile/edit/{user}', 'ProfileController@edit')->name('profile.edit');
+    Route::get('/profile/edit/{user?}', 'ProfileController@edit')->name('profile.edit');
     Route::post('/profile/update/{user}', 'ProfileController@update')->name('profile.update');
     Route::get('/profile/changePassword', 'ProfileController@changePassword')->name('profile.changePassword');
     Route::post('/profile/updatePassword', 'ProfileController@updatePassword')->name('profile.updatePassword');
@@ -63,6 +71,22 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/concert/{concert}/setVoice', 'ConcertController@setUserVoices')->name('concert.setUserVoices');
         Route::get('/concert/{concert}/addUser', 'ConcertController@showAddUser')->name('concert.showAddUser');
         Route::post('/concert/{concert}/addUser', 'ConcertController@addUser')->name('concert.addUser');
+        // Projects
+        Route::get('/project/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
+        Route::get('/projects/create', 'ProjectController@create')->name('project.create');
+        Route::post('/projects/store', 'ProjectController@store')->name('project.store');
+        Route::get('/project/edit/{project}', 'ProjectController@edit')->name('project.edit');
+        Route::put('/project/update/{project}', 'ProjectController@update')->name('project.update');
+        Route::delete('/project/delete/{project}', 'ProjectController@destroy')->name('project.delete');
+        Route::post('/project/{project}/saveVoices', 'ProjectController@saveVoices')->name('project.saveVoices');
+        Route::get('/project/{project}/editVoices', 'ProjectController@editVoices')->name('project.editVoices');
+        Route::get('/project/{project}/removeVoice/{voice}', 'ProjectController@removeVoice')->name('project.removeVoice');
+        Route::get('/project/{project}/setVoice/{user}', 'ProjectController@showSetUserVoice')->name('project.showSetUserVoice');
+        Route::get('/project/{project}/setVoice', 'ProjectController@showSetUserVoices')->name('project.showSetUserVoices');
+        Route::post('/project/{project}/setVoice/{user}', 'ProjectController@setUserVoice')->name('project.setUserVoice');
+        Route::post('/project/{project}/setVoice', 'ProjectController@setUserVoices')->name('project.setUserVoices');
+        Route::get('/project/{project}/addUser', 'ProjectController@showAddUser')->name('project.showAddUser');
+        Route::post('/project/{project}/addUser', 'ProjectController@addUser')->name('project.addUser');
         // Rehearsals
         Route::get('/rehearsals/create', 'RehearsalController@create')->name('rehearsal.create');
         Route::post('/rehearsals/store', 'RehearsalController@store')->name('rehearsal.store');

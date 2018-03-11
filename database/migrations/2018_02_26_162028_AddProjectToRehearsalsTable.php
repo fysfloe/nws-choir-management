@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddConcertToRehearsalsTable extends Migration
+class AddProjectToRehearsalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,11 @@ class AddConcertToRehearsalsTable extends Migration
     public function up()
     {
         Schema::table('rehearsals', function (Blueprint $table) {
-            $table->integer('concert_id')->unsigned()->nullable();
+            $table->integer('project_id')->unsigned()->nullable();
         });
 
         Schema::table('rehearsals', function (Blueprint $table) {
-            $table->foreign('concert_id')->references('id')->on('concerts')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('set null');
         });
     }
 
@@ -30,11 +30,11 @@ class AddConcertToRehearsalsTable extends Migration
     public function down()
     {
         Schema::table('rehearsals', function (Blueprint $table) {
-            $table->dropForeign('rehearsals_concert_id_foreign');
+            $table->dropForeign('rehearsals_project_id_foreign');
         });
 
         Schema::table('rehearsals', function (Blueprint $table) {
-            $table->dropColumn('concert_id');
+            $table->dropColumn('project_id');
         });
     }
 }

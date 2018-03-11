@@ -16,7 +16,7 @@ class Rehearsal extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'concert_id'
+        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'project_id'
     ];
 
     /**
@@ -105,9 +105,9 @@ class Rehearsal extends Model
         return $this->belongsTo('App\Semester');
     }
 
-    public function concert()
+    public function project()
     {
-        return $this->belongsTo('App\Concert');
+        return $this->belongsTo('App\Project');
     }
 
     public function __toString()

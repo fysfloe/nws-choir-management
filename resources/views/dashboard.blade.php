@@ -30,6 +30,40 @@
                 <div class="row">
                     <div class="col">
                         <h4 class="margin-top">
+                            <span class="oi oi-project"></span>&nbsp;
+                            {{ __('Projects') }}
+                            <small>(<a href="{{ route('projects') }}">{{ __('Show all') }}</a>)</small>
+                        </h4>
+                        @if (count($currentSemester->projects) > 0)
+                            <ul class="concerts">
+                                @foreach ($currentSemester->projects as $project)
+                                    <li>
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="accepted-sign oi oi-media-record {{ $project->promises->contains(Auth::user()->id) ? 'text-success' : ($project->denials->contains(Auth::user()->id) ? 'text-danger' : 'text-muted') }}"
+                                                    data-toggle="tooltip"
+                                                    title="{{ $project->promises->contains(Auth::user()->id) ? __('You are attending!') : ($project->denials->contains(Auth::user()->id) ? __('You are not attending.') : __('You didn\'t tell us yet, if you are attending this project.')) }}"
+                                                ></span>&nbsp;
+                                                <a href="{{ route('project.show', $project) }}">{{ $project->title }}</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <small class="text-muted">{{ __('No projects this semester.') }}</small>
+                        @endif
+
+                        @permission('manageProjects')
+                        <div class="margin-top">
+                            <a class="btn btn-default btn-sm" href="{{ route('project.create', ['semester' => $currentSemester]) }}">{{ __('Add a project') }}</a>
+                        </div>
+                        @endpermission
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h4 class="margin-top">
                             <span class="oi oi-musical-note"></span>&nbsp;
                             {{ __('Concerts') }}
                             <small>(<a href="{{ route('concerts') }}">{{ __('Show all') }}</a>)</small>
@@ -47,9 +81,10 @@
                                                 <a href="{{ route('concert.show', $concert) }}">{{ $concert->title }}</a>
                                             </div>
                                             <div class="col">
-                                                @if ($concert->nextDate())
-                                                    <small>{!! $concert->nextDate()->__toString() !!}</small>
-                                                @endif
+                                                <small>
+                                                    <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
+                                                    <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
+                                                </small>
                                             </div>
                                         </div>
                                     </li>

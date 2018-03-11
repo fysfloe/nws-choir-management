@@ -26,6 +26,14 @@ class Semester extends Model
     ];
 
     /**
+     * Get the semesters projects.
+     */
+    public function projects()
+    {
+        return $this->hasMany('App\Project');
+    }
+
+    /**
      * Get the semesters concerts.
      */
     public function concerts()

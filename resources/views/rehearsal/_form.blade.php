@@ -53,13 +53,13 @@
     @endif
 </div><!-- .form-group -->
 
-<div class="form-group{{ $errors->has('concert_id') ? ' has-error' : '' }}">
-    {{ Form::label('concert_id', __('Concert'), ['class' => 'control-label']) }}
-    {{ Form::select('concert_id', $concerts, old('concert_id') ? old('concert_id') : (isset($rehearsal) ? $rehearsal->concert_id : ($app->request->get('concert') ? $app->request->get('concert') : null)), ['class' => 'form-control']) }}
+<div class="form-group{{ $errors->has('project_id') ? ' has-error' : '' }}">
+    {{ Form::label('project_id', __('Project'), ['class' => 'control-label']) }}
+    {{ Form::select('project_id', $concerts, old('project_id') ? old('project_id') : (isset($rehearsal) ? $rehearsal->project_id : ($app->request->get('project') ? $app->request->get('project') : null)), ['class' => 'form-control']) }}
 
-    @if ($errors->has('concert_id'))
+    @if ($errors->has('project_id'))
         <span class="help-block text-danger">
-            <strong>{{ $errors->first('concert_id') }}</strong>
+            <strong>{{ $errors->first('project_id') }}</strong>
         </span>
     @endif
 </div><!-- .form-group -->

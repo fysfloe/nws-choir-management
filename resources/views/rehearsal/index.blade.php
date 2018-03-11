@@ -21,7 +21,7 @@
                         {{ __('Created by') }}
                     @endpermission
                 </div>
-                <div class="col-md-2">{{ __('Concert') }}</div>
+                <div class="col-md-2">{{ __('Project') }}</div>
                 <div class="col-md-1">&nbsp;</div>
                 <div class="col-md-1">&nbsp;</div>
             </header>
@@ -44,8 +44,8 @@
                             @endpermission
                         </div>
                         <div class="col-md-2">
-                            @if ($rehearsal->concert)
-                                {{ $rehearsal->concert->title }}
+                            @if ($rehearsal->project)
+                                {{ $rehearsal->project->title }}
                             @else
                                 -
                             @endif

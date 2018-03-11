@@ -17,19 +17,21 @@
             </div>
 
             <div class="col-4 side-box">
-                <h3>{{ __('Date(s)') }}</h3>
-                <ul class="dates">
-                    @foreach ($concert->dates as $date)
-                        <li>
-                            {!! $date->__toString() !!}
-                        </li>
-                    @endforeach
-                </ul>
+                @if ($concert->project)
+                    <h3>{{ __('Project') }}</h3>
+                    <a href="{{ route('project.show', $concert->project) }}">{{ $concert->project->title }}</a>
+                @endif
+
+                <h3 class="{{ $concert->project ? 'mt-4' : '' }}">{{ __('Date') }}</h3>
+                <div>
+                    <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
+                    <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}@if ($concert->end_time)–{{ date_format(date_create($concert->end_time), 'H:i') }}@endif
+                </div>
 
                 <h3 class="mt-4">{{ __('Rehearsals') }}</h3>
-                @if (count($concert->rehearsals) > 0)
+                @if ($concert->project && count($concert->project->rehearsals) > 0)
                     <ul class="rehearsals">
-                    @foreach ($concert->rehearsals as $rehearsal)
+                    @foreach ($concert->project->rehearsals as $rehearsal)
                         <li>
                             {!! $rehearsal->__toString() !!}&nbsp;
                             <a href="{{ route('rehearsal.show', $rehearsal) }}">
@@ -39,7 +41,7 @@
                     @endforeach
                     </ul>
                 @else
-                    <small class="text-muted">{{ __('No rehearsals for this concert found.') }}</small>
+                    <small class="text-muted">{{ __('No rehearsals found that belong to the projects concert.') }}</small>
                 @endif
 
                 @permission('manageRehearsals')
