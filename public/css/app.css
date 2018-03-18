@@ -10278,6 +10278,16 @@ ul.concerts {
   padding: 0 1rem;
 }
 
+#app .navbar .dropdown-item {
+  padding: 0;
+}
+
+#app .navbar .dropdown-item a {
+  width: 100%;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+}
+
 .wrapper {
   display: -webkit-box;
   display: -ms-flexbox;

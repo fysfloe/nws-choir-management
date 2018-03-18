@@ -34,6 +34,16 @@ $enable-flex: true !default;
     .navbar {
         background: $brand-primary;
         padding: 0 1rem;
+
+        .dropdown-item {
+            padding: 0;
+
+            a {
+                width: 100%;
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+            }
+        }
     }
 }
 

@@ -17,7 +17,7 @@
             </div>
 
             <div class="col-4 side-box">
-                <h3>{{ __('Concerts') }}</h3>
+                <h3>{{ __('Concerts') }} <span class="badge badge-pill badge-secondary">{{ count($project->concerts) }}</span></h3>
                 @if (count($project->concerts) > 0)
                     <ul class="concerts">
                     @foreach ($project->concerts as $concert)
@@ -40,7 +40,7 @@
                 </a>
                 @endpermission
 
-                <h3 class="mt-4">{{ __('Rehearsals') }}</h3>
+                <h3 class="mt-4">{{ __('Rehearsals') }} <span class="badge badge-pill badge-secondary">{{ count($project->rehearsals) }}</span></h3>
                 @if (count($project->rehearsals) > 0)
                     <ul class="rehearsals">
                     @foreach ($project->rehearsals as $rehearsal)

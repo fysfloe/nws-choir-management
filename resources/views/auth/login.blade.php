@@ -7,22 +7,36 @@
     <form method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
 
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label for="email" class="control-label">E-Mail Address</label>
+        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
+            <label for="firstname" class="control-label">{{ __('First Name') }}</label>
 
             <div>
-                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
 
-                @if ($errors->has('email'))
+                @if ($errors->has('firstname'))
                     <span class="help-block text-danger">
-                        <strong>{{ $errors->first('email') }}</strong>
+                        <strong>{{ $errors->first('firstname') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="surname" class="control-label">{{ __('Surname') }}</label>
+
+            <div>
+                <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required>
+
+                @if ($errors->has('surname'))
+                    <span class="help-block text-danger">
+                        <strong>{{ $errors->first('surname') }}</strong>
                     </span>
                 @endif
             </div>
         </div>
 
         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <label for="password" class="control-label">Password</label>
+            <label for="password" class="control-label">{{ __('Password') }}</label>
 
             <div>
                 <input id="password" type="password" class="form-control" name="password" required>

@@ -175,5 +175,10 @@
     "Do you really want to archive these users?": "Diese Benutzer wirklich archivieren?",
     "Add one or more voices and the number of singers needed.": "Eine oder mehrere Stimmen und die Anzahl der benötigten SängerInnen hinzufügen.",
     "No voices set.": "Keine Stimmen hinzugefügt.",
-    "No rehearsals for this concert found.": "Keine Proben für dieses Konzert gefunden."
+    "No rehearsals for this concert found.": "Keine Proben für dieses Konzert gefunden.",
+    "There is some information missing about you. Please fill it out here:": "Uns fehlen noch ein paar Informationen über dich. Bitte fülle sie hier aus:",
+    "Projects": "Projekte",
+    "Project": "Projekt",
+    "You need to set your primary voice before you can participate in a project!": "Du musst deine Stimme angeben, bevor du bei einem Projekt zusagen kannst!",
+    "No projects this semester.": "Keine Projekte in diesem Semester."
 }

@@ -254,6 +254,12 @@ class ProjectController extends Controller
 
         $project->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice->id]]);
 
+        if (count($project->concerts) > 0) {
+            foreach ($project->concerts as $concert) {
+                $concert->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice ? $user->voice->id : null]]);
+            }
+        }
+
         return redirect()->back();
     }
 
