@@ -104,7 +104,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/voice/set', 'VoiceController@setMulti')->name('voice.setMulti');
         // Roles
         Route::get('/role/set/{user}', 'RoleController@showSet')->name('role.showSet');
-        Route::post('/role/set', 'RoleController@setMulti')->name('role.set');
+        Route::post('/role/set/{user}', 'RoleController@set')->name('role.set');
         Route::get('/role/set', 'RoleController@showSetMulti')->name('role.showSetMulti');
         Route::post('/role/set', 'RoleController@setMulti')->name('role.setMulti');
         // Semesters

@@ -9,7 +9,7 @@
 @endsection
 
 @section('body')
-    {{ Form::open(['route' => 'role.set']) }}
+    {{ Form::open(['route' => ['role.set', $user]]) }}
         <input type="hidden" name="user" value="{{ $user->id }}">
 
         <div class="form-group">
