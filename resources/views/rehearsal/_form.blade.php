@@ -55,7 +55,7 @@
 
 <div class="form-group{{ $errors->has('project_id') ? ' has-error' : '' }}">
     {{ Form::label('project_id', __('Project'), ['class' => 'control-label']) }}
-    {{ Form::select('project_id', $concerts, old('project_id') ? old('project_id') : (isset($rehearsal) ? $rehearsal->project_id : ($app->request->get('project') ? $app->request->get('project') : null)), ['class' => 'form-control']) }}
+    {{ Form::select('project_id', $projects, old('project_id') ? old('project_id') : (isset($rehearsal) ? $rehearsal->project_id : ($app->request->get('project') ? $app->request->get('project') : null)), ['class' => 'form-control']) }}
 
     @if ($errors->has('project_id'))
         <span class="help-block text-danger">

@@ -9,6 +9,7 @@ use App\Semester;
 use App\User;
 use App\Voice;
 use App\Concert;
+use App\Project;
 
 use App\Http\Requests\StoreRehearsal;
 use Auth;
@@ -31,7 +32,9 @@ class RehearsalController extends Controller
     {
         $date = new \DateTime();
 
-        $rehearsals = Rehearsal::where([['deleted_at', '=', null], ['date', '>=', date_format($date, 'Y-m-d')]])->get();
+        $rehearsals = Rehearsal::where([['deleted_at', '=', null], ['date', '>=', date_format($date, 'Y-m-d')]])
+            ->orderBy('date')
+            ->get();
 
         return view('rehearsal.index')->with([
             'rehearsals' => $rehearsals,
@@ -53,12 +56,12 @@ class RehearsalController extends Controller
         $nullOption = [null => __('--- Please choose ---')];
         $semesters = $nullOption + $semesters;
 
-        $concerts = Concert::getListForSelect();
-        $concerts = $nullOption + $concerts;
+        $projects = Project::getListForSelect();
+        $projects = $nullOption + $projects;
 
         return view('rehearsal.create')->with([
             'breadcrumbs' => $this->breadcrumbs,
-            'concerts' => $concerts,
+            'projects' => $projects,
             'semesters' => $semesters
         ]);
     }
@@ -188,9 +191,13 @@ class RehearsalController extends Controller
         $nullOption = [null => __('--- Please choose ---')];
         $semesters = $nullOption + $semesters;
 
+        $projects = Project::getListForSelect();
+        $projects = $nullOption + $projects;
+
         return view('rehearsal.edit')->with([
             'breadcrumbs' => $this->breadcrumbs,
             'rehearsal' => $rehearsal,
+            'projects' => $projects,
             'semesters' => $semesters
         ]);
     }
