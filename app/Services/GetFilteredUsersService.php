@@ -22,6 +22,10 @@ class GetFilteredUsersService {
 
         $query .= " LEFT JOIN user_concert ON users.id = user_concert.user_id ";
 
+        if ($sort === 'voice') {
+            $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
+        }
+
         $query .= "WHERE users.deleted_at IS NULL AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
@@ -43,6 +47,10 @@ class GetFilteredUsersService {
         if ($concerts !== null && count($concerts) > 0) {
             $concerts = implode(',', $concerts);
             $query .= "AND user_concert.concert_id IN ($concerts) AND user_concert.accepted = 1 ";
+        }
+
+        if ($sort === 'voice') {
+            $sort = 'voice.name';
         }
 
         $query .= "GROUP BY users.id ORDER BY $sort $dir";
