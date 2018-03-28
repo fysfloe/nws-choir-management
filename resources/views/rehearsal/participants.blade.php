@@ -59,13 +59,13 @@
                             <div class="col-md-3">
                                 @if ($rehearsal->date >= date_format((new \DateTime()), 'Y-m-d'))
                                     <div class="btn-group disabled" role="group" aria-label="{{ __('Set present, excused or unexcused') }}">
-                                        <a href="{{ route('rehearsal.confirm', ['rehearsal' => $rehearsal, 'user' => $user]) }}" data-clicked-class="btn-success" data-unclicked-class="btn-default" class="ajax btn btn-sm {{ $rehearsal->confirmed->contains(Auth::user()) ? 'btn-success clicked' : 'btn-default' }}">
+                                        <a href="{{ route('rehearsal.confirm', ['rehearsal' => $rehearsal, 'user' => $user]) }}" data-clicked-class="btn-success" data-unclicked-class="btn-default" class="ajax btn btn-sm {{ $rehearsal->confirmed->contains($user) ? 'btn-success clicked' : 'btn-default' }}">
                                             <span class="oi oi-check" aria-hidden="true"></span> <span class="info-text">{{ __('Present') }}</span>
                                         </a>
-                                        <a href="{{ route('rehearsal.excuse', ['rehearsal' => $rehearsal, 'user' => $user]) }}" data-clicked-class="btn-warning" data-unclicked-class="btn-default" class="ajax btn btn-sm {{ $rehearsal->excused->contains(Auth::user()) ? 'btn-warning clicked' : 'btn-default' }}">
+                                        <a href="{{ route('rehearsal.excuse', ['rehearsal' => $rehearsal, 'user' => $user]) }}" data-clicked-class="btn-warning" data-unclicked-class="btn-default" class="ajax btn btn-sm {{ $rehearsal->excused->contains($user) ? 'btn-warning clicked' : 'btn-default' }}">
                                             <span class="oi oi-medical-cross" aria-hidden="true"></span> <span class="info-text">{{ __('Excused') }}</span>
                                         </a>
-                                        <a href="{{ route('rehearsal.setUnexcused', ['rehearsal' => $rehearsal, 'user' => $user]) }}" data-clicked-class="btn-danger" data-unclicked-class="btn-default" class="ajax btn btn-sm {{ $rehearsal->unexcused->contains(Auth::user()) ? 'btn-danger clicked' : 'btn-default' }}">
+                                        <a href="{{ route('rehearsal.setUnexcused', ['rehearsal' => $rehearsal, 'user' => $user]) }}" data-clicked-class="btn-danger" data-unclicked-class="btn-default" class="ajax btn btn-sm {{ $rehearsal->unexcused->contains($user) ? 'btn-danger clicked' : 'btn-default' }}">
                                             <span class="oi oi-x" aria-hidden="true"></span> <span class="info-text">{{ __('Unexcused') }}</span>
                                         </a>
                                     </div>
