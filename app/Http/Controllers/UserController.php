@@ -73,6 +73,38 @@ class UserController extends Controller
         ]);
     }
 
+    public function loadUsers(Request $request)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else if ($key === 'concerts') {
+                    $concerts = [];
+                    foreach ($val as $concert_id) {
+                        $concerts[] = Concert::find($concert_id)->title;
+                    }
+
+                    $activeFilters['concerts'] = implode(', ', $concerts);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        return json_encode($users);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

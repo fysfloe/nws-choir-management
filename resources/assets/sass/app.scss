@@ -39,9 +39,14 @@ $enable-flex: true !default;
             padding: 0;
 
             a {
+                color: $brand-primary;
                 width: 100%;
                 display: inline-block;
-                padding: 0.25rem 0.75rem;
+                padding: 0.75rem;
+
+                &:hover {
+                    text-decoration: none;
+                }
             }
         }
     }
@@ -52,8 +57,8 @@ $enable-flex: true !default;
     align-items: stretch;
 
     #sidebar {
-        min-width: 250px;
-        max-width: 250px;
+        min-width: 200px;
+        max-width: 200px;
         min-height: 100vh;
 
         background: $lightgrey;
@@ -163,6 +168,7 @@ h4 {
     padding: 1rem;
     background: $lightgrey;
     align-self: flex-start;
+    border-top: 0.25rem solid $brand-primary;
 
     h3 {
         margin-bottom: 0.5em;
@@ -208,15 +214,30 @@ ul.breadcrumbs {
 
 .dropdown-menu {
     padding: 0;
-    border-radius: 0;
-    margin: 0;
+    border-radius: 0 0 0.25rem 0.25rem;
+    margin: 0.05rem 0;
     border: $light-border;
+
+    &.multiselect-container {
+        font-size: 1em;
+        padding: 0.5em;
+
+        li a {
+            width: 100%;
+            display: inline-block;
+
+            label {
+                width: 100%;
+                display: inline-block;
+            }
+        }
+    }
 }
 
 .dropdown-item {
     display: block;
     width: 100%;
-    padding: 0.25rem 0.75rem;
+    padding: 0.75rem;
     clear: both;
     font-weight: 400;
     color: #212529;

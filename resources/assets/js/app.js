@@ -13,13 +13,12 @@ require('tempusdominus-bootstrap-4');
 
 window.Vue = require('vue');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import VueResource from 'vue-resource';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.use(VueResource);
+
+Vue.component('user-list', require('./components/UserList.vue'));
+Vue.component('filters', require('./components/Filters.vue'));
 
 const app = new Vue({
     el: '#app'
@@ -57,18 +56,6 @@ $(function () {
         if ($form.length > 0) {
             $form.submit();
         }
-    });
-
-    $('body').on('click', '.active-filters li', function () {
-        var $field = $('[name^="' + $(this).data('field') + '"]');
-
-        if ($field.length > 0) {
-            if ($field.is('input') || $field.is('select')) {
-                $field.val('');
-            }
-        }
-
-        $field.parents('.filter-form').submit();
     });
 
     $('body').on('change', '.edit-voices select[name="voices[]"]', function (event) {

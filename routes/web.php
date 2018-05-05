@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/users/export', 'UserController@export')->name('users.export');
         Route::get('/users/multi-archive', 'UserController@multiArchive')->name('users.multiArchive');
         Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
+        Route::get('/load-users', 'UserController@loadUsers')->name('users.load');
         // Concerts
         Route::get('/concert/export-participants/{concert}', 'ConcertController@exportParticipants')->name('concert.exportParticipants');
         Route::get('/concerts/create', 'ConcertController@create')->name('concert.create');

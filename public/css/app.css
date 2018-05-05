@@ -10048,6 +10048,7 @@ input.date {
 
 .list-table ul li {
   padding: 0.5rem 0;
+  border-bottom: 0.1rem solid #e4ecf2;
 }
 
 .list-table ul li:hover {
@@ -10103,6 +10104,7 @@ input.date {
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
   margin-bottom: 1em;
+  border-top: 0.2rem solid #149EB5;
 }
 
 .filters a.show-filters {
@@ -10110,6 +10112,7 @@ input.date {
       -ms-flex-positive: 1;
           flex-grow: 1;
   text-align: right;
+  color: #149EB5;
 }
 
 .filters .active-filters {
@@ -10283,9 +10286,14 @@ ul.concerts {
 }
 
 #app .navbar .dropdown-item a {
+  color: #149EB5;
   width: 100%;
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.75rem;
+}
+
+#app .navbar .dropdown-item a:hover {
+  text-decoration: none;
 }
 
 .wrapper {
@@ -10298,8 +10306,8 @@ ul.concerts {
 }
 
 .wrapper #sidebar {
-  min-width: 250px;
-  max-width: 250px;
+  min-width: 200px;
+  max-width: 200px;
   min-height: 100vh;
   background: #f5f8fa;
   border-right: 0.05rem solid #e4ecf2;
@@ -10406,6 +10414,7 @@ h4 a {
   background: #f5f8fa;
   -ms-flex-item-align: start;
       align-self: flex-start;
+  border-top: 0.25rem solid #149EB5;
 }
 
 .side-box h3 {
@@ -10451,15 +10460,30 @@ ul.breadcrumbs > li a {
 
 .dropdown-menu {
   padding: 0;
-  border-radius: 0;
-  margin: 0;
+  border-radius: 0 0 0.25rem 0.25rem;
+  margin: 0.05rem 0;
   border: 0.05rem solid #e4ecf2;
+}
+
+.dropdown-menu.multiselect-container {
+  font-size: 1em;
+  padding: 0.5em;
+}
+
+.dropdown-menu.multiselect-container li a {
+  width: 100%;
+  display: inline-block;
+}
+
+.dropdown-menu.multiselect-container li a label {
+  width: 100%;
+  display: inline-block;
 }
 
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 0.25rem 0.75rem;
+  padding: 0.75rem;
   clear: both;
   font-weight: 400;
   color: #212529;

@@ -10,7 +10,7 @@ class GetFilteredUsersService {
         //
     }
 
-    public function handle($filters, $search, $sort = null, $dir)
+    public function handle($filters, $search, $sort = null, $dir = 'ASC')
     {
         if (!$sort) $sort = 'id';
 
@@ -21,20 +21,17 @@ class GetFilteredUsersService {
             . "FROM users ";
 
         $query .= " LEFT JOIN user_concert ON users.id = user_concert.user_id ";
-
-        if ($sort === 'voice') {
-            $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
-        }
+        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
-        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
+        $ageFrom = isset($filters['ageFrom']) ? $filters['ageFrom'] : null;
         if ($ageFrom) {
             $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
             $query .= "AND users.birthdate < '$minDate' ";
         }
 
-        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
+        $ageTo = isset($filters['ageTo']) ? $filters['ageTo'] : null;
         if ($ageTo) {
             $ageTo += 1;
             $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
@@ -60,7 +57,7 @@ class GetFilteredUsersService {
         return $users;
     }
 
-    public function concertParticipants($concert, $filters, $search, $sort = null, $dir)
+    public function concertParticipants($concert, $filters, $search, $sort = null, $dir = 'ASC')
     {
         if (!$sort) $sort = 'id';
 
@@ -101,7 +98,7 @@ class GetFilteredUsersService {
         return $users;
     }
 
-    public function projectParticipants($project, $filters, $search, $sort = null, $dir)
+    public function projectParticipants($project, $filters, $search, $sort = null, $dir = 'ASC')
     {
         if (!$sort) $sort = 'id';
 

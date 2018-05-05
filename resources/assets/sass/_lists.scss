@@ -46,6 +46,7 @@
 
         li {
             padding: 0.5rem 0;
+            border-bottom: 0.1rem solid darken($lightgrey, 5);
 
             &:hover {
                 background: $lightgrey;
