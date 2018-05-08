@@ -62,11 +62,13 @@ class UserController extends Controller
 
         $voices = Voice::getListForSelect();
         $concerts = Concert::getListForSelect();
+        $roles = Role::getListForSelect();
 
         return view('user.index')->with([
             'users' => $users,
             'activeFilters' => $activeFilters,
             'voices' => $voices,
+            'roles' => $roles,
             'concerts' => $concerts,
             'route' => 'users.index',
             'breadcrumbs' => $this->breadcrumbs

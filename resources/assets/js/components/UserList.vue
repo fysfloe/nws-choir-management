@@ -92,7 +92,7 @@
 
 <script>
 export default {
-    props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers'],
+    props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers', 'roles'],
     data() {
         return {
             loading: false,

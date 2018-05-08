@@ -68930,7 +68930,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers'],
+    props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers', 'roles'],
     data: function data() {
         return {
             loading: false,

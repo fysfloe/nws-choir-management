@@ -45,6 +45,7 @@
         :concerts="{{ json_encode($concerts) }}"
         :users="{{ json_encode($users) }}"
         :can-manage-users="{{ Auth::user()->can('manageUsers') }}"
+        :roles="{{ json_encode($roles) }}"
     ></user-list>
 
 @endsection
