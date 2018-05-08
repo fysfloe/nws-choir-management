@@ -43,22 +43,27 @@ class ImportMembers extends Command
     {
         $users = json_decode(File::get('members.json'), true);
         $member = Role::where('name', '=', 'member')->first();
+        $passwords = [];
 
         foreach ($users as $key => $userArray) {
             $password = $this->randomPassword();
             $userArray['password'] = bcrypt($password);
             // Create the user.
+            if (User::where('email', '=', $userArray['email'])->first()) {
+                continue;
+            }
             $user = User::create($userArray);
             $user->attachRole($member);
 
-            $userArray['password'] = $password;
-
-            $users[$key] = $userArray;
+            $passwords[] = [
+                'email' => $userArray['email'],
+                'password' => $password
+            ];
 
             $this->info('Created user for: ' . $userArray['email']);
         }
 
-        File::put('members.json', json_encode($users));
+        File::put('passwords.json', json_encode($passwords));
     }
 
     private function randomPassword() {
