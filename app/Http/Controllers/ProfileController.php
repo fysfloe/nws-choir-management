@@ -147,7 +147,7 @@ class ProfileController extends Controller
             ]);
 
             $request->session()->flash('alert-success', __('Password updated.'));
-            return redirect()->route('profile.edit');
+            return redirect()->route('profile.edit', Auth::user());
         } else {
             return redirect()->back()->withErrors(['old-password' => 'Incorrect password.']);
         }
