@@ -49,8 +49,9 @@ class ImportMembers extends Command
             $password = $this->randomPassword();
             $userArray['password'] = bcrypt($password);
             // Create the user.
-            if (User::where('email', '=', $userArray['email'])->first()) {
-                continue;
+            $user = User::where('email', '=', $userArray['email'])->first();
+            if ($user) {
+                $user->forcedelete();
             }
             $user = User::create($userArray);
             $user->attachRole($member);
