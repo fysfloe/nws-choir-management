@@ -91,11 +91,6 @@ class Concert extends Model
         return $this->belongsTo('App\Project');
     }
 
-    public function semester()
-    {
-        return $this->belongsTo('App\Semester');
-    }
-
     public static function getListForSelect()
     {
         $concerts = [];

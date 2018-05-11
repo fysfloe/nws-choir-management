@@ -46,6 +46,10 @@ class GetFilteredUsersService {
             $query .= "AND user_concert.concert_id IN ($concerts) AND user_concert.accepted = 1 ";
         }
 
+        if ($sort === 'id') {
+            $sort = 'users.id';
+        }
+
         if ($sort === 'voice') {
             $sort = 'voice.name';
         }

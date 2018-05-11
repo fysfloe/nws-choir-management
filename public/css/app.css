@@ -10047,7 +10047,7 @@ input.date {
 }
 
 .list-table ul li {
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   border-bottom: 0.1rem solid #e4ecf2;
 }
 
@@ -10292,8 +10292,11 @@ ul.concerts {
   padding: 0.75rem;
 }
 
-#app .navbar .dropdown-item a:hover {
+#app .navbar .dropdown-item a:hover,
+#app .navbar .dropdown-item a:focus,
+#app .navbar .dropdown-item a:active {
   text-decoration: none;
+  background-color: #f5f8fa;
 }
 
 .wrapper {

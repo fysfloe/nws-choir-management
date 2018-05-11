@@ -38,7 +38,7 @@ class Semester extends Model
      */
     public function concerts()
     {
-        return $this->hasMany('App\Concert');
+        return $this->hasManyThrough('App\Concert', 'App\Project');
     }
 
     /**

@@ -16,6 +16,7 @@ use Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Http\Requests\StoreUser;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -35,7 +36,8 @@ class UserController extends Controller
     {
         $filters = $request->all();
 
-        $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+        $users = (new GetFilteredUsersService())
+            ->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
         $activeFilters = [];
         foreach ($request->all() as $key => $val) {
@@ -65,7 +67,7 @@ class UserController extends Controller
         $roles = Role::getListForSelect();
 
         return view('user.index')->with([
-            'users' => $users,
+            'users' => UserResource::collection($users),
             'activeFilters' => $activeFilters,
             'voices' => $voices,
             'roles' => $roles,

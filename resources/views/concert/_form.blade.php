@@ -22,17 +22,6 @@
             @endif
         </div><!-- .form-group -->
 
-        <div class="form-group{{ $errors->has('semester_id') ? ' has-error' : '' }}">
-            {{ Form::label('semester_id', __('Semester'), ['class' => 'control-label']) }}
-            {{ Form::select('semester_id', $semesters, old('semester_id') ? old('semester_id') : ($app->request->get('semester') ? $app->request->get('semester') : null), ['class' => 'form-control']) }}
-
-            @if ($errors->has('semester_id'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('semester_id') }}</strong>
-                </span>
-            @endif
-        </div><!-- .form-group -->
-
         <div class="form-group{{ $errors->has('project_id') ? ' has-error' : '' }}">
             {{ Form::label('project_id', __('Project'), ['class' => 'control-label']) }}
             {{ Form::select('project_id', $projects, old('project_id') ? old('project_id') : ($app->request->get('project') ? $app->request->get('project') : null), ['class' => 'form-control']) }}

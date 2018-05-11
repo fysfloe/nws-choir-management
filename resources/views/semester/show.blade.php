@@ -17,20 +17,20 @@
             </div>
 
             <div class="col-4 side-box">
-                <h3>{{ __('Concerts') }}</h3>
-                @if (count($semester->concerts) > 0)
+                <h3>{{ __('Projects') }}</h3>
+                @if (count($semester->projects) > 0)
                     <ul class="concerts">
-                        @foreach ($semester->concerts as $concert)
+                        @foreach ($semester->projects as $project)
                             <li>
-                                <a href="{{ route('concert.show', $concert) }}">{{ $concert->title }}</a>
+                                <a href="{{ route('project.show', $project) }}">{{ $project->title }}</a>
                             </li>
                         @endforeach
                     </ul>
                 @else
-                    <small class="text-muted">{{ __('No concerts this semester.') }}</small>
+                    <small class="text-muted">{{ __('No projects this semester.') }}</small>
                 @endif
                 <div class="margin-top">
-                    <a class="btn btn-default btn-sm" href="{{ route('concert.create', ['semester' => $semester]) }}">{{ __('Add a concert') }}</a>
+                    <a class="btn btn-default btn-sm" href="{{ route('project.create', ['semester' => $semester]) }}">{{ __('Add a project') }}</a>
                 </div>
             </div>
         </div>

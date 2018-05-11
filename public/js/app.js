@@ -68928,11 +68928,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers', 'roles'],
     data: function data() {
         return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             loading: false,
             _users: [],
             activeFilters: {},
@@ -68985,6 +68990,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             this.fetchUsers();
+        },
+        confirm: function confirm(text) {
+            return window.confirm(text);
         }
     }
 });
@@ -69233,11 +69241,11 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-2" }, [
-                      user.voice_id
+                      user.voice
                         ? _c("span", [
                             _vm._v(
                               "\n                        " +
-                                _vm._s(_vm.voices[user.voice_id]) +
+                                _vm._s(user.voice.name) +
                                 "\n                    "
                             )
                           ])
@@ -69272,9 +69280,19 @@ var render = function() {
                       { staticClass: "col-md-2" },
                       [
                         _vm._l(user.roles, function(role) {
-                          return _c("span", [_vm._v(_vm._s(role.display_name))])
+                          return user.roles && user.roles.length > 0
+                            ? _c("span", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(role.name) +
+                                    "\n                    "
+                                )
+                              ])
+                            : _c("small", { staticClass: "text-muted" }, [
+                                _vm._v("(" + _vm._s(_vm.texts.noneSet) + ")")
+                              ])
                         }),
-                        _vm._v(" \n\n                    "),
+                        _vm._v(" "),
                         _c(
                           "a",
                           {
@@ -69304,7 +69322,10 @@ var render = function() {
                         "form",
                         {
                           staticClass: "form-inline",
-                          attrs: { method: "POST", action: "/admin/users/1" },
+                          attrs: {
+                            method: "POST",
+                            action: "/admin/users/" + user.id
+                          },
                           on: {
                             submit: function($event) {
                               _vm.confirm(_vm.texts.actions.confirmArchive)
@@ -69331,7 +69352,12 @@ var render = function() {
                               }
                             },
                             [_c("span", { staticClass: "oi oi-box" })]
-                          )
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            attrs: { type: "hidden", name: "_token" },
+                            domProps: { value: _vm.csrf }
+                          })
                         ]
                       )
                     ])

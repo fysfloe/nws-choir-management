@@ -59,8 +59,8 @@
                         </a>
                     </div>
                     <div class="col-md-2">
-                        <span v-if="user.voice_id">
-                            {{ voices[user.voice_id] }}
+                        <span v-if="user.voice">
+                            {{ user.voice.name }}
                         </span>
                         <small v-else class="text-muted">({{ texts.noneSet }})</small>
 
@@ -69,18 +69,22 @@
                         </a>
                     </div>
                     <div class="col-md-2">
-                        <span v-for="role in user.roles">{{ role.display_name }}</span>&nbsp;
+                        <span v-if="user.roles && user.roles.length > 0" v-for="role in user.roles">
+                            {{ role.name }}
+                        </span>
+                        <small v-else class="text-muted">({{ texts.noneSet }})</small>
 
                         <a :href="'/admin/role/set' + user.id" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
                             <span class="oi oi-key" data-toggle="tooltip" :title="texts.actions.setRole"></span>
                         </a>
                     </div>
                     <div class="col-md-1">
-                        <form @submit="confirm(texts.actions.confirmArchive)" method="POST" class="form-inline" action="/admin/users/1">
+                        <form @submit="confirm(texts.actions.confirmArchive)" method="POST" class="form-inline" :action="`/admin/users/${user.id}`">
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="btn btn-primary btn-xs" data-toggle="tooltip" :title="texts.actions.archive">
                                 <span class="oi oi-box"></span>
                             </button>
+                            <input type="hidden" name="_token" :value="csrf">
                         </form>
                     </div>
                 </li>
@@ -95,6 +99,7 @@ export default {
     props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers', 'roles'],
     data() {
         return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             loading: false,
             _users: [],
             activeFilters: {},
@@ -144,6 +149,9 @@ export default {
             }
 
             this.fetchUsers();
+        },
+        confirm: function (text) {
+            return window.confirm(text);
         }
     }
 }

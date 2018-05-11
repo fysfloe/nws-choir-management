@@ -44,8 +44,9 @@ $enable-flex: true !default;
                 display: inline-block;
                 padding: 0.75rem;
 
-                &:hover {
+                &:hover, &:focus, &:active {
                     text-decoration: none;
+                    background-color: $lightgrey;
                 }
             }
         }
