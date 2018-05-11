@@ -45,7 +45,7 @@
                 @endif
 
                 @permission('manageRehearsals')
-                <a class="btn btn-default btn-sm mt-2" href="{{ route('rehearsal.create', ['semester' => $concert->semester->id, 'concert' => $concert->id]) }}">
+                <a class="btn btn-default btn-sm mt-2" href="{{ route('rehearsal.create', ['project' => $concert->project->id, 'concert' => $concert->id]) }}">
                     {{ __('Add a rehearsal') }}
                 </a>
                 @endpermission
