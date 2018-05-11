@@ -79,7 +79,7 @@
 
             <div class="form-group {{ $errors->has('citizenship') ? ' has-error' : '' }}">
                 {{ Form::label('citizenship', __('Citizenship'), ['class' => 'control-label']) }}
-                {{ Form::select('citizenship', $countries, old('citizenship') ? old('citizenship') : ($user->citizenship ? $user->citizenship->id : null), ['class' => 'form-control']) }}
+                {{ Form::select('citizenship', $countries, old('citizenship') ? old('citizenship') : ($user->citizenship ? $user->citizenship->id : 40), ['class' => 'form-control']) }}
 
                 @if ($errors->has('citizenship'))
                     <span class="help-block text-danger">
@@ -165,7 +165,7 @@
 
             <div class="form-group {{ $errors->has('country_id') ? ' has-error' : '' }}">
                 {{ Form::label('country_id', __('Country'), ['class' => 'control-label']) }}
-                {{ Form::select('country_id', $countries, old('country_id') ? old('country_id') : ($user->address && $user->address->country ? $user->address->country->id : null), ['class' => 'form-control']) }}
+                {{ Form::select('country_id', $countries, old('country_id') ? old('country_id') : ($user->address && $user->address->country ? $user->address->country->id : 40), ['class' => 'form-control']) }}
 
                 @if ($errors->has('country_id'))
                     <span class="help-block text-danger">
