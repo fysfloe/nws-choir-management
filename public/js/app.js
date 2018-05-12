@@ -17194,6 +17194,10 @@ $(function () {
             toggleListCheckbox.bind($checkbox)();
         }
     });
+
+    $('body').on('input', '#firstname, #surname', function (event) {
+        $('#username').val($('#firstname').val() + $('#surname').val());
+    });
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 

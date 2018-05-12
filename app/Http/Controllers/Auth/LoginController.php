@@ -75,7 +75,7 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        $credentials = $request->only('fistname', 'surname', 'password');
+        $credentials = $request->only('username', 'password');
 
         return $credentials;
     }
@@ -91,15 +91,14 @@ class LoginController extends Controller
         $errors = ['password' => trans('These credentials do not match our records.')];
 
         return redirect()->back()
-            ->withInput($request->only('firstname', 'surname', 'remember'))
+            ->withInput($request->only('username', 'remember'))
             ->withErrors($errors);
     }
 
     protected function validateLogin(Request $request)
     {
         $this->validate($request, [
-            'firstname' => 'required',
-            'surname' => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
     }

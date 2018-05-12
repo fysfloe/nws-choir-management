@@ -7,29 +7,15 @@
     <form method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
 
-        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-            <label for="firstname" class="control-label">{{ __('First Name') }}</label>
+        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+            <label for="username" class="control-label">{{ __('Username') }}</label>
 
             <div>
-                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
+                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
 
-                @if ($errors->has('firstname'))
+                @if ($errors->has('username'))
                     <span class="help-block text-danger">
-                        <strong>{{ $errors->first('firstname') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="surname" class="control-label">{{ __('Surname') }}</label>
-
-            <div>
-                <input id="surname" type="text" class="form-control" name="surname" value="{{ old('surname') }}" required>
-
-                @if ($errors->has('surname'))
-                    <span class="help-block text-danger">
-                        <strong>{{ $errors->first('surname') }}</strong>
+                        <strong>{{ $errors->first('username') }}</strong>
                     </span>
                 @endif
             </div>

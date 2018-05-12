@@ -43,6 +43,18 @@
                 </div>
             </div>
 
+            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                {{ Form::label('username', __('Username'), ['class' => 'control-label']) }}
+                {{ Form::text('username', old('username') ? old('username') : $user->username, ['class' => 'form-control']) }}
+
+                @if ($errors->has('username'))
+                    <span class="help-block text-danger">
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span>
+                @endif
+            </div>
+
+
             <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
                 <div><label for="gender" class="control-label">{{ __('Gender') }}</label></div>
 

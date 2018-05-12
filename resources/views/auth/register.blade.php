@@ -33,6 +33,18 @@
             @endif
         </div>
 
+        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+            <label for="username" class="control-label">{{ __('Username') }}</label>
+
+            <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+
+            @if ($errors->has('username'))
+                <span class="help-block text-danger">
+                    <strong>{{ $errors->first('username') }}</strong>
+                </span>
+            @endif
+        </div>
+
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
             <label for="email" class="control-label">{{ __('E-Mail Address') }}</label>
 

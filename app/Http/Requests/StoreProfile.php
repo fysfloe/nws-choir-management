@@ -28,6 +28,7 @@ class StoreProfile extends FormRequest
         return [
             'firstname' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $this->segment(3),
             'email' => 'required|string|email|max:255|unique:users,email,' . $this->segment(3),
             'gender' => 'required',
             'voice_id' => 'required'
