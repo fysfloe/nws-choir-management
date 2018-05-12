@@ -17,10 +17,13 @@
                 <div class="col-md-1">
                     <small class="text-muted">#</small>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    {{ __('Name') }}
+                </div>
+                <div class="col-md-2">
                     {{ __('Start Date') }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     {{ __('End Date') }}
                 </div>
                 <div class="col-md-3">{{ __('Created by') }}</div>
@@ -33,10 +36,17 @@
                         <div class="col-md-1">
                             <small class="text-muted">{{ $semester->id }}</small>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            @if ($semester->name)
+                                {{ $semester->name }}
+                            @else
+                                <small class="text-muted">(n/a)</small>
+                            @endif
+                        </div>
+                        <div class="col-md-2">
                             {{ date_format(date_create($semester->start_date), 'd.m.Y') }}
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             {{ date_format(date_create($semester->end_date), 'd.m.Y') }}
                         </div>
                         <div class="col-md-3">

@@ -3,7 +3,7 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ __('Semester') }}: {{ $semester->__toString() }}</h2>
+        <h2>{{ $semester->__toString() }}</h2>
 
         <div class="btn-group accept-decline" role="group" aria-label="{{ __('Accept or decline') }}">
             <a href="{{ route('semester.accept', $semester) }}" class="btn btn-sm {{ $semester->promises->contains(Auth::user()) ? 'btn-success' : 'btn-default' }}">

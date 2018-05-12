@@ -22,7 +22,7 @@ class Semester extends Model
      * @var array
      */
     protected $fillable = [
-        'start_date', 'end_date', 'created_by'
+        'start_date', 'end_date', 'created_by', 'name'
     ];
 
     /**
@@ -105,13 +105,18 @@ class Semester extends Model
     public function __toString()
     {
         $semesterString = '';
-        if (date_format(date_create($this->start_date), 'Y') === date_format(date_create($this->end_date), 'Y')) {
-            $semesterString .= date_format(date_create($this->start_date), 'd.m.');
-        } else {
-            $semesterString .= date_format(date_create($this->start_date), 'd.m.Y');
-        }
 
-        $semesterString .= ' – ' . date_format(date_create($this->end_date), 'd.m.Y');
+        if ($this->name) {
+            $semesterString = $this->name;
+        } else {
+            if (date_format(date_create($this->start_date), 'Y') === date_format(date_create($this->end_date), 'Y')) {
+                $semesterString .= date_format(date_create($this->start_date), 'd.m.');
+            } else {
+                $semesterString .= date_format(date_create($this->start_date), 'd.m.Y');
+            }
+
+            $semesterString .= ' – ' . date_format(date_create($this->end_date), 'd.m.Y');
+        }
 
         if ($this->isCurrent()) {
             $semesterString .= ' (' . __('Current') . ')';

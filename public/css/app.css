@@ -10454,6 +10454,19 @@ ul.breadcrumbs > li a {
   font-weight: bold;
 }
 
+.btn-primary {
+  background-color: #149EB5;
+  border-color: #149EB5;
+}
+
+.btn-primary:active,
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #0f7687;
+  border-color: #0f7687;
+  cursor: pointer;
+}
+
 .btn-xs {
   padding: 0.1rem 0.5rem;
   font-size: 0.875rem;

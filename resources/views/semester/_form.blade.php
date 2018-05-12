@@ -1,3 +1,14 @@
+<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+    {{ Form::label('name', __('Name'), ['class' => 'control-label']) }}
+    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') ? old('name') : (isset($semester) ? $semester->name : '') }}">
+
+    @if ($errors->has('name'))
+        <span class="help-block text-danger">
+            <strong>{{ $errors->first('name') }}</strong>
+        </span>
+    @endif
+</div><!-- .form-group -->
+
 <div class="form-group{{ $errors->has('start_date') ? ' has-error' : '' }}">
     {{ Form::label('start_date', __('Start Date'), ['class' => 'control-label']) }}
     <input type="date" class="form-control" name="start_date" id="start_date" value="{{ old('start_date') ? old('start_date') : (isset($semester) ? $semester->start_date : '') }}">

@@ -206,6 +206,17 @@ ul.breadcrumbs {
     font-weight: bold;
 }
 
+.btn-primary {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+
+    &:active, &:hover, &:focus {
+        background-color: darken($brand-primary, 10);
+        border-color: darken($brand-primary, 10);
+        cursor: pointer;
+    }
+}
+
 .btn-xs {
     padding: 0.1rem 0.5rem;
     font-size: 0.875rem;
