@@ -54,30 +54,6 @@
                 @endif
             </div>
 
-
-            <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-                <div><label for="gender" class="control-label">{{ __('Gender') }}</label></div>
-
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="gender" value="f" @if (old('gender') === 'f' || $user->gender === 'f') {{ 'checked="checked"' }} @endif required>
-                        {{ __('female') }}
-                    </label>
-                </div>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="gender" value="m" @if (old('gender') === 'm' || $user->gender === 'm') {{ 'checked="checked"' }} @endif required>
-                        {{ __('male') }}
-                    </label>
-                </div>
-
-                @if ($errors->has('gender'))
-                    <span class="help-block text-danger">
-                        <strong>{{ $errors->first('gender') }}</strong>
-                    </span>
-                @endif
-            </div>
-
             <div class="form-group {{ $errors->has('birthdate') ? ' has-error' : '' }}">
                 {{ Form::label('birthdate', __('Birthdate'), ['class' => 'control-label']) }}
                 {{ Form::date('birthdate', old('birthdate') ? old('birthdate') : $user->birthdate, ['class' => 'form-control']) }}
