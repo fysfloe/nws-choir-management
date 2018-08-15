@@ -41,11 +41,12 @@
             'noneSet' => __('None set'),
             'noUsers' => __('No users found.')
         ]) }}"
-        :voices="{{ json_encode($voices) }}"
         :concerts="{{ json_encode($concerts) }}"
         :users="{{ json_encode($users) }}"
         :can-manage-users="{{ Auth::user()->can('manageUsers') }}"
-        :roles="{{ json_encode($roles) }}"
+        :show-role="true"
+        :voices="{{ json_encode($voices) }}"
+        fetch-users-action="{{ route('users.load') }}"
     ></user-list>
 
 @endsection

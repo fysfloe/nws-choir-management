@@ -93,3 +93,11 @@
     margin-top: 1em;
     border: 0.1em dotted darken($lightgrey, 10);
 }
+
+.user-actions {
+    text-align: right;
+
+    span.oi {
+        color: $brand-primary;
+    }
+}

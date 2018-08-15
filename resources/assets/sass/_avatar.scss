@@ -1,0 +1,41 @@
+.avatar {
+    overflow: hidden;
+    border-radius: 100%;
+    width: 3.5rem;
+    height: 3.5rem;
+
+    img {
+        width: 100%;
+    }
+
+    &.avatar-big {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    &.avatar-default {
+        background: darken($lightgrey, 3);
+
+        span.oi {
+            font-size: 3rem;
+            width: 100%;
+            display: inline-block;
+            height: 100%;
+            color: darken($lightgrey, 12);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        &.avatar-big {
+            span.oi {
+                font-size: 8.5rem;
+            }
+        }
+    }
+}
+
+ul.users {
+    .avatar {
+        margin: 0 1rem;
+    }
+}

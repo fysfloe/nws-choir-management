@@ -14,11 +14,14 @@ require('tempusdominus-bootstrap-4');
 window.Vue = require('vue');
 
 import VueResource from 'vue-resource';
+import VuejsDialog from "vuejs-dialog"
 
 Vue.use(VueResource);
+Vue.use(VuejsDialog)
 
 Vue.component('user-list', require('./components/UserList.vue'));
 Vue.component('filters', require('./components/Filters.vue'));
+Vue.component('picture-input', require('vue-picture-input'));
 
 const app = new Vue({
     el: '#app'

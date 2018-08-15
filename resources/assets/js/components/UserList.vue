@@ -14,17 +14,24 @@
 
         <div class="list-table" v-else-if="_users.length > 0">
             <header class="row">
-                <div class="col-md-7 has-checkbox">
+                <div class="col-md-10 has-checkbox">
                     <input type="checkbox" class="check-all" name="check-all-users" data-controls="users[]">&nbsp;
 
                     <div class="dropdown list-actions">
-                        <a class="dropdown-toggle" href="#" role="button" id="userActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="dropdown-toggle no-caret" href="#" role="button" id="userActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="oi oi-ellipses"></span>
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="userActions">
-                            <a class="dropdown-item" @click="confirm(texts.confirmArchive)" data-href="/admin/users/multi-archive" href="/admin/users/multi-archive"><span class="oi oi-box"></span> {{ texts.actions.archive }}</a>
-                            <a class="dropdown-item" data-href="admin/voice/set" href="/admin/voice/set" data-toggle="modal" data-target="#mainModal"><span class="oi oi-pulse"></span> {{ texts.actions.setVoice }}</a>
-                            <a class="dropdown-item" data-href="/admin/role/set" href="/admin/role/set" data-toggle="modal" data-target="#mainModal"><span class="oi oi-key"></span> {{ texts.actions.setRole }}</a>
+                            <a class="dropdown-item" v-confirm="texts.actions.confirmArchiveMulti" href="/admin/users/multi-archive">
+                                <span class="oi oi-box"></span> {{ texts.actions.archive }}
+                            </a>
+                            <a class="dropdown-item" data-href="/admin/voice/set" href="/admin/voice/set" data-toggle="modal" data-target="#mainModal">
+                                <span class="oi oi-pulse"></span> {{ texts.actions.setVoice }}
+                            </a>
+                            <a v-if="showRoles" class="dropdown-item" data-href="/admin/role/set" href="/admin/role/set" data-toggle="modal" data-target="#mainModal">
+                                <span class="oi oi-key"></span> {{ texts.actions.setRole }}
+                            </a>
                         </div>
                     </div>
 
@@ -36,56 +43,66 @@
                         <span class="oi oi-caret-bottom"></span>
                     </a>
                 </div>
-                <div class="col-md-2">
-                    {{ texts.headings.voice }}
-                    <a :class="{'list-sort': true, 'active': filters.sort === 'voice' && filters.dir === 'ASC'}" @click="sortBy('voice', 'ASC')">
-                        <span class="oi oi-caret-top"></span>
-                    </a>
-                    <a :class="{'list-sort': true, 'active': filters.sort === 'voice' && filters.dir === 'DESC'}" @click="sortBy('voice', 'DESC')">
-                        <span class="oi oi-caret-bottom"></span>
-                    </a>
-                </div>
-                <div class="col-md-2">{{ texts.headings.role }}</div>
-                <div class="col-md-1">&nbsp;</div>
+                <div class="col-md-2">&nbsp;</div>
             </header>
 
             <ul class="users">
-                <li class="row" v-for="user in _users">
-                    <div class="col-md-7">
-                        <input type="checkbox" name="users[]" :value="user.id">&nbsp;
-                        {{ user.firstname }} {{ user.surname }}
-                        <a v-if="canManageUsers" :href="'/profile/edit/' + user.id" class="btn-link btn-sm">
-                            <span class="oi oi-pencil" data-toggle="tooltip" :title="texts.editProfile"></span>
-                        </a>
-                    </div>
-                    <div class="col-md-2">
-                        <span v-if="user.voice">
-                            {{ user.voice.name }}
-                        </span>
-                        <small v-else class="text-muted">({{ texts.noneSet }})</small>
-
-                        <a :href="'/voice/showSet/' + user.id" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
-                            <span class="oi oi-pulse" data-toggle="tooltip" :title="texts.actions.setVoice"></span>
-                        </a>
-                    </div>
-                    <div class="col-md-2">
-                        <span v-if="user.roles && user.roles.length > 0" v-for="role in user.roles">
-                            {{ role.name }}
-                        </span>
-                        <small v-else class="text-muted">({{ texts.noneSet }})</small>
-
-                        <a :href="'/admin/role/set' + user.id" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
-                            <span class="oi oi-key" data-toggle="tooltip" :title="texts.actions.setRole"></span>
-                        </a>
+                <li class="row align-items-center" v-for="user in _users">
+                    <div class="col-md-10">
+                        <div class="flex align-items-center">
+                            <input type="checkbox" name="users[]" :value="user.id">&nbsp;
+                            <div class="avatar" v-if="user.avatar">
+                                <img :src="'/storage/avatars/' + user.avatar" :alt="user.firstname + ' ' + user.surname">
+                            </div>
+                            <div class="avatar avatar-default" v-else>
+                                <span class="oi oi-person"></span>
+                            </div>
+                            <div class="name">
+                                {{ user.firstname }} {{ user.surname }}
+                                <div>
+                                    <a :href="'/voice/showSet/' + user.id" data-toggle="modal" data-target="#mainModal">
+                                        <span class="badge badge-secondary badge-pill" v-if="user.voice">
+                                            {{ user.voice.name }}
+                                        </span>
+                                        <small v-else class="badge badge-light badge-pill text-muted">({{ texts.noneSet }})</small>
+                                    </a>
+                                    <a v-if="showRoles" :href="'/admin/role/set/' + user.id" data-toggle="modal" data-target="#mainModal">
+                                        <span v-if="user.roles && user.roles.length > 0" v-for="role in user.roles" class="badge badge-info">
+                                            {{ role.name }}
+                                        </span>
+                                        <small v-else class="badge badge-light text-muted">({{ texts.noneSet }})</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-1">
-                        <form @submit="confirm(texts.actions.confirmArchive)" method="POST" class="form-inline" :action="`/admin/users/${user.id}`">
+
+                    </div>
+                    <div class="col-md-1 user-actions">
+                        <a class="dropdown-toggle no-caret" href="#" :id="`singleUserActions${user.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="oi oi-ellipses"></span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="`singleUserActions${user.id}`">
+                            <a class="dropdown-item" :href="`/profile/edit/${user.id}`">
+                                <span class="oi oi-pencil"></span> {{ texts.editProfile }}
+                            </a>
+                            <form method="POST" class="form-inline" :action="`/admin/users/${user.id}`">
+                                <input name="_method" type="hidden" value="DELETE">
+                                <button type="submit" v-confirm="texts.actions.confirmArchive" class="btn btn-link dropdown-item">
+                                    <span class="oi oi-box"></span> {{ texts.actions.archive }}
+                                </button>
+                                <input type="hidden" name="_token" :value="csrf">
+                            </form>
+                        </div>
+                        <!-- <form @submit="confirm(texts.actions.confirmArchive)" method="POST" class="form-inline" :action="`/admin/users/${user.id}`">
                             <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-primary btn-xs" data-toggle="tooltip" :title="texts.actions.archive">
-                                <span class="oi oi-box"></span>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="oi oi-box"></span> {{ texts.actions.archive }}
                             </button>
                             <input type="hidden" name="_token" :value="csrf">
-                        </form>
+                        </form> -->
                     </div>
                 </li>
             </ul>
@@ -96,7 +113,7 @@
 
 <script>
 export default {
-    props: ['texts', 'voices', 'concerts', 'users', 'canManageUsers', 'roles'],
+    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices'],
     data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -135,7 +152,7 @@ export default {
                 }
             }
 
-            this.$http.get('/admin/load-users', {params: this.filters}).then(response => {
+            this.$http.get(this.fetchUsersAction, {params: this.filters}).then(response => {
                 this.loading = false;
                 this._users = response.body;
             }, response => {})
@@ -149,9 +166,6 @@ export default {
             }
 
             this.fetchUsers();
-        },
-        confirm: function (text) {
-            return window.confirm(text);
         }
     }
 }

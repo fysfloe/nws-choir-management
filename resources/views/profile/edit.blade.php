@@ -2,18 +2,18 @@
 
 @section('content')
 
-    <header class="page-header">
-        @if ($user->id === Auth::user()->id)
-            <h2>{{ __('Edit Profile') }}</h2>
-            <a class="btn btn-default btn-sm" href="{{ route('profile.changePassword') }}">
-                {{ __('Change Password') }}
-            </a>
-        @else
-            <h2>{{ __('Edit Profile') }}: <span class="text-muted">{{ $user->firstname }} {{ $user->surname }}</span></h2>
-        @endif
-    </header>
+    {{ Form::open(['route' => ['profile.update', $user], 'method' => 'POST', 'files' => true]) }}
 
-    {{ Form::open(['route' => ['profile.update', $user], 'method' => 'POST']) }}
+    <header class="page-header">
+                @if ($user->id === Auth::user()->id)
+                    <h2>{{ __('Edit Profile') }}</h2>
+                    <a class="btn btn-default btn-sm" href="{{ route('profile.changePassword') }}">
+                        {{ __('Change Password') }}
+                    </a>
+                @else
+                    <h2>{{ __('Edit Profile') }}: <span class="text-muted">{{ $user->firstname }} {{ $user->surname }}</span></h2>
+                @endif
+    </header>
 
     <div class="row">
         <div class="col">
@@ -110,6 +110,35 @@
                         <strong>{{ $errors->first('voice_id') }}</strong>
                     </span>
                 @endif
+            </div>
+
+            <div class="row align-items-center mb-4">
+                <div class="col">
+                    @if ($user->avatar)
+                        <div class="avatar avatar-big">
+                            <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt="{{ $user->firstname }} {{ $user->surname }}">
+                        </div>
+                    @else
+                        <div class="avatar avatar-big avatar-default">
+                            <span class="oi oi-person"></span>
+                        </div>
+                    @endif
+                </div>
+                <div class="col">
+                    <div class="form-group {{ $errors->has('avatar') ? ' has-error': '' }}">
+
+                        <div class="custom-file">
+                            <input type="file" name="avatar" id="avatar" class="custom-file-input">
+                            <label class="custom-file-label" for="avatar">Choose avatar file...</label>
+                        </div>
+
+                        @if ($errors->has('avatar'))
+                            <span class="help-block text-danger">
+                                <strong>{{ $errors->first('avatar') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
 

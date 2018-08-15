@@ -11,6 +11,7 @@ use App\Semester;
 use App\Project;
 
 use App\Http\Requests\StoreConcert;
+use App\Http\Resources\UserResource;
 
 use App\Services\GetFilteredUsersService;
 
@@ -173,12 +174,37 @@ class ConcertController extends Controller
         return view('concert.participants')->with([
             'tab' => 'participants',
             'concert' => $concert,
-            'participants' => $users,
+            'participants' => UserResource::collection($users),
             'activeFilters' => $activeFilters,
             'voices' => $voices,
             'route' => ['concert.participants', $concert],
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadParticipants(Request $request, Concert $concert)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        return json_encode(UserResource::collection($users));
     }
 
     public function voices(Request $request, Concert $concert)

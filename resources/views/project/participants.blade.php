@@ -5,7 +5,7 @@
     <!-- Participants -->
     <div class="tab-pane fade show active" id="participants" role="tabpanel" aria-labelledby="participants-tab">
         @permission('manageProjects')
-        <div class="clearfix">
+        <div class="clearfix my-3 text-right">
             <a class="btn btn-default btn-sm" href="{{ route('project.showAddUser', $project) }}" data-toggle="modal" data-target="#mainModal">
                 <span class="oi oi-plus"></span> {{ __('Add a participant') }}
             </a>
@@ -42,82 +42,12 @@
                 'noneSet' => __('None set'),
                 'noUsers' => __('No users found.')
             ]) }}"
-            :voices="{{ json_encode($voices) }}"
             :users="{{ json_encode($participants) }}"
             :can-manage-users="{{ Auth::user()->can('manageUsers') }}"
+            :show-role="false"
+            :voices="{{ json_encode($voices) }}"
+            fetch-users-action="{{ route('project.loadParticipants', $project) }}"
         ></user-list>
-
-        @include('user._filters')
-
-
-
-        @if(count($participants) > 0)
-            <div class="list-table">
-                <header class="row">
-                    <div class="col-md-8 has-checkbox">
-                        <input type="checkbox" class="check-all" name="check-all-users" data-controls="users[]">&nbsp;
-
-                        <div class="dropdown list-actions">
-                            <a class="dropdown-toggle" href="#" role="button" id="userActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="userActions">
-                                <a class="dropdown-item" data-href="{{ route('project.showSetUserVoices', ['project' => $project]) }}" href="{{ route('voice.showSetMulti') }}" data-toggle="modal" data-target="#mainModal"><span class="oi oi-pulse"></span> {{ __('Set Voice') }}</a>
-                            </div>
-                        </div>
-
-                        {{ __('User') }}
-                        <a class="list-sort {{ app('request')->input('sort') === 'surname' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'surname', 'dir' => 'ASC']) }}">
-                            <span class="oi oi-caret-top"></span>
-                        </a>
-                        <a class="list-sort {{ app('request')->input('sort') === 'surname' && app('request')->input('dir') === 'DESC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'surname', 'dir' => 'DESC']) }}">
-                            <span class="oi oi-caret-bottom"></span>
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        {{ __('Voice') }}
-                        <a class="list-sort {{ app('request')->input('sort') === 'voice' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'voice', 'dir' => 'ASC']) }}">
-                            <span class="oi oi-caret-top"></span>
-                        </a>
-                        <a class="list-sort {{ app('request')->input('sort') === 'voice' && app('request')->input('dir') === 'DESC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'voice', 'dir' => 'DESC']) }}">
-                            <span class="oi oi-caret-bottom"></span>
-                        </a>
-                    </div>
-                </header>
-
-                <ul class="users">
-                    @foreach($participants as $user)
-                        <li class="row">
-                            <div class="col-md-8">
-                                <input type="checkbox" name="users[]" value="{{ $user->id }}">&nbsp;
-                                {{ $user->firstname }} {{ $user->surname }}
-                                @permission('manageUsers')
-                                    <a href="{{ route('profile.edit', $user->id) }}" class="btn-link btn-sm">
-                                        <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit Profile') }}"></span>
-                                    </a>
-                                @endpermission
-                            </div>
-                            <div class="col-md-4">
-                                @if ($user->voiceName)
-                                    {{ $user->voiceName }}
-                                @else
-                                    <small class="text-muted">({{ __('None set') }})</small>
-                                @endif
-                                @permission('manageProjects')
-                                    <a href="{{ route('project.showSetUserVoice', ['project' => $project, 'user' => $user]) }}" data-toggle="modal" data-target="#mainModal" class="btn-link btn-sm">
-                                        <span class="oi oi-pulse" data-toggle="tooltip" title="{{ __('Set Voice') }}"></span>
-                                    </a>
-                                @endpermission
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @else
-            <div class="no-results">
-                <small class="text-muted">{{ __('No participants matching your filters.') }}</small>
-            </div>
-        @endif
     </div>
 
 @endsection

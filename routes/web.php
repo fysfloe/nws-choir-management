@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/profile/update/{user}', 'ProfileController@update')->name('profile.update');
     Route::get('/profile/changePassword', 'ProfileController@changePassword')->name('profile.changePassword');
     Route::post('/profile/updatePassword', 'ProfileController@updatePassword')->name('profile.updatePassword');
+    Route::post('/profile/uploadProfilePicture', 'ProfileController@uploadProfilePicture')->name('profile.uploadProfilePicture');
 
     Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
         // Route::get('/', 'AdminController@welcome');
@@ -72,6 +73,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/concert/{concert}/setVoice', 'ConcertController@setUserVoices')->name('concert.setUserVoices');
         Route::get('/concert/{concert}/addUser', 'ConcertController@showAddUser')->name('concert.showAddUser');
         Route::post('/concert/{concert}/addUser', 'ConcertController@addUser')->name('concert.addUser');
+        Route::get('/concert/load-participants/{concert}', 'ConcertController@loadParticipants')->name('concert.loadParticipants');
         // Projects
         Route::get('/project/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
         Route::get('/projects/create', 'ProjectController@create')->name('project.create');
@@ -88,6 +90,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/project/{project}/setVoice', 'ProjectController@setUserVoices')->name('project.setUserVoices');
         Route::get('/project/{project}/addUser', 'ProjectController@showAddUser')->name('project.showAddUser');
         Route::post('/project/{project}/addUser', 'ProjectController@addUser')->name('project.addUser');
+        Route::get('/project/load-participants/{project}', 'ProjectController@loadParticipants')->name('project.loadParticipants');
         // Rehearsals
         Route::get('/rehearsals/create', 'RehearsalController@create')->name('rehearsal.create');
         Route::post('/rehearsals/store', 'RehearsalController@store')->name('rehearsal.store');

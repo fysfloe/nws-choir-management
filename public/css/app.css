@@ -9948,6 +9948,38 @@ input.date {
   padding: 0 0.5em;
 }
 
+.custom-file-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: calc(2.25rem + 2px);
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+}
+
+.custom-file-label::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: block;
+  height: calc(calc(2.25rem + 2px) - 1px * 2);
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  color: #495057;
+  content: "Browse";
+  background-color: #e9ecef;
+  border-left: 1px solid #ced4da;
+  border-radius: 0 .25rem .25rem 0;
+}
+
 .btn-default {
   border: 0.1rem solid #2c2e33;
   font-weight: bold;
@@ -10086,6 +10118,14 @@ input.date {
   padding: 0.5em 1em;
   margin-top: 1em;
   border: 0.1em dotted #d3e0e9;
+}
+
+.user-actions {
+  text-align: right;
+}
+
+.user-actions span.oi {
+  color: #149EB5;
 }
 
 .filters {
@@ -10269,6 +10309,44 @@ ul.concerts {
 
 .dashboard ul.todos {
   font-size: 0.8em;
+}
+
+.avatar {
+  overflow: hidden;
+  border-radius: 100%;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.avatar img {
+  width: 100%;
+}
+
+.avatar.avatar-big {
+  width: 10rem;
+  height: 10rem;
+}
+
+.avatar.avatar-default {
+  background: #ebf1f5;
+}
+
+.avatar.avatar-default span.oi {
+  font-size: 3rem;
+  width: 100%;
+  display: inline-block;
+  height: 100%;
+  color: #ccdbe6;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.avatar.avatar-default.avatar-big span.oi {
+  font-size: 8.5rem;
+}
+
+ul.users .avatar {
+  margin: 0 1rem;
 }
 
 .navbar-dark .navbar-brand {
@@ -10459,12 +10537,20 @@ ul.breadcrumbs > li a {
   border-color: #149EB5;
 }
 
-.btn-primary:active,
-.btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:not([disabled]):not(.disabled):active,
+.btn-primary:not([disabled]):not(.disabled):hover,
+.btn-primary:not([disabled]):not(.disabled):focus {
   background-color: #0f7687;
   border-color: #0f7687;
   cursor: pointer;
+}
+
+.btn-full {
+  border: 0;
+  margin: 0;
+  background: #149EB5;
+  color: white;
+  text-decoration: none;
 }
 
 .btn-xs {
@@ -10499,10 +10585,10 @@ ul.breadcrumbs > li a {
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem 0.75rem;
   clear: both;
   font-weight: 400;
-  color: #212529;
+  color: #636b6f;
   text-align: inherit;
   white-space: nowrap;
   background: none;
@@ -10510,9 +10596,21 @@ ul.breadcrumbs > li a {
   font-size: 0.8em;
 }
 
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active {
+  text-decoration: none;
+  background-color: #f5f8fa;
+  color: #636b6f;
+}
+
 a.dropdown-toggle {
   text-decoration: none;
   color: inherit;
+}
+
+a.dropdown-toggle.no-caret::after {
+  display: none;
 }
 
 .nav-tabs .nav-item a {
@@ -10523,5 +10621,16 @@ a.dropdown-toggle {
   background: #149EB5;
   color: white;
   border-color: #c2d4e1;
+}
+
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.bg-primary {
+  background: #17b2cc !important;
+  color: white !important;
 }
 

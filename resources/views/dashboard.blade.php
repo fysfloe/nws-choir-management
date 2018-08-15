@@ -116,8 +116,8 @@
                                                     <a href="{{ route('rehearsal.show', $rehearsal) }}">
                                                         <span class="oi oi-eye"></span>
                                                     </a><br>
-                                                    @if ($concert->project)
-                                                        <small><strong class="text-muted">{{ $concert->project->title }}</strong></small><br/>
+                                                    @if ($rehearsal->project)
+                                                        <small><strong class="text-muted">{{ $rehearsal->project->title }}</strong></small><br/>
                                                     @endif
                                                 </li>
                                             @endforeach

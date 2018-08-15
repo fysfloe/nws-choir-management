@@ -24,6 +24,7 @@ $enable-flex: true !default;
 @import "project";
 @import "voices";
 @import "dashboard";
+@import "avatar";
 
 .navbar-dark .navbar-brand {
     font-family: "Pacifico", cursive;
@@ -210,11 +211,19 @@ ul.breadcrumbs {
     background-color: $brand-primary;
     border-color: $brand-primary;
 
-    &:active, &:hover, &:focus {
+    &:not([disabled]):not(.disabled):active, &:not([disabled]):not(.disabled):hover, &:not([disabled]):not(.disabled):focus {
         background-color: darken($brand-primary, 10);
         border-color: darken($brand-primary, 10);
         cursor: pointer;
     }
+}
+
+.btn-full {
+    border: 0;
+    margin: 0;
+    background: $brand-primary;
+    color: white;
+    text-decoration: none;
 }
 
 .btn-xs {
@@ -249,20 +258,32 @@ ul.breadcrumbs {
 .dropdown-item {
     display: block;
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.5rem 0.75rem;
     clear: both;
     font-weight: 400;
-    color: #212529;
+    color: $text-color;
     text-align: inherit;
     white-space: nowrap;
     background: none;
     border: 0;
     font-size: 0.8em;
+
+    &:hover, &:focus, &:active {
+        text-decoration: none;
+        background-color: $lightgrey;
+        color: $text-color;
+    }
 }
 
 a.dropdown-toggle {
     text-decoration: none;
     color: inherit;
+
+    &.no-caret {
+        &::after {
+            display: none;
+        }
+    }
 }
 
 .nav-tabs {
@@ -277,4 +298,13 @@ a.dropdown-toggle {
             }
         }
     }
+}
+
+.flex {
+    display: flex;
+}
+
+.bg-primary {
+    background: lighten($brand-primary, 5) !important;
+    color: white !important;
 }

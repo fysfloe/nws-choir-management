@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 use Webpatser\Countries\Countries;
 use App\Voice;
@@ -123,6 +124,16 @@ class ProfileController extends Controller
 
         $input['country_id'] = $input['citizenship'];
 
+        $avatar = $request->file('avatar');
+
+        if ($avatar) {
+            $filename = $input['firstname'] . '_' . $input['surname'] . '.' . $avatar->getClientOriginalExtension();
+            $avatar->storeAs('avatars', $filename, 'public');
+            $input['avatar'] = $filename;
+        } else {
+            $input['avatar'] = null;
+        }
+
         $user->update($input);
 
         $request->session()->flash('alert-success', __('Profile saved.'));
@@ -162,5 +173,14 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function uploadProfilePicture(Request $request)
+    {
+        dd($request->file('profilePicture'));
+
+        $file = $request->get('profilePicture');
+
+        dd($file->getClientOriginalName());
     }
 }

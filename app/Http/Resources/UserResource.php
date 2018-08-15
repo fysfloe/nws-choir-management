@@ -19,7 +19,8 @@ class UserResource extends Resource
             'firstname' => $this->firstname,
             'surname' => $this->surname,
             'voice' => new VoiceResource($this->voice),
-            'roles' => RoleResource::collection($this->roles)
+            'roles' => RoleResource::collection($this->roles),
+            'avatar' => $this->avatar
         ];
     }
 }

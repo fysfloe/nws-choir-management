@@ -9,8 +9,10 @@ use App\Http\Requests\StoreProject;
 use App\Project;
 use App\Voice;
 use App\Semester;
+use App\User;
 
 use App\Services\GetFilteredUsersService;
+use App\Http\Resources\UserResource;
 
 use Auth;
 
@@ -225,12 +227,37 @@ class ProjectController extends Controller
         return view('project.participants')->with([
             'tab' => 'participants',
             'project' => $project,
-            'participants' => $users,
+            'participants' => UserResource::collection($users),
             'activeFilters' => $activeFilters,
             'voices' => $voices,
             'route' => ['project.participants', $project],
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadParticipants(Request $request, Project $project)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        return json_encode(UserResource::collection($users));
     }
 
     public function voices(Request $request, Project $project)

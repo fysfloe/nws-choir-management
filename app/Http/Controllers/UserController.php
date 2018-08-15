@@ -106,7 +106,7 @@ class UserController extends Controller
             }
         }
 
-        return json_encode($users);
+        return json_encode(UserResource::collection($users));
     }
 
     /**
