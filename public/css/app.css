@@ -9940,6 +9940,12 @@ input.date {
   color: #495057;
 }
 
+.multiselect-container {
+  max-height: 25rem;
+  overflow-y: scroll;
+  min-width: 15rem;
+}
+
 .multiselect-container > li > a {
   color: inherit;
 }
