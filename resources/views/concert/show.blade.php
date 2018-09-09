@@ -32,12 +32,29 @@
                 @if ($concert->project && count($concert->project->rehearsals) > 0)
                     <ul class="rehearsals">
                     @foreach ($concert->project->rehearsals as $rehearsal)
+                    <a href="{{ route('rehearsal.show', $rehearsal) }}">
                         <li>
-                            {!! $rehearsal->__toString() !!}&nbsp;
-                            <a href="{{ route('rehearsal.show', $rehearsal) }}">
-                                <span class="oi oi-eye" data-toggle="tooltip" title="{{ __('Show') }}"></span>
-                            </a>
+                            <span>{!! $rehearsal->twoLineString() !!}</span>
+                            @if ($rehearsal->date > new \DateTime())
+                                <accept-decline
+                                    accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
+                                    decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
+                                    :accepted="{{ json_encode($rehearsal->promises->contains(Auth::user())) }}"
+                                    :declined="{{ json_encode($rehearsal->denials->contains(Auth::user())) }}"
+                                    :texts="{{ json_encode([
+                                        'acceptOrDecline' => __('Accept or decline'),
+                                        'attending' => __('You are attending!'),
+                                        'accept' => __('Accept'),
+                                        'notAttending' => __('You are not attending.'),
+                                        'decline' => __('Decline')
+                                    ]) }}"
+                                >
+                                </accept-decline>
+                            @else 
+                                <span class="accept-decline oi oi-media-record {{ $rehearsal->promises->contains(Auth::user()) ? 'text-success' : ($rehearsal->denials->contains(Auth::user()) ? 'text-danger' : 'text-muted') }}"></span>
+                            @endif
                         </li>
+                    </a>
                     @endforeach
                     </ul>
                 @else
@@ -45,7 +62,7 @@
                 @endif
 
                 @permission('manageRehearsals')
-                <a class="btn btn-default btn-sm mt-2" href="{{ route('rehearsal.create', ['project' => $concert->project->id, 'concert' => $concert->id]) }}">
+                <a class="btn btn-primary btn-sm mt-2" href="{{ route('rehearsal.create', ['project' => $concert->project->id, 'concert' => $concert->id]) }}">
                     {{ __('Add a rehearsal') }}
                 </a>
                 @endpermission

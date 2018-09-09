@@ -40,13 +40,21 @@
                 ],
                 'editProfile' => __('Edit Profile'),
                 'noneSet' => __('None set'),
-                'noUsers' => __('No users found.')
+                'noUsers' => __('No users found.'),
+                'total' => __('Total')
             ]) }}"
             :users="{{ json_encode($participants) }}"
             :can-manage-users="{{ Auth::user()->can('manageUsers') }}"
             :show-role="false"
             :voices="{{ json_encode($voices) }}"
             fetch-users-action="{{ route('concert.loadParticipants', $concert) }}"
+            :sort-options="{{ json_encode([
+                'firstname' => __('Firstname'),
+                'surname' => __('Surname'),
+                'voice' => __('Voice'),
+                'id' => __('Created at')
+            ]) }}"
+            set-voice-route="{{ route('concert.setUserVoice', $concert) }}"
         ></user-list>
     </div>
 

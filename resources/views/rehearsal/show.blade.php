@@ -23,7 +23,7 @@
             </div>
             <div class="col-4 side-box">
                 <h3>{{ __('Project') }}</h3>
-                <span>{{ $rehearsal->project->title }}</span>
+                <a href="{{ route('project.show', $rehearsal->project) }}">{{ $rehearsal->project->title }}</span>
 
                 <h3 class="mt-4">{{ __('Other rehearsals in this project') }}</h3>
                 <ul class="rehearsals">

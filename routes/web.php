@@ -38,8 +38,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/rehearsal/{rehearsal}/participants', 'RehearsalController@participants')->name('rehearsal.participants');
     Route::get('/rehearsal/accept/{rehearsal}', 'RehearsalController@accept')->name('rehearsal.accept');
     Route::get('/rehearsal/decline/{rehearsal}', 'RehearsalController@decline')->name('rehearsal.decline');
-    Route::get('/voice/showSet/{user}', 'VoiceController@showSet')->name('voice.showSet');
-    Route::post('/voice/set/{user}', 'VoiceController@set')->name('voice.set');
+    Route::get('/voice/showSet/{user?}', 'VoiceController@showSet')->name('voice.showSet');
+    Route::post('/voice/set/{user?}', 'VoiceController@set')->name('voice.set');
     Route::get('/semester/accept/{semester}', 'SemesterController@accept')->name('semester.accept');
     Route::get('/semester/decline/{semester}', 'SemesterController@decline')->name('semester.decline');
 
@@ -67,9 +67,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/concert/{concert}/saveVoices', 'ConcertController@saveVoices')->name('concert.saveVoices');
         Route::get('/concert/{concert}/editVoices', 'ConcertController@editVoices')->name('concert.editVoices');
         Route::get('/concert/{concert}/removeVoice/{voice}', 'ConcertController@removeVoice')->name('concert.removeVoice');
-        Route::get('/concert/{concert}/setVoice/{user}', 'ConcertController@showSetUserVoice')->name('concert.showSetUserVoice');
+        Route::get('/concert/{concert}/setVoice/{user?}', 'ConcertController@showSetUserVoice')->name('concert.showSetUserVoice');
         Route::get('/concert/{concert}/setVoice', 'ConcertController@showSetUserVoices')->name('concert.showSetUserVoices');
-        Route::post('/concert/{concert}/setVoice/{user}', 'ConcertController@setUserVoice')->name('concert.setUserVoice');
+        Route::post('/concert/{concert}/setVoice/{user?}', 'ConcertController@setUserVoice')->name('concert.setUserVoice');
         Route::post('/concert/{concert}/setVoice', 'ConcertController@setUserVoices')->name('concert.setUserVoices');
         Route::get('/concert/{concert}/addUser', 'ConcertController@showAddUser')->name('concert.showAddUser');
         Route::post('/concert/{concert}/addUser', 'ConcertController@addUser')->name('concert.addUser');
@@ -84,9 +84,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/project/{project}/saveVoices', 'ProjectController@saveVoices')->name('project.saveVoices');
         Route::get('/project/{project}/editVoices', 'ProjectController@editVoices')->name('project.editVoices');
         Route::get('/project/{project}/removeVoice/{voice}', 'ProjectController@removeVoice')->name('project.removeVoice');
-        Route::get('/project/{project}/setVoice/{user}', 'ProjectController@showSetUserVoice')->name('project.showSetUserVoice');
+        Route::get('/project/{project}/setVoice/{user?}', 'ProjectController@showSetUserVoice')->name('project.showSetUserVoice');
         Route::get('/project/{project}/setVoice', 'ProjectController@showSetUserVoices')->name('project.showSetUserVoices');
-        Route::post('/project/{project}/setVoice/{user}', 'ProjectController@setUserVoice')->name('project.setUserVoice');
+        Route::post('/project/{project}/setVoice/{user?}', 'ProjectController@setUserVoice')->name('project.setUserVoice');
         Route::post('/project/{project}/setVoice', 'ProjectController@setUserVoices')->name('project.setUserVoices');
         Route::get('/project/{project}/addUser', 'ProjectController@showAddUser')->name('project.showAddUser');
         Route::post('/project/{project}/addUser', 'ProjectController@addUser')->name('project.addUser');

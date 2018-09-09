@@ -68969,9 +68969,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices'],
+    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute'],
     data: function data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -68994,9 +69000,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        sortBy: function sortBy(sort, dir) {
+        changeSortDir: function changeSortDir() {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchUsers();
+        },
+        changeSort: function changeSort(sort) {
             this.filters.sort = sort;
-            this.filters.dir = dir;
 
             this.fetchUsers();
         },
@@ -69154,41 +69168,70 @@ var render = function() {
                       _vm._s(_vm.texts.headings.user) +
                       "\n                "
                   ),
-                  _c(
-                    "a",
-                    {
-                      class: {
-                        "list-sort": true,
-                        active:
-                          _vm.filters.sort === "surname" &&
-                          _vm.filters.dir === "ASC"
+                  _c("div", { staticClass: "btn-group" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-default btn-sm",
+                        attrs: { type: "button" },
+                        on: { click: _vm.changeSortDir }
                       },
-                      on: {
-                        click: function($event) {
-                          _vm.sortBy("surname", "ASC")
+                      [
+                        _c("span", {
+                          class: {
+                            oi: true,
+                            "oi-sort-ascending": _vm.filters.dir === "ASC",
+                            "oi-sort-descending": _vm.filters.dir === "DESC"
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-default btn-sm dropdown-toggle dropdown-toggle-split",
+                        attrs: {
+                          type: "button",
+                          id: "sortOrder",
+                          "data-toggle": "dropdown",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
                         }
-                      }
-                    },
-                    [_c("span", { staticClass: "oi oi-caret-top" })]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      class: {
-                        "list-sort": true,
-                        active:
-                          _vm.filters.sort === "surname" &&
-                          _vm.filters.dir === "DESC"
                       },
-                      on: {
-                        click: function($event) {
-                          _vm.sortBy("surname", "DESC")
-                        }
-                      }
-                    },
-                    [_c("span", { staticClass: "oi oi-caret-bottom" })]
-                  )
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.sortOptions[this.filters.sort]) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "dropdown-menu",
+                        attrs: { "aria-labelledby": "sortOrder" }
+                      },
+                      _vm._l(_vm.sortOptions, function(sortOption, key) {
+                        return _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                _vm.changeSort(key)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(sortOption))]
+                        )
+                      })
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-md-2 row-count" }, [
@@ -69240,7 +69283,7 @@ var render = function() {
                               "a",
                               {
                                 attrs: {
-                                  href: "/voice/showSet/" + user.id,
+                                  href: _vm.setVoiceRoute + "/" + user.id,
                                   "data-toggle": "modal",
                                   "data-target": "#mainModal"
                                 }

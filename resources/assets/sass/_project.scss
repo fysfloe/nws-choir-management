@@ -40,22 +40,17 @@ header {
             padding: 0.5em 1em;
             border-left: 0.25em solid transparent;
             border-bottom: 0.1em solid darken($lightgrey, 5);
-        }
-    }
-}
+            display: flex;
+            align-items: center;
 
-.side-box ul.rehearsals {
-    li {
-        display: flex;
-        align-items: center;
-
-        span, div {
-            flex-grow: 1;
-        }
-
-        .accept-decline {
-            margin: 0 !important;
-            text-align: right;
+            span, div {
+                flex-grow: 1;
+            }
+    
+            .accept-decline {
+                margin: 0 !important;
+                text-align: right;
+            }
         }
     }
 }
@@ -76,6 +71,10 @@ header {
 
         &.text-danger {
             border-color: $brand-danger;
+        }
+        
+        &:hover {
+            cursor: pointer;
         }
     }
 }

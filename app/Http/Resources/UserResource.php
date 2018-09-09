@@ -14,11 +14,17 @@ class UserResource extends Resource
      */
     public function toArray($request)
     {
+        if ($this->resource->voiceName) {
+            $voice = ['name' => $this->resource->voiceName];
+        } else {
+            $voice = new VoiceResource($this->voice);
+        }
+
         return [
             'id' => $this->id,
             'firstname' => $this->firstname,
             'surname' => $this->surname,
-            'voice' => new VoiceResource($this->voice),
+            'voice' => $voice,
             'roles' => RoleResource::collection($this->roles),
             'avatar' => $this->avatar
         ];

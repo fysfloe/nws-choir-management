@@ -23,9 +23,29 @@
                     @foreach ($project->concerts as $concert)
                     <a href="{{ route('concert.show', $concert) }}">
                         <li>
-                            <strong>{{ $concert->title }}</strong><br>
-                            <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
-                            <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
+                            <div>
+                                <strong>{{ $concert->title }}</strong><br>
+                                <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
+                                <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
+                            </div>
+                            @if ($concert->date > (new \DateTime())->format('Y-m-d'))
+                                <accept-decline
+                                    accept-route="{{ route('concert.accept', $concert) }}"
+                                    decline-route="{{ route('concert.decline', $concert) }}"
+                                    :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
+                                    :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
+                                    :texts="{{ json_encode([
+                                        'acceptOrDecline' => __('Accept or decline'),
+                                        'attending' => __('You are attending!'),
+                                        'accept' => __('Accept'),
+                                        'notAttending' => __('You are not attending.'),
+                                        'decline' => __('Decline')
+                                    ]) }}"
+                                >
+                                </accept-decline>
+                            @else 
+                                <span class="accept-decline oi oi-media-record {{ $concert->promises->contains(Auth::user()) ? 'text-success' : ($concert->denials->contains(Auth::user()) ? 'text-danger' : 'text-muted') }}"></span>
+                            @endif
                         </li>
                     </a>
                     @endforeach
@@ -47,21 +67,23 @@
                     <a href="{{ route('rehearsal.show', $rehearsal) }}">
                         <li>
                             <span>{!! $rehearsal->twoLineString() !!}</span>
-                            @if ($rehearsal->date > new \DateTime())
-                            <accept-decline
-                                accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
-                                decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
-                                :accepted="{{ json_encode($rehearsal->promises->contains(Auth::user())) }}"
-                                :declined="{{ json_encode($rehearsal->denials->contains(Auth::user())) }}"
-                                :texts="{{ json_encode([
-                                    'acceptOrDecline' => __('Accept or decline'),
-                                    'attending' => __('You are attending!'),
-                                    'accept' => __('Accept'),
-                                    'notAttending' => __('You are not attending.'),
-                                    'decline' => __('Decline')
-                                ]) }}"
-                            >
-                            </accept-decline>
+                            @if ($rehearsal->date > (new \DateTime())->format('Y-m-d'))
+                                <accept-decline
+                                    accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
+                                    decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
+                                    :accepted="{{ json_encode($rehearsal->promises->contains(Auth::user())) }}"
+                                    :declined="{{ json_encode($rehearsal->denials->contains(Auth::user())) }}"
+                                    :texts="{{ json_encode([
+                                        'acceptOrDecline' => __('Accept or decline'),
+                                        'attending' => __('You are attending!'),
+                                        'accept' => __('Accept'),
+                                        'notAttending' => __('You are not attending.'),
+                                        'decline' => __('Decline')
+                                    ]) }}"
+                                >
+                                </accept-decline>
+                            @else 
+                                <span class="accept-decline oi oi-media-record {{ $rehearsal->promises->contains(Auth::user()) ? 'text-success' : ($rehearsal->denials->contains(Auth::user()) ? 'text-danger' : 'text-muted') }}"></span>
                             @endif
                         </li>
                     </a>

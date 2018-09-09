@@ -9987,7 +9987,7 @@ input.date {
 }
 
 .btn-default {
-  border: 0.1rem solid #2c2e33;
+  border: 0.1em solid #2c2e33;
   font-weight: bold;
   background: white;
   color: #2c2e33;
@@ -10062,6 +10062,8 @@ input.date {
   font-weight: bold;
   -webkit-box-shadow: 0 0.2rem 0.2rem -0.1rem #d3e0e9;
           box-shadow: 0 0.2rem 0.2rem -0.1rem #d3e0e9;
+  background: #149EB5;
+  color: white;
 }
 
 .list-table header > div {
@@ -10079,7 +10081,6 @@ input.date {
 
 .list-table header .row-count {
   font-size: 0.85em;
-  color: #2c2e33;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -10092,21 +10093,29 @@ input.date {
 }
 
 .list-table header .dropdown {
+  display: inline-block;
+}
+
+.list-table header .dropdown.list-actions {
   display: none;
 }
 
-.list-table header .dropdown.active {
+.list-table header .dropdown.list-actions.active {
   display: inline-block;
 }
 
-.list-table header .dropdown .dropdown-toggle {
-  display: inline-block;
+.list-table header .dropdown.list-actions .dropdown-toggle {
   padding: 9px 5px;
+  display: inline-block;
 }
 
-.list-table header .dropdown .dropdown-toggle:hover,
-.list-table header .dropdown .dropdown-toggle:focus {
-  background: #f5f8fa;
+.list-table header .dropdown.list-actions .dropdown-toggle:hover,
+.list-table header .dropdown.list-actions .dropdown-toggle:focus {
+  background: #0f7687;
+}
+
+.list-table header .btn-group {
+  margin-left: 0.5em;
 }
 
 .list-table ul {
@@ -10321,9 +10330,6 @@ header.page-header .accept-decline {
   padding: 0.5em 1em;
   border-left: 0.25em solid transparent;
   border-bottom: 0.1em solid #e4ecf2;
-}
-
-.side-box ul.rehearsals li {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -10332,14 +10338,17 @@ header.page-header .accept-decline {
           align-items: center;
 }
 
-.side-box ul.rehearsals li span,
-.side-box ul.rehearsals li div {
+.side-box ul.rehearsals a li span,
+.side-box ul.rehearsals a li div,
+.side-box ul.concerts a li span,
+.side-box ul.concerts a li div {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
 
-.side-box ul.rehearsals li .accept-decline {
+.side-box ul.rehearsals a li .accept-decline,
+.side-box ul.concerts a li .accept-decline {
   margin: 0 !important;
   text-align: right;
 }
@@ -10360,6 +10369,10 @@ header.page-header .accept-decline {
 
 .accept-decline > span.text-danger {
   border-color: #bf5329;
+}
+
+.accept-decline > span:hover {
+  cursor: pointer;
 }
 
 .edit-voices > small {

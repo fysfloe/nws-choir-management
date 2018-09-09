@@ -139,6 +139,7 @@ class UserController extends Controller
             'email' => $data['email'],
             'gender' => $data['gender'],
             'password' => bcrypt($data['password']),
+            'username' => $data['firstname'] . ' ' . $data['surname']
         ]);
 
         $memberRole = Role::where('name', '=', 'member')->first();

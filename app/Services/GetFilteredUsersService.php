@@ -61,9 +61,9 @@ class GetFilteredUsersService {
         return $users;
     }
 
-    public function concertParticipants($concert, $filters, $search, $sort = null, $dir = 'ASC')
+    public function concertParticipants($concert, $filters, $search, $sort = 'surname', $dir = 'ASC')
     {
-        if (!$sort) $sort = 'id';
+        if (!$sort) $sort = 'surname';
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
         $concerts = isset($filters['concerts']) ? $filters['concerts'] : null;
@@ -102,9 +102,9 @@ class GetFilteredUsersService {
         return $users;
     }
 
-    public function projectParticipants($project, $filters, $search, $sort = null, $dir = 'ASC')
+    public function projectParticipants($project, $filters, $search, $sort = 'surname', $dir = 'ASC')
     {
-        if (!$sort) $sort = 'id';
+        if (!$sort) $sort = 'surname';
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
         $projects = isset($filters['projects']) ? $filters['projects'] : null;
@@ -134,6 +134,10 @@ class GetFilteredUsersService {
         if ($voices !== null && count($voices) > 0) {
             $voices = implode(',', $voices);
             $query .= "AND voices.id IN ($voices) ";
+        }
+
+        if ($sort === 'voice') {
+            $sort = 'voice.name';
         }
 
         $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";

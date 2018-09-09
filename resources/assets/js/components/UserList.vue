@@ -36,12 +36,18 @@
                     </div>
 
                     {{ texts.headings.user }}
-                    <a :class="{'list-sort': true, 'active': filters.sort === 'surname' && filters.dir === 'ASC'}" @click="sortBy('surname', 'ASC')">
-                        <span class="oi oi-caret-top"></span>
-                    </a>
-                    <a :class="{'list-sort': true, 'active': filters.sort === 'surname' && filters.dir === 'DESC'}" @click="sortBy('surname', 'DESC')">
-                        <span class="oi oi-caret-bottom"></span>
-                    </a>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm" @click="changeSortDir">
+                            <span :class="{'oi': true, 'oi-sort-ascending': filters.dir === 'ASC', 'oi-sort-descending': filters.dir === 'DESC'}"></span>
+                        </button>
+
+                        <button class="btn btn-default btn-sm dropdown-toggle dropdown-toggle-split" type="button" id="sortOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ sortOptions[this.filters.sort] }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="sortOrder">
+                            <a @click="changeSort(key)" class="dropdown-item" href="#" v-for="(sortOption, key) in sortOptions">{{ sortOption }}</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-2 row-count">
                     {{ texts.total + ': ' + _users.length }}
@@ -62,7 +68,7 @@
                             <div class="name">
                                 {{ user.firstname }} {{ user.surname }}
                                 <div>
-                                    <a :href="'/voice/showSet/' + user.id" data-toggle="modal" data-target="#mainModal">
+                                    <a :href="setVoiceRoute + '/' + user.id" data-toggle="modal" data-target="#mainModal">
                                         <span class="badge badge-secondary badge-pill" v-if="user.voice">
                                             {{ user.voice.name }}
                                         </span>
@@ -115,7 +121,7 @@
 
 <script>
 export default {
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices'],
+    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute'],
     data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -137,9 +143,17 @@ export default {
         this._users = this.users;
     },
     methods: {
-        sortBy: function(sort, dir) {
+        changeSortDir: function () {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchUsers();
+        },
+        changeSort: function(sort) {
             this.filters.sort = sort;
-            this.filters.dir = dir;
 
             this.fetchUsers();
         },

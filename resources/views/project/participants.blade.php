@@ -41,13 +41,21 @@
                 'editProfile' => __('Edit Profile'),
                 'noneSet' => __('None set'),
                 'noUsers' => __('No users found.'),
-                'total' => __('Total')
+                'total' => __('Total'),
+                'sortBy' => __('Sort by')
             ]) }}"
             :users="{{ json_encode($participants) }}"
             :can-manage-users="{{ Auth::user()->can('manageUsers') }}"
             :show-role="false"
             :voices="{{ json_encode($voices) }}"
             fetch-users-action="{{ route('project.loadParticipants', $project) }}"
+            :sort-options="{{ json_encode([
+                'firstname' => __('Firstname'),
+                'surname' => __('Surname'),
+                'voice' => __('Voice'),
+                'id' => __('Created at')
+            ]) }}"
+            set-voice-route="{{ route('project.setUserVoice', $project) }}"
         ></user-list>
     </div>
 

@@ -48,6 +48,13 @@
         :show-role="true"
         :voices="{{ json_encode($voices) }}"
         fetch-users-action="{{ route('users.load') }}"
+        :sort-options="{{ json_encode([
+            'firstname' => __('Firstname'),
+            'surname' => __('Surname'),
+            'voice' => __('Voice'),
+            'id' => __('Created at')
+        ]) }}"
+        set-voice-route="{{ route('voice.showSet') }}"
     ></user-list>
 
 @endsection

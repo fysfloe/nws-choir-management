@@ -7,6 +7,8 @@
     header {
         font-weight: bold;
         box-shadow: 0 0.2rem 0.2rem -0.1rem darken($lightgrey, 10);
+        background: $brand-primary;
+        color: white;
 
         > div {
             padding-top: 0.5rem;
@@ -23,27 +25,34 @@
 
         .row-count {
             font-size: 0.85em;
-            color: #2c2e33;
             align-items: center;
             display: flex;
             justify-content: flex-end;
         }
 
         .dropdown {
-            display: none;
+            display: inline-block;
 
-            &.active {
-                display: inline-block;
-            }
+            &.list-actions {
+                display: none;
 
-            .dropdown-toggle {
-                display: inline-block;
-                padding: 9px 5px;
+                &.active {
+                    display: inline-block;
+                }
 
-                &:hover, &:focus {
-                    background: $lightgrey;
+                .dropdown-toggle {
+                    padding: 9px 5px;
+                    display: inline-block;
+    
+                    &:hover, &:focus {
+                        background: darken($brand-primary, 10);
+                    }
                 }
             }
+        }
+
+        .btn-group {
+            margin-left: 0.5em;
         }
     }
 
