@@ -20,7 +20,7 @@ class UserResource extends Resource
             $voice = new VoiceResource($this->voice);
         }
 
-        return [
+        $user = [
             'id' => $this->id,
             'firstname' => $this->firstname,
             'surname' => $this->surname,
@@ -28,5 +28,15 @@ class UserResource extends Resource
             'roles' => RoleResource::collection($this->roles),
             'avatar' => $this->avatar
         ];
+
+        if ($this->resource->confirmed) {
+            $user['confirmed'] = $this->resource->confirmed;
+        }
+
+        if ($this->resource->excused) {
+            $user['excused'] = $this->resource->excused;
+        }
+
+        return $user;
     }
 }

@@ -35,9 +35,9 @@
         </div>
 
         <ul class="active-filters" v-if="Object.keys(activeFilters).length > 0">
-            <li v-for="(val, key) in activeFilters" @click="_removeFilter(key)" class="badge badge-pill badge-default" :data-field="key">
+            <li v-for="(val, key) in activeFilters" v-if="key !== 'sort' && key !== 'dir'" @click="_removeFilter(key)" class="badge badge-pill badge-default" :data-field="key">
                 <strong>{{ key }}</strong>:
-                {{ val }}
+                {{ key === 'voices' ? voices[val] : val }}
             </li>
         </ul>
         <span v-else class="text-muted">{{ texts.noActiveFilters }}</span>

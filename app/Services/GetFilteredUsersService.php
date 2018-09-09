@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\User;
+use App\Rehearsal;
 
 class GetFilteredUsersService {
     public function __construct()
@@ -141,6 +142,52 @@ class GetFilteredUsersService {
         }
 
         $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";
+
+        $users = User::fromQuery($query);
+
+        return $users;
+    }
+
+    public function rehearsalParticipants(Rehearsal $rehearsal, $filters, $search, $sort = 'surname', $dir = 'ASC')
+    {
+        if (!$sort) $sort = 'surname';
+
+        $voices = isset($filters['voices']) ? $filters['voices'] : null;
+
+        $query = "SELECT users.*, user_rehearsal.confirmed as confirmed, user_rehearsal.excused as excused"
+            . " FROM users 
+            LEFT OUTER JOIN user_project ON users.id = user_project.user_id 
+            LEFT OUTER JOIN user_rehearsal ON users.id = user_rehearsal.user_id";
+        
+        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
+
+        $query .= "WHERE users.deleted_at IS NULL
+        AND user_rehearsal.rehearsal_id = $rehearsal->id
+        AND user_rehearsal.accepted = 1
+        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+
+        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
+        if ($ageFrom) {
+            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
+            $query .= "AND users.birthdate < '$minDate' ";
+        }
+
+        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
+        if ($ageTo) {
+            $ageTo += 1;
+            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
+            $query .= "AND users.birthdate >= '$maxDate' ";
+        }
+        if ($voices !== null && count($voices) > 0) {
+            $voices = implode(',', $voices);
+            $query .= "AND voice.id IN ($voices) ";
+        }
+
+        if ($sort === 'voice') {
+            $sort = 'voice.name';
+        }
+
+        $query .= "GROUP BY users.id ORDER BY $sort $dir";
 
         $users = User::fromQuery($query);
 

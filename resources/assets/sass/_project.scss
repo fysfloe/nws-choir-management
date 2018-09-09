@@ -55,8 +55,8 @@ header {
     }
 }
 
-.accept-decline {
-    > span {
+.accept-decline > span,
+.attendance-buttons a {
         display: inline-block;
         padding: 0 0.25em;
         border: 0.1em solid;
@@ -76,5 +76,4 @@ header {
         &:hover {
             cursor: pointer;
         }
-    }
 }

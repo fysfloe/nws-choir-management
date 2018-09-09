@@ -37,13 +37,13 @@
                 {{ __('Info') }}
             </a>
         </li>
+        @permission('manageProjects')
         <li class="nav-item">
             <a class="nav-link @if ($tab === 'participants') active @endif" id="participants-tab" href="{{ route('project.participants', $project) }}" role="tab" aria-controls="participants">
                 <span class="oi oi-people"></span>&nbsp;
                 {{ __('Participants') }}
             </a>
         </li>
-        @permission('manageProjects')
         <li class="nav-item">
             <a class="nav-link @if ($tab === 'voices') active @endif" id="voices-tab" href="{{ route('project.voices', $project) }}" role="tab" aria-controls="voices">
                 <span class="oi oi-pulse"></span>&nbsp;

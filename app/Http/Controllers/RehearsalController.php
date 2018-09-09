@@ -12,6 +12,9 @@ use App\Voice;
 use App\Concert;
 use App\Project;
 
+use App\Services\GetFilteredUsersService;
+use App\Http\Resources\UserResource;
+
 use App\Http\Requests\StoreRehearsal;
 use Auth;
 
@@ -21,7 +24,7 @@ class RehearsalController extends Controller
     {
         parent::__construct();
 
-        $this->breadcrumbs->addCrumb(__('Rehearsals'), 'rehearsals');
+        // $this->breadcrumbs->addCrumb(__('Rehearsals'), 'rehearsals');
     }
 
     /**
@@ -90,13 +93,42 @@ class RehearsalController extends Controller
      */
     public function show(Rehearsal $rehearsal)
     {
-        $this->breadcrumbs->addCrumb($rehearsal->__toString(), $rehearsal);
+        if ($rehearsal->project) {
+            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
+        }
+
+        $this->breadcrumbs->addCrumb($rehearsal->title(), $rehearsal);
 
         return view('rehearsal.show')->with([
             'tab' => 'show',
             'rehearsal' => $rehearsal,
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadParticipants(Request $request, Rehearsal $rehearsal)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->rehearsalParticipants($rehearsal, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        return json_encode(UserResource::collection($users));
     }
 
     /**
@@ -108,45 +140,13 @@ class RehearsalController extends Controller
      */
     public function participants(Request $request, Rehearsal $rehearsal)
     {
-        $this->breadcrumbs->addCrumb($rehearsal->__toString(), $rehearsal);
-
-        $sort = $request->get('sort');
-
-        if (!$sort) $sort = 'id';
-
-        $dir = $request->get('dir');
-        $search = $request->get('search');
-        $voices = $request->get('voices');
-
-        $query = "SELECT users.* "
-            . "FROM users
-            LEFT OUTER JOIN user_rehearsal ON users.id = user_rehearsal.user_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL
-        AND user_rehearsal.rehearsal_id = $rehearsal->id
-        AND user_rehearsal.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = $request->get('age-from');
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
+        if ($rehearsal->project) {
+            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
         }
 
-        $ageTo = $request->get('age-to');
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND users.voice_id IN ($voices) ";
-        }
+        $filters = $request->all();
 
-        $query .= "GROUP BY users.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
+        $users = (new GetFilteredUsersService())->rehearsalParticipants($rehearsal, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
         $activeFilters = [];
         foreach ($request->all() as $key => $val) {
@@ -169,7 +169,7 @@ class RehearsalController extends Controller
         return view('rehearsal.participants')->with([
             'tab' => 'participants',
             'rehearsal' => $rehearsal,
-            'participants' => $users,
+            'participants' => UserResource::collection($users),
             'activeFilters' => $activeFilters,
             'voices' => $voices,
             'route' => ['rehearsal.participants', $rehearsal],

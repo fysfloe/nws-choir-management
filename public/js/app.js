@@ -17128,6 +17128,7 @@ Vue.component('user-list', __webpack_require__(165));
 Vue.component('filters', __webpack_require__(168));
 Vue.component('picture-input', __webpack_require__(171));
 Vue.component('accept-decline', __webpack_require__(185));
+Vue.component('attendance', __webpack_require__(188));
 
 var app = new Vue({
     el: '#app'
@@ -17181,87 +17182,8 @@ $(function () {
         }
     });
 
-    $('body').on('click', 'a.ajax', function (event) {
-        event.preventDefault();
-
-        var $this = $(this);
-
-        $this.removeClass($this.data('unclicked-class'));
-        $this.addClass($this.data('clicked-class'));
-        $this.addClass('clicked');
-
-        $this.parents('.btn-group').find('.btn').each(function () {
-            $that = $(this);
-            if (!$this.is($that)) {
-                $that.removeClass($that.data('clicked-class'));
-                $that.removeClass('clicked');
-                $that.addClass($that.data('unclicked-class'));
-            }
-        });
-
-        $.ajax({
-            url: $this.attr('href')
-        }).done(function (data) {});
-    });
-
-    $('body').on('click', 'input[type="checkbox"].check-all', function () {
-        var $listTable = $(this).closest('.list-table');
-        var $checkboxes = $listTable.find('[name="' + $(this).data('controls') + '"]');
-
-        $checkboxes.prop('checked', $(this).prop('checked'));
-        var $dropdown = $listTable.find('.dropdown');
-
-        $dropdown.toggleClass('active');
-
-        updateActionLinks();
-    });
-
-    var toggleListCheckbox = function toggleListCheckbox() {
-        var $listTable = $(this).closest('.list-table');
-        var $checkboxes = $listTable.find('input[name="users[]"]');
-        var checked = false;
-
-        $checkboxes.each(function () {
-            if ($(this).prop('checked')) {
-                checked = true;
-            }
-        });
-
-        var $dropdown = $listTable.find('.dropdown');
-
-        if (checked) {
-            $dropdown.addClass('active');
-        } else {
-            $dropdown.removeClass('active');
-            $('input[type="checkbox"].check-all').prop('checked', false);
-        }
-
-        updateActionLinks();
-    };
-
-    var updateActionLinks = function updateActionLinks() {
-        var $actionLinks = $('.list-actions .dropdown-menu a');
-
-        $actionLinks.each(function () {
-            var href = $(this).data('href');
-            href += '?' + $('input[name="users[]"]').serialize();
-
-            $(this).attr('href', href);
-        });
-    };
-
-    $('body').on('click', 'input[name="users[]"]', toggleListCheckbox);
-
-    $('body').on('click', '.list-table li.row', function (event) {
-        if ($(event.target).is('div')) {
-            var $checkbox = $(this).find('input[type="checkbox"]');
-            $checkbox.prop('checked', !$checkbox.prop('checked'));
-            toggleListCheckbox.bind($checkbox)();
-        }
-    });
-
     $('body').on('input', '#firstname, #surname', function (event) {
-        $('#username').val($('#firstname').val() + $('#surname').val());
+        $('#username').val($('#firstname').val() + ' ' + $('#surname').val());
     });
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
@@ -68975,9 +68897,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute'],
+    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes'],
     data: function data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -69248,123 +69174,148 @@ var render = function() {
                 { staticClass: "users" },
                 _vm._l(_vm._users, function(user) {
                   return _c("li", { staticClass: "row align-items-center" }, [
-                    _c("div", { staticClass: "col-md-10" }, [
-                      _c("div", { staticClass: "flex align-items-center" }, [
-                        _c("input", {
-                          attrs: { type: "checkbox", name: "users[]" },
-                          domProps: { value: user.id }
-                        }),
-                        _vm._v(" \n                        "),
-                        user.avatar
-                          ? _c("div", { staticClass: "avatar" }, [
-                              _c("img", {
-                                attrs: {
-                                  src: "/storage/avatars/" + user.avatar,
-                                  alt: user.firstname + " " + user.surname
-                                }
-                              })
+                    _c(
+                      "div",
+                      {
+                        class:
+                          "col-md-" +
+                          (_vm.withAttendanceConfirmation ? "8" : "10")
+                      },
+                      [
+                        _c("div", { staticClass: "flex align-items-center" }, [
+                          _c("input", {
+                            attrs: { type: "checkbox", name: "users[]" },
+                            domProps: { value: user.id }
+                          }),
+                          _vm._v(" \n                        "),
+                          user.avatar
+                            ? _c("div", { staticClass: "avatar" }, [
+                                _c("img", {
+                                  attrs: {
+                                    src: "/storage/avatars/" + user.avatar,
+                                    alt: user.firstname + " " + user.surname
+                                  }
+                                })
+                              ])
+                            : _c(
+                                "div",
+                                { staticClass: "avatar avatar-default" },
+                                [_c("span", { staticClass: "oi oi-person" })]
+                              ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "name" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(user.firstname) +
+                                " " +
+                                _vm._s(user.surname) +
+                                "\n                            "
+                            ),
+                            _c("div", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: {
+                                    href: _vm.setVoiceRoute + "/" + user.id,
+                                    "data-toggle": "modal",
+                                    "data-target": "#mainModal"
+                                  }
+                                },
+                                [
+                                  user.voice
+                                    ? _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "badge badge-secondary badge-pill"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                        " +
+                                              _vm._s(user.voice.name) +
+                                              "\n                                    "
+                                          )
+                                        ]
+                                      )
+                                    : _c(
+                                        "small",
+                                        {
+                                          staticClass:
+                                            "badge badge-light badge-pill text-muted"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "(" +
+                                              _vm._s(_vm.texts.noneSet) +
+                                              ")"
+                                          )
+                                        ]
+                                      )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.showRoles
+                                ? _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        href: "/admin/role/set/" + user.id,
+                                        "data-toggle": "modal",
+                                        "data-target": "#mainModal"
+                                      }
+                                    },
+                                    _vm._l(user.roles, function(role) {
+                                      return user.roles && user.roles.length > 0
+                                        ? _c(
+                                            "span",
+                                            { staticClass: "badge badge-info" },
+                                            [
+                                              _vm._v(
+                                                "\n                                        " +
+                                                  _vm._s(role.name) +
+                                                  "\n                                    "
+                                              )
+                                            ]
+                                          )
+                                        : _c(
+                                            "small",
+                                            {
+                                              staticClass:
+                                                "badge badge-light text-muted"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "(" +
+                                                  _vm._s(_vm.texts.noneSet) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                    })
+                                  )
+                                : _vm._e()
                             ])
-                          : _c(
-                              "div",
-                              { staticClass: "avatar avatar-default" },
-                              [_c("span", { staticClass: "oi oi-person" })]
-                            ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "name" }, [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(user.firstname) +
-                              " " +
-                              _vm._s(user.surname) +
-                              "\n                            "
-                          ),
-                          _c("div", [
-                            _c(
-                              "a",
-                              {
-                                attrs: {
-                                  href: _vm.setVoiceRoute + "/" + user.id,
-                                  "data-toggle": "modal",
-                                  "data-target": "#mainModal"
-                                }
-                              },
-                              [
-                                user.voice
-                                  ? _c(
-                                      "span",
-                                      {
-                                        staticClass:
-                                          "badge badge-secondary badge-pill"
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                        " +
-                                            _vm._s(user.voice.name) +
-                                            "\n                                    "
-                                        )
-                                      ]
-                                    )
-                                  : _c(
-                                      "small",
-                                      {
-                                        staticClass:
-                                          "badge badge-light badge-pill text-muted"
-                                      },
-                                      [
-                                        _vm._v(
-                                          "(" + _vm._s(_vm.texts.noneSet) + ")"
-                                        )
-                                      ]
-                                    )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm.showRoles
-                              ? _c(
-                                  "a",
-                                  {
-                                    attrs: {
-                                      href: "/admin/role/set/" + user.id,
-                                      "data-toggle": "modal",
-                                      "data-target": "#mainModal"
-                                    }
-                                  },
-                                  _vm._l(user.roles, function(role) {
-                                    return user.roles && user.roles.length > 0
-                                      ? _c(
-                                          "span",
-                                          { staticClass: "badge badge-info" },
-                                          [
-                                            _vm._v(
-                                              "\n                                        " +
-                                                _vm._s(role.name) +
-                                                "\n                                    "
-                                            )
-                                          ]
-                                        )
-                                      : _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "badge badge-light text-muted"
-                                          },
-                                          [
-                                            _vm._v(
-                                              "(" +
-                                                _vm._s(_vm.texts.noneSet) +
-                                                ")"
-                                            )
-                                          ]
-                                        )
-                                  })
-                                )
-                              : _vm._e()
                           ])
                         ])
-                      ])
-                    ]),
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-md-1" }),
+                    _vm.withAttendanceConfirmation
+                      ? _c(
+                          "div",
+                          { staticClass: "col-md-3" },
+                          [
+                            _c("attendance", {
+                              attrs: {
+                                routes: _vm.attendanceRoutes,
+                                user: user,
+                                texts: _vm.texts
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-1 user-actions" }, [
                       _c(
@@ -69861,22 +69812,28 @@ var render = function() {
           "ul",
           { staticClass: "active-filters" },
           _vm._l(_vm.activeFilters, function(val, key) {
-            return _c(
-              "li",
-              {
-                staticClass: "badge badge-pill badge-default",
-                attrs: { "data-field": key },
-                on: {
-                  click: function($event) {
-                    _vm._removeFilter(key)
-                  }
-                }
-              },
-              [
-                _c("strong", [_vm._v(_vm._s(key))]),
-                _vm._v(":\n            " + _vm._s(val) + "\n        ")
-              ]
-            )
+            return key !== "sort" && key !== "dir"
+              ? _c(
+                  "li",
+                  {
+                    staticClass: "badge badge-pill badge-default",
+                    attrs: { "data-field": key },
+                    on: {
+                      click: function($event) {
+                        _vm._removeFilter(key)
+                      }
+                    }
+                  },
+                  [
+                    _c("strong", [_vm._v(_vm._s(key))]),
+                    _vm._v(
+                      ":\n            " +
+                        _vm._s(key === "voices" ? _vm.voices[val] : val) +
+                        "\n        "
+                    )
+                  ]
+                )
+              : _vm._e()
           })
         )
       : _c("span", { staticClass: "text-muted" }, [
@@ -71343,6 +71300,171 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-7959a5b2", module.exports)
+  }
+}
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(189)
+/* template */
+var __vue_template__ = __webpack_require__(190)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Attendance.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-667f93e0", Component.options)
+  } else {
+    hotAPI.reload("data-v-667f93e0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['routes', 'user', 'texts'],
+    data: function data() {
+        return {
+            isConfirmed: this.user.confirmed === 1,
+            isExcused: this.user.excused === 1,
+            isUnexcused: this.user.confirmed === 0 && this.user.excused === 0
+        };
+    },
+
+    methods: {
+        confirm: function confirm() {
+            var _this = this;
+
+            this.$http.get(this.routes.confirm + '/' + this.user.id).then(function (response) {
+                _this.isExcused = false;
+                _this.isUnexcused = false;
+                _this.isConfirmed = true;
+            }, function (response) {});
+        },
+        excuse: function excuse() {
+            var _this2 = this;
+
+            this.$http.get(this.routes.excused + '/' + this.user.id).then(function (response) {
+                _this2.isExcused = true;
+                _this2.isUnexcused = false;
+                _this2.isConfirmed = false;
+            }, function (response) {});
+        },
+        unexcuse: function unexcuse() {
+            var _this3 = this;
+
+            this.$http.get(this.routes.unexcused + '/' + this.user.id).then(function (response) {
+                _this3.isExcused = false;
+                _this3.isUnexcused = true;
+                _this3.isConfirmed = false;
+            }, function (response) {});
+        }
+    }
+});
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "attendance-buttons" }, [
+    _c(
+      "a",
+      {
+        class: {
+          "text-success": _vm.isConfirmed,
+          "text-muted": !_vm.isConfirmed
+        },
+        attrs: { "data-toggle": "tooltip", title: _vm.texts.present },
+        on: { click: _vm.confirm }
+      },
+      [_c("span", { staticClass: "oi oi-check" })]
+    ),
+    _vm._v(" "),
+    _c(
+      "a",
+      {
+        class: { "text-warning": _vm.isExcused, "text-muted": !_vm.isExcused },
+        attrs: { "data-toggle": "tooltip", title: _vm.texts.excused },
+        on: { click: _vm.excuse }
+      },
+      [_c("span", { staticClass: "oi oi-medical-cross" })]
+    ),
+    _vm._v(" "),
+    _c(
+      "a",
+      {
+        class: {
+          "text-danger": _vm.isUnexcused,
+          "text-muted": !_vm.isUnexcused
+        },
+        attrs: { "data-toggle": "tooltip", title: _vm.texts.unexcused },
+        on: { click: _vm.unexcuse }
+      },
+      [_c("span", { staticClass: "oi oi-x" })]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-667f93e0", module.exports)
   }
 }
 

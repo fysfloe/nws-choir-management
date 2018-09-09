@@ -149,19 +149,12 @@
                     <div class="col-4 side-box">
                         <div>
                             <h3><span class="oi oi-task"></span> {{ __('To do') }}</h3>
-                            @if (!Auth::user()->voice || ($currentSemester && !$currentSemester->promises->contains(Auth::user()->id)))
+                            @if (($currentSemester && !$currentSemester->promises->contains(Auth::user()->id)))
                                 <ul class="todos">
                                     @if (!Auth::user()->address || !Auth::user()->birthdate)
                                         <li>
                                             {{ __('There is some information missing about you. Please fill it out here:') }}&nbsp;
                                             <a href="{{ route('profile.edit', Auth::user()) }}">{{ __('Edit Profile') }}</a>
-                                        </li>
-                                    @endif
-
-                                    @if (!Auth::user()->voice)
-                                        <li>
-                                            {{ __('You didn\'t set your voice yet.') }}&nbsp;
-                                            <a href="{{ route('voice.showSet', Auth::user()) }}" data-toggle="modal" data-target="#mainModal">{{ __('Do it now!') }}</a>
                                         </li>
                                     @endif
 

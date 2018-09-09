@@ -125,4 +125,9 @@ class Rehearsal extends Model
 
         return $dateString;
     }
+
+    public function title()
+    {
+        return __('Rehearsal') . ': ' . $this->date->format('d.m.Y');
+    }
 }

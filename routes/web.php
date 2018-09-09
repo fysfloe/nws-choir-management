@@ -99,9 +99,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('/rehearsal/delete', 'RehearsalController@destroy')->name('rehearsal.delete');
         Route::get('/rehearsal/{rehearsal}/addUser', 'RehearsalController@showAddUser')->name('rehearsal.showAddUser');
         Route::post('/rehearsal/{rehearsal}/addUser', 'RehearsalController@addUser')->name('rehearsal.addUser');
-        Route::get('/rehearsal/{rehearsal}/ajaxConfirm/{user}', 'RehearsalController@ajaxConfirm')->name('rehearsal.confirm');
-        Route::get('/rehearsal/{rehearsal}/ajaxExcuse/{user}', 'RehearsalController@ajaxExcuse')->name('rehearsal.excuse');
-        Route::get('/rehearsal/{rehearsal}/ajaxSetUnexcused/{user}', 'RehearsalController@ajaxSetUnexcused')->name('rehearsal.setUnexcused');
+        Route::get('/rehearsal/{rehearsal}/ajaxConfirm/{user?}', 'RehearsalController@ajaxConfirm')->name('rehearsal.confirm');
+        Route::get('/rehearsal/{rehearsal}/ajaxExcuse/{user?}', 'RehearsalController@ajaxExcuse')->name('rehearsal.excuse');
+        Route::get('/rehearsal/{rehearsal}/ajaxSetUnexcused/{user?}', 'RehearsalController@ajaxSetUnexcused')->name('rehearsal.setUnexcused');
+        Route::get('/rehearsal/load-participants/{rehearsal}', 'RehearsalController@loadParticipants')->name('rehearsal.loadParticipants');
         // Voices
         Route::resource('/voices', 'VoiceController');
         Route::get('/voice/set', 'VoiceController@showSetMulti')->name('voice.showSetMulti');

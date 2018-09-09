@@ -26,7 +26,7 @@ class ConcertController extends Controller
     {
         parent::__construct();
 
-        $this->breadcrumbs->addCrumb(__('Concerts'), 'concerts');
+        //$this->breadcrumbs->addCrumb(__('Concerts'), 'concerts');
     }
 
     /**
@@ -136,6 +136,10 @@ class ConcertController extends Controller
      */
     public function show(Concert $concert)
     {
+        if ($concert->project) {
+            $this->breadcrumbs->addCrumb($concert->project->title, 'project/' . $concert->project->slug);
+        }
+        
         $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
 
         return view('concert.show')->with([
