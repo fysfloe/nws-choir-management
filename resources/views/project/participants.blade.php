@@ -40,7 +40,8 @@
                 ],
                 'editProfile' => __('Edit Profile'),
                 'noneSet' => __('None set'),
-                'noUsers' => __('No users found.')
+                'noUsers' => __('No users found.'),
+                'total' => __('Total')
             ]) }}"
             :users="{{ json_encode($participants) }}"
             :can-manage-users="{{ Auth::user()->can('manageUsers') }}"

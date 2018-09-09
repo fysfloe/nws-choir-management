@@ -35,7 +35,7 @@
                 @endif
 
                 @permission('manageConcerts')
-                <a class="btn btn-default btn-sm mt-2" href="{{ route('concert.create', ['semester' => $project->semester->id, 'project' => $project->id]) }}">
+                <a class="btn btn-primary btn-sm mt-2" href="{{ route('concert.create', ['semester' => $project->semester->id, 'project' => $project->id]) }}">
                     {{ __('Add a concert') }}
                 </a>
                 @endpermission
@@ -72,7 +72,7 @@
                 @endif
 
                 @permission('manageRehearsals')
-                <a class="btn btn-default btn-sm mt-2" href="{{ route('rehearsal.create', ['semester' => $project->semester->id, 'project' => $project->id]) }}">
+                <a class="btn btn-primary btn-sm mt-2" href="{{ route('rehearsal.create', ['semester' => $project->semester->id, 'project' => $project->id]) }}">
                     {{ __('Add a rehearsal') }}
                 </a>
                 @endpermission

@@ -68984,7 +68984,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 concerts: [],
                 ageFrom: '',
                 ageTo: '',
-                sort: 'id',
+                sort: 'surname',
                 dir: 'ASC'
             }
         };

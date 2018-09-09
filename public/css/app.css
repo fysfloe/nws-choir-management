@@ -10461,7 +10461,7 @@ ul.users .avatar {
 }
 
 .modal-content {
-  overflow: hidden;
+  border-radius: 0;
 }
 
 .modal-content .modal-footer {
@@ -10475,6 +10475,7 @@ ul.users .avatar {
   text-transform: uppercase;
   font-weight: 600;
   margin: 0;
+  padding: 1em 0;
 }
 
 .navbar-dark .navbar-brand {

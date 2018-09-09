@@ -10,9 +10,9 @@ class GetFilteredUsersService {
         //
     }
 
-    public function handle($filters, $search, $sort = null, $dir = 'ASC')
+    public function handle($filters, $search, $sort = 'surname', $dir = 'ASC')
     {
-        if (!$sort) $sort = 'id';
+        if (!$sort) $sort = 'surname';
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
         $concerts = isset($filters['concerts']) ? $filters['concerts'] : null;

@@ -128,7 +128,7 @@ export default {
                 concerts: [],
                 ageFrom: '',
                 ageTo: '',
-                sort: 'id',
+                sort: 'surname',
                 dir: 'ASC'
             }
         }

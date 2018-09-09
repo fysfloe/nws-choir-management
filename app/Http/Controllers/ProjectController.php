@@ -410,7 +410,7 @@ class ProjectController extends Controller
     public function showAddUser(Request $request, Project $project)
     {
         $projectUsers = $project->promises()->pluck('id')->toArray();
-        $users = User::whereNotIn('id', $projectUsers)->get();
+        $users = User::whereNotIn('id', $projectUsers)->orderBy('surname')->get();
 
         $usersForSelect = [];
 
