@@ -29,8 +29,7 @@ class StoreProfile extends FormRequest
             'firstname' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $this->segment(3),
-            'email' => 'required|string|email|max:255|unique:users,email,' . $this->segment(3),
-            'voice_id' => 'required'
+            'email' => 'required|string|email|max:255|unique:users,email,' . $this->segment(3)
         ];
     }
 }

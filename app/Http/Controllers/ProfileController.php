@@ -130,8 +130,6 @@ class ProfileController extends Controller
             $filename = $input['firstname'] . '_' . $input['surname'] . '.' . $avatar->getClientOriginalExtension();
             $avatar->storeAs('avatars', $filename, 'public');
             $input['avatar'] = $filename;
-        } else {
-            $input['avatar'] = null;
         }
 
         $user->update($input);

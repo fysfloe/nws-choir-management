@@ -1,0 +1,16 @@
+.modal-content {
+    overflow: hidden;
+
+    .modal-footer {
+        padding: 0;
+
+        .btn {
+            border-radius: 0;
+            width: 50%;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 0;
+        }
+    }
+}

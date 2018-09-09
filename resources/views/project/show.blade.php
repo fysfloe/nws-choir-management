@@ -21,13 +21,13 @@
                 @if (count($project->concerts) > 0)
                     <ul class="concerts">
                     @foreach ($project->concerts as $concert)
+                    <a href="{{ route('concert.show', $concert) }}">
                         <li>
-                            <a href="{{ route('concert.show', $concert) }}">{{ $concert->title }}</a>&nbsp;
-                            <small>
-                                <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
-                                <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
-                            </small>
+                            <strong>{{ $concert->title }}</strong><br>
+                            <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
+                            <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
                         </li>
+                    </a>
                     @endforeach
                     </ul>
                 @else
@@ -44,12 +44,27 @@
                 @if (count($project->rehearsals) > 0)
                     <ul class="rehearsals">
                     @foreach ($project->rehearsals as $rehearsal)
+                    <a href="{{ route('rehearsal.show', $rehearsal) }}">
                         <li>
-                            {!! $rehearsal->__toString() !!}&nbsp;
-                            <a href="{{ route('rehearsal.show', $rehearsal) }}">
-                                <span class="oi oi-eye" data-toggle="tooltip" title="{{ __('Show') }}"></span>
-                            </a>
+                            <span>{!! $rehearsal->twoLineString() !!}</span>
+                            @if ($rehearsal->date > new \DateTime())
+                            <accept-decline
+                                accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
+                                decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
+                                :accepted="{{ json_encode($rehearsal->promises->contains(Auth::user())) }}"
+                                :declined="{{ json_encode($rehearsal->denials->contains(Auth::user())) }}"
+                                :texts="{{ json_encode([
+                                    'acceptOrDecline' => __('Accept or decline'),
+                                    'attending' => __('You are attending!'),
+                                    'accept' => __('Accept'),
+                                    'notAttending' => __('You are not attending.'),
+                                    'decline' => __('Decline')
+                                ]) }}"
+                            >
+                            </accept-decline>
+                            @endif
                         </li>
+                    </a>
                     @endforeach
                     </ul>
                 @else

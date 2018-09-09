@@ -3,3 +3,79 @@ ul.concerts {
     padding: 0;
     list-style: none;
 }
+
+header {
+    &.page-header {
+        h2 {
+            margin-right: 0.5rem;
+        }
+
+        a.btn-link {
+            padding: 0 0.5rem;
+            color: $brand-primary;
+        }
+
+        .accept-decline {
+            text-align: right;
+        }
+    }
+}
+
+.side-box ul.rehearsals,
+.side-box ul.concerts {
+    a {
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+
+            li {
+                background: darken($lightgrey, 10);
+                border-left: 0.25em solid $brand-primary;
+            }
+        }
+
+        li {
+            font-size: 0.85em;
+            padding: 0.5em 1em;
+            border-left: 0.25em solid transparent;
+            border-bottom: 0.1em solid darken($lightgrey, 5);
+        }
+    }
+}
+
+.side-box ul.rehearsals {
+    li {
+        display: flex;
+        align-items: center;
+
+        span, div {
+            flex-grow: 1;
+        }
+
+        .accept-decline {
+            margin: 0 !important;
+            text-align: right;
+        }
+    }
+}
+
+.accept-decline {
+    > span {
+        display: inline-block;
+        padding: 0 0.25em;
+        border: 0.1em solid;
+        border-radius: 100%;
+        width: 1.75em;
+        height: 1.75em;
+        text-align: center;
+
+        &.text-success {
+            border-color: $brand-success;
+        }
+
+        &.text-danger {
+            border-color: $brand-danger;
+        }
+    }
+}

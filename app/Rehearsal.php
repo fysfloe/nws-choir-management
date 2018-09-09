@@ -117,4 +117,12 @@ class Rehearsal extends Model
 
         return $dateString;
     }
+
+    public function twoLineString()
+    {
+        $dateString = "<span class='oi oi-calendar text-muted'></span>&nbsp;" . $this->date->format('d.m.Y') . "<br>";
+        $dateString .= "<span class='oi oi-clock text-muted'></span>&nbsp;" . date_format(date_create($this->start_time), 'H:i') . '–' . date_format(date_create($this->end_time), 'H:i');
+
+        return $dateString;
+    }
 }

@@ -43,7 +43,9 @@
                         <span class="oi oi-caret-bottom"></span>
                     </a>
                 </div>
-                <div class="col-md-2">&nbsp;</div>
+                <div class="col-md-2 row-count">
+                    {{ texts.total + ': ' + _users.length }}
+                </div>
             </header>
 
             <ul class="users">

@@ -10034,6 +10034,23 @@ input.date {
   }
 }
 
+.nav-tabs .nav-item {
+  margin-bottom: 0;
+}
+
+.nav-tabs .nav-item .nav-link {
+  background: #f5f8fa;
+  border-radius: 0;
+  border: 0;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.nav-tabs .nav-item .nav-link:not(.active):hover {
+  background: #d3e0e9;
+}
+
 .list-table {
   padding: 0 15px;
   background: white;
@@ -10060,6 +10077,20 @@ input.date {
   margin: 15px 0;
 }
 
+.list-table header .row-count {
+  font-size: 0.85em;
+  color: #2c2e33;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
 .list-table header .dropdown {
   display: none;
 }
@@ -10084,14 +10115,21 @@ input.date {
   list-style: none;
 }
 
+.list-table ul > a {
+  color: inherit;
+}
+
+.list-table ul > a:hover {
+  text-decoration: none;
+}
+
+.list-table ul > a:hover li {
+  background: #f5f8fa;
+}
+
 .list-table ul li {
   padding: 1rem 0;
   border-bottom: 0.1rem solid #e4ecf2;
-}
-
-.list-table ul li:hover {
-  background: #f5f8fa;
-  cursor: pointer;
 }
 
 .list-table a.list-sort {
@@ -10198,9 +10236,8 @@ input.date {
 }
 
 .filter-form {
-  margin-top: 1em;
+  margin-bottom: 1em;
   padding: 0.5em;
-  border: 0.1em dotted #c2d4e1;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -10243,18 +10280,86 @@ input.date {
   padding-top: 1em;
 }
 
-.side-box ul.dates,
-.side-box ul.voices,
-.side-box ul.rehearsals {
+ul.concerts {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-ul.concerts {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+header.page-header h2 {
+  margin-right: 0.5rem;
+}
+
+header.page-header a.btn-link {
+  padding: 0 0.5rem;
+  color: #149EB5;
+}
+
+header.page-header .accept-decline {
+  text-align: right;
+}
+
+.side-box ul.rehearsals a,
+.side-box ul.concerts a {
+  color: inherit;
+}
+
+.side-box ul.rehearsals a:hover,
+.side-box ul.concerts a:hover {
+  text-decoration: none;
+}
+
+.side-box ul.rehearsals a:hover li,
+.side-box ul.concerts a:hover li {
+  background: #d3e0e9;
+  border-left: 0.25em solid #149EB5;
+}
+
+.side-box ul.rehearsals a li,
+.side-box ul.concerts a li {
+  font-size: 0.85em;
+  padding: 0.5em 1em;
+  border-left: 0.25em solid transparent;
+  border-bottom: 0.1em solid #e4ecf2;
+}
+
+.side-box ul.rehearsals li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.side-box ul.rehearsals li span,
+.side-box ul.rehearsals li div {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.side-box ul.rehearsals li .accept-decline {
+  margin: 0 !important;
+  text-align: right;
+}
+
+.accept-decline > span {
+  display: inline-block;
+  padding: 0 0.25em;
+  border: 0.1em solid;
+  border-radius: 100%;
+  width: 1.75em;
+  height: 1.75em;
+  text-align: center;
+}
+
+.accept-decline > span.text-success {
+  border-color: #2ab27b;
+}
+
+.accept-decline > span.text-danger {
+  border-color: #bf5329;
 }
 
 .edit-voices > small {
@@ -10355,6 +10460,23 @@ ul.users .avatar {
   margin: 0 1rem;
 }
 
+.modal-content {
+  overflow: hidden;
+}
+
+.modal-content .modal-footer {
+  padding: 0;
+}
+
+.modal-content .modal-footer .btn {
+  border-radius: 0;
+  width: 50%;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0;
+}
+
 .navbar-dark .navbar-brand {
   font-family: "Pacifico", cursive;
   font-size: 1.25rem;
@@ -10363,6 +10485,26 @@ ul.users .avatar {
 #app .navbar {
   background: #149EB5;
   padding: 0 1rem;
+}
+
+#app .navbar li.nav-item.dropdown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 0.85em;
+  padding: 0.4em;
+}
+
+#app .navbar li.nav-item.dropdown .avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+#app .navbar .dropdown-menu {
+  width: 100%;
 }
 
 #app .navbar .dropdown-item {
@@ -10381,6 +10523,14 @@ ul.users .avatar {
 #app .navbar .dropdown-item a:active {
   text-decoration: none;
   background-color: #f5f8fa;
+}
+
+a {
+  color: #149EB5;
+}
+
+a:hover {
+  color: #0f7687;
 }
 
 .wrapper {
@@ -10425,6 +10575,12 @@ ul.users .avatar {
 
 header.page-header {
   margin: 2rem 0 1.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 header.page-header h2 {
@@ -10506,6 +10662,15 @@ h4 a {
 
 .side-box h3 {
   margin-bottom: 0.5em;
+}
+
+.side-box ul.dates,
+.side-box ul.voices,
+.side-box ul.rehearsals,
+.side-box ul.concerts {
+  margin: 0 -1em;
+  padding: 0;
+  list-style: none;
 }
 
 ul.breadcrumbs {
@@ -10638,5 +10803,10 @@ a.dropdown-toggle.no-caret::after {
 .bg-primary {
   background: #17b2cc !important;
   color: white !important;
+}
+
+ul.no-list-style {
+  list-style: none;
+  padding-left: 0;
 }
 

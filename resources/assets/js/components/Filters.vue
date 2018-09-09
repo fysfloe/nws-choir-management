@@ -1,18 +1,6 @@
 <template>
     <div class="filters">
-        <ul class="active-filters" v-if="Object.keys(activeFilters).length > 0">
-            <li v-for="(val, key) in activeFilters" @click="_removeFilter(key)" class="badge badge-pill badge-default" :data-field="key">
-                <strong>{{ key }}</strong>:
-                {{ val }}
-            </li>
-        </ul>
-        <span v-else class="text-muted">{{ texts.noActiveFilters }}</span>
-
-        <a class="show-filters" data-toggle="collapse" href="#filtersInner" aria-expanded="false" aria-controls="filtersInner">
-            {{ texts.showHideFilters }}
-        </a>
-
-        <div id="filtersInner" class="collapse">
+        <div id="filtersInner" class="collapse show">
             <form class="filter-form" @submit.prevent="filter">
                 <div class="form-group">
                     <label for="search" class="control-label">{{ texts.labels.search }}</label>
@@ -45,6 +33,18 @@
                 </div>
             </form>
         </div>
+
+        <ul class="active-filters" v-if="Object.keys(activeFilters).length > 0">
+            <li v-for="(val, key) in activeFilters" @click="_removeFilter(key)" class="badge badge-pill badge-default" :data-field="key">
+                <strong>{{ key }}</strong>:
+                {{ val }}
+            </li>
+        </ul>
+        <span v-else class="text-muted">{{ texts.noActiveFilters }}</span>
+
+        <a class="show-filters" data-toggle="collapse" href="#filtersInner" aria-expanded="false" aria-controls="filtersInner">
+            {{ texts.showHideFilters }}
+        </a>
     </div>
 </template>
 

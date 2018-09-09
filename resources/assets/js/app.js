@@ -22,6 +22,7 @@ Vue.use(VuejsDialog)
 Vue.component('user-list', require('./components/UserList.vue'));
 Vue.component('filters', require('./components/Filters.vue'));
 Vue.component('picture-input', require('vue-picture-input'));
+Vue.component('accept-decline', require('./components/AcceptDecline.vue'));
 
 const app = new Vue({
     el: '#app'

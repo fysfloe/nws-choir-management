@@ -39,7 +39,8 @@
             ],
             'editProfile' => __('Edit Profile'),
             'noneSet' => __('None set'),
-            'noUsers' => __('No users found.')
+            'noUsers' => __('No users found.'),
+            'total' => __('Total'),
         ]) }}"
         :concerts="{{ json_encode($concerts) }}"
         :users="{{ json_encode($users) }}"

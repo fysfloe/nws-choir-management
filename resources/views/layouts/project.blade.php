@@ -3,22 +3,31 @@
 @section('content')
 
     <header class="page-header">
-        <h2>{{ $project->title }}</h2>
-
-        <div class="btn-group accept-decline" role="group" aria-label="{{ __('Accept or decline') }}">
-            <a href="{{ route('project.accept', $project) }}" class="btn btn-sm {{ $project->promises->contains(Auth::user()) ? 'btn-success' : 'btn-default' }}">
-                <span class="oi oi-check" aria-hidden="true"></span> {{ $project->promises->contains(Auth::user()) ? __('You are attending!') : __('Attend') }}
-            </a>
-            <a href="{{ route('project.decline', $project) }}" class="btn btn-sm {{ $project->denials->contains(Auth::user()) ? 'btn-danger' : 'btn-default' }}">
-                <span class="oi oi-x" aria-hidden="true"></span> {{ $project->denials->contains(Auth::user()) ? __('You are not attending.') : __('Decline') }}
-            </a>
+        <div>
+            <h2>
+                {{ $project->title }}
+                @permission('manageProjects')
+                    <a class="btn btn-link" href="{{ route('project.edit', $project) }}">
+                        <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
+                    </a>
+                @endpermission
+            </h2>
         </div>
 
-        @permission('manageProjects')
-            <a class="btn btn-default btn-sm" href="{{ route('project.edit', $project) }}">
-                {{ __('Edit') }}
-            </a>
-        @endpermission
+        <accept-decline
+            accept-route="{{ route('project.accept', $project) }}"
+            decline-route="{{ route('project.decline', $project) }}"
+            :accepted="{{ json_encode($project->promises->contains(Auth::user())) }}"
+            :declined="{{ json_encode($project->denials->contains(Auth::user())) }}"
+            :texts="{{ json_encode([
+                'acceptOrDecline' => __('Accept or decline'),
+                'attending' => __('You are attending!'),
+                'accept' => __('Accept'),
+                'notAttending' => __('You are not attending.'),
+                'decline' => __('Decline')
+            ]) }}"
+        >
+        </accept-decline>
     </header>
 
     <ul class="nav nav-tabs" role="tablist">

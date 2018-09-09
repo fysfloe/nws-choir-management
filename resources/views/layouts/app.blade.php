@@ -34,6 +34,10 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                     @else
                         <li class="nav-item dropdown">
+                            <div class="avatar">
+                                <img src="{{ asset('/storage/avatars/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->firstname . ' ' . Auth::user()->surname }}">
+                            </div>
+
                             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                 {{ Auth::user()->firstname }} {{ Auth::user()->surname }} <span class="caret"></span>
                             </a>
@@ -75,6 +79,14 @@
                                 {{ __('Dashboard') }}
                             </a>
                         </li>
+                        @if (Auth::user()->can('manageSemesters'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/admin/semesters') }}">
+                                    <span class="oi oi-calendar"></span>&nbsp;
+                                    {{ __('Semesters') }}
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('projects') }}">
                                 <span class="oi oi-project"></span>&nbsp;
@@ -85,12 +97,6 @@
                             <a class="nav-link" href="{{ route('concerts') }}">
                                 <span class="oi oi-musical-note"></span>&nbsp;
                                 {{ __('Concerts') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('rehearsals') }}">
-                                <span class="oi oi-infinity"></span>&nbsp;
-                                {{ __('Rehearsals') }}
                             </a>
                         </li>
                         @if (Auth::user()->can('manageUsers'))
@@ -106,14 +112,6 @@
                                 <a class="nav-link" href="{{ url('/admin/voices') }}">
                                     <span class="oi oi-pulse"></span>&nbsp;
                                     {{ __('Voices') }}
-                                </a>
-                            </li>
-                        @endif
-                        @if (Auth::user()->can('manageSemesters'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/semesters') }}">
-                                    <span class="oi oi-calendar"></span>&nbsp;
-                                    {{ __('Semesters') }}
                                 </a>
                             </li>
                         @endif

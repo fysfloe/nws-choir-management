@@ -21,6 +21,14 @@
             }
         }
 
+        .row-count {
+            font-size: 0.85em;
+            color: #2c2e33;
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+        }
+
         .dropdown {
             display: none;
 
@@ -44,14 +52,21 @@
         padding: 0;
         list-style: none;
 
+        > a {
+            color: inherit;
+
+            &:hover {
+                text-decoration: none;
+
+                li {
+                    background: $lightgrey;
+                }
+            }
+        }
+
         li {
             padding: 1rem 0;
             border-bottom: 0.1rem solid darken($lightgrey, 5);
-
-            &:hover {
-                background: $lightgrey;
-                cursor: pointer;
-            }
         }
     }
 

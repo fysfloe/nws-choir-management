@@ -5,14 +5,14 @@
     {{ Form::open(['route' => ['profile.update', $user], 'method' => 'POST', 'files' => true]) }}
 
     <header class="page-header">
-                @if ($user->id === Auth::user()->id)
-                    <h2>{{ __('Edit Profile') }}</h2>
-                    <a class="btn btn-default btn-sm" href="{{ route('profile.changePassword') }}">
-                        {{ __('Change Password') }}
-                    </a>
-                @else
-                    <h2>{{ __('Edit Profile') }}: <span class="text-muted">{{ $user->firstname }} {{ $user->surname }}</span></h2>
-                @endif
+            @if ($user->id === Auth::user()->id)
+                <h2>{{ __('Edit Profile') }}</h2>
+                <a class="btn btn-default btn-sm" href="{{ route('profile.changePassword') }}">
+                    {{ __('Change Password') }}
+                </a>
+            @else
+                <h2>{{ __('Edit Profile') }}: <span class="text-muted">{{ $user->firstname }} {{ $user->surname }}</span></h2>
+            @endif
     </header>
 
     <div class="row">
@@ -76,6 +76,7 @@
                 @endif
             </div>
 
+            @permission('manageUsers')
             <div class="form-group {{ $errors->has('voice_id') ? ' has-error' : '' }}">
                 {{ Form::label('voice_id', __('Voice'), ['class' => 'control-label']) }}
                 {{ Form::select('voice_id', $voices, old('voice_id') ? old('voice_id') : ($user->voice ? $user->voice->id : null), ['class' => 'form-control']) }}
@@ -87,34 +88,28 @@
                     </span>
                 @endif
             </div>
+            @endpermission
 
-            <div class="row align-items-center mb-4">
-                <div class="col">
-                    @if ($user->avatar)
-                        <div class="avatar avatar-big">
-                            <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt="{{ $user->firstname }} {{ $user->surname }}">
-                        </div>
-                    @else
-                        <div class="avatar avatar-big avatar-default">
-                            <span class="oi oi-person"></span>
-                        </div>
-                    @endif
-                </div>
-                <div class="col">
-                    <div class="form-group {{ $errors->has('avatar') ? ' has-error': '' }}">
+            <div class="form-group {{ $errors->has('avatar') ? ' has-error': '' }}">
+                <picture-input 
+                    ref="avatar"
+                    name="avatar"
+                    id="avatar"
+                    radius="50" 
+                    width="150"
+                    height="150"
+                    accept="image/jpeg,image/png,image/jpg" 
+                    size="10" 
+                    button-class="btn-sm btn-primary"
+                    prefill="{{ $user->avatar ? asset('storage/avatars/' . $user->avatar) : '' }}"
+                >
+                </picture-input>
 
-                        <div class="custom-file">
-                            <input type="file" name="avatar" id="avatar" class="custom-file-input">
-                            <label class="custom-file-label" for="avatar">Choose avatar file...</label>
-                        </div>
-
-                        @if ($errors->has('avatar'))
-                            <span class="help-block text-danger">
-                                <strong>{{ $errors->first('avatar') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
+                @if ($errors->has('avatar'))
+                    <span class="help-block text-danger">
+                        <strong>{{ $errors->first('avatar') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
 

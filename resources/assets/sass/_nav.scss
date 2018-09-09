@@ -1,0 +1,18 @@
+.nav-tabs {
+    .nav-item {
+        margin-bottom: 0;
+
+        .nav-link {
+            background: $lightgrey;
+            border-radius: 0;
+            border: 0;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            font-weight: bold;
+
+            &:not(.active):hover {
+                background: darken($lightgrey, 10);
+            }
+        }
+    }
+}

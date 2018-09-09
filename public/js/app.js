@@ -17127,6 +17127,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vuejs_dialog___default.a);
 Vue.component('user-list', __webpack_require__(165));
 Vue.component('filters', __webpack_require__(168));
 Vue.component('picture-input', __webpack_require__(171));
+Vue.component('accept-decline', __webpack_require__(185));
 
 var app = new Vue({
     el: '#app'
@@ -68966,6 +68967,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices'],
@@ -69188,7 +69191,13 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-md-2" }, [_vm._v(" ")])
+                _c("div", { staticClass: "col-md-2 row-count" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.texts.total + ": " + _vm._users.length) +
+                      "\n            "
+                  )
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -69577,48 +69586,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "filters" }, [
-    Object.keys(_vm.activeFilters).length > 0
-      ? _c(
-          "ul",
-          { staticClass: "active-filters" },
-          _vm._l(_vm.activeFilters, function(val, key) {
-            return _c(
-              "li",
-              {
-                staticClass: "badge badge-pill badge-default",
-                attrs: { "data-field": key },
-                on: {
-                  click: function($event) {
-                    _vm._removeFilter(key)
-                  }
-                }
-              },
-              [
-                _c("strong", [_vm._v(_vm._s(key))]),
-                _vm._v(":\n            " + _vm._s(val) + "\n        ")
-              ]
-            )
-          })
-        )
-      : _c("span", { staticClass: "text-muted" }, [
-          _vm._v(_vm._s(_vm.texts.noActiveFilters))
-        ]),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        staticClass: "show-filters",
-        attrs: {
-          "data-toggle": "collapse",
-          href: "#filtersInner",
-          "aria-expanded": "false",
-          "aria-controls": "filtersInner"
-        }
-      },
-      [_vm._v("\n        " + _vm._s(_vm.texts.showHideFilters) + "\n    ")]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "collapse", attrs: { id: "filtersInner" } }, [
+    _c("div", { staticClass: "collapse show", attrs: { id: "filtersInner" } }, [
       _c(
         "form",
         {
@@ -69843,7 +69811,48 @@ var render = function() {
           ])
         ]
       )
-    ])
+    ]),
+    _vm._v(" "),
+    Object.keys(_vm.activeFilters).length > 0
+      ? _c(
+          "ul",
+          { staticClass: "active-filters" },
+          _vm._l(_vm.activeFilters, function(val, key) {
+            return _c(
+              "li",
+              {
+                staticClass: "badge badge-pill badge-default",
+                attrs: { "data-field": key },
+                on: {
+                  click: function($event) {
+                    _vm._removeFilter(key)
+                  }
+                }
+              },
+              [
+                _c("strong", [_vm._v(_vm._s(key))]),
+                _vm._v(":\n            " + _vm._s(val) + "\n        ")
+              ]
+            )
+          })
+        )
+      : _c("span", { staticClass: "text-muted" }, [
+          _vm._v(_vm._s(_vm.texts.noActiveFilters))
+        ]),
+    _vm._v(" "),
+    _c(
+      "a",
+      {
+        staticClass: "show-filters",
+        attrs: {
+          "data-toggle": "collapse",
+          href: "#filtersInner",
+          "aria-expanded": "false",
+          "aria-controls": "filtersInner"
+        }
+      },
+      [_vm._v("\n        " + _vm._s(_vm.texts.showHideFilters) + "\n    ")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -71112,6 +71121,187 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(186)
+/* template */
+var __vue_template__ = __webpack_require__(187)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AcceptDecline.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7959a5b2", Component.options)
+  } else {
+    hotAPI.reload("data-v-7959a5b2", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined', 'texts'],
+    data: function data() {
+        return {
+            hasAccepted: this.accepted,
+            hasDeclined: this.declined,
+            loading: {
+                accept: false,
+                decline: false
+            }
+        };
+    },
+
+    methods: {
+        accept: function accept(event) {
+            var _this = this;
+
+            event.preventDefault();
+
+            if (!this.hasAccepted) {
+                this.loading.accept = true;
+
+                this.$http.get(this.acceptRoute).then(function (response) {
+                    _this.loading.accept = false;
+                    _this.hasAccepted = true;
+                    _this.hasDeclined = false;
+                }, function (response) {
+                    _this.loading.accept = false;
+                });
+            }
+        },
+        decline: function decline(event) {
+            var _this2 = this;
+
+            event.preventDefault();
+
+            if (!this.hasDeclined) {
+                this.loading.decline = true;
+
+                this.$http.get(this.declineRoute).then(function (response) {
+                    _this2.loading.decline = false;
+                    _this2.hasDeclined = true;
+                    _this2.hasAccepted = false;
+                }, function (response) {
+                    _this2.loading.decline = false;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "accept-decline",
+      attrs: { "aria-label": _vm.texts.acceptOrDecline }
+    },
+    [
+      _c(
+        "span",
+        {
+          class: {
+            "text-success": _vm.hasAccepted,
+            "text-muted": !_vm.hasAccepted
+          },
+          attrs: {
+            "data-toggle": "tooltip",
+            title: _vm.hasAccepted ? _vm.texts.attending : _vm.texts.accept
+          },
+          on: { click: _vm.accept }
+        },
+        [_c("span", { class: { oi: true, "oi-check": true } })]
+      ),
+      _vm._v(" "),
+      _c(
+        "span",
+        {
+          class: {
+            "text-danger": _vm.hasDeclined,
+            "text-muted": !_vm.hasDeclined
+          },
+          attrs: {
+            "data-toggle": "tooltip",
+            title: _vm.hasDeclined ? _vm.texts.notAttending : _vm.texts.decline
+          },
+          on: { click: _vm.decline }
+        },
+        [_c("span", { class: { oi: true, "oi-x": true } })]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7959a5b2", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

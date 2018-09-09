@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 use App\Rehearsal;
 use App\Semester;
@@ -241,11 +242,11 @@ class RehearsalController extends Controller
 
         if ($rehearsal->date >= $date) {
             $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
-        } else {
-            $request->session()->flash('alert-danger', __('Cannot accept or decline a rehearsal in the past.'));
-        }
 
-        return redirect()->back();
+            return new Response(__('Successfully accepted the rehearsal.'), 200);
+        } else {
+            return new Response(__('Cannot accept or decline a rehearsal in the past.'), 400);
+        }
     }
 
     public function decline(Request $request, Rehearsal $rehearsal)
@@ -256,11 +257,11 @@ class RehearsalController extends Controller
 
         if ($rehearsal->date >= $date) {
             $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
+            
+            return new Response(__('Successfully accepted the rehearsal.'), 200);
         } else {
-            $request->session()->flash('alert-danger', __('Cannot accept or decline a rehearsal in the past.'));
+            return new Response(__('Cannot accept or decline a rehearsal in the past.'), 400);
         }
-
-        return redirect()->back();
     }
 
     public function ajaxConfirm(Request $request, Rehearsal $rehearsal, User $user)
