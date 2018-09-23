@@ -27,6 +27,7 @@ export default {
             event.preventDefault();
 
             if (!this.hasAccepted) {
+                this.showCommentField = true;
                 this.loading.accept = true;
 
                 this.$http.get(this.acceptRoute).then(response => {
@@ -35,6 +36,8 @@ export default {
                     this.hasDeclined = false;
                 }, response => {
                     this.loading.accept = false;
+
+                    this.$emit('alert', response);
                 });
             }
         },
@@ -42,6 +45,7 @@ export default {
             event.preventDefault();
 
             if (!this.hasDeclined) {
+                this.showCommentField = true;
                 this.loading.decline = true;
 
                 this.$http.get(this.declineRoute).then(response => {

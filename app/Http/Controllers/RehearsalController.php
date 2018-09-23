@@ -16,6 +16,7 @@ use App\Services\GetFilteredUsersService;
 use App\Http\Resources\UserResource;
 
 use App\Http\Requests\StoreRehearsal;
+use App\Http\Requests\StoreComment;
 use Auth;
 
 class RehearsalController extends Controller
@@ -82,7 +83,7 @@ class RehearsalController extends Controller
 
         $rehearsal = Auth::user()->rehearsalsCreated()->create($rehearsal);
 
-        return redirect('rehearsals');
+        return redirect()->back();
     }
 
     /**
@@ -313,5 +314,29 @@ class RehearsalController extends Controller
         }
 
         return redirect()->route('rehearsal.participants', $rehearsal);
+    }
+
+    public function comments(Rehearsal $rehearsal)
+    {
+        if ($rehearsal->project) {
+            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
+        }
+
+        $this->breadcrumbs->addCrumb($rehearsal->title(), $rehearsal);
+
+        return view('rehearsal.comments')->with([
+            'tab' => 'comments',
+            'rehearsal' => $rehearsal,
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
+    }
+
+    public function createComment(StoreComment $request, Rehearsal $rehearsal)
+    {
+        $input = $request->all();
+        $input['user_id'] = Auth::user()->id;
+        $comment = $rehearsal->comments()->create($input);
+
+        return redirect()->back();
     }
 }

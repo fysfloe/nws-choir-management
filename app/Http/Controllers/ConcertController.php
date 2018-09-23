@@ -11,6 +11,7 @@ use App\Semester;
 use App\Project;
 
 use App\Http\Requests\StoreConcert;
+use App\Http\Requests\StoreComment;
 use App\Http\Resources\UserResource;
 
 use App\Services\GetFilteredUsersService;
@@ -464,5 +465,29 @@ class ConcertController extends Controller
 
             });
         })->download('csv');
+    }
+
+    public function comments(Concert $concert)
+    {
+        if ($concert->project) {
+            $this->breadcrumbs->addCrumb($concert->project->title, 'project/' . $concert->project->slug);
+        }
+        
+        $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
+        
+        return view('concert.comments')->with([
+            'tab' => 'comments',
+            'concert' => $concert,
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
+    }
+
+    public function createComment(StoreComment $request, Concert $concert)
+    {
+        $input = $request->all();
+        $input['user_id'] = Auth::user()->id;
+        $comment = $concert->comments()->create($input);
+
+        return redirect()->back();
     }
 }

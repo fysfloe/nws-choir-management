@@ -10495,6 +10495,34 @@ ul.users .avatar {
   padding: 1em 0;
 }
 
+.comment-stream {
+  padding: 2rem 0;
+}
+
+.comment-stream .comment {
+  border: 0.1rem solid #f5f8fa;
+  border-bottom: 0.2rem solid #149EB5;
+  margin: 0 0 1.5rem;
+}
+
+.comment-stream .comment .comment-info {
+  background: #f5f8fa;
+  padding: 0.5rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.comment-stream .comment .comment-info .avatar {
+  margin-right: 0.5rem;
+  width: 2.8rem;
+  height: 2.8rem;
+}
+
+.comment-stream .comment .comment-content {
+  padding: 0.75rem;
+}
+
 .navbar-dark .navbar-brand {
   font-family: "Pacifico", cursive;
   font-size: 1.25rem;

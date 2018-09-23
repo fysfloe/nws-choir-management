@@ -25,9 +25,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/concert/{concert}/voices', 'ConcertController@voices')->name('concert.voices');
     Route::get('/concert/accept/{concert}', 'ConcertController@accept')->name('concert.accept');
     Route::get('/concert/decline/{concert}', 'ConcertController@decline')->name('concert.decline');
+    Route::get('/concert/comments/{concert}', 'ConcertController@comments')->name('concert.comments');
+    Route::post('concert/{concert}/createComment', 'ConcertController@createComment')->name('concert.createComment');
 
     Route::get('/projects', 'ProjectController@index')->name('projects');
     Route::get('/project/{project}', 'ProjectController@show')->name('project.show');
+    Route::get('/project/comments/{project}', 'ProjectController@comments')->name('project.comments');
+    Route::post('project/{project}/createComment', 'ProjectController@createComment')->name('project.createComment');
     Route::get('/project/{project}/participants', 'ProjectController@participants')->name('project.participants');
     Route::get('/project/{project}/voices', 'ProjectController@voices')->name('project.voices');
     Route::get('/project/accept/{project}', 'ProjectController@accept')->name('project.accept');
@@ -38,6 +42,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/rehearsal/{rehearsal}/participants', 'RehearsalController@participants')->name('rehearsal.participants');
     Route::get('/rehearsal/accept/{rehearsal}', 'RehearsalController@accept')->name('rehearsal.accept');
     Route::get('/rehearsal/decline/{rehearsal}', 'RehearsalController@decline')->name('rehearsal.decline');
+    Route::get('/rehearsal/comments/{rehearsal}', 'RehearsalController@comments')->name('rehearsal.comments');
+    Route::post('rehearsal/{rehearsal}/createComment', 'RehearsalController@createComment')->name('rehearsal.createComment');
+
     Route::get('/voice/showSet/{user?}', 'VoiceController@showSet')->name('voice.showSet');
     Route::post('/voice/set/{user?}', 'VoiceController@set')->name('voice.set');
     Route::get('/semester/accept/{semester}', 'SemesterController@accept')->name('semester.accept');

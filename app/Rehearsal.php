@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Auth;
 
 class Rehearsal extends Model
 {
@@ -110,6 +111,18 @@ class Rehearsal extends Model
         return $this->belongsTo('App\Project');
     }
 
+    /**
+     * Get the comments of the rehearsal.
+     */
+    public function comments()
+    {
+        if (Auth::user()->hasRole('admin')) {
+            return $this->morphMany('App\Comment', 'commentable')->orderBy('created_at', 'DESC');
+        } else {
+            return $this->morphMany('App\Comment', 'commentable')->where('private', false)->orWhere('user_id', Auth::user()->id)->orderBy('created_at', 'DESC');
+        }
+    }
+
     public function __toString()
     {
         $dateString = "<span class='oi oi-calendar text-muted'></span>&nbsp;" . $this->date->format('d.m.Y') . "&nbsp;";
@@ -129,5 +142,14 @@ class Rehearsal extends Model
     public function title()
     {
         return __('Rehearsal') . ': ' . $this->date->format('d.m.Y');
+    }
+
+    public function getDateTime(): \DateTime
+    {
+        $dateTime = new \DateTime($this->date);
+        $startTime = new \DateTime($this->start_time);
+        $dateTime->setTime($startTime->format('H'), $startTime->format('i'));
+
+        return $dateTime;
     }
 }

@@ -24,7 +24,10 @@
                 'attending' => __('You are attending!'),
                 'accept' => __('Accept'),
                 'notAttending' => __('You are not attending.'),
-                'decline' => __('Decline')
+                'decline' => __('Decline'),
+                'commentLabel' => __('Comment'),
+                'send' => __('Send'),
+                'commentSaved' => __('Comment saved!')
             ]) }}"
         >
         </accept-decline>
@@ -35,6 +38,12 @@
             <a class="nav-link @if ($tab === 'show') active @endif" href="{{ route('project.show', $project) }}" role="tab" aria-controls="info">
                 <span class="oi oi-info"></span>&nbsp;
                 {{ __('Info') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @if ($tab === 'comments') active @endif" href="{{ route('project.comments', $project) }}" role="tab" aria-controls="info">
+                <span class="oi oi-comment-square"></span>&nbsp;
+                {{ __('Comments') }} ({{ count($project->comments) }})
             </a>
         </li>
         @permission('manageProjects')

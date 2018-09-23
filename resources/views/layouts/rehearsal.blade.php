@@ -14,7 +14,7 @@
             </h2>
         </div>
         
-        @if ($rehearsal->date > new \DateTime())
+        @if ($rehearsal->getDateTime() > new \DateTime())
         <accept-decline
             accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
             decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
@@ -40,11 +40,19 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link @if ($tab === 'comments') active @endif" href="{{ route('rehearsal.comments', $rehearsal) }}" role="tab" aria-controls="info">
+                <span class="oi oi-comment-square"></span>&nbsp;
+                {{ __('Comments') }} ({{ count($rehearsal->comments) }})
+            </a>
+        </li>
+        @permission('manageRehearsals')
+        <li class="nav-item">
             <a class="nav-link @if ($tab === 'participants') active @endif" id="participants-tab" href="{{ route('rehearsal.participants', $rehearsal) }}" role="tab" aria-controls="participants">
                 <span class="oi oi-people"></span>&nbsp;
                 {{ __('Participants') }}
             </a>
         </li>
+        @endpermission
     </ul>
 
     @yield('rehearsalContent')

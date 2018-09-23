@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Auth;
 
 class Project extends Model
 {
@@ -51,6 +52,18 @@ class Project extends Model
     public function creator()
     {
         return $this->belongsTo('App\User', 'created_by');
+    }
+
+    /**
+     * Get the comments of the project.
+     */
+    public function comments()
+    {
+        if (Auth::user()->hasRole('admin')) {
+            return $this->morphMany('App\Comment', 'commentable')->orderBy('created_at', 'DESC');
+        } else {
+            return $this->morphMany('App\Comment', 'commentable')->where('private', false)->orWhere('user_id', Auth::user()->id)->orderBy('created_at', 'DESC');
+        }
     }
 
     public function promises()

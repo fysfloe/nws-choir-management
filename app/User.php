@@ -125,4 +125,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Address');
     }
+
+    /**
+     * Relationship: comments
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

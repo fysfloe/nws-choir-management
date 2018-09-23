@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
 
-use App\Http\Requests\StoreProject;
-
-use App\Project;
-use App\Voice;
-use App\Semester;
 use App\User;
 
-use App\Services\GetFilteredUsersService;
-use App\Http\Resources\UserResource;
+use App\Voice;
+use App\Project;
+use App\Semester;
+use Illuminate\Http\Request;
 
-use Auth;
+use Illuminate\Http\Response;
+use App\Http\Requests\StoreProject;
+use App\Http\Requests\StoreComment;
+
+use App\Http\Resources\UserResource;
+use App\Services\GetFilteredUsersService;
 
 class ProjectController extends Controller
 {
@@ -130,6 +132,26 @@ class ProjectController extends Controller
             'project' => $project,
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function comments(Project $project)
+    {
+        $this->breadcrumbs->addCrumb($project->title, $project->slug);
+
+        return view('project.comments')->with([
+            'tab' => 'comments',
+            'project' => $project,
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
+    }
+
+    public function createComment(StoreComment $request, Project $project)
+    {
+        $input = $request->all();
+        $input['user_id'] = Auth::user()->id;
+        $comment = $project->comments()->create($input);
+
+        return redirect()->back();
     }
 
     /**
@@ -276,7 +298,8 @@ class ProjectController extends Controller
         $user = Auth::user();
         if (!$user->voice) {
             $request->session()->flash('alert-danger', __('You need to set your primary voice before you can participate in a project!'));
-            return redirect()->route('dashboard');
+
+            return new Response(__('You need to set your primary voice before you can participate in a project!'), 400);
         }
 
         $project->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice->id]]);

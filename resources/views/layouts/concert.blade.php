@@ -37,6 +37,12 @@
                 {{ __('Info') }}
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link @if ($tab === 'comments') active @endif" href="{{ route('concert.comments', $concert) }}" role="tab" aria-controls="info">
+                <span class="oi oi-comment-square"></span>&nbsp;
+                {{ __('Comments') }} ({{ count($concert->comments) }})
+            </a>
+        </li>
         @permission('manageConcerts')
         <li class="nav-item">
             <a class="nav-link @if ($tab === 'participants') active @endif" id="participants-tab" href="{{ route('concert.participants', $concert) }}" role="tab" aria-controls="participants">

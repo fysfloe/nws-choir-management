@@ -23,8 +23,9 @@
             </div>
             <div class="col-4 side-box">
                 <h3>{{ __('Project') }}</h3>
-                <a href="{{ route('project.show', $rehearsal->project) }}">{{ $rehearsal->project->title }}</span>
+                <a href="{{ route('project.show', $rehearsal->project) }}">{{ $rehearsal->project->title }}</span></a>
 
+                @if (count($rehearsal->project->rehearsals) > 1)
                 <h3 class="mt-4">{{ __('Other rehearsals in this project') }}</h3>
                 <ul class="rehearsals">
                     @foreach ($rehearsal->project->rehearsals as $otherRehearsal)
@@ -53,6 +54,7 @@
                         @endif
                     @endforeach
                 </ul>
+                @endif
             </div>
         </div>
     </div>

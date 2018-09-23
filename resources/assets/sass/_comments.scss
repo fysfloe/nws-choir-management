@@ -1,0 +1,25 @@
+.comment-stream {
+    padding: 2rem 0;
+
+    .comment {
+        border: 0.1rem solid $lightgrey;
+        border-bottom: 0.2rem solid $brand-primary;
+        margin: 0 0 1.5rem;
+
+        .comment-info {
+            background: $lightgrey;
+            padding: 0.5rem;
+            align-items: center;
+
+            .avatar {
+                margin-right: 0.5rem;
+                width: 2.8rem;
+                height: 2.8rem;
+            }
+        }
+
+        .comment-content {
+            padding: 0.75rem;
+        }
+    }
+}

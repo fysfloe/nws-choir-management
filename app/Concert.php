@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Auth;
 
 class Concert extends Model
 {
@@ -79,6 +80,18 @@ class Concert extends Model
         return $this->belongsToMany('App\Voice')
             ->withPivot('number')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the comments of the concert.
+     */
+    public function comments()
+    {
+        if (Auth::user()->hasRole('admin')) {
+            return $this->morphMany('App\Comment', 'commentable')->orderBy('created_at', 'DESC');
+        } else {
+            return $this->morphMany('App\Comment', 'commentable')->where('private', false)->orWhere('user_id', Auth::user()->id)->orderBy('created_at', 'DESC');
+        }
     }
 
     public function voiceCount($voice_id)

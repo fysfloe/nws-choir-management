@@ -17,7 +17,7 @@ import VueResource from 'vue-resource';
 import VuejsDialog from "vuejs-dialog"
 
 Vue.use(VueResource);
-Vue.use(VuejsDialog)
+Vue.use(VuejsDialog);
 
 Vue.component('user-list', require('./components/UserList.vue'));
 Vue.component('filters', require('./components/Filters.vue'));
