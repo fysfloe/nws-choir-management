@@ -187,5 +187,15 @@
     "No concerts for this project found.": "Keine Konzerte für dieses Projekt gefunden.",
     "Semester successfully updated!": "Semester erfolgreich aktualisiert.",
     "Add a project": "Projekt hinzufügen",
-    "New Project": "Neues Projekt"
+    "New Project": "Neues Projekt",
+    "Comments": "Kommentare",
+    "No comments yet.": "Noch keine Kommentare.",
+    "Comment": "Kommentar",
+    "Post Comment": "Kommentar posten",
+    "Private (only admins will see your comment)": "Privat (nur Admins können den Kommentar sehen)",
+    "Accept": "Zusagen",
+    "Username": "Benutzername",
+    "Create a new project": "Neues Projekt erstellen",
+    "Project title": "Titel",
+    "Save Project": "Projekt speichern"
 }
