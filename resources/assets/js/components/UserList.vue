@@ -56,7 +56,7 @@
 
             <ul class="users">
                 <li class="row align-items-center" v-for="user in _users">
-                    <div :class="'col-md-' + (withAttendanceConfirmation ? '8' : '10')">
+                    <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline ? '8' : '10')">
                         <div class="flex align-items-center">
                             <input type="checkbox" name="users[]" :value="user.id">&nbsp;
                             <div class="avatar" v-if="user.avatar">
@@ -90,6 +90,16 @@
                             :user="user"
                             :texts="texts"
                         ></attendance>
+                    </div>
+                    <div class="col-md-3" v-if="withAcceptDecline">
+                                <accept-decline
+                                    :accept-route="acceptDeclineRoutes['accept'] + '/' + user.id"
+                                    :decline-route="acceptDeclineRoutes['decline'] + '/' + user.id"
+                                    :accepted="hasAccepted(user.id)"
+                                    :declined="hasDeclined(user.id)"
+                                    :texts="texts"
+                                >
+                                </accept-decline>
                     </div>
                     <div class="col-md-1 user-actions">
                         <a class="dropdown-toggle no-caret" href="#" :id="`singleUserActions${user.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -125,7 +135,7 @@
 
 <script>
 export default {
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes'],
+    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes', 'withAcceptDecline', 'acceptDeclineRoutes', 'promises', 'denials'],
     data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -145,6 +155,8 @@ export default {
     },
     created() {
         this._users = this.users;
+        console.log(this.promises);
+        console.log(this.denials);
     },
     methods: {
         changeSortDir: function () {
@@ -186,6 +198,16 @@ export default {
             }
 
             this.fetchUsers();
+        },
+        hasAccepted: function (id) {
+            return this.promises.filter(user => {
+                return user.id === id;
+            }).length > 0;
+        },
+        hasDeclined: function (id) {
+            return this.denials.filter(user => {
+                return user.id === id;
+            }).length > 0;
         }
     }
 }

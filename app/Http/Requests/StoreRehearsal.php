@@ -27,7 +27,8 @@ class StoreRehearsal extends FormRequest
             'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
-            'place' => 'required'
+            'place' => 'required',
+            'project_id' => 'required'
         ];
     }
 }

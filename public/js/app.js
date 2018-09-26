@@ -68901,9 +68901,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes'],
+    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes', 'withAcceptDecline', 'acceptDeclineRoutes', 'promises', 'denials'],
     data: function data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -68923,6 +68933,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         this._users = this.users;
+        console.log(this.promises);
+        console.log(this.denials);
     },
 
     methods: {
@@ -68967,6 +68979,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             this.fetchUsers();
+        },
+        hasAccepted: function hasAccepted(id) {
+            return this.promises.filter(function (user) {
+                return user.id === id;
+            }).length > 0;
+        },
+        hasDeclined: function hasDeclined(id) {
+            return this.denials.filter(function (user) {
+                return user.id === id;
+            }).length > 0;
         }
     }
 });
@@ -69179,7 +69201,10 @@ var render = function() {
                       {
                         class:
                           "col-md-" +
-                          (_vm.withAttendanceConfirmation ? "8" : "10")
+                          (_vm.withAttendanceConfirmation ||
+                          _vm.withAcceptDecline
+                            ? "8"
+                            : "10")
                       },
                       [
                         _c("div", { staticClass: "flex align-items-center" }, [
@@ -69309,6 +69334,31 @@ var render = function() {
                               attrs: {
                                 routes: _vm.attendanceRoutes,
                                 user: user,
+                                texts: _vm.texts
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.withAcceptDecline
+                      ? _c(
+                          "div",
+                          { staticClass: "col-md-3" },
+                          [
+                            _c("accept-decline", {
+                              attrs: {
+                                "accept-route":
+                                  _vm.acceptDeclineRoutes["accept"] +
+                                  "/" +
+                                  user.id,
+                                "decline-route":
+                                  _vm.acceptDeclineRoutes["decline"] +
+                                  "/" +
+                                  user.id,
+                                accepted: _vm.hasAccepted(user.id),
+                                declined: _vm.hasDeclined(user.id),
                                 texts: _vm.texts
                               }
                             })

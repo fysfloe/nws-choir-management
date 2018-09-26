@@ -62,7 +62,6 @@ class RehearsalController extends Controller
         $semesters = $nullOption + $semesters;
 
         $projects = Project::getListForSelect();
-        $projects = $nullOption + $projects;
 
         return view('rehearsal.create')->with([
             'breadcrumbs' => $this->breadcrumbs,
@@ -83,7 +82,7 @@ class RehearsalController extends Controller
 
         $rehearsal = Auth::user()->rehearsalsCreated()->create($rehearsal);
 
-        return redirect()->back();
+        return redirect()->route('project.show', $rehearsal->project);
     }
 
     /**
@@ -179,6 +178,56 @@ class RehearsalController extends Controller
     }
 
     /**
+     * Display the rehearsals participants.
+     *
+     * @param  Request   $request   [description]
+     * @param  Rehearsal $rehearsal [description]
+     * @return [type]               [description]
+     */
+    public function projectParticipants(Request $request, Rehearsal $rehearsal)
+    {
+        if ($rehearsal->project) {
+            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
+        } else {
+            $request->session()->flash('alert-danger', __('No project set for this rehearsal.')); 
+
+            return redirect()->back();
+        }
+
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->projectParticipants($rehearsal->project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        $voices = Voice::getListForSelect();
+
+        return view('rehearsal.projectParticipants')->with([
+            'tab' => 'projectParticipants',
+            'rehearsal' => $rehearsal,
+            'participants' => UserResource::collection($users),
+            'activeFilters' => $activeFilters,
+            'voices' => $voices,
+            'route' => ['rehearsal.projectParticipants', $rehearsal],
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -194,7 +243,6 @@ class RehearsalController extends Controller
         $semesters = $nullOption + $semesters;
 
         $projects = Project::getListForSelect();
-        $projects = $nullOption + $projects;
 
         return view('rehearsal.edit')->with([
             'breadcrumbs' => $this->breadcrumbs,
@@ -226,18 +274,23 @@ class RehearsalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $rehearsal = Rehearsal::find($id);
+        $project = $rehearsal->project;
 
         $rehearsal->delete();
 
-        return redirect()->back();
+        return redirect()->route('project.show', $project);
     }
 
-    public function accept(Request $request, Rehearsal $rehearsal)
+    public function accept(Request $request, Rehearsal $rehearsal, $user_id = null)
     {
-        $user = Auth::user();
+        if ($user_id) {
+            $user = User::find($user_id);
+        } else {
+            $user = Auth::user();
+        }
 
         $date = new \DateTime();
 
@@ -250,9 +303,13 @@ class RehearsalController extends Controller
         }
     }
 
-    public function decline(Request $request, Rehearsal $rehearsal)
+    public function decline(Request $request, Rehearsal $rehearsal, $user_id = null)
     {
-        $user = Auth::user();
+        if ($user_id) {
+            $user = User::find($user_id);
+        } else {
+            $user = Auth::user();
+        }
 
         $date = new \DateTime();
 

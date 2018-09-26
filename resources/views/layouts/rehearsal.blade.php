@@ -10,6 +10,11 @@
                     <a class="btn btn-link" href="{{ route('rehearsal.edit', $rehearsal) }}">
                         <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
                     </a>
+                    {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this rehearsal?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['rehearsal.delete', $rehearsal->id]]) !!}
+                        <button type="submit" class="btn btn-link text-danger">
+                            <span class="oi oi-trash" data-toggle="tooltip" title="{{ __('Delete') }}" aria-hidden="true"></span>
+                        </button>
+			        {!! Form::close() !!}
                 @endpermission
             </h2>
         </div>
@@ -50,6 +55,12 @@
             <a class="nav-link @if ($tab === 'participants') active @endif" id="participants-tab" href="{{ route('rehearsal.participants', $rehearsal) }}" role="tab" aria-controls="participants">
                 <span class="oi oi-people"></span>&nbsp;
                 {{ __('Participants') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @if ($tab === 'projectParticipants') active @endif" id="project-participants-tab" href="{{ route('rehearsal.projectParticipants', $rehearsal) }}" role="tab" aria-controls="projectParticipants">
+                <span class="oi oi-people"></span>&nbsp;
+                {{ __('Project Participants') }}
             </a>
         </li>
         @endpermission
