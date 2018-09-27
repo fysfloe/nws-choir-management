@@ -294,7 +294,7 @@ class RehearsalController extends Controller
 
         $date = new \DateTime();
 
-        if ($rehearsal->date >= $date) {
+        if ($rehearsal->date >= $date || $user_id !== null) {
             $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
             return new Response(__('Successfully accepted the rehearsal.'), 200);
@@ -313,7 +313,7 @@ class RehearsalController extends Controller
 
         $date = new \DateTime();
 
-        if ($rehearsal->date >= $date) {
+        if ($rehearsal->date >= $date || $user_id !== null) {
             $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
             
             return new Response(__('Successfully accepted the rehearsal.'), 200);
