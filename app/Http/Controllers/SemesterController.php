@@ -10,6 +10,10 @@ use App\Voice;
 
 use App\Http\Requests\StoreSemester;
 
+use App\Services\GetFilteredUsersService;
+
+use App\Http\Resources\UserResource;
+
 use Auth;
 use URL;
 
@@ -174,6 +178,31 @@ class SemesterController extends Controller
             'tab' => 'participants',
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadParticipants(Request $request, Semester $semester)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->semesterParticipants($semester, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        $activeFilters = [];
+        foreach ($request->all() as $key => $val) {
+            if ($val) {
+                if ($key === 'voices') {
+                    $voices = [];
+                    foreach ($val as $voice_id) {
+                        $voices[] = Voice::find($voice_id)->name;
+                    }
+
+                    $activeFilters['voices'] = implode(', ', $voices);
+                } else {
+                    $activeFilters[$key] = $val;
+                }
+            }
+        }
+
+        return json_encode(UserResource::collection($users));
     }
 
     /**

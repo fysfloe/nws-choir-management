@@ -11,13 +11,11 @@
         @endpermission
     </header>
 
+
     @if(count($semesters) > 0)
         <div class="list-table">
             <header class="row">
-                <div class="col-md-1">
-                    <small class="text-muted">#</small>
-                </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     {{ __('Name') }}
                 </div>
                 <div class="col-md-2">
@@ -32,11 +30,9 @@
 
             <ul class="concerts">
                 @foreach($semesters as $semester)
+                <a href="{{ route('semesters.show', $semester) }}">
                     <li class="row {{ $semester->isCurrent() ? 'current' : '' }}">
-                        <div class="col-md-1">
-                            <small class="text-muted">{{ $semester->id }}</small>
-                        </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             @if ($semester->name)
                                 {{ $semester->name }}
                             @else
@@ -57,17 +53,10 @@
                             @endif
                         </div>
                         <div class="col-md-2">
-                            <a class="btn btn-link btn-sm" href="{{ route('semesters.show', $semester) }}">
-                                <span class="oi oi-eye" data-toggle="tooltip" title="{{ __('Show') }}"></span>
-                            </a>
-                            <a class="btn btn-link btn-sm" href="{{ route('semesters.edit', $semester) }}">
-                                <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
-                            </a>
-                            <a class="btn btn-link btn-sm" href="{{ route('semester.showAddUser', $semester) }}" data-toggle="modal" data-target="#mainModal">
-                                <span class="oi oi-person" data-toggle="tooltip" title="{{ __('Add a participant') }}"></span>
-                            </a>
+                            &nbsp;
                         </div>
                     </li>
+                </a>
                 @endforeach
             </ul>
         </div>

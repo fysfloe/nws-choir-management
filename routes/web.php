@@ -125,6 +125,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/semesters/{semester}/addUser', 'SemesterController@showAddUser')->name('semester.showAddUser');
         Route::post('/semesters/{semester}/addUser', 'SemesterController@addUser')->name('semester.addUser');
         Route::get('/semesters/{semester}/participants', 'SemesterController@participants')->name('semester.participants');
+        Route::get('/semesters/load-participants/{semester}', 'SemesterController@loadParticipants')->name('semester.loadParticipants');
     });
 });
 

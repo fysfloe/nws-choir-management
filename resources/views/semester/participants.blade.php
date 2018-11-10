@@ -1,85 +1,61 @@
 @extends('layouts.semester')
 
 @section('semesterContent')
-
-    <!-- Participants -->
-    <div class="tab-pane fade show active" id="participants" role="tabpanel" aria-labelledby="participants-tab">
-        @include('user._filters')
-
-        @permission('manageSemesters')
-        <div class="clearfix">
+    @permission('manageSemesters')
+        <div class="clearfix my-3 text-right">
             <a class="btn btn-default btn-sm" href="{{ route('semester.showAddUser', $semester) }}" data-toggle="modal" data-target="#mainModal">
                 <span class="oi oi-plus"></span> {{ __('Add a participant') }}
             </a>
-
-            <a class="btn btn-default btn-sm" href="{{ route('users.export', app('request')->all()) }}">
-                <span class="oi oi-account-login"></span> {{ __('Export') }}
-            </a>
         </div>
-        @endpermission
+    @endpermission
 
-        @if(count($participants) > 0)
-            <div class="list-table">
-                <header class="row">
-                    <div class="col-md-8 has-checkbox">
-                        <input type="checkbox" class="check-all" name="check-all-users" data-controls="users[]">&nbsp;
-
-                        <div class="dropdown list-actions">
-                            <a class="dropdown-toggle" href="#" role="button" id="userActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="userActions">
-                                <a class="dropdown-item" data-href="{{ route('voice.showSetMulti') }}" href="{{ route('voice.showSetMulti') }}" data-toggle="modal" data-target="#mainModal"><span class="oi oi-pulse"></span> {{ __('Set Voice') }}</a>
-                            </div>
-                        </div>
-
-                        {{ __('User') }}
-                        <a class="list-sort {{ app('request')->input('sort') === 'surname' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'surname', 'dir' => 'ASC']) }}">
-                            <span class="oi oi-caret-top"></span>
-                        </a>
-                        <a class="list-sort {{ app('request')->input('sort') === 'surname' && app('request')->input('dir') === 'DESC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'surname', 'dir' => 'DESC']) }}">
-                            <span class="oi oi-caret-bottom"></span>
-                        </a>
-                    </div>
-                    <div class="col-md-4">
-                        {{ __('Voice') }}
-                        <a class="list-sort {{ app('request')->input('sort') === 'voice' && app('request')->input('dir') === 'ASC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'voice', 'dir' => 'ASC']) }}">
-                            <span class="oi oi-caret-top"></span>
-                        </a>
-                        <a class="list-sort {{ app('request')->input('sort') === 'voice' && app('request')->input('dir') === 'DESC' ? 'active' : '' }}" href="{{ route('users.index', ['sort' => 'voice', 'dir' => 'DESC']) }}">
-                            <span class="oi oi-caret-bottom"></span>
-                        </a>
-                    </div>
-                </header>
-
-                <ul class="users">
-                    @foreach($participants as $user)
-                        <li class="row">
-                            <div class="col-md-8">
-                                <input type="checkbox" name="users[]" value="{{ $user->id }}">&nbsp;
-                                {{ $user->firstname }} {{ $user->surname }}
-                                @permission('manageUsers')
-                                    <a href="{{ route('profile.edit', $user->id) }}" class="btn-link btn-sm">
-                                        <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit Profile') }}"></span>
-                                    </a>
-                                @endpermission
-                            </div>
-                            <div class="col-md-4">
-                                @if ($user->voice)
-                                    {{ $user->voice->name }}
-                                @else
-                                    <small class="text-muted">({{ __('None set') }})</small>
-                                @endif
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @else
-            <div class="no-results">
-                <small class="text-muted">{{ __('No participants matching your filters.') }}</small>
-            </div>
-        @endif
+    <!-- Participants -->
+    <div class="tab-pane fade show active" id="participants" role="tabpanel" aria-labelledby="participants-tab">
+        <user-list
+            :texts="{{ json_encode([
+                'noActiveFilters' => __('No active filters'),
+                'showHideFilters' => __('Show/hide filters'),
+                'applyFilters' => __('Apply Filters'),
+                'labels' => [
+                    'search' => __('Search'),
+                    'voices' => __('Voices'),
+                    'concerts' => __('Concerts'),
+                    'age' => __('Age')
+                ],
+                'actions' => [
+                    'archive' => __('Archive'),
+                    'setVoice' => __('Set Voice'),
+                    'setRole' => __('Set Role'),
+                    'confirmArchiveMulti' => __('Do you really want to archive these users?'),
+                    'confirmArchive' => __('Do you really want to archive this user?')
+                ],
+                'headings' => [
+                    'user' => __('User'),
+                    'voice' => __('Voice'),
+                    'role' => __('Role')
+                ],
+                'editProfile' => __('Edit Profile'),
+                'noneSet' => __('None set'),
+                'noUsers' => __('No users found.'),
+                'total' => __('Total'),
+                'sortBy' => __('Sort by'),
+                'present' => __('Present'),
+                'excused' => __('Excused'),
+                'unexcused' => __('Unexcused')
+            ]) }}"
+            :users="{{ json_encode($participants) }}"
+            :can-manage-users="{{ Auth::user()->can('manageUsers') }}"
+            :show-role="false"
+            :voices="{{ json_encode($voices) }}"
+            fetch-users-action="{{ route('semester.loadParticipants', $semester) }}"
+            :sort-options="{{ json_encode([
+                'firstname' => __('Firstname'),
+                'surname' => __('Surname'),
+                'voice' => __('Voice'),
+                'id' => __('Created at')
+            ]) }}"
+            set-voice-route="{{ route('voice.showSet') }}"
+        ></user-list>
     </div>
 
 @endsection

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\User;
 use App\Rehearsal;
+use App\Semester;
 
 class GetFilteredUsersService {
     public function __construct()
@@ -185,6 +186,47 @@ class GetFilteredUsersService {
 
         if ($sort === 'voice') {
             $sort = 'voice.name';
+        }
+
+        $query .= "GROUP BY users.id ORDER BY $sort $dir";
+
+        $users = User::fromQuery($query);
+
+        return $users;
+    }
+
+    public function semesterParticipants(Semester $semester, $filters, $search, $sort = 'surname', $dir = 'ASC')
+    {
+        if (!$sort) $sort = 'surname';
+
+        $voices = isset($filters['voices']) ? $filters['voices'] : null;
+
+        $query = "SELECT users.* "
+            . "FROM users
+            LEFT OUTER JOIN user_semester ON users.id = user_semester.user_id ";
+        
+        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
+
+        $query .= "WHERE users.deleted_at IS NULL
+        AND user_semester.semester_id = $semester->id
+        AND user_semester.accepted = 1
+        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+
+        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;        
+        if ($ageFrom) {
+            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
+            $query .= "AND users.birthdate < '$minDate' ";
+        }
+
+        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;       
+        if ($ageTo) {
+            $ageTo += 1;
+            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
+            $query .= "AND users.birthdate >= '$maxDate' ";
+        }
+        if ($voices !== null && count($voices) > 0) {
+            $voices = implode(',', $voices);
+            $query .= "AND users.voice IN ($voices) ";
         }
 
         $query .= "GROUP BY users.id ORDER BY $sort $dir";

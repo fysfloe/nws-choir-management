@@ -21,9 +21,11 @@
                 @if (count($semester->projects) > 0)
                     <ul class="concerts">
                         @foreach ($semester->projects as $project)
+                        <a href="{{ route('project.show', $project) }}">
                             <li>
-                                <a href="{{ route('project.show', $project) }}">{{ $project->title }}</a>
+                                {{ $project->title }}
                             </li>
+                        </a>
                         @endforeach
                     </ul>
                 @else
