@@ -1,14 +1,14 @@
 <template>
-    <div class="attendance-buttons">
-        <a @click="confirm" :class="{ 'text-success': isConfirmed, 'text-muted': !isConfirmed }" data-toggle="tooltip" :title="texts.present">
+    <div class="btn-group attendance-buttons" role="group" :aria-label="texts.acceptOrDecline">
+        <button @click="confirm" :class="{ 'btn': true, 'btn-success': isConfirmed, 'btn-default': !isConfirmed }" data-toggle="tooltip" :title="texts.present">
             <span class="oi oi-check"></span>
-        </a>
-        <a @click="excuse" :class="{ 'text-warning': isExcused, 'text-muted': !isExcused }" data-toggle="tooltip" :title="texts.excused">
+        </button>
+        <button @click="excuse" :class="{ 'btn': true, 'btn-warning': isExcused, 'btn-default': !isExcused }" data-toggle="tooltip" :title="texts.excused">
             <span class="oi oi-medical-cross"></span>
-        </a>
-        <a @click="unexcuse" :class="{ 'text-danger': isUnexcused, 'text-muted': !isUnexcused }" data-toggle="tooltip" :title="texts.unexcused">
+        </button>
+        <button @click="unexcuse" :class="{ 'btn': true, 'btn-danger': isUnexcused, 'btn-default': !isUnexcused }" data-toggle="tooltip" :title="texts.unexcused">
             <span class="oi oi-x"></span>
-        </a>
+        </button>
     </div>
 </template>
 <script>

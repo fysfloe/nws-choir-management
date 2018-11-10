@@ -29,11 +29,11 @@ class UserResource extends Resource
             'avatar' => $this->avatar
         ];
 
-        if ($this->resource->confirmed) {
+        if ($this->resource->confirmed !== null) {
             $user['confirmed'] = $this->resource->confirmed;
         }
 
-        if ($this->resource->excused) {
+        if ($this->resource->excused !== null) {
             $user['excused'] = $this->resource->excused;
         }
 

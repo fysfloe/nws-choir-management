@@ -10304,10 +10304,6 @@ header.page-header a.btn-link {
   color: #149EB5;
 }
 
-header.page-header .accept-decline {
-  text-align: right;
-}
-
 .side-box ul.rehearsals a,
 .side-box ul.concerts a {
   color: inherit;
@@ -10351,6 +10347,24 @@ header.page-header .accept-decline {
 .side-box ul.concerts a li .accept-decline {
   margin: 0 !important;
   text-align: right;
+}
+
+.accept-decline .btn,
+.attendance-buttons .btn {
+  padding: 0.05rem 0.5rem;
+  border-radius: 100%;
+  border-width: 0.05rem;
+}
+
+.accept-decline .btn:hover,
+.attendance-buttons .btn:hover {
+  cursor: pointer;
+}
+
+.accept-decline .btn.btn-default,
+.attendance-buttons .btn.btn-default {
+  color: #8fb1c7;
+  border-color: #8fb1c7;
 }
 
 .accept-decline > span,

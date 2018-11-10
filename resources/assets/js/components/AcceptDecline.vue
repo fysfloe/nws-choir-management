@@ -1,11 +1,11 @@
 <template>
-    <div class="accept-decline" :aria-label="texts.acceptOrDecline">
-        <span @click="accept" :class="{ 'text-success': hasAccepted, 'text-muted': !hasAccepted }" data-toggle="tooltip" :title="hasAccepted ? texts.attending : texts.accept">
+    <div class="btn-group accept-decline" role="group" :aria-label="texts.acceptOrDecline">
+        <button @click="accept" :class="{ 'btn-success': hasAccepted, 'btn-default': !hasAccepted, 'btn': true }" data-toggle="tooltip" :title="hasAccepted ? texts.attending : texts.accept">
             <span :class="{ 'oi': true, 'oi-check': true }"></span>
-        </span>
-        <span @click="decline" :class="{ 'text-danger': hasDeclined, 'text-muted': !hasDeclined }" data-toggle="tooltip" :title="hasDeclined ? texts.notAttending : texts.decline">
+        </button>
+        <button @click="decline" :class="{ 'btn-danger': hasDeclined, 'btn-default': !hasDeclined, 'btn': true }" data-toggle="tooltip" :title="hasDeclined ? texts.notAttending : texts.decline">
             <span :class="{ 'oi': true, 'oi-x': true }"></span>
-        </span>
+        </button>
     </div>
 </template>
 

@@ -71298,16 +71298,17 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "accept-decline",
-      attrs: { "aria-label": _vm.texts.acceptOrDecline }
+      staticClass: "btn-group accept-decline",
+      attrs: { role: "group", "aria-label": _vm.texts.acceptOrDecline }
     },
     [
       _c(
-        "span",
+        "button",
         {
           class: {
-            "text-success": _vm.hasAccepted,
-            "text-muted": !_vm.hasAccepted
+            "btn-success": _vm.hasAccepted,
+            "btn-default": !_vm.hasAccepted,
+            btn: true
           },
           attrs: {
             "data-toggle": "tooltip",
@@ -71319,11 +71320,12 @@ var render = function() {
       ),
       _vm._v(" "),
       _c(
-        "span",
+        "button",
         {
           class: {
-            "text-danger": _vm.hasDeclined,
-            "text-muted": !_vm.hasDeclined
+            "btn-danger": _vm.hasDeclined,
+            "btn-default": !_vm.hasDeclined,
+            btn: true
           },
           attrs: {
             "data-toggle": "tooltip",
@@ -71463,43 +71465,56 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "attendance-buttons" }, [
-    _c(
-      "a",
-      {
-        class: {
-          "text-success": _vm.isConfirmed,
-          "text-muted": !_vm.isConfirmed
+  return _c(
+    "div",
+    {
+      staticClass: "btn-group attendance-buttons",
+      attrs: { role: "group", "aria-label": _vm.texts.acceptOrDecline }
+    },
+    [
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-success": _vm.isConfirmed,
+            "btn-default": !_vm.isConfirmed
+          },
+          attrs: { "data-toggle": "tooltip", title: _vm.texts.present },
+          on: { click: _vm.confirm }
         },
-        attrs: { "data-toggle": "tooltip", title: _vm.texts.present },
-        on: { click: _vm.confirm }
-      },
-      [_c("span", { staticClass: "oi oi-check" })]
-    ),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        class: { "text-warning": _vm.isExcused, "text-muted": !_vm.isExcused },
-        attrs: { "data-toggle": "tooltip", title: _vm.texts.excused },
-        on: { click: _vm.excuse }
-      },
-      [_c("span", { staticClass: "oi oi-medical-cross" })]
-    ),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        class: {
-          "text-danger": _vm.isUnexcused,
-          "text-muted": !_vm.isUnexcused
+        [_c("span", { staticClass: "oi oi-check" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-warning": _vm.isExcused,
+            "btn-default": !_vm.isExcused
+          },
+          attrs: { "data-toggle": "tooltip", title: _vm.texts.excused },
+          on: { click: _vm.excuse }
         },
-        attrs: { "data-toggle": "tooltip", title: _vm.texts.unexcused },
-        on: { click: _vm.unexcuse }
-      },
-      [_c("span", { staticClass: "oi oi-x" })]
-    )
-  ])
+        [_c("span", { staticClass: "oi oi-medical-cross" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-danger": _vm.isUnexcused,
+            "btn-default": !_vm.isUnexcused
+          },
+          attrs: { "data-toggle": "tooltip", title: _vm.texts.unexcused },
+          on: { click: _vm.unexcuse }
+        },
+        [_c("span", { staticClass: "oi oi-x" })]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

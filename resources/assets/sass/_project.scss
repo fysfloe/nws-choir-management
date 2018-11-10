@@ -14,10 +14,6 @@ header {
             padding: 0 0.5rem;
             color: $brand-primary;
         }
-
-        .accept-decline {
-            text-align: right;
-        }
     }
 }
 
@@ -54,6 +50,23 @@ header {
         }
     }
 }
+
+.accept-decline, .attendance-buttons {
+    .btn {
+        padding: 0.05rem 0.5rem;
+        border-radius: 100%;
+        border-width: 0.05rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &.btn-default {
+            color: $midgrey;
+            border-color: $midgrey;
+        }
+    }
+} 
 
 .accept-decline > span,
 .attendance-buttons a {
