@@ -12,9 +12,10 @@ use App\Semester;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
-use App\Http\Requests\StoreProject;
 use App\Http\Requests\StoreComment;
+use App\Http\Requests\StoreProject;
 
+use App\Events\ProjectAnsweredEvent;
 use App\Http\Resources\UserResource;
 use App\Services\GetFilteredUsersService;
 
@@ -111,6 +112,7 @@ class ProjectController extends Controller
         if ($semester) {
             foreach ($semester->participants as $user) {
                 $project->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $user->voice ? $user->voice->id : null, 'accepted' => $user->pivot->accepted]]);
+                event(new ProjectAnsweredEvent($project, $user));
             }
         }
 
@@ -304,11 +306,7 @@ class ProjectController extends Controller
 
         $project->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice->id]]);
 
-        if (count($project->concerts) > 0) {
-            foreach ($project->concerts as $concert) {
-                $concert->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice ? $user->voice->id : null]]);
-            }
-        }
+        event(new ProjectAnsweredEvent($project, $user, true));
 
         return redirect()->back();
     }
@@ -318,6 +316,8 @@ class ProjectController extends Controller
         $user = Auth::user();
 
         $project->participants()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
+
+        event(new ProjectAnsweredEvent($project, $user, false));
 
         return redirect()->back();
     }

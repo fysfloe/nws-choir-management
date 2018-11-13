@@ -104,6 +104,15 @@ class Concert extends Model
         return $this->belongsTo('App\Project');
     }
 
+    public function getDateTime(): \DateTime
+    {
+        $date = new \DateTime($this->date);
+        $time = new \DateTime($this->start_time);
+        $date->setTime($time->format('H'), $time->format('i'));
+
+        return $date;
+    }
+
     public static function getListForSelect()
     {
         $concerts = [];
