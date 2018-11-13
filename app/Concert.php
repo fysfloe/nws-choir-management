@@ -23,7 +23,7 @@ class Concert extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'slug', 'date', 'start_time', 'end_time', 'created_by', 'semester_id', 'project_id'
+        'title', 'description', 'slug', 'date', 'start_time', 'end_time', 'created_by', 'semester_id', 'project_id', 'place'
     ];
 
     /**

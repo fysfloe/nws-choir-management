@@ -28,6 +28,13 @@
                     <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}@if ($concert->end_time)–{{ date_format(date_create($concert->end_time), 'H:i') }}@endif
                 </div>
 
+                @if ($concert->place)
+                    <h3 class="mt-4">{{ __('Place') }}</h3>
+                    <div>
+                        {{ $concert->place }}
+                    </div>
+                @endif
+
                 <h3 class="mt-4">{{ __('Rehearsals') }}</h3>
                 @if ($concert->project && count($concert->project->rehearsals) > 0)
                     <ul class="rehearsals">

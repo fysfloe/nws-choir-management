@@ -22,6 +22,17 @@
             @endif
         </div><!-- .form-group -->
 
+        <div class="form-group{{ $errors->has('place') ? ' has-error' : '' }}">
+            {{ Form::label('place', __('Place'), ['class' => 'control-label']) }}
+            {{ Form::text('place', old('place'), ['class' => 'form-control']) }}
+    
+            @if ($errors->has('place'))
+                <span class="help-block text-danger">
+                    <strong>{{ $errors->first('place') }}</strong>
+                </span>
+            @endif
+        </div><!-- .form-group -->
+
         <div class="form-group{{ $errors->has('project_id') ? ' has-error' : '' }}">
             {{ Form::label('project_id', __('Project'), ['class' => 'control-label']) }}
             {{ Form::select('project_id', $projects, old('project_id') ? old('project_id') : ($app->request->get('project') ? $app->request->get('project') : null), ['class' => 'form-control']) }}

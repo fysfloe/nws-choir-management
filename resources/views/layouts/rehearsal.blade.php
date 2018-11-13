@@ -57,12 +57,6 @@
                 {{ __('Participants') }}
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link @if ($tab === 'projectParticipants') active @endif" id="project-participants-tab" href="{{ route('rehearsal.projectParticipants', $rehearsal) }}" role="tab" aria-controls="projectParticipants">
-                <span class="oi oi-people"></span>&nbsp;
-                {{ __('Project Participants') }}
-            </a>
-        </li>
         @endpermission
     </ul>
 
