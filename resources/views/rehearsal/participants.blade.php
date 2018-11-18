@@ -4,6 +4,14 @@
 
     <!-- Participants -->
     <div class="tab-pane fade show active" id="participants" role="tabpanel" aria-labelledby="participants-tab">
+        @permission('manageRehearsals')
+        <div class="clearfix my-3 text-right">
+            <a class="btn btn-default btn-sm" href="{{ route('rehearsal.addProjectParticipants', $rehearsal) }}">
+                <span class="oi oi-plus"></span> {{ __('Add project participants') }}
+            </a>
+        </div>
+        @endpermission
+
         <user-list
             :texts="{{ json_encode([
                 'noActiveFilters' => __('No active filters'),

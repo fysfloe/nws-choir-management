@@ -110,6 +110,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/rehearsal/{rehearsal}/ajaxSetUnexcused/{user?}', 'RehearsalController@ajaxSetUnexcused')->name('rehearsal.setUnexcused');
         Route::get('/rehearsal/load-participants/{rehearsal}', 'RehearsalController@loadParticipants')->name('rehearsal.loadParticipants');
         Route::get('/rehearsal/{rehearsal}/participants', 'RehearsalController@participants')->name('rehearsal.participants');
+        Route::get('/rehearsal/{rehearsal}/addProjectParticipants', 'RehearsalController@addProjectParticipants')->name('rehearsal.addProjectParticipants');
         // Voices
         Route::resource('/voices', 'VoiceController');
         Route::get('/voice/set', 'VoiceController@showSetMulti')->name('voice.showSetMulti');

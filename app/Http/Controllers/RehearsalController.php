@@ -178,56 +178,6 @@ class RehearsalController extends Controller
     }
 
     /**
-     * Display the rehearsals participants.
-     *
-     * @param  Request   $request   [description]
-     * @param  Rehearsal $rehearsal [description]
-     * @return [type]               [description]
-     */
-    public function projectParticipants(Request $request, Rehearsal $rehearsal)
-    {
-        if ($rehearsal->project) {
-            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
-        } else {
-            $request->session()->flash('alert-danger', __('No project set for this rehearsal.')); 
-
-            return redirect()->back();
-        }
-
-        $filters = $request->all();
-
-        $users = (new GetFilteredUsersService())->projectParticipants($rehearsal->project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
-
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
-        }
-
-        $voices = Voice::getListForSelect();
-
-        return view('rehearsal.projectParticipants')->with([
-            'tab' => 'projectParticipants',
-            'rehearsal' => $rehearsal,
-            'participants' => UserResource::collection($users),
-            'activeFilters' => $activeFilters,
-            'voices' => $voices,
-            'route' => ['rehearsal.projectParticipants', $rehearsal],
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -393,6 +343,17 @@ class RehearsalController extends Controller
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         $comment = $rehearsal->comments()->create($input);
+
+        return redirect()->back();
+    }
+
+    public function addProjectParticipants(Rehearsal $rehearsal)
+    {
+        $project = $rehearsal->project;
+
+        foreach ($project->participants as $participant) {
+            $rehearsal->participants()->syncWithoutDetaching([$participant->id => ['accepted' => true]]);
+        }
 
         return redirect()->back();
     }

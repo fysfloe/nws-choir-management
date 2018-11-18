@@ -455,6 +455,8 @@ class ProjectController extends Controller
             $user = User::find($user_id);
 
             $project->participants()->syncWithoutDetaching([$user_id => ['accepted' => true, 'voice_id' => ($user->voice ? $user->voice->id : null)]]);
+
+            event(new ProjectAnsweredEvent($project, $user, true));
         }
 
         return redirect()->route('project.participants', $project);
