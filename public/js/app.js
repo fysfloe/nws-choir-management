@@ -68911,9 +68911,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes', 'withAcceptDecline', 'acceptDeclineRoutes', 'promises', 'denials'],
+    props: {
+        'texts': {
+            type: Object
+        },
+        'concerts': {
+            type: Array
+        },
+        'users': {
+            type: Array
+        },
+        'canManageUsers': {
+            type: [Boolean, Number]
+        },
+        'showRoles': {
+            type: Boolean
+        },
+        'fetchUsersAction': {
+            type: String
+        },
+        'voices': {
+            type: Object
+        },
+        'sortOptions': {
+            type: Object
+        },
+        'setVoiceRoute': {
+            type: String
+        },
+        'withAttendanceConfirmation': {
+            type: Boolean
+        },
+        'attendanceRoutes': {
+            type: Object
+        },
+        'withAcceptDecline': {
+            type: Boolean
+        },
+        'acceptDeclineRoutes': {
+            type: Object
+        },
+        'removeUserRoute': {
+            type: String
+        },
+        'promises': {
+            type: Array
+        },
+        'denials': {
+            type: Array
+        }
+    },
     data: function data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -68933,8 +68983,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         this._users = this.users;
-        console.log(this.promises);
-        console.log(this.denials);
     },
 
     methods: {
@@ -69195,109 +69243,79 @@ var render = function() {
                 "ul",
                 { staticClass: "users" },
                 _vm._l(_vm._users, function(user) {
-                  return _c("li", { staticClass: "row align-items-center" }, [
-                    _c(
-                      "div",
-                      {
-                        class:
-                          "col-md-" +
-                          (_vm.withAttendanceConfirmation ||
-                          _vm.withAcceptDecline
-                            ? "8"
-                            : "10")
-                      },
-                      [
-                        _c("div", { staticClass: "flex align-items-center" }, [
-                          _c("input", {
-                            attrs: { type: "checkbox", name: "users[]" },
-                            domProps: { value: user.id }
-                          }),
-                          _vm._v(" \n                        "),
-                          user.avatar
-                            ? _c("div", { staticClass: "avatar" }, [
-                                _c("img", {
-                                  attrs: {
-                                    src: "/storage/avatars/" + user.avatar,
-                                    alt: user.firstname + " " + user.surname
-                                  }
-                                })
-                              ])
-                            : _c(
-                                "div",
-                                { staticClass: "avatar avatar-default" },
-                                [_c("span", { staticClass: "oi oi-person" })]
-                              ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "name" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(user.firstname) +
-                                " " +
-                                _vm._s(user.surname) +
-                                "\n                            "
-                            ),
-                            _c("div", [
-                              _c(
-                                "a",
-                                {
-                                  attrs: {
-                                    href: _vm.setVoiceRoute + "/" + user.id,
-                                    "data-toggle": "modal",
-                                    "data-target": "#mainModal"
-                                  }
-                                },
-                                [
-                                  user.voice
-                                    ? _c(
-                                        "span",
-                                        {
-                                          staticClass:
-                                            "badge badge-secondary badge-pill"
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                        " +
-                                              _vm._s(user.voice.name) +
-                                              "\n                                    "
-                                          )
-                                        ]
-                                      )
-                                    : _c(
-                                        "small",
-                                        {
-                                          staticClass:
-                                            "badge badge-light badge-pill text-muted"
-                                        },
-                                        [
-                                          _vm._v(
-                                            "(" +
-                                              _vm._s(_vm.texts.noneSet) +
-                                              ")"
-                                          )
-                                        ]
-                                      )
-                                ]
-                              ),
+                  return _c(
+                    "li",
+                    { key: user.id, staticClass: "row align-items-center" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          class:
+                            "col-md-" +
+                            (_vm.withAttendanceConfirmation ||
+                            _vm.withAcceptDecline
+                              ? "8"
+                              : "11")
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "flex align-items-center" },
+                            [
+                              _c("input", {
+                                attrs: { type: "checkbox", name: "users[]" },
+                                domProps: { value: user.id }
+                              }),
+                              _vm._v(" \n                        "),
+                              user.avatar
+                                ? _c("div", { staticClass: "avatar" }, [
+                                    _c("img", {
+                                      attrs: {
+                                        src: "/storage/avatars/" + user.avatar,
+                                        alt: user.firstname + " " + user.surname
+                                      }
+                                    })
+                                  ])
+                                : _c(
+                                    "div",
+                                    { staticClass: "avatar avatar-default" },
+                                    [
+                                      _c("span", {
+                                        staticClass: "oi oi-person"
+                                      })
+                                    ]
+                                  ),
                               _vm._v(" "),
-                              _vm.showRoles
-                                ? _c(
+                              _c("div", { staticClass: "name" }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(user.firstname) +
+                                    " " +
+                                    _vm._s(user.surname) +
+                                    "\n                            "
+                                ),
+                                _c("div", [
+                                  _c(
                                     "a",
                                     {
                                       attrs: {
-                                        href: "/admin/role/set/" + user.id,
+                                        href: _vm.setVoiceRoute + "/" + user.id,
                                         "data-toggle": "modal",
                                         "data-target": "#mainModal"
                                       }
                                     },
-                                    _vm._l(user.roles, function(role) {
-                                      return user.roles && user.roles.length > 0
+                                    [
+                                      user.voice
                                         ? _c(
                                             "span",
-                                            { staticClass: "badge badge-info" },
+                                            {
+                                              staticClass:
+                                                "badge badge-secondary badge-pill"
+                                            },
                                             [
                                               _vm._v(
                                                 "\n                                        " +
-                                                  _vm._s(role.name) +
+                                                  _vm._s(user.voice.name) +
                                                   "\n                                    "
                                               )
                                             ]
@@ -69306,7 +69324,7 @@ var render = function() {
                                             "small",
                                             {
                                               staticClass:
-                                                "badge badge-light text-muted"
+                                                "badge badge-light badge-pill text-muted"
                                             },
                                             [
                                               _vm._v(
@@ -69316,151 +69334,257 @@ var render = function() {
                                               )
                                             ]
                                           )
-                                    })
-                                  )
-                                : _vm._e()
-                            ])
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm.withAttendanceConfirmation
-                      ? _c(
-                          "div",
-                          { staticClass: "col-md-3" },
-                          [
-                            _c("attendance", {
-                              attrs: {
-                                routes: _vm.attendanceRoutes,
-                                user: user,
-                                texts: _vm.texts
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.withAcceptDecline
-                      ? _c(
-                          "div",
-                          { staticClass: "col-md-3" },
-                          [
-                            _c("accept-decline", {
-                              attrs: {
-                                "accept-route":
-                                  _vm.acceptDeclineRoutes["accept"] +
-                                  "/" +
-                                  user.id,
-                                "decline-route":
-                                  _vm.acceptDeclineRoutes["decline"] +
-                                  "/" +
-                                  user.id,
-                                accepted: _vm.hasAccepted(user.id),
-                                declined: _vm.hasDeclined(user.id),
-                                texts: _vm.texts
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-1 user-actions" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "dropdown-toggle no-caret",
-                          attrs: {
-                            href: "#",
-                            id: "singleUserActions" + user.id,
-                            role: "button",
-                            "data-toggle": "dropdown",
-                            "aria-haspopup": "true",
-                            "aria-expanded": "false"
-                          }
-                        },
-                        [_c("span", { staticClass: "oi oi-ellipses" })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "dropdown-menu dropdown-menu-right",
-                          attrs: {
-                            "aria-labelledby": "singleUserActions" + user.id
-                          }
-                        },
-                        [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "dropdown-item",
-                              attrs: { href: "/profile/edit/" + user.id }
-                            },
-                            [
-                              _c("span", { staticClass: "oi oi-pencil" }),
-                              _vm._v(
-                                " " +
-                                  _vm._s(_vm.texts.editProfile) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "form",
-                            {
-                              staticClass: "form-inline",
-                              attrs: {
-                                method: "POST",
-                                action: "/admin/users/" + user.id
-                              }
-                            },
-                            [
-                              _c("input", {
-                                attrs: {
-                                  name: "_method",
-                                  type: "hidden",
-                                  value: "DELETE"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  directives: [
-                                    {
-                                      name: "confirm",
-                                      rawName: "v-confirm",
-                                      value: _vm.texts.actions.confirmArchive,
-                                      expression: "texts.actions.confirmArchive"
-                                    }
-                                  ],
-                                  staticClass: "btn btn-link dropdown-item",
-                                  attrs: { type: "submit" }
-                                },
-                                [
-                                  _c("span", { staticClass: "oi oi-box" }),
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(_vm.texts.actions.archive) +
-                                      "\n                            "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                attrs: { type: "hidden", name: "_token" },
-                                domProps: { value: _vm.csrf }
-                              })
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.showRoles
+                                    ? _c(
+                                        "a",
+                                        {
+                                          attrs: {
+                                            href: "/admin/role/set/" + user.id,
+                                            "data-toggle": "modal",
+                                            "data-target": "#mainModal"
+                                          }
+                                        },
+                                        _vm._l(user.roles, function(role) {
+                                          return user.roles &&
+                                            user.roles.length > 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  key: role.id,
+                                                  staticClass:
+                                                    "badge badge-info"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                        " +
+                                                      _vm._s(role.name) +
+                                                      "\n                                    "
+                                                  )
+                                                ]
+                                              )
+                                            : _c(
+                                                "small",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-light text-muted"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm.texts.noneSet
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              )
+                                        })
+                                      )
+                                    : _vm._e()
+                                ])
+                              ])
                             ]
                           )
                         ]
-                      )
-                    ])
-                  ])
+                      ),
+                      _vm._v(" "),
+                      _vm.withAttendanceConfirmation
+                        ? _c(
+                            "div",
+                            { staticClass: "col-md-3" },
+                            [
+                              _c("attendance", {
+                                attrs: {
+                                  routes: _vm.attendanceRoutes,
+                                  user: user,
+                                  texts: _vm.texts
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.withAcceptDecline
+                        ? _c(
+                            "div",
+                            { staticClass: "col-md-3" },
+                            [
+                              _c("accept-decline", {
+                                attrs: {
+                                  "accept-route":
+                                    _vm.acceptDeclineRoutes["accept"] +
+                                    "/" +
+                                    user.id,
+                                  "decline-route":
+                                    _vm.acceptDeclineRoutes["decline"] +
+                                    "/" +
+                                    user.id,
+                                  accepted: _vm.hasAccepted(user.id),
+                                  declined: _vm.hasDeclined(user.id),
+                                  texts: _vm.texts
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-1 user-actions" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-toggle no-caret",
+                            attrs: {
+                              href: "#",
+                              id: "singleUserActions" + user.id,
+                              role: "button",
+                              "data-toggle": "dropdown",
+                              "aria-haspopup": "true",
+                              "aria-expanded": "false"
+                            }
+                          },
+                          [_c("span", { staticClass: "oi oi-ellipses" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "dropdown-menu dropdown-menu-right",
+                            attrs: {
+                              "aria-labelledby": "singleUserActions" + user.id
+                            }
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "dropdown-item",
+                                attrs: { href: "/profile/edit/" + user.id }
+                              },
+                              [
+                                _c("span", { staticClass: "oi oi-pencil" }),
+                                _vm._v(
+                                  " " +
+                                    _vm._s(_vm.texts.editProfile) +
+                                    "\n                        "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "form",
+                              {
+                                staticClass: "form-inline",
+                                attrs: {
+                                  method: "POST",
+                                  action: "/admin/users/" + user.id
+                                }
+                              },
+                              [
+                                _c("input", {
+                                  attrs: {
+                                    name: "_method",
+                                    type: "hidden",
+                                    value: "DELETE"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "confirm",
+                                        rawName: "v-confirm",
+                                        value: _vm.texts.actions.confirmArchive,
+                                        expression:
+                                          "texts.actions.confirmArchive"
+                                      }
+                                    ],
+                                    staticClass: "btn btn-link dropdown-item",
+                                    attrs: { type: "submit" }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-box" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.texts.actions.archive) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: { type: "hidden", name: "_token" },
+                                  domProps: { value: _vm.csrf }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "form",
+                              {
+                                staticClass: "form-inline",
+                                attrs: {
+                                  method: "POST",
+                                  action: _vm.removeUserRoute
+                                }
+                              },
+                              [
+                                _c("input", {
+                                  attrs: {
+                                    name: "_method",
+                                    type: "hidden",
+                                    value: "DELETE"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: { type: "hidden", name: "user_id" },
+                                  domProps: { value: user.id }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "confirm",
+                                        rawName: "v-confirm",
+                                        value:
+                                          _vm.texts.actions.confirmRemoveUser,
+                                        expression:
+                                          "texts.actions.confirmRemoveUser"
+                                      }
+                                    ],
+                                    staticClass: "btn btn-link dropdown-item",
+                                    attrs: { type: "submit" }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-minus" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.texts.actions.removeUser) +
+                                        "\n                            "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: { type: "hidden", name: "_token" },
+                                  domProps: { value: _vm.csrf }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    ]
+                  )
                 })
               )
             ])

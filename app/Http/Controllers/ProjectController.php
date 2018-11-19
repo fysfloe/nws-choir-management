@@ -476,4 +476,19 @@ class ProjectController extends Controller
             });
         })->download('csv');
     }
+
+    public function removeUser(Project $project, Request $request)
+    {
+        $user = User::find($request->get('user_id'));
+        
+        if ($user !== null) {
+            $project->participants()->detach($user);
+
+            $request->session()->flash('alert-success', __('Participant successfully removed from the project.'));
+        } else {
+            $request->session()->flash('alert-danger', __('Participant could not be found.'));
+        }
+
+        return redirect()->back();
+    }
 }

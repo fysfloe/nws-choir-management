@@ -27,7 +27,9 @@
                     'setVoice' => __('Set Voice'),
                     'setRole' => __('Set Role'),
                     'confirmArchiveMulti' => __('Do you really want to archive these users?'),
-                    'confirmArchive' => __('Do you really want to archive this user?')
+                    'confirmArchive' => __('Do you really want to archive this user?'),
+                    'removeUser' => __('Remove participant'),
+                    'confirmRemoveUser' => __('Do you really want to remove this participant from the semester?')
                 ],
                 'headings' => [
                     'user' => __('User'),
@@ -55,6 +57,7 @@
                 'id' => __('Created at')
             ]) }}"
             set-voice-route="{{ route('voice.showSet') }}"
+            remove-user-route="{{ route('semester.removeUser', $semester) }}"
         ></user-list>
     </div>
 

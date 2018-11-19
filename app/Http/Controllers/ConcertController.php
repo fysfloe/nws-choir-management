@@ -490,4 +490,19 @@ class ConcertController extends Controller
 
         return redirect()->back();
     }
+
+    public function removeUser(Concert $concert, Request $request)
+    {
+        $user = User::find($request->get('user_id'));
+        
+        if ($user !== null) {
+            $concert->participants()->detach($user);
+
+            $request->session()->flash('alert-success', __('Participant successfully removed from the concert.'));
+        } else {
+            $request->session()->flash('alert-danger', __('Participant could not be found.'));
+        }
+
+        return redirect()->back();
+    }
 }

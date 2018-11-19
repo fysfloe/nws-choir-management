@@ -55,8 +55,8 @@
             </header>
 
             <ul class="users">
-                <li class="row align-items-center" v-for="user in _users">
-                    <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline ? '8' : '10')">
+                <li class="row align-items-center" v-for="user in _users" :key="user.id">
+                    <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline ? '8' : '11')">
                         <div class="flex align-items-center">
                             <input type="checkbox" name="users[]" :value="user.id">&nbsp;
                             <div class="avatar" v-if="user.avatar">
@@ -75,7 +75,7 @@
                                         <small v-else class="badge badge-light badge-pill text-muted">({{ texts.noneSet }})</small>
                                     </a>
                                     <a v-if="showRoles" :href="'/admin/role/set/' + user.id" data-toggle="modal" data-target="#mainModal">
-                                        <span v-if="user.roles && user.roles.length > 0" v-for="role in user.roles" class="badge badge-info">
+                                        <span v-if="user.roles && user.roles.length > 0" v-for="role in user.roles" :key="role.id" class="badge badge-info">
                                             {{ role.name }}
                                         </span>
                                         <small v-else class="badge badge-light text-muted">({{ texts.noneSet }})</small>
@@ -117,14 +117,15 @@
                                 </button>
                                 <input type="hidden" name="_token" :value="csrf">
                             </form>
+                            <form method="POST" class="form-inline" :action="removeUserRoute">
+                                <input name="_method" type="hidden" value="DELETE">
+                                <input type="hidden" name="user_id" :value="user.id">
+                                <button type="submit" v-confirm="texts.actions.confirmRemoveUser" class="btn btn-link dropdown-item">
+                                    <span class="oi oi-minus"></span> {{ texts.actions.removeUser }}
+                                </button>
+                                <input type="hidden" name="_token" :value="csrf">
+                            </form>
                         </div>
-                        <!-- <form @submit="confirm(texts.actions.confirmArchive)" method="POST" class="form-inline" :action="`/admin/users/${user.id}`">
-                            <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="oi oi-box"></span> {{ texts.actions.archive }}
-                            </button>
-                            <input type="hidden" name="_token" :value="csrf">
-                        </form> -->
                     </div>
                 </li>
             </ul>
@@ -135,7 +136,56 @@
 
 <script>
 export default {
-    props: ['texts', 'concerts', 'users', 'canManageUsers', 'showRoles', 'fetchUsersAction', 'voices', 'sortOptions', 'setVoiceRoute', 'withAttendanceConfirmation', 'attendanceRoutes', 'withAcceptDecline', 'acceptDeclineRoutes', 'promises', 'denials'],
+    props: {
+        'texts': {
+            type: Object
+        }, 
+        'concerts': {
+            type: Array
+        }, 
+        'users': {
+            type: Array
+        }, 
+        'canManageUsers': {
+            type: [Boolean, Number]
+        }, 
+        'showRoles': {
+            type: Boolean
+        }, 
+        'fetchUsersAction': {
+            type: String
+        }, 
+        'voices': {
+            type: Object 
+        }, 
+        'sortOptions': {
+            type: Object 
+        }, 
+        'setVoiceRoute': {
+            type: String
+        }, 
+        'withAttendanceConfirmation': {
+            type: Boolean
+        }, 
+        'attendanceRoutes': {
+            type: Object 
+        }, 
+        'withAcceptDecline': {
+            type: Boolean
+        }, 
+        'acceptDeclineRoutes': {
+            type: Object
+        }, 
+        'removeUserRoute': {
+            type: String
+        },
+        'promises': {
+            type: Array
+        }, 
+        'denials': {
+            type: Array
+        }
+    },
     data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -155,8 +205,6 @@ export default {
     },
     created() {
         this._users = this.users;
-        console.log(this.promises);
-        console.log(this.denials);
     },
     methods: {
         changeSortDir: function () {

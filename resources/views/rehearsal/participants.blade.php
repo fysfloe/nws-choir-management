@@ -28,7 +28,9 @@
                     'setVoice' => __('Set Voice'),
                     'setRole' => __('Set Role'),
                     'confirmArchiveMulti' => __('Do you really want to archive these users?'),
-                    'confirmArchive' => __('Do you really want to archive this user?')
+                    'confirmArchive' => __('Do you really want to archive this user?'),
+                    'removeUser' => __('Remove participant'),
+                    'confirmRemoveUser' => __('Do you really want to remove this participant from the rehearsal?')
                 ],
                 'headings' => [
                     'user' => __('User'),
@@ -62,6 +64,7 @@
                 'excused' => route('rehearsal.excuse', ['rehearsal' => $rehearsal]),
                 'unexcused' => route('rehearsal.setUnexcused', ['rehearsal' => $rehearsal])
             ]) }}"
+            remove-user-route="{{ route('rehearsal.removeUser', $rehearsal) }}"
         ></user-list>
     </div>
 

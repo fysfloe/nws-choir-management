@@ -199,5 +199,15 @@
     "Project title": "Titel",
     "Save Project": "Projekt speichern",
     "Other rehearsals in this project": "Andere Proben in diesem Projekt",
-    "Project Participants": "Projektteilnehmer"
+    "Project Participants": "Projektteilnehmer",
+    "Participant successfully removed from the semester.": "Teilnehmer erfolgreich vom Semester entfernt.",
+    "Participant successfully removed from the project.": "Teilnehmer erfolgreich vom Projekt entfernt.",
+    "Participant successfully removed from the concert.": "Teilnehmer erfolgreich vom Konzert entfernt.",
+    "Participant successfully removed from the rehearsal.": "Teilnehmer erfolgreich von der Probe entfernt.",
+    "Remove participant": "Teilnehmer entfernen",
+    "Participant could not be found.": "Teilnehmer konnte nicht gefunden werden.",
+    "Do you really want to remove this participant from the semester?": "Diesen Benutzer wirklich vom Semester entfernen?",
+    "Do you really want to remove this participant from the project?": "Diesen Benutzer wirklich vom Projekt entfernen?",
+    "Do you really want to remove this participant from the concert?": "Diesen Benutzer wirklich vom Konzert entfernen?",
+    "Do you really want to remove this participant from the rehearsal?": "Diesen Benutzer wirklich von der Probe entfernen?"
 }
