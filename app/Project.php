@@ -23,7 +23,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'slug', 'created_by', 'semester_id'
+        'title', 'description', 'slug', 'created_by', 'semester_id', 'is_main'
     ];
 
     /**

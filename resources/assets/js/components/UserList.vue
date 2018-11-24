@@ -45,7 +45,7 @@
                             {{ sortOptions[this.filters.sort] }}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="sortOrder">
-                            <a @click="changeSort(key)" class="dropdown-item" href="#" v-for="(sortOption, key) in sortOptions">{{ sortOption }}</a>
+                            <a @click="changeSort(key)" class="dropdown-item" href="#" :key="key" v-for="(sortOption, key) in sortOptions">{{ sortOption }}</a>
                         </div>
                     </div>
                 </div>

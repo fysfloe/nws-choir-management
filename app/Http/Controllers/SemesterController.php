@@ -8,10 +8,9 @@ use App\Semester;
 use App\User;
 use App\Voice;
 
+use App\Events\SemesterAnsweredEvent;
 use App\Http\Requests\StoreSemester;
-
 use App\Services\GetFilteredUsersService;
-
 use App\Http\Resources\UserResource;
 
 use Auth;
@@ -309,18 +308,8 @@ class SemesterController extends Controller
 
         $semester->participants()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
-        if (count($semester->projects) > 0) {
-            foreach ($semester->projects as $project) {
-                $project->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice ? $user->voice->id : null]]);
-            }
-        }
-
-        if (count($semester->concerts) > 0) {
-            foreach ($semester->concerts as $concert) {
-                $concert->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice ? $user->voice->id : null]]);
-            }
-        }
-
+        event(new SemesterAnsweredEvent($semester, $user, true));
+        
         return redirect()->back();
     }
 

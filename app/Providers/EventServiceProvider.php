@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\ProjectAnsweredEvent' => [
             'App\Listeners\ProjectAnsweredListener'
+        ],
+        'App\Events\SemesterAnsweredEvent' => [
+            'App\Listeners\SemesterAnsweredListener'
         ]
     ];
 

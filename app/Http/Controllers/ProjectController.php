@@ -98,6 +98,7 @@ class ProjectController extends Controller
         $voiceNumbers = $project['voiceNumbers'];
 
         $project['slug'] = str_slug($project['title'], '-');
+        $input['is_main'] = $request->has('is_main');
 
         $project = Auth::user()->projectsCreated()->create($project);
 
@@ -195,6 +196,7 @@ class ProjectController extends Controller
         $voiceNumbers = $project['voiceNumbers'];
 
         $input['slug'] = str_slug($input['title'], '-');
+        $input['is_main'] = $request->has('is_main');
 
         $project = $project->update($input);
 
