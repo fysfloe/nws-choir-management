@@ -2,7 +2,7 @@
 
 @section('content')
     <header class="page-header">
-        <h2>Login</h2>
+        <h2>{{ __('Login') }}</h2>
     </header>
     <form method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
@@ -49,7 +49,7 @@
             </button>
 
             <a class="btn btn-link" href="{{ route('password.request') }}">
-                Forgot Your Password?
+                {{ __('Forgot Your Password?') }}
             </a>
         </div>
     </form>

@@ -209,6 +209,7 @@ export default {
         "Do you really want to remove this participant from the rehearsal?": "Diesen Benutzer wirklich von der Probe entfernen?",
         "This is a main project in the semester.": "Das ist ein Hauptprojekt im Semester.",
         "People that attend the semester will automatically participate in this project as well.": "Alle, die zum Semester zusagen, werden auch automatisch zu diesem Projekt angemeldet.",
+        "Remove participants": "Teilnehmer entfernen",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",

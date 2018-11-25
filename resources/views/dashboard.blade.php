@@ -4,11 +4,6 @@
     <header class="page-header">
         <h2>{{ __('Dashboard') }}</h2>
     </header>
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
     <div class="row dashboard">
         <div class="col-8">
             <h3>
