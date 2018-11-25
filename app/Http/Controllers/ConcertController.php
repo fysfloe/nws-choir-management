@@ -491,7 +491,7 @@ class ConcertController extends Controller
         return redirect()->back();
     }
 
-    public function removeUser(Concert $concert, Request $request)
+    public function removeParticipant(Concert $concert, Request $request)
     {
         $user = User::find($request->get('user_id'));
         
@@ -504,5 +504,20 @@ class ConcertController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function removeParticipants(Concert $concert, Request $request)
+    {
+        $users = $request->get('users');
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+
+            $concert->participants()->detach($user);
+        }
+
+        return response()->json([
+            'message' => __('Participants successfully removed from the concert.')
+        ]);
     }
 }

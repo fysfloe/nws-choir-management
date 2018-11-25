@@ -1,9 +1,9 @@
 <template>
-    <div class="btn-group accept-decline" role="group" :aria-label="texts.acceptOrDecline">
-        <button @click="accept" :class="{ 'btn-success': hasAccepted, 'btn-default': !hasAccepted, 'btn': true }" data-toggle="tooltip" :title="hasAccepted ? texts.attending : texts.accept">
+    <div class="btn-group accept-decline" role="group" :aria-label="$t('Accept or decline')">
+        <button @click="accept" :class="{ 'btn-success': hasAccepted, 'btn-default': !hasAccepted, 'btn': true }" data-toggle="tooltip" :title="hasAccepted ? $t('Attending') : $t('Accept')">
             <span :class="{ 'oi': true, 'oi-check': true }"></span>
         </button>
-        <button @click="decline" :class="{ 'btn-danger': hasDeclined, 'btn-default': !hasDeclined, 'btn': true }" data-toggle="tooltip" :title="hasDeclined ? texts.notAttending : texts.decline">
+        <button @click="decline" :class="{ 'btn-danger': hasDeclined, 'btn-default': !hasDeclined, 'btn': true }" data-toggle="tooltip" :title="hasDeclined ? $t('Not attending') : $t('Decline')">
             <span :class="{ 'oi': true, 'oi-x': true }"></span>
         </button>
     </div>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined', 'texts'],
+    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined'],
     data() {
         return {
             hasAccepted: this.accepted,

@@ -358,7 +358,7 @@ class RehearsalController extends Controller
         return redirect()->back();
     }
 
-    public function removeUser(Rehearsal $rehearsal, Request $request)
+    public function removeParticipant(Rehearsal $rehearsal, Request $request)
     {
         $user = User::find($request->get('user_id'));
         
@@ -371,5 +371,20 @@ class RehearsalController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function removeParticipants(Rehearsal $rehearsal, Request $request)
+    {
+        $users = $request->get('users');
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+
+            $rehearsal->participants()->detach($user);
+        }
+
+        return response()->json([
+            'message' => __('Participants successfully removed from the rehearsal.')
+        ]);
     }
 }

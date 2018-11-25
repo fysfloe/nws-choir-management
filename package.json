@@ -24,6 +24,7 @@
     "bootstrap-multiselect": "^0.9.13-1",
     "popper.js": "^1.12.3",
     "tempusdominus-bootstrap-4": "^5.0.0-alpha9",
+    "vue-i18n": "^8.3.2",
     "vue-picture-input": "^2.1.6",
     "vue-resource": "^1.5.0",
     "vuejs-dialog": "^0.9.0"

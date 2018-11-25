@@ -34,11 +34,7 @@
             display: inline-block;
 
             &.list-actions {
-                display: none;
-
-                &.active {
-                    display: inline-block;
-                }
+                display: inline-block;
 
                 .dropdown-toggle {
                     padding: 9px 5px;

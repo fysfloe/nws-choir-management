@@ -328,7 +328,7 @@ class SemesterController extends Controller
         return redirect()->back();
     }
 
-    public function removeUser(Semester $semester, Request $request)
+    public function removeParticipant(Semester $semester, Request $request)
     {
         $user = User::find($request->get('user_id'));
         
@@ -341,5 +341,20 @@ class SemesterController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function removeParticipants(Semester $semester, Request $request)
+    {
+        $users = $request->get('users');
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+
+            $semester->participants()->detach($user);
+        }
+
+        return response()->json([
+            'message' => __('Participants successfully removed from the semester.')
+        ]);
     }
 }

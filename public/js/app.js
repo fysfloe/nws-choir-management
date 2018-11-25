@@ -17103,6 +17103,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_resource__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_dialog__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuejs_dialog__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_i18n__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_i18n_locales_generated__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins__ = __webpack_require__(193);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -17121,17 +17124,31 @@ window.Vue = __webpack_require__(160);
 
 
 
+
+
+
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_resource__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vuejs_dialog___default.a);
+Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]);
 
 Vue.component('user-list', __webpack_require__(165));
 Vue.component('filters', __webpack_require__(168));
 Vue.component('picture-input', __webpack_require__(171));
 Vue.component('accept-decline', __webpack_require__(179));
 Vue.component('attendance', __webpack_require__(182));
+Vue.mixin(__WEBPACK_IMPORTED_MODULE_4__mixins__["a" /* default */].global);
+
+var lang = document.documentElement.lang.substr(0, 2);
+
+var i18n = new __WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]({
+    locale: lang,
+    messages: __WEBPACK_IMPORTED_MODULE_3__vue_i18n_locales_generated__["a" /* default */]
+});
 
 var app = new Vue({
-    el: '#app'
+    el: '#app',
+    i18n: i18n,
+    mixins: __WEBPACK_IMPORTED_MODULE_4__mixins__["a" /* default */]
 });
 
 $(function () {
@@ -68915,11 +68932,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
-        'texts': {
-            type: Object
-        },
         'concerts': {
-            type: Array
+            type: [Array, Object]
         },
         'users': {
             type: Array
@@ -68957,10 +68971,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'removeUserRoute': {
             type: String
         },
+        'removeParticipantsRoute': {
+            type: String
+        },
         'promises': {
             type: Array
         },
         'denials': {
+            type: Array
+        },
+        'actions': {
             type: Array
         }
     },
@@ -68970,6 +68990,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             loading: false,
             _users: [],
             activeFilters: {},
+            selectedUsers: [],
             filters: {
                 search: '',
                 voices: [],
@@ -68981,11 +69002,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         };
     },
+
+    computed: {
+        checkedAll: {
+            get: function get() {
+                return this.selectedUsers.length === this._users.length;
+            }
+        }
+    },
     created: function created() {
         this._users = this.users;
     },
+    mounted: function mounted() {
+        console.log(this.$refs.checkAll);
+    },
 
     methods: {
+        toggleUser: function toggleUser(event, id) {
+            if (event.target.checked) {
+                this.selectedUsers.push(id);
+            } else {
+                this.selectedUsers.splice(this.selectedUsers.indexOf(id), 1);
+            }
+        },
+        postUserAction: function postUserAction(event, confirm, confirmMessage) {
+            var _this = this;
+
+            if (confirm) {
+                this.$dialog.confirm(confirmMessage).then(function (dialog) {
+                    var route = event.target.getAttribute('href');
+
+                    _this.$http.post(route, { users: _this.selectedUsers, _token: _this.csrf }).then(function (response) {
+                        _this.fetchUsers();
+                    }, function (response) {
+                        console.log(response);
+                    });
+                });
+            }
+        },
+        checkAll: function checkAll(event) {
+            if (event.target.checked) {
+                this.selectedUsers = this._users.map(function (user) {
+                    return user.id;
+                });
+            } else {
+                this.selectedUsers = [];
+            }
+        },
         changeSortDir: function changeSortDir() {
             if (this.filters.dir === 'ASC') {
                 this.filters.dir = 'DESC';
@@ -69001,7 +69064,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.fetchUsers();
         },
         fetchUsers: function fetchUsers() {
-            var _this = this;
+            var _this2 = this;
 
             this.loading = true;
 
@@ -69014,8 +69077,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             this.$http.get(this.fetchUsersAction, { params: this.filters }).then(function (response) {
-                _this.loading = false;
-                _this._users = response.body;
+                _this2.loading = false;
+                _this2._users = response.body;
             }, function (response) {});
         },
         removeFilter: function removeFilter(key) {
@@ -69037,6 +69100,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.denials.filter(function (user) {
                 return user.id === id;
             }).length > 0;
+        },
+        hasAction: function hasAction(name) {
+            return this.actions.indexOf(name) !== -1;
         }
     }
 });
@@ -69054,7 +69120,6 @@ var render = function() {
     [
       _c("filters", {
         attrs: {
-          texts: _vm.texts,
           voices: _vm.voices,
           concerts: _vm.concerts,
           "fetch-users": _vm.fetchUsers,
@@ -69072,96 +69137,148 @@ var render = function() {
                 _c("div", { staticClass: "col-md-10 has-checkbox" }, [
                   _c("input", {
                     staticClass: "check-all",
-                    attrs: {
-                      type: "checkbox",
-                      name: "check-all-users",
-                      "data-controls": "users[]"
-                    }
+                    attrs: { type: "checkbox" },
+                    domProps: { checked: _vm.checkedAll },
+                    on: { click: _vm.checkAll }
                   }),
                   _vm._v(" \n\n                "),
-                  _c("div", { staticClass: "dropdown list-actions" }, [
-                    _vm._m(0, false, false),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "dropdown-menu",
-                        attrs: { "aria-labelledby": "userActions" }
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            directives: [
-                              {
-                                name: "confirm",
-                                rawName: "v-confirm",
-                                value: _vm.texts.actions.confirmArchiveMulti,
-                                expression: "texts.actions.confirmArchiveMulti"
-                              }
-                            ],
-                            staticClass: "dropdown-item",
-                            attrs: { href: "/admin/users/multi-archive" }
-                          },
-                          [
-                            _c("span", { staticClass: "oi oi-box" }),
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.texts.actions.archive) +
-                                "\n                        "
-                            )
-                          ]
-                        ),
+                  _vm.selectedUsers.length > 0
+                    ? _c("div", { staticClass: "dropdown list-actions" }, [
+                        _vm._m(0, false, false),
                         _vm._v(" "),
                         _c(
-                          "a",
+                          "div",
                           {
-                            staticClass: "dropdown-item",
-                            attrs: {
-                              "data-href": "/admin/voice/set",
-                              href: "/admin/voice/set",
-                              "data-toggle": "modal",
-                              "data-target": "#mainModal"
-                            }
+                            staticClass: "dropdown-menu",
+                            attrs: { "aria-labelledby": "userActions" }
                           },
                           [
-                            _c("span", { staticClass: "oi oi-pulse" }),
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.texts.actions.setVoice) +
-                                "\n                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.showRoles
-                          ? _c(
-                              "a",
-                              {
-                                staticClass: "dropdown-item",
-                                attrs: {
-                                  "data-href": "/admin/role/set",
-                                  href: "/admin/role/set",
-                                  "data-toggle": "modal",
-                                  "data-target": "#mainModal"
-                                }
-                              },
-                              [
-                                _c("span", { staticClass: "oi oi-key" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.texts.actions.setRole) +
-                                    "\n                        "
+                            _vm.hasAction("archive")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      href: "/admin/users/multiArchive"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        _vm.postUserAction(
+                                          $event,
+                                          true,
+                                          _vm.$t(
+                                            "Do you really want to archive these users?"
+                                          )
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-box" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Archive")) +
+                                        "\n                        "
+                                    )
+                                  ]
                                 )
-                              ]
-                            )
-                          : _vm._e()
-                      ]
-                    )
-                  ]),
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("setVoice")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      "data-href": "/admin/voice/set",
+                                      href:
+                                        "/admin/voice/set?" +
+                                        _vm.urlEncodeArray(
+                                          _vm.selectedUsers,
+                                          "users"
+                                        ),
+                                      "data-toggle": "modal",
+                                      "data-target": "#mainModal"
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-pulse" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Set voice")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.showRoles && _vm.hasAction("setRole")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      "data-href": "/admin/role/set",
+                                      href:
+                                        "/admin/role/set?" +
+                                        _vm.urlEncodeArray(
+                                          _vm.selectedUsers,
+                                          "users"
+                                        ),
+                                      "data-toggle": "modal",
+                                      "data-target": "#mainModal"
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-key" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Set role")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("removeParticipant")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      href: _vm.removeParticipantsRoute
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        _vm.postUserAction(
+                                          $event,
+                                          true,
+                                          _vm.$t(
+                                            "Do you really want to remove these participants?"
+                                          )
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-minus" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Remove participants")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        )
+                      ])
+                    : _vm._e(),
                   _vm._v(
                     "\n\n                " +
-                      _vm._s(_vm.texts.headings.user) +
+                      _vm._s(_vm.$t("User")) +
                       "\n                "
                   ),
                   _c("div", { staticClass: "btn-group" }, [
@@ -69234,7 +69351,7 @@ var render = function() {
                 _c("div", { staticClass: "col-md-2 row-count" }, [
                   _vm._v(
                     "\n                " +
-                      _vm._s(_vm.texts.total + ": " + _vm._users.length) +
+                      _vm._s(_vm.$t("Total") + ": " + _vm._users.length) +
                       "\n            "
                   )
                 ])
@@ -69264,8 +69381,17 @@ var render = function() {
                             { staticClass: "flex align-items-center" },
                             [
                               _c("input", {
-                                attrs: { type: "checkbox", name: "users[]" },
-                                domProps: { value: user.id }
+                                attrs: { type: "checkbox" },
+                                domProps: {
+                                  value: user.id,
+                                  checked:
+                                    _vm.selectedUsers.indexOf(user.id) !== -1
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.toggleUser($event, user.id)
+                                  }
+                                }
                               }),
                               _vm._v(" \n                        "),
                               user.avatar
@@ -69330,7 +69456,7 @@ var render = function() {
                                             [
                                               _vm._v(
                                                 "(" +
-                                                  _vm._s(_vm.texts.noneSet) +
+                                                  _vm._s(_vm.$t("None set")) +
                                                   ")"
                                               )
                                             ]
@@ -69376,7 +69502,7 @@ var render = function() {
                                                   _vm._v(
                                                     "(" +
                                                       _vm._s(
-                                                        _vm.texts.noneSet
+                                                        _vm.$t("None set")
                                                       ) +
                                                       ")"
                                                   )
@@ -69400,8 +69526,7 @@ var render = function() {
                               _c("attendance", {
                                 attrs: {
                                   routes: _vm.attendanceRoutes,
-                                  user: user,
-                                  texts: _vm.texts
+                                  user: user
                                 }
                               })
                             ],
@@ -69425,8 +69550,7 @@ var render = function() {
                                     "/" +
                                     user.id,
                                   accepted: _vm.hasAccepted(user.id),
-                                  declined: _vm.hasDeclined(user.id),
-                                  texts: _vm.texts
+                                  declined: _vm.hasDeclined(user.id)
                                 }
                               })
                             ],
@@ -69460,127 +69584,147 @@ var render = function() {
                             }
                           },
                           [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "dropdown-item",
-                                attrs: { href: "/profile/edit/" + user.id }
-                              },
-                              [
-                                _c("span", { staticClass: "oi oi-pencil" }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(_vm.texts.editProfile) +
-                                    "\n                        "
+                            _vm.hasAction("editProfile")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { href: "/profile/edit/" + user.id }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-pencil" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Edit profile")) +
+                                        "\n                        "
+                                    )
+                                  ]
                                 )
-                              ]
-                            ),
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c(
-                              "form",
-                              {
-                                staticClass: "form-inline",
-                                attrs: {
-                                  method: "POST",
-                                  action: "/admin/users/" + user.id
-                                }
-                              },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    name: "_method",
-                                    type: "hidden",
-                                    value: "DELETE"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
+                            _vm.hasAction("archive")
+                              ? _c(
+                                  "form",
                                   {
-                                    directives: [
-                                      {
-                                        name: "confirm",
-                                        rawName: "v-confirm",
-                                        value: _vm.texts.actions.confirmArchive,
-                                        expression:
-                                          "texts.actions.confirmArchive"
-                                      }
-                                    ],
-                                    staticClass: "btn btn-link dropdown-item",
-                                    attrs: { type: "submit" }
+                                    staticClass: "form-inline",
+                                    attrs: {
+                                      method: "POST",
+                                      action: "/admin/users/" + user.id
+                                    }
                                   },
                                   [
-                                    _c("span", { staticClass: "oi oi-box" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.texts.actions.archive) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("input", {
-                                  attrs: { type: "hidden", name: "_token" },
-                                  domProps: { value: _vm.csrf }
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "form",
-                              {
-                                staticClass: "form-inline",
-                                attrs: {
-                                  method: "POST",
-                                  action: _vm.removeUserRoute
-                                }
-                              },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    name: "_method",
-                                    type: "hidden",
-                                    value: "DELETE"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("input", {
-                                  attrs: { type: "hidden", name: "user_id" },
-                                  domProps: { value: user.id }
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "confirm",
-                                        rawName: "v-confirm",
-                                        value:
-                                          _vm.texts.actions.confirmRemoveUser,
-                                        expression:
-                                          "texts.actions.confirmRemoveUser"
+                                    _c("input", {
+                                      attrs: {
+                                        name: "_method",
+                                        type: "hidden",
+                                        value: "DELETE"
                                       }
-                                    ],
-                                    staticClass: "btn btn-link dropdown-item",
-                                    attrs: { type: "submit" }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "confirm",
+                                            rawName: "v-confirm",
+                                            value: _vm.$t(
+                                              "Do you really want to archive this user?"
+                                            ),
+                                            expression:
+                                              "$t('Do you really want to archive this user?')"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "btn btn-link dropdown-item",
+                                        attrs: { type: "submit" }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "oi oi-box"
+                                        }),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(_vm.$t("Archive")) +
+                                            "\n                            "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: { type: "hidden", name: "_token" },
+                                      domProps: { value: _vm.csrf }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("removeParticipant")
+                              ? _c(
+                                  "form",
+                                  {
+                                    staticClass: "form-inline",
+                                    attrs: {
+                                      method: "POST",
+                                      action: _vm.removeUserRoute
+                                    }
                                   },
                                   [
-                                    _c("span", { staticClass: "oi oi-minus" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.texts.actions.removeUser) +
-                                        "\n                            "
-                                    )
+                                    _c("input", {
+                                      attrs: {
+                                        name: "_method",
+                                        type: "hidden",
+                                        value: "DELETE"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "user_id"
+                                      },
+                                      domProps: { value: user.id }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "confirm",
+                                            rawName: "v-confirm",
+                                            value: _vm.$t(
+                                              "Do you really want to remove this user?"
+                                            ),
+                                            expression:
+                                              "$t('Do you really want to remove this user?')"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "btn btn-link dropdown-item",
+                                        attrs: { type: "submit" }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "oi oi-minus"
+                                        }),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(
+                                              _vm.$t("Remove participant")
+                                            ) +
+                                            "\n                            "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: { type: "hidden", name: "_token" },
+                                      domProps: { value: _vm.csrf }
+                                    })
                                   ]
-                                ),
-                                _vm._v(" "),
-                                _c("input", {
-                                  attrs: { type: "hidden", name: "_token" },
-                                  domProps: { value: _vm.csrf }
-                                })
-                              ]
-                            )
+                                )
+                              : _vm._e()
                           ]
                         )
                       ])
@@ -69590,7 +69734,7 @@ var render = function() {
               )
             ])
           : _c("div", { staticClass: "no-results" }, [
-              _vm._v(_vm._s(_vm.texts.noUsers))
+              _vm._v(_vm._s(_vm.$t("No users found.")))
             ])
     ],
     1
@@ -69733,7 +69877,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['texts', 'voices', 'concerts', 'fetchUsers', 'filters', 'activeFilters', 'removeFilter'],
+    props: ['voices', 'concerts', 'fetchUsers', 'filters', 'activeFilters', 'removeFilter'],
     methods: {
         filter: function filter() {
             this.filters.voices = $('select[name="voices[]"]').val();
@@ -69772,7 +69916,7 @@ var render = function() {
             _c(
               "label",
               { staticClass: "control-label", attrs: { for: "search" } },
-              [_vm._v(_vm._s(_vm.texts.labels.search))]
+              [_vm._v(_vm._s(_vm.$t("Search")))]
             ),
             _vm._v(" "),
             _c("input", {
@@ -69802,7 +69946,7 @@ var render = function() {
             _c(
               "label",
               { staticClass: "control-label", attrs: { for: "voices" } },
-              [_vm._v(_vm._s(_vm.texts.labels.voices))]
+              [_vm._v(_vm._s(_vm.$t("Voices")))]
             ),
             _vm._v(" "),
             _c(
@@ -69844,7 +69988,7 @@ var render = function() {
                 }
               },
               _vm._l(_vm.voices, function(voice, key) {
-                return _c("option", { domProps: { value: key } }, [
+                return _c("option", { key: key, domProps: { value: key } }, [
                   _vm._v(_vm._s(voice))
                 ])
               })
@@ -69855,7 +69999,7 @@ var render = function() {
             _c(
               "label",
               { staticClass: "control-label", attrs: { for: "concerts" } },
-              [_vm._v(_vm._s(_vm.texts.labels.concerts))]
+              [_vm._v(_vm._s(_vm.$t("Concerts")))]
             ),
             _vm._v(" "),
             _c(
@@ -69894,7 +70038,7 @@ var render = function() {
                 }
               },
               _vm._l(_vm.concerts, function(concert, key) {
-                return _c("option", { domProps: { value: key } }, [
+                return _c("option", { key: key, domProps: { value: key } }, [
                   _vm._v(_vm._s(concert))
                 ])
               })
@@ -69905,7 +70049,7 @@ var render = function() {
             _c(
               "label",
               { staticClass: "control-label", attrs: { for: "age" } },
-              [_vm._v(_vm._s(_vm.texts.labels.age))]
+              [_vm._v(_vm._s(_vm.$t("Age")))]
             ),
             _vm._v(" "),
             _c("input", {
@@ -69975,7 +70119,7 @@ var render = function() {
                 staticClass: "btn btn-primary btn-sm",
                 attrs: { type: "submit" }
               },
-              [_vm._v(_vm._s(_vm.texts.applyFilters))]
+              [_vm._v(_vm._s(_vm.$t("Apply filters")))]
             )
           ])
         ]
@@ -69991,6 +70135,7 @@ var render = function() {
               ? _c(
                   "li",
                   {
+                    key: key,
                     staticClass: "badge badge-pill badge-default",
                     attrs: { "data-field": key },
                     on: {
@@ -70012,7 +70157,7 @@ var render = function() {
           })
         )
       : _c("span", { staticClass: "text-muted" }, [
-          _vm._v(_vm._s(_vm.texts.noActiveFilters))
+          _vm._v(_vm._s(_vm.$t("No active filters")))
         ]),
     _vm._v(" "),
     _c(
@@ -70026,7 +70171,7 @@ var render = function() {
           "aria-controls": "filtersInner"
         }
       },
-      [_vm._v("\n        " + _vm._s(_vm.texts.showHideFilters) + "\n    ")]
+      [_vm._v("\n        " + _vm._s(_vm.$t("Show/hide filters")) + "\n    ")]
     )
   ])
 }
@@ -71358,7 +71503,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined', 'texts'],
+    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined'],
     data: function data() {
         return {
             hasAccepted: this.accepted,
@@ -71424,7 +71569,7 @@ var render = function() {
     "div",
     {
       staticClass: "btn-group accept-decline",
-      attrs: { role: "group", "aria-label": _vm.texts.acceptOrDecline }
+      attrs: { role: "group", "aria-label": _vm.$t("Accept or decline") }
     },
     [
       _c(
@@ -71437,7 +71582,7 @@ var render = function() {
           },
           attrs: {
             "data-toggle": "tooltip",
-            title: _vm.hasAccepted ? _vm.texts.attending : _vm.texts.accept
+            title: _vm.hasAccepted ? _vm.$t("Attending") : _vm.$t("Accept")
           },
           on: { click: _vm.accept }
         },
@@ -71454,7 +71599,7 @@ var render = function() {
           },
           attrs: {
             "data-toggle": "tooltip",
-            title: _vm.hasDeclined ? _vm.texts.notAttending : _vm.texts.decline
+            title: _vm.hasDeclined ? _vm.$t("Not attending") : _vm.$t("Decline")
           },
           on: { click: _vm.decline }
         },
@@ -71542,7 +71687,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['routes', 'user', 'texts'],
+    props: ['routes', 'user'],
     data: function data() {
         return {
             isConfirmed: this.user.confirmed === 1,
@@ -71594,7 +71739,7 @@ var render = function() {
     "div",
     {
       staticClass: "btn-group attendance-buttons",
-      attrs: { role: "group", "aria-label": _vm.texts.acceptOrDecline }
+      attrs: { role: "group", "aria-label": _vm.$t("Accept or decline") }
     },
     [
       _c(
@@ -71605,7 +71750,7 @@ var render = function() {
             "btn-success": _vm.isConfirmed,
             "btn-default": !_vm.isConfirmed
           },
-          attrs: { "data-toggle": "tooltip", title: _vm.texts.present },
+          attrs: { "data-toggle": "tooltip", title: _vm.$t("Present") },
           on: { click: _vm.confirm }
         },
         [_c("span", { staticClass: "oi oi-check" })]
@@ -71619,7 +71764,7 @@ var render = function() {
             "btn-warning": _vm.isExcused,
             "btn-default": !_vm.isExcused
           },
-          attrs: { "data-toggle": "tooltip", title: _vm.texts.excused },
+          attrs: { "data-toggle": "tooltip", title: _vm.$t("Excused") },
           on: { click: _vm.excuse }
         },
         [_c("span", { staticClass: "oi oi-medical-cross" })]
@@ -71633,7 +71778,7 @@ var render = function() {
             "btn-danger": _vm.isUnexcused,
             "btn-default": !_vm.isUnexcused
           },
-          attrs: { "data-toggle": "tooltip", title: _vm.texts.unexcused },
+          attrs: { "data-toggle": "tooltip", title: _vm.$t("Unexcused") },
           on: { click: _vm.unexcuse }
         },
         [_c("span", { staticClass: "oi oi-x" })]
@@ -71656,6 +71801,2038 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/*!
+ * vue-i18n v8.3.2 
+ * (c) 2018 kazuya kawaguchi
+ * Released under the MIT License.
+ */
+/*  */
+
+/**
+ * utilities
+ */
+
+function warn (msg, err) {
+  if (typeof console !== 'undefined') {
+    console.warn('[vue-i18n] ' + msg);
+    /* istanbul ignore if */
+    if (err) {
+      console.warn(err.stack);
+    }
+  }
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+var toString = Object.prototype.toString;
+var OBJECT_STRING = '[object Object]';
+function isPlainObject (obj) {
+  return toString.call(obj) === OBJECT_STRING
+}
+
+function isNull (val) {
+  return val === null || val === undefined
+}
+
+function parseArgs () {
+  var args = [], len = arguments.length;
+  while ( len-- ) args[ len ] = arguments[ len ];
+
+  var locale = null;
+  var params = null;
+  if (args.length === 1) {
+    if (isObject(args[0]) || Array.isArray(args[0])) {
+      params = args[0];
+    } else if (typeof args[0] === 'string') {
+      locale = args[0];
+    }
+  } else if (args.length === 2) {
+    if (typeof args[0] === 'string') {
+      locale = args[0];
+    }
+    /* istanbul ignore if */
+    if (isObject(args[1]) || Array.isArray(args[1])) {
+      params = args[1];
+    }
+  }
+
+  return { locale: locale, params: params }
+}
+
+function looseClone (obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
+function remove (arr, item) {
+  if (arr.length) {
+    var index = arr.indexOf(item);
+    if (index > -1) {
+      return arr.splice(index, 1)
+    }
+  }
+}
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+function hasOwn (obj, key) {
+  return hasOwnProperty.call(obj, key)
+}
+
+function merge (target) {
+  var arguments$1 = arguments;
+
+  var output = Object(target);
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments$1[i];
+    if (source !== undefined && source !== null) {
+      var key = (void 0);
+      for (key in source) {
+        if (hasOwn(source, key)) {
+          if (isObject(source[key])) {
+            output[key] = merge(output[key], source[key]);
+          } else {
+            output[key] = source[key];
+          }
+        }
+      }
+    }
+  }
+  return output
+}
+
+function looseEqual (a, b) {
+  if (a === b) { return true }
+  var isObjectA = isObject(a);
+  var isObjectB = isObject(b);
+  if (isObjectA && isObjectB) {
+    try {
+      var isArrayA = Array.isArray(a);
+      var isArrayB = Array.isArray(b);
+      if (isArrayA && isArrayB) {
+        return a.length === b.length && a.every(function (e, i) {
+          return looseEqual(e, b[i])
+        })
+      } else if (!isArrayA && !isArrayB) {
+        var keysA = Object.keys(a);
+        var keysB = Object.keys(b);
+        return keysA.length === keysB.length && keysA.every(function (key) {
+          return looseEqual(a[key], b[key])
+        })
+      } else {
+        /* istanbul ignore next */
+        return false
+      }
+    } catch (e) {
+      /* istanbul ignore next */
+      return false
+    }
+  } else if (!isObjectA && !isObjectB) {
+    return String(a) === String(b)
+  } else {
+    return false
+  }
+}
+
+var canUseDateTimeFormat =
+  typeof Intl !== 'undefined' && typeof Intl.DateTimeFormat !== 'undefined';
+
+var canUseNumberFormat =
+  typeof Intl !== 'undefined' && typeof Intl.NumberFormat !== 'undefined';
+
+/*  */
+
+function extend (Vue) {
+  if (!Vue.prototype.hasOwnProperty('$i18n')) {
+    // $FlowFixMe
+    Object.defineProperty(Vue.prototype, '$i18n', {
+      get: function get () { return this._i18n }
+    });
+  }
+
+  Vue.prototype.$t = function (key) {
+    var values = [], len = arguments.length - 1;
+    while ( len-- > 0 ) values[ len ] = arguments[ len + 1 ];
+
+    var i18n = this.$i18n;
+    return i18n._t.apply(i18n, [ key, i18n.locale, i18n._getMessages(), this ].concat( values ))
+  };
+
+  Vue.prototype.$tc = function (key, choice) {
+    var values = [], len = arguments.length - 2;
+    while ( len-- > 0 ) values[ len ] = arguments[ len + 2 ];
+
+    var i18n = this.$i18n;
+    return i18n._tc.apply(i18n, [ key, i18n.locale, i18n._getMessages(), this, choice ].concat( values ))
+  };
+
+  Vue.prototype.$te = function (key, locale) {
+    var i18n = this.$i18n;
+    return i18n._te(key, i18n.locale, i18n._getMessages(), locale)
+  };
+
+  Vue.prototype.$d = function (value) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+    return (ref = this.$i18n).d.apply(ref, [ value ].concat( args ))
+  };
+
+  Vue.prototype.$n = function (value) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+    return (ref = this.$i18n).n.apply(ref, [ value ].concat( args ))
+  };
+}
+
+/*  */
+
+var mixin = {
+  beforeCreate: function beforeCreate () {
+    var options = this.$options;
+    options.i18n = options.i18n || (options.__i18n ? {} : null);
+
+    if (options.i18n) {
+      if (options.i18n instanceof VueI18n) {
+        // init locale messages via custom blocks
+        if (options.__i18n) {
+          try {
+            var localeMessages = {};
+            options.__i18n.forEach(function (resource) {
+              localeMessages = merge(localeMessages, JSON.parse(resource));
+            });
+            Object.keys(localeMessages).forEach(function (locale) {
+              options.i18n.mergeLocaleMessage(locale, localeMessages[locale]);
+            });
+          } catch (e) {
+            if (true) {
+              warn("Cannot parse locale messages via custom blocks.", e);
+            }
+          }
+        }
+        this._i18n = options.i18n;
+        this._i18nWatcher = this._i18n.watchI18nData();
+        this._i18n.subscribeDataChanging(this);
+        this._subscribing = true;
+      } else if (isPlainObject(options.i18n)) {
+        // component local i18n
+        if (this.$root && this.$root.$i18n && this.$root.$i18n instanceof VueI18n) {
+          options.i18n.root = this.$root;
+          options.i18n.formatter = this.$root.$i18n.formatter;
+          options.i18n.fallbackLocale = this.$root.$i18n.fallbackLocale;
+          options.i18n.silentTranslationWarn = this.$root.$i18n.silentTranslationWarn;
+        }
+
+        // init locale messages via custom blocks
+        if (options.__i18n) {
+          try {
+            var localeMessages$1 = {};
+            options.__i18n.forEach(function (resource) {
+              localeMessages$1 = merge(localeMessages$1, JSON.parse(resource));
+            });
+            options.i18n.messages = localeMessages$1;
+          } catch (e) {
+            if (true) {
+              warn("Cannot parse locale messages via custom blocks.", e);
+            }
+          }
+        }
+
+        this._i18n = new VueI18n(options.i18n);
+        this._i18nWatcher = this._i18n.watchI18nData();
+        this._i18n.subscribeDataChanging(this);
+        this._subscribing = true;
+
+        if (options.i18n.sync === undefined || !!options.i18n.sync) {
+          this._localeWatcher = this.$i18n.watchLocale();
+        }
+      } else {
+        if (true) {
+          warn("Cannot be interpreted 'i18n' option.");
+        }
+      }
+    } else if (this.$root && this.$root.$i18n && this.$root.$i18n instanceof VueI18n) {
+      // root i18n
+      this._i18n = this.$root.$i18n;
+      this._i18n.subscribeDataChanging(this);
+      this._subscribing = true;
+    } else if (options.parent && options.parent.$i18n && options.parent.$i18n instanceof VueI18n) {
+      // parent i18n
+      this._i18n = options.parent.$i18n;
+      this._i18n.subscribeDataChanging(this);
+      this._subscribing = true;
+    }
+  },
+
+  beforeDestroy: function beforeDestroy () {
+    if (!this._i18n) { return }
+
+    if (this._subscribing) {
+      this._i18n.unsubscribeDataChanging(this);
+      delete this._subscribing;
+    }
+
+    if (this._i18nWatcher) {
+      this._i18nWatcher();
+      delete this._i18nWatcher;
+    }
+
+    if (this._localeWatcher) {
+      this._localeWatcher();
+      delete this._localeWatcher;
+    }
+
+    this._i18n = null;
+  }
+};
+
+/*  */
+
+var component = {
+  name: 'i18n',
+  functional: true,
+  props: {
+    tag: {
+      type: String,
+      default: 'span'
+    },
+    path: {
+      type: String,
+      required: true
+    },
+    locale: {
+      type: String
+    },
+    places: {
+      type: [Array, Object]
+    }
+  },
+  render: function render (h, ref) {
+    var props = ref.props;
+    var data = ref.data;
+    var children = ref.children;
+    var parent = ref.parent;
+
+    var i18n = parent.$i18n;
+
+    children = (children || []).filter(function (child) {
+      return child.tag || (child.text = child.text.trim())
+    });
+
+    if (!i18n) {
+      if (true) {
+        warn('Cannot find VueI18n instance!');
+      }
+      return children
+    }
+
+    var path = props.path;
+    var locale = props.locale;
+
+    var params = {};
+    var places = props.places || {};
+
+    var hasPlaces = Array.isArray(places)
+      ? places.length > 0
+      : Object.keys(places).length > 0;
+
+    var everyPlace = children.every(function (child) {
+      if (child.data && child.data.attrs) {
+        var place = child.data.attrs.place;
+        return (typeof place !== 'undefined') && place !== ''
+      }
+    });
+
+    if ("development" !== 'production' && hasPlaces && children.length > 0 && !everyPlace) {
+      warn('If places prop is set, all child elements must have place prop set.');
+    }
+
+    if (Array.isArray(places)) {
+      places.forEach(function (el, i) {
+        params[i] = el;
+      });
+    } else {
+      Object.keys(places).forEach(function (key) {
+        params[key] = places[key];
+      });
+    }
+
+    children.forEach(function (child, i) {
+      var key = everyPlace
+        ? ("" + (child.data.attrs.place))
+        : ("" + i);
+      params[key] = child;
+    });
+
+    return h(props.tag, data, i18n.i(path, locale, params))
+  }
+};
+
+/*  */
+
+function bind (el, binding, vnode) {
+  if (!assert(el, vnode)) { return }
+
+  t(el, binding, vnode);
+}
+
+function update (el, binding, vnode, oldVNode) {
+  if (!assert(el, vnode)) { return }
+
+  var i18n = vnode.context.$i18n;
+  if (localeEqual(el, vnode) &&
+    (looseEqual(binding.value, binding.oldValue) &&
+     looseEqual(el._localeMessage, i18n.getLocaleMessage(i18n.locale)))) { return }
+
+  t(el, binding, vnode);
+}
+
+function unbind (el, binding, vnode, oldVNode) {
+  var vm = vnode.context;
+  if (!vm) {
+    warn('Vue instance does not exists in VNode context');
+    return
+  }
+
+  el.textContent = '';
+  el._vt = undefined;
+  delete el['_vt'];
+  el._locale = undefined;
+  delete el['_locale'];
+  el._localeMessage = undefined;
+  delete el['_localeMessage'];
+}
+
+function assert (el, vnode) {
+  var vm = vnode.context;
+  if (!vm) {
+    warn('Vue instance doest not exists in VNode context');
+    return false
+  }
+
+  if (!vm.$i18n) {
+    warn('VueI18n instance does not exists in Vue instance');
+    return false
+  }
+
+  return true
+}
+
+function localeEqual (el, vnode) {
+  var vm = vnode.context;
+  return el._locale === vm.$i18n.locale
+}
+
+function t (el, binding, vnode) {
+  var ref$1, ref$2;
+
+  var value = binding.value;
+
+  var ref = parseValue(value);
+  var path = ref.path;
+  var locale = ref.locale;
+  var args = ref.args;
+  var choice = ref.choice;
+  if (!path && !locale && !args) {
+    warn('value type not supported');
+    return
+  }
+
+  if (!path) {
+    warn('`path` is required in v-t directive');
+    return
+  }
+
+  var vm = vnode.context;
+  if (choice) {
+    el._vt = el.textContent = (ref$1 = vm.$i18n).tc.apply(ref$1, [ path, choice ].concat( makeParams(locale, args) ));
+  } else {
+    el._vt = el.textContent = (ref$2 = vm.$i18n).t.apply(ref$2, [ path ].concat( makeParams(locale, args) ));
+  }
+  el._locale = vm.$i18n.locale;
+  el._localeMessage = vm.$i18n.getLocaleMessage(vm.$i18n.locale);
+}
+
+function parseValue (value) {
+  var path;
+  var locale;
+  var args;
+  var choice;
+
+  if (typeof value === 'string') {
+    path = value;
+  } else if (isPlainObject(value)) {
+    path = value.path;
+    locale = value.locale;
+    args = value.args;
+    choice = value.choice;
+  }
+
+  return { path: path, locale: locale, args: args, choice: choice }
+}
+
+function makeParams (locale, args) {
+  var params = [];
+
+  locale && params.push(locale);
+  if (args && (Array.isArray(args) || isPlainObject(args))) {
+    params.push(args);
+  }
+
+  return params
+}
+
+var Vue;
+
+function install (_Vue) {
+  /* istanbul ignore if */
+  if ("development" !== 'production' && install.installed && _Vue === Vue) {
+    warn('already installed.');
+    return
+  }
+  install.installed = true;
+
+  Vue = _Vue;
+
+  var version = (Vue.version && Number(Vue.version.split('.')[0])) || -1;
+  /* istanbul ignore if */
+  if ("development" !== 'production' && version < 2) {
+    warn(("vue-i18n (" + (install.version) + ") need to use Vue 2.0 or later (Vue: " + (Vue.version) + ")."));
+    return
+  }
+
+  extend(Vue);
+  Vue.mixin(mixin);
+  Vue.directive('t', { bind: bind, update: update, unbind: unbind });
+  Vue.component(component.name, component);
+
+  // use simple mergeStrategies to prevent i18n instance lose '__proto__'
+  var strats = Vue.config.optionMergeStrategies;
+  strats.i18n = function (parentVal, childVal) {
+    return childVal === undefined
+      ? parentVal
+      : childVal
+  };
+}
+
+/*  */
+
+var BaseFormatter = function BaseFormatter () {
+  this._caches = Object.create(null);
+};
+
+BaseFormatter.prototype.interpolate = function interpolate (message, values) {
+  if (!values) {
+    return [message]
+  }
+  var tokens = this._caches[message];
+  if (!tokens) {
+    tokens = parse(message);
+    this._caches[message] = tokens;
+  }
+  return compile(tokens, values)
+};
+
+
+
+var RE_TOKEN_LIST_VALUE = /^(?:\d)+/;
+var RE_TOKEN_NAMED_VALUE = /^(?:\w)+/;
+
+function parse (format) {
+  var tokens = [];
+  var position = 0;
+
+  var text = '';
+  while (position < format.length) {
+    var char = format[position++];
+    if (char === '{') {
+      if (text) {
+        tokens.push({ type: 'text', value: text });
+      }
+
+      text = '';
+      var sub = '';
+      char = format[position++];
+      while (char !== undefined && char !== '}') {
+        sub += char;
+        char = format[position++];
+      }
+      var isClosed = char === '}';
+
+      var type = RE_TOKEN_LIST_VALUE.test(sub)
+        ? 'list'
+        : isClosed && RE_TOKEN_NAMED_VALUE.test(sub)
+          ? 'named'
+          : 'unknown';
+      tokens.push({ value: sub, type: type });
+    } else if (char === '%') {
+      // when found rails i18n syntax, skip text capture
+      if (format[(position)] !== '{') {
+        text += char;
+      }
+    } else {
+      text += char;
+    }
+  }
+
+  text && tokens.push({ type: 'text', value: text });
+
+  return tokens
+}
+
+function compile (tokens, values) {
+  var compiled = [];
+  var index = 0;
+
+  var mode = Array.isArray(values)
+    ? 'list'
+    : isObject(values)
+      ? 'named'
+      : 'unknown';
+  if (mode === 'unknown') { return compiled }
+
+  while (index < tokens.length) {
+    var token = tokens[index];
+    switch (token.type) {
+      case 'text':
+        compiled.push(token.value);
+        break
+      case 'list':
+        compiled.push(values[parseInt(token.value, 10)]);
+        break
+      case 'named':
+        if (mode === 'named') {
+          compiled.push((values)[token.value]);
+        } else {
+          if (true) {
+            warn(("Type of token '" + (token.type) + "' and format of value '" + mode + "' don't match!"));
+          }
+        }
+        break
+      case 'unknown':
+        if (true) {
+          warn("Detect 'unknown' type of token!");
+        }
+        break
+    }
+    index++;
+  }
+
+  return compiled
+}
+
+/*  */
+
+/**
+ *  Path parser
+ *  - Inspired:
+ *    Vue.js Path parser
+ */
+
+// actions
+var APPEND = 0;
+var PUSH = 1;
+var INC_SUB_PATH_DEPTH = 2;
+var PUSH_SUB_PATH = 3;
+
+// states
+var BEFORE_PATH = 0;
+var IN_PATH = 1;
+var BEFORE_IDENT = 2;
+var IN_IDENT = 3;
+var IN_SUB_PATH = 4;
+var IN_SINGLE_QUOTE = 5;
+var IN_DOUBLE_QUOTE = 6;
+var AFTER_PATH = 7;
+var ERROR = 8;
+
+var pathStateMachine = [];
+
+pathStateMachine[BEFORE_PATH] = {
+  'ws': [BEFORE_PATH],
+  'ident': [IN_IDENT, APPEND],
+  '[': [IN_SUB_PATH],
+  'eof': [AFTER_PATH]
+};
+
+pathStateMachine[IN_PATH] = {
+  'ws': [IN_PATH],
+  '.': [BEFORE_IDENT],
+  '[': [IN_SUB_PATH],
+  'eof': [AFTER_PATH]
+};
+
+pathStateMachine[BEFORE_IDENT] = {
+  'ws': [BEFORE_IDENT],
+  'ident': [IN_IDENT, APPEND],
+  '0': [IN_IDENT, APPEND],
+  'number': [IN_IDENT, APPEND]
+};
+
+pathStateMachine[IN_IDENT] = {
+  'ident': [IN_IDENT, APPEND],
+  '0': [IN_IDENT, APPEND],
+  'number': [IN_IDENT, APPEND],
+  'ws': [IN_PATH, PUSH],
+  '.': [BEFORE_IDENT, PUSH],
+  '[': [IN_SUB_PATH, PUSH],
+  'eof': [AFTER_PATH, PUSH]
+};
+
+pathStateMachine[IN_SUB_PATH] = {
+  "'": [IN_SINGLE_QUOTE, APPEND],
+  '"': [IN_DOUBLE_QUOTE, APPEND],
+  '[': [IN_SUB_PATH, INC_SUB_PATH_DEPTH],
+  ']': [IN_PATH, PUSH_SUB_PATH],
+  'eof': ERROR,
+  'else': [IN_SUB_PATH, APPEND]
+};
+
+pathStateMachine[IN_SINGLE_QUOTE] = {
+  "'": [IN_SUB_PATH, APPEND],
+  'eof': ERROR,
+  'else': [IN_SINGLE_QUOTE, APPEND]
+};
+
+pathStateMachine[IN_DOUBLE_QUOTE] = {
+  '"': [IN_SUB_PATH, APPEND],
+  'eof': ERROR,
+  'else': [IN_DOUBLE_QUOTE, APPEND]
+};
+
+/**
+ * Check if an expression is a literal value.
+ */
+
+var literalValueRE = /^\s?(?:true|false|-?[\d.]+|'[^']*'|"[^"]*")\s?$/;
+function isLiteral (exp) {
+  return literalValueRE.test(exp)
+}
+
+/**
+ * Strip quotes from a string
+ */
+
+function stripQuotes (str) {
+  var a = str.charCodeAt(0);
+  var b = str.charCodeAt(str.length - 1);
+  return a === b && (a === 0x22 || a === 0x27)
+    ? str.slice(1, -1)
+    : str
+}
+
+/**
+ * Determine the type of a character in a keypath.
+ */
+
+function getPathCharType (ch) {
+  if (ch === undefined || ch === null) { return 'eof' }
+
+  var code = ch.charCodeAt(0);
+
+  switch (code) {
+    case 0x5B: // [
+    case 0x5D: // ]
+    case 0x2E: // .
+    case 0x22: // "
+    case 0x27: // '
+      return ch
+
+    case 0x5F: // _
+    case 0x24: // $
+    case 0x2D: // -
+      return 'ident'
+
+    case 0x20: // Space
+    case 0x09: // Tab
+    case 0x0A: // Newline
+    case 0x0D: // Return
+    case 0xA0:  // No-break space
+    case 0xFEFF:  // Byte Order Mark
+    case 0x2028:  // Line Separator
+    case 0x2029:  // Paragraph Separator
+      return 'ws'
+  }
+
+  return 'ident'
+}
+
+/**
+ * Format a subPath, return its plain form if it is
+ * a literal string or number. Otherwise prepend the
+ * dynamic indicator (*).
+ */
+
+function formatSubPath (path) {
+  var trimmed = path.trim();
+  // invalid leading 0
+  if (path.charAt(0) === '0' && isNaN(path)) { return false }
+
+  return isLiteral(trimmed) ? stripQuotes(trimmed) : '*' + trimmed
+}
+
+/**
+ * Parse a string path into an array of segments
+ */
+
+function parse$1 (path) {
+  var keys = [];
+  var index = -1;
+  var mode = BEFORE_PATH;
+  var subPathDepth = 0;
+  var c;
+  var key;
+  var newChar;
+  var type;
+  var transition;
+  var action;
+  var typeMap;
+  var actions = [];
+
+  actions[PUSH] = function () {
+    if (key !== undefined) {
+      keys.push(key);
+      key = undefined;
+    }
+  };
+
+  actions[APPEND] = function () {
+    if (key === undefined) {
+      key = newChar;
+    } else {
+      key += newChar;
+    }
+  };
+
+  actions[INC_SUB_PATH_DEPTH] = function () {
+    actions[APPEND]();
+    subPathDepth++;
+  };
+
+  actions[PUSH_SUB_PATH] = function () {
+    if (subPathDepth > 0) {
+      subPathDepth--;
+      mode = IN_SUB_PATH;
+      actions[APPEND]();
+    } else {
+      subPathDepth = 0;
+      key = formatSubPath(key);
+      if (key === false) {
+        return false
+      } else {
+        actions[PUSH]();
+      }
+    }
+  };
+
+  function maybeUnescapeQuote () {
+    var nextChar = path[index + 1];
+    if ((mode === IN_SINGLE_QUOTE && nextChar === "'") ||
+      (mode === IN_DOUBLE_QUOTE && nextChar === '"')) {
+      index++;
+      newChar = '\\' + nextChar;
+      actions[APPEND]();
+      return true
+    }
+  }
+
+  while (mode !== null) {
+    index++;
+    c = path[index];
+
+    if (c === '\\' && maybeUnescapeQuote()) {
+      continue
+    }
+
+    type = getPathCharType(c);
+    typeMap = pathStateMachine[mode];
+    transition = typeMap[type] || typeMap['else'] || ERROR;
+
+    if (transition === ERROR) {
+      return // parse error
+    }
+
+    mode = transition[0];
+    action = actions[transition[1]];
+    if (action) {
+      newChar = transition[2];
+      newChar = newChar === undefined
+        ? c
+        : newChar;
+      if (action() === false) {
+        return
+      }
+    }
+
+    if (mode === AFTER_PATH) {
+      return keys
+    }
+  }
+}
+
+
+
+
+
+var I18nPath = function I18nPath () {
+  this._cache = Object.create(null);
+};
+
+/**
+ * External parse that check for a cache hit first
+ */
+I18nPath.prototype.parsePath = function parsePath (path) {
+  var hit = this._cache[path];
+  if (!hit) {
+    hit = parse$1(path);
+    if (hit) {
+      this._cache[path] = hit;
+    }
+  }
+  return hit || []
+};
+
+/**
+ * Get path value from path string
+ */
+I18nPath.prototype.getPathValue = function getPathValue (obj, path) {
+  if (!isObject(obj)) { return null }
+
+  var paths = this.parsePath(path);
+  if (paths.length === 0) {
+    return null
+  } else {
+    var length = paths.length;
+    var last = obj;
+    var i = 0;
+    while (i < length) {
+      var value = last[paths[i]];
+      if (value === undefined) {
+        return null
+      }
+      last = value;
+      i++;
+    }
+
+    return last
+  }
+};
+
+/*  */
+
+
+
+var numberFormatKeys = [
+  'style',
+  'currency',
+  'currencyDisplay',
+  'useGrouping',
+  'minimumIntegerDigits',
+  'minimumFractionDigits',
+  'maximumFractionDigits',
+  'minimumSignificantDigits',
+  'maximumSignificantDigits',
+  'localeMatcher',
+  'formatMatcher'
+];
+var linkKeyMatcher = /(?:@:(?:[\w\-_|.]+|\([\w\-_|.]+\)))/g;
+var bracketsMatcher = /[()]/g;
+
+var VueI18n = function VueI18n (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #290
+  /* istanbul ignore if */
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  var locale = options.locale || 'en-US';
+  var fallbackLocale = options.fallbackLocale || 'en-US';
+  var messages = options.messages || {};
+  var dateTimeFormats = options.dateTimeFormats || {};
+  var numberFormats = options.numberFormats || {};
+
+  this._vm = null;
+  this._formatter = options.formatter || new BaseFormatter();
+  this._missing = options.missing || null;
+  this._root = options.root || null;
+  this._sync = options.sync === undefined ? true : !!options.sync;
+  this._fallbackRoot = options.fallbackRoot === undefined
+    ? true
+    : !!options.fallbackRoot;
+  this._silentTranslationWarn = options.silentTranslationWarn === undefined
+    ? false
+    : !!options.silentTranslationWarn;
+  this._dateTimeFormatters = {};
+  this._numberFormatters = {};
+  this._path = new I18nPath();
+  this._dataListeners = [];
+
+  this._exist = function (message, key) {
+    if (!message || !key) { return false }
+    return !isNull(this$1._path.getPathValue(message, key))
+  };
+
+  this._initVM({
+    locale: locale,
+    fallbackLocale: fallbackLocale,
+    messages: messages,
+    dateTimeFormats: dateTimeFormats,
+    numberFormats: numberFormats
+  });
+};
+
+var prototypeAccessors = { vm: { configurable: true },messages: { configurable: true },dateTimeFormats: { configurable: true },numberFormats: { configurable: true },locale: { configurable: true },fallbackLocale: { configurable: true },missing: { configurable: true },formatter: { configurable: true },silentTranslationWarn: { configurable: true } };
+
+VueI18n.prototype._initVM = function _initVM (data) {
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  this._vm = new Vue({ data: data });
+  Vue.config.silent = silent;
+};
+
+VueI18n.prototype.subscribeDataChanging = function subscribeDataChanging (vm) {
+  this._dataListeners.push(vm);
+};
+
+VueI18n.prototype.unsubscribeDataChanging = function unsubscribeDataChanging (vm) {
+  remove(this._dataListeners, vm);
+};
+
+VueI18n.prototype.watchI18nData = function watchI18nData () {
+  var self = this;
+  return this._vm.$watch('$data', function () {
+    var i = self._dataListeners.length;
+    while (i--) {
+      Vue.nextTick(function () {
+        self._dataListeners[i] && self._dataListeners[i].$forceUpdate();
+      });
+    }
+  }, { deep: true })
+};
+
+VueI18n.prototype.watchLocale = function watchLocale () {
+  /* istanbul ignore if */
+  if (!this._sync || !this._root) { return null }
+  var target = this._vm;
+  return this._root.$i18n.vm.$watch('locale', function (val) {
+    target.$set(target, 'locale', val);
+    target.$forceUpdate();
+  }, { immediate: true })
+};
+
+prototypeAccessors.vm.get = function () { return this._vm };
+
+prototypeAccessors.messages.get = function () { return looseClone(this._getMessages()) };
+prototypeAccessors.dateTimeFormats.get = function () { return looseClone(this._getDateTimeFormats()) };
+prototypeAccessors.numberFormats.get = function () { return looseClone(this._getNumberFormats()) };
+
+prototypeAccessors.locale.get = function () { return this._vm.locale };
+prototypeAccessors.locale.set = function (locale) {
+  this._vm.$set(this._vm, 'locale', locale);
+};
+
+prototypeAccessors.fallbackLocale.get = function () { return this._vm.fallbackLocale };
+prototypeAccessors.fallbackLocale.set = function (locale) {
+  this._vm.$set(this._vm, 'fallbackLocale', locale);
+};
+
+prototypeAccessors.missing.get = function () { return this._missing };
+prototypeAccessors.missing.set = function (handler) { this._missing = handler; };
+
+prototypeAccessors.formatter.get = function () { return this._formatter };
+prototypeAccessors.formatter.set = function (formatter) { this._formatter = formatter; };
+
+prototypeAccessors.silentTranslationWarn.get = function () { return this._silentTranslationWarn };
+prototypeAccessors.silentTranslationWarn.set = function (silent) { this._silentTranslationWarn = silent; };
+
+VueI18n.prototype._getMessages = function _getMessages () { return this._vm.messages };
+VueI18n.prototype._getDateTimeFormats = function _getDateTimeFormats () { return this._vm.dateTimeFormats };
+VueI18n.prototype._getNumberFormats = function _getNumberFormats () { return this._vm.numberFormats };
+
+VueI18n.prototype._warnDefault = function _warnDefault (locale, key, result, vm, values) {
+  if (!isNull(result)) { return result }
+  if (this._missing) {
+    var missingRet = this._missing.apply(null, [locale, key, vm, values]);
+    if (typeof missingRet === 'string') {
+      return missingRet
+    }
+  } else {
+    if ("development" !== 'production' && !this._silentTranslationWarn) {
+      warn(
+        "Cannot translate the value of keypath '" + key + "'. " +
+        'Use the value of keypath as default.'
+      );
+    }
+  }
+  return key
+};
+
+VueI18n.prototype._isFallbackRoot = function _isFallbackRoot (val) {
+  return !val && !isNull(this._root) && this._fallbackRoot
+};
+
+VueI18n.prototype._interpolate = function _interpolate (
+  locale,
+  message,
+  key,
+  host,
+  interpolateMode,
+  values,
+  visitedLinkStack
+) {
+  if (!message) { return null }
+
+  var pathRet = this._path.getPathValue(message, key);
+  if (Array.isArray(pathRet) || isPlainObject(pathRet)) { return pathRet }
+
+  var ret;
+  if (isNull(pathRet)) {
+    /* istanbul ignore else */
+    if (isPlainObject(message)) {
+      ret = message[key];
+      if (typeof ret !== 'string') {
+        if ("development" !== 'production' && !this._silentTranslationWarn) {
+          warn(("Value of key '" + key + "' is not a string!"));
+        }
+        return null
+      }
+    } else {
+      return null
+    }
+  } else {
+    /* istanbul ignore else */
+    if (typeof pathRet === 'string') {
+      ret = pathRet;
+    } else {
+      if ("development" !== 'production' && !this._silentTranslationWarn) {
+        warn(("Value of key '" + key + "' is not a string!"));
+      }
+      return null
+    }
+  }
+
+  // Check for the existence of links within the translated string
+  if (ret.indexOf('@:') >= 0) {
+    ret = this._link(locale, message, ret, host, interpolateMode, values, visitedLinkStack);
+  }
+
+  return this._render(ret, interpolateMode, values)
+};
+
+VueI18n.prototype._link = function _link (
+  locale,
+  message,
+  str,
+  host,
+  interpolateMode,
+  values,
+  visitedLinkStack
+) {
+    var this$1 = this;
+
+  var ret = str;
+
+  // Match all the links within the local
+  // We are going to replace each of
+  // them with its translation
+  var matches = ret.match(linkKeyMatcher);
+  for (var idx in matches) {
+    // ie compatible: filter custom array
+    // prototype method
+    if (!matches.hasOwnProperty(idx)) {
+      continue
+    }
+    var link = matches[idx];
+    // Remove the leading @: and the brackets
+    var linkPlaceholder = link.substr(2).replace(bracketsMatcher, '');
+
+    if (visitedLinkStack.includes(linkPlaceholder)) {
+      if (true) {
+        warn(("Circular reference found. \"" + link + "\" is already visited in the chain of " + (visitedLinkStack.reverse().join(' <- '))));
+      }
+      return ret
+    }
+    visitedLinkStack.push(linkPlaceholder);
+
+    // Translate the link
+    var translated = this$1._interpolate(
+      locale, message, linkPlaceholder, host,
+      interpolateMode === 'raw' ? 'string' : interpolateMode,
+      interpolateMode === 'raw' ? undefined : values,
+      visitedLinkStack
+    );
+
+    if (this$1._isFallbackRoot(translated)) {
+      if ("development" !== 'production' && !this$1._silentTranslationWarn) {
+        warn(("Fall back to translate the link placeholder '" + linkPlaceholder + "' with root locale."));
+      }
+      /* istanbul ignore if */
+      if (!this$1._root) { throw Error('unexpected error') }
+      var root = this$1._root.$i18n;
+      translated = root._translate(
+        root._getMessages(), root.locale, root.fallbackLocale,
+        linkPlaceholder, host, interpolateMode, values
+      );
+    }
+    translated = this$1._warnDefault(
+      locale, linkPlaceholder, translated, host,
+      Array.isArray(values) ? values : [values]
+    );
+
+    visitedLinkStack.pop();
+
+    // Replace the link with the translated
+    ret = !translated ? ret : ret.replace(link, translated);
+  }
+
+  return ret
+};
+
+VueI18n.prototype._render = function _render (message, interpolateMode, values) {
+  var ret = this._formatter.interpolate(message, values);
+  // if interpolateMode is **not** 'string' ('row'),
+  // return the compiled data (e.g. ['foo', VNode, 'bar']) with formatter
+  return interpolateMode === 'string' ? ret.join('') : ret
+};
+
+VueI18n.prototype._translate = function _translate (
+  messages,
+  locale,
+  fallback,
+  key,
+  host,
+  interpolateMode,
+  args
+) {
+  var res =
+    this._interpolate(locale, messages[locale], key, host, interpolateMode, args, [key]);
+  if (!isNull(res)) { return res }
+
+  res = this._interpolate(fallback, messages[fallback], key, host, interpolateMode, args, [key]);
+  if (!isNull(res)) {
+    if ("development" !== 'production' && !this._silentTranslationWarn) {
+      warn(("Fall back to translate the keypath '" + key + "' with '" + fallback + "' locale."));
+    }
+    return res
+  } else {
+    return null
+  }
+};
+
+VueI18n.prototype._t = function _t (key, _locale, messages, host) {
+    var ref;
+
+    var values = [], len = arguments.length - 4;
+    while ( len-- > 0 ) values[ len ] = arguments[ len + 4 ];
+  if (!key) { return '' }
+
+  var parsedArgs = parseArgs.apply(void 0, values);
+  var locale = parsedArgs.locale || _locale;
+
+  var ret = this._translate(
+    messages, locale, this.fallbackLocale, key,
+    host, 'string', parsedArgs.params
+  );
+  if (this._isFallbackRoot(ret)) {
+    if ("development" !== 'production' && !this._silentTranslationWarn) {
+      warn(("Fall back to translate the keypath '" + key + "' with root locale."));
+    }
+    /* istanbul ignore if */
+    if (!this._root) { throw Error('unexpected error') }
+    return (ref = this._root).$t.apply(ref, [ key ].concat( values ))
+  } else {
+    return this._warnDefault(locale, key, ret, host, values)
+  }
+};
+
+VueI18n.prototype.t = function t (key) {
+    var ref;
+
+    var values = [], len = arguments.length - 1;
+    while ( len-- > 0 ) values[ len ] = arguments[ len + 1 ];
+  return (ref = this)._t.apply(ref, [ key, this.locale, this._getMessages(), null ].concat( values ))
+};
+
+VueI18n.prototype._i = function _i (key, locale, messages, host, values) {
+  var ret =
+    this._translate(messages, locale, this.fallbackLocale, key, host, 'raw', values);
+  if (this._isFallbackRoot(ret)) {
+    if ("development" !== 'production' && !this._silentTranslationWarn) {
+      warn(("Fall back to interpolate the keypath '" + key + "' with root locale."));
+    }
+    if (!this._root) { throw Error('unexpected error') }
+    return this._root.$i18n.i(key, locale, values)
+  } else {
+    return this._warnDefault(locale, key, ret, host, [values])
+  }
+};
+
+VueI18n.prototype.i = function i (key, locale, values) {
+  /* istanbul ignore if */
+  if (!key) { return '' }
+
+  if (typeof locale !== 'string') {
+    locale = this.locale;
+  }
+
+  return this._i(key, locale, this._getMessages(), null, values)
+};
+
+VueI18n.prototype._tc = function _tc (
+  key,
+  _locale,
+  messages,
+  host,
+  choice
+) {
+    var ref;
+
+    var values = [], len = arguments.length - 5;
+    while ( len-- > 0 ) values[ len ] = arguments[ len + 5 ];
+  if (!key) { return '' }
+  if (choice === undefined) {
+    choice = 1;
+  }
+
+  var predefined = { 'count': choice, 'n': choice };
+  var parsedArgs = parseArgs.apply(void 0, values);
+  parsedArgs.params = Object.assign(predefined, parsedArgs.params);
+  values = parsedArgs.locale === null ? [parsedArgs.params] : [parsedArgs.locale, parsedArgs.params];
+  return this.fetchChoice((ref = this)._t.apply(ref, [ key, _locale, messages, host ].concat( values )), choice)
+};
+
+VueI18n.prototype.fetchChoice = function fetchChoice (message, choice) {
+  /* istanbul ignore if */
+  if (!message && typeof message !== 'string') { return null }
+  var choices = message.split('|');
+
+  choice = this.getChoiceIndex(choice, choices.length);
+  if (!choices[choice]) { return message }
+  return choices[choice].trim()
+};
+
+/**
+ * @param choice {number} a choice index given by the input to $tc: `$tc('path.to.rule', choiceIndex)`
+ * @param choicesLength {number} an overall amount of available choices
+ * @returns a final choice index
+*/
+VueI18n.prototype.getChoiceIndex = function getChoiceIndex (choice, choicesLength) {
+  choice = Math.abs(choice);
+
+  if (choicesLength === 2) {
+    return choice
+      ? choice > 1
+        ? 1
+        : 0
+      : 1
+  }
+
+  return choice ? Math.min(choice, 2) : 0
+};
+
+VueI18n.prototype.tc = function tc (key, choice) {
+    var ref;
+
+    var values = [], len = arguments.length - 2;
+    while ( len-- > 0 ) values[ len ] = arguments[ len + 2 ];
+  return (ref = this)._tc.apply(ref, [ key, this.locale, this._getMessages(), null, choice ].concat( values ))
+};
+
+VueI18n.prototype._te = function _te (key, locale, messages) {
+    var args = [], len = arguments.length - 3;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 3 ];
+
+  var _locale = parseArgs.apply(void 0, args).locale || locale;
+  return this._exist(messages[_locale], key)
+};
+
+VueI18n.prototype.te = function te (key, locale) {
+  return this._te(key, this.locale, this._getMessages(), locale)
+};
+
+VueI18n.prototype.getLocaleMessage = function getLocaleMessage (locale) {
+  return looseClone(this._vm.messages[locale] || {})
+};
+
+VueI18n.prototype.setLocaleMessage = function setLocaleMessage (locale, message) {
+  this._vm.$set(this._vm.messages, locale, message);
+};
+
+VueI18n.prototype.mergeLocaleMessage = function mergeLocaleMessage (locale, message) {
+  this._vm.$set(this._vm.messages, locale, merge(this._vm.messages[locale] || {}, message));
+};
+
+VueI18n.prototype.getDateTimeFormat = function getDateTimeFormat (locale) {
+  return looseClone(this._vm.dateTimeFormats[locale] || {})
+};
+
+VueI18n.prototype.setDateTimeFormat = function setDateTimeFormat (locale, format) {
+  this._vm.$set(this._vm.dateTimeFormats, locale, format);
+};
+
+VueI18n.prototype.mergeDateTimeFormat = function mergeDateTimeFormat (locale, format) {
+  this._vm.$set(this._vm.dateTimeFormats, locale, merge(this._vm.dateTimeFormats[locale] || {}, format));
+};
+
+VueI18n.prototype._localizeDateTime = function _localizeDateTime (
+  value,
+  locale,
+  fallback,
+  dateTimeFormats,
+  key
+) {
+  var _locale = locale;
+  var formats = dateTimeFormats[_locale];
+
+  // fallback locale
+  if (isNull(formats) || isNull(formats[key])) {
+    if (true) {
+      warn(("Fall back to '" + fallback + "' datetime formats from '" + locale + " datetime formats."));
+    }
+    _locale = fallback;
+    formats = dateTimeFormats[_locale];
+  }
+
+  if (isNull(formats) || isNull(formats[key])) {
+    return null
+  } else {
+    var format = formats[key];
+    var id = _locale + "__" + key;
+    var formatter = this._dateTimeFormatters[id];
+    if (!formatter) {
+      formatter = this._dateTimeFormatters[id] = new Intl.DateTimeFormat(_locale, format);
+    }
+    return formatter.format(value)
+  }
+};
+
+VueI18n.prototype._d = function _d (value, locale, key) {
+  /* istanbul ignore if */
+  if ("development" !== 'production' && !VueI18n.availabilities.dateTimeFormat) {
+    warn('Cannot format a Date value due to not supported Intl.DateTimeFormat.');
+    return ''
+  }
+
+  if (!key) {
+    return new Intl.DateTimeFormat(locale).format(value)
+  }
+
+  var ret =
+    this._localizeDateTime(value, locale, this.fallbackLocale, this._getDateTimeFormats(), key);
+  if (this._isFallbackRoot(ret)) {
+    if (true) {
+      warn(("Fall back to datetime localization of root: key '" + key + "' ."));
+    }
+    /* istanbul ignore if */
+    if (!this._root) { throw Error('unexpected error') }
+    return this._root.$i18n.d(value, key, locale)
+  } else {
+    return ret || ''
+  }
+};
+
+VueI18n.prototype.d = function d (value) {
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
+  var locale = this.locale;
+  var key = null;
+
+  if (args.length === 1) {
+    if (typeof args[0] === 'string') {
+      key = args[0];
+    } else if (isObject(args[0])) {
+      if (args[0].locale) {
+        locale = args[0].locale;
+      }
+      if (args[0].key) {
+        key = args[0].key;
+      }
+    }
+  } else if (args.length === 2) {
+    if (typeof args[0] === 'string') {
+      key = args[0];
+    }
+    if (typeof args[1] === 'string') {
+      locale = args[1];
+    }
+  }
+
+  return this._d(value, locale, key)
+};
+
+VueI18n.prototype.getNumberFormat = function getNumberFormat (locale) {
+  return looseClone(this._vm.numberFormats[locale] || {})
+};
+
+VueI18n.prototype.setNumberFormat = function setNumberFormat (locale, format) {
+  this._vm.$set(this._vm.numberFormats, locale, format);
+};
+
+VueI18n.prototype.mergeNumberFormat = function mergeNumberFormat (locale, format) {
+  this._vm.$set(this._vm.numberFormats, locale, merge(this._vm.numberFormats[locale] || {}, format));
+};
+
+VueI18n.prototype._localizeNumber = function _localizeNumber (
+  value,
+  locale,
+  fallback,
+  numberFormats,
+  key,
+  options
+) {
+  var _locale = locale;
+  var formats = numberFormats[_locale];
+
+  // fallback locale
+  if (isNull(formats) || isNull(formats[key])) {
+    if (true) {
+      warn(("Fall back to '" + fallback + "' number formats from '" + locale + " number formats."));
+    }
+    _locale = fallback;
+    formats = numberFormats[_locale];
+  }
+
+  if (isNull(formats) || isNull(formats[key])) {
+    return null
+  } else {
+    var format = formats[key];
+
+    var formatter;
+    if (options) {
+      // If options specified - create one time number formatter
+      formatter = new Intl.NumberFormat(_locale, Object.assign({}, format, options));
+    } else {
+      var id = _locale + "__" + key;
+      formatter = this._numberFormatters[id];
+      if (!formatter) {
+        formatter = this._numberFormatters[id] = new Intl.NumberFormat(_locale, format);
+      }
+    }
+    return formatter.format(value)
+  }
+};
+
+VueI18n.prototype._n = function _n (value, locale, key, options) {
+  /* istanbul ignore if */
+  if (!VueI18n.availabilities.numberFormat) {
+    if (true) {
+      warn('Cannot format a Number value due to not supported Intl.NumberFormat.');
+    }
+    return ''
+  }
+
+  if (!key) {
+    var nf = !options ? new Intl.NumberFormat(locale) : new Intl.NumberFormat(locale, options);
+    return nf.format(value)
+  }
+
+  var ret =
+    this._localizeNumber(value, locale, this.fallbackLocale, this._getNumberFormats(), key, options);
+  if (this._isFallbackRoot(ret)) {
+    if (true) {
+      warn(("Fall back to number localization of root: key '" + key + "' ."));
+    }
+    /* istanbul ignore if */
+    if (!this._root) { throw Error('unexpected error') }
+    return this._root.$i18n.n(value, Object.assign({}, { key: key, locale: locale }, options))
+  } else {
+    return ret || ''
+  }
+};
+
+VueI18n.prototype.n = function n (value) {
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
+  var locale = this.locale;
+  var key = null;
+  var options = null;
+
+  if (args.length === 1) {
+    if (typeof args[0] === 'string') {
+      key = args[0];
+    } else if (isObject(args[0])) {
+      if (args[0].locale) {
+        locale = args[0].locale;
+      }
+      if (args[0].key) {
+        key = args[0].key;
+      }
+
+      // Filter out number format options only
+      options = Object.keys(args[0]).reduce(function (acc, key) {
+          var obj;
+
+        if (numberFormatKeys.includes(key)) {
+          return Object.assign({}, acc, ( obj = {}, obj[key] = args[0][key], obj ))
+        }
+        return acc
+      }, null);
+    }
+  } else if (args.length === 2) {
+    if (typeof args[0] === 'string') {
+      key = args[0];
+    }
+    if (typeof args[1] === 'string') {
+      locale = args[1];
+    }
+  }
+
+  return this._n(value, locale, key, options)
+};
+
+Object.defineProperties( VueI18n.prototype, prototypeAccessors );
+
+VueI18n.availabilities = {
+  dateTimeFormat: canUseDateTimeFormat,
+  numberFormat: canUseNumberFormat
+};
+VueI18n.install = install;
+VueI18n.version = '8.3.2';
+
+/* harmony default export */ __webpack_exports__["a"] = (VueI18n);
+
+
+/***/ }),
+/* 192 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    "de": {
+        "Register": "Registrieren",
+        "First Name": "Vorname",
+        "Surname": "Nachname",
+        "E-Mail Address": "E-Mail-Adresse",
+        "Gender": "Geschlecht",
+        "female": "weiblich",
+        "male": "männlich",
+        "Password": "Passwort",
+        "Confirm Password": "Passwort wiederholen",
+        "I hereby accept the terms and conditions.": "Ich habe die Nutzungsbedingungen gelesen und bin damit einverstanden.",
+        "Search": "Suche",
+        "Old\/New": "Alt\/Neu",
+        "Only show old concerts": "Nur alte Konzerte anzeigen",
+        "Show all concerts": "Alle Konzerte anzeigen",
+        "Only show new concerts": "Nur neue Konzerte anzeigen",
+        "Apply filters": "Filter anwenden",
+        "Concert title": "Konzerttitel",
+        "Description": "Beschreibung",
+        "Semester": "Semester",
+        "Dates": "Termine",
+        "Add one or more dates for the concert.": "Einen oder mehrere Termine für das Konzert hinzufügen.",
+        "Voice": "Stimme",
+        "Voices": "Stimmen",
+        "Singers needed": "Benötigte Sänger",
+        "e.g.": "z.B.",
+        "Add another voice": "Neue Stimme hinzufügen",
+        "Save Concert": "Konzert speichern",
+        "Concert": "Konzert",
+        "Add dates": "Termine hinzufügen",
+        "Add date": "Termin hinzufügen",
+        "Add another date": "Einen weiteren Termin hinzufügen",
+        "Add date(s)": "Termin(e) hinzufügen",
+        "Cancel": "Abbrechen",
+        "Add participants": "Teilnehmer hinzufügen",
+        "Add a participant": "Teilnehmer hinzufügen",
+        "Create a new concert": "Neues Konzert erstellen",
+        "Edit": "Bearbeiten",
+        "Edit voices": "Stimmen bearbeiten",
+        "Currently added voices (click to remove)": "Hinzugefügte Stimmen (zum Entfernen klicken)",
+        "Do you really want to remove this voice from the concert?": "Diese Stimme wirklich vom Konzert entfernen?",
+        "Remove this voice from the concert": "Stimme vom Konzert entfernen",
+        "This voice has already been added to the concert.": "Diese Stimme wurde bereits zum Konzert hinzugefügt.",
+        "Add voice(s)": "Stimme(n) hinzufügen",
+        "Concerts": "Konzerte",
+        "New Concert": "Neues Konzert",
+        "Title": "Titel",
+        "Date": "Datum",
+        "Created by": "Erstellt von",
+        "No dates specified": "Keine Termine",
+        "Do you really want to delete this concert?": "Dieses Konzert wirklich löschen?",
+        "Delete": "Löschen",
+        "No concerts found.": "Keine Konzerte gefunden.",
+        "User": "Benutzer",
+        "Edit profile": "Profil bearbeiten",
+        "None set": "n\/a",
+        "Set voice": "Stimme setzen",
+        "No participants matching your filters.": "Keine Teilnehmer entsprechen den Filterkriterien.",
+        "Edit Voices": "Stimmen bearbeiten",
+        "Attendants": "Zusagen",
+        "Needed": "Benötigt",
+        "No voices set": "Keine Stimmen gesetzt",
+        "You are setting the voice for this user for this concert. To set the primary voice, edit the user in the main users list.": "Die Stimme wird für diesen Benutzer in diesem Konzert gesetzt. Die primäre Stimme kann in der allgemeinen Benutzerliste geändert werden.",
+        "You are setting the voices for the selected users for this concert. To set the primary voice, edit the users in the main users list.": "Die Stimme wird für diese Benutzer in diesem Konzert gesetzt. Die primäre Stimme kann in der allgemeinen Benutzerliste geändert werden.",
+        "No description added.": "Keine Beschreibung hinzugefügt.",
+        "Date(s)": "Termin(e)",
+        "Dashboard": "Dashboard",
+        "You didn't set your voice yet.": "Du hast noch keine Stimme angegeben.",
+        "Do it now!": "Mach es jetzt!",
+        "My Profile": "Mein Profil",
+        "Logout": "Logout",
+        "Rehearsals": "Proben",
+        "Users": "Benutzer",
+        "Semesters": "Semester",
+        "There were errors with your input. Check the form.": "Es gab Fehler beim Ausfüllen des Formulars.",
+        "Accept or decline": "Zu- oder absagen",
+        "You are attending!": "Du bist dabei!",
+        "Attend": "Zusagen",
+        "You are not attending.": "Du bist nicht dabei.",
+        "Decline": "Absagen",
+        "Info": "Info",
+        "Participants": "Teilnehmer",
+        "No active filters": "Keine Filter gesetzt",
+        "Show\/hide filters": "Filter anzeigen\/verstecken",
+        "Change Password": "Passwort ändern",
+        "Old Password": "Aktuelles Passwort",
+        "New Password": "Neues Passwort",
+        "Save Password": "Passwort speichern",
+        "Save Rehearsal": "Probe speichern",
+        "Create a new rehearsal": "Neue Probe erstellen",
+        "New Rehearsal": "Neue Probe",
+        "Promises": "Zusagen",
+        "Denials": "Absagen",
+        "Do you really want to delete this rehearsal?": "Diese Probe wirklich löschen?",
+        "No rehearsals found.": "Keine Proben gefunden.",
+        "Set your role": "Eigene Rolle setzen",
+        "Set role for": "Rolle setzen für",
+        "Role": "Rolle",
+        "Set role": "Rolle setzen",
+        "Start Date": "Startdatum",
+        "End Date": "Enddatum",
+        "Save Semester": "Semester speichern",
+        "Select Users": "Benutzer auswählen",
+        "All registered users already attend this semester.": "Es haben bereits alle registrierten Benutzer für dieses Semester zugesagt.",
+        "Create a new semester": "Neues Semester erstellen",
+        "Edit Semester": "Semester bearbeiten",
+        "New Semester": "Neues Semester",
+        "Automatically": "Automatisch",
+        "Show": "Anzeigen",
+        "No semesters found.": "Keine Semester gefunden.",
+        "No concerts this semester.": "Keine Konzerte in diesem Semester.",
+        "Add a concert": "Konzert hinzufügen",
+        "Age": "Alter",
+        "Min": "Von",
+        "Max": "Bis",
+        "Save User": "Benutzer speichern",
+        "New User": "Neuer Benutzer",
+        "No users found.": "Keine Benutzer gefunden.",
+        "Name": "Name",
+        "Save Voice": "Stimme speichern",
+        "Create a new voice": "Neue Stimme erstellen",
+        "New Voice": "Neue Stimme",
+        "Singers": "Sänger",
+        "Do you really want to delete this voice?": "Diese Stimme wirklich löschen?",
+        "No voices found.": "Keine Stimmen gefunden.",
+        "Set your voice": "Eigene Stimme setzen",
+        "Set voice for": "Stimme setzen für",
+        "Personal Data": "Persönliche Daten",
+        "Contact Data": "Kontaktdaten",
+        "Address": "Adresse",
+        "Street \/ No.": "Straße \/ Hausnummer",
+        "ZIP": "PLZ",
+        "City": "Ort",
+        "Country": "Land",
+        "--- Please choose ---": "--- Bitte auswählen ---",
+        "This is your primary voice.": "Das ist deine primäre Stimme.",
+        "Phone": "Telefonnummer",
+        "Save Profile": "Profil speichern",
+        "Create a new user": "Neuen Benutzer erstellen",
+        "Profile saved.": "Profil gespeichert",
+        "Citizenship": "Staatsbürgerschaft",
+        "Birthdate": "Geburtsdatum",
+        "You didn't tell us yet, if you are attending this semester.": "Du hast für dieses Semester noch nicht zu- oder abgesagt.",
+        "You didn't tell us yet, if you are attending this concert.": "Du hast für dieses Konzert noch nicht zu- oder abgesagt.",
+        "You didn't tell us yet, if you are attending this rehearsal.": "Du hast für diese Probe noch nicht zu- oder abgesagt.",
+        "No rehearsals this semester.": "Keine Proben in diesem Semester.",
+        "No (more) rehearsals this semester.": "Keine (weiteren) Proben in diesem Semester.",
+        "Current": "Aktuell",
+        "Current Semester": "Aktuelles Semester",
+        "Nothing to do for now!": "Aktuell nichts zu tun!",
+        "No info about the current semester.": "Keine Informationen über das aktuelle Semester.",
+        "Semester successfully created!": "Semester erfolgreich erstellt!",
+        "Add a rehearsal": "Probe hinzufügen",
+        "Show all": "Alle anzeigen",
+        "No info available.": "Keine Informationen verfügbar.",
+        "All registered users already attend the rehearsal.": "Alle registrierten Benutzer haben bereits für die Probe zugesagt.",
+        "All registered users already attend the concert.": "Alle registrierten Benutzer haben bereits für das Konzert zugesagt.",
+        "Voice successfully set.": "Stimme erfolgreich gesetzt.",
+        "Role successfully set.": "Rolle erfolgreich gesetzt.",
+        "Archive": "Archivieren",
+        "Do you really want to archive this user?": "Diesen Benutzer wirklich archivieren?",
+        "User successfully archived.": "Benutzer erfolgreich archiviert.",
+        "Users successfully archived.": "Benutzer erfolgreich archiviert.",
+        "Start Time": "Startzeit",
+        "End Time": "Endzeit",
+        "Place": "Ort",
+        "Time": "Zeit",
+        "Cannot accept or decline a rehearsal in the past.": "Diese Probe ist bereits vorbei. Du kannst daher nicht zu- oder absagen.",
+        "Present": "Anwesend",
+        "Excused": "Entschuldigt",
+        "Unexcused": "Unentschuldigt",
+        "Do you really want to archive these users?": "Diese Benutzer wirklich archivieren?",
+        "Add one or more voices and the number of singers needed.": "Eine oder mehrere Stimmen und die Anzahl der benötigten SängerInnen hinzufügen.",
+        "No voices set.": "Keine Stimmen hinzugefügt.",
+        "No rehearsals for this concert found.": "Keine Proben für dieses Konzert gefunden.",
+        "There is some information missing about you. Please fill it out here:": "Uns fehlen noch ein paar Informationen über dich. Bitte fülle sie hier aus:",
+        "Projects": "Projekte",
+        "Project": "Projekt",
+        "You need to set your primary voice before you can participate in a project!": "Du musst deine Stimme angeben, bevor du bei einem Projekt zusagen kannst!",
+        "No projects this semester.": "Keine Projekte in diesem Semester.",
+        "No projects found.": "Keine Projekte gefunden.",
+        "No rehearsals for this project found.": "Keine Proben für dieses Projekt gefunden.",
+        "No concerts for this project found.": "Keine Konzerte für dieses Projekt gefunden.",
+        "Semester successfully updated!": "Semester erfolgreich aktualisiert.",
+        "Add a project": "Projekt hinzufügen",
+        "New Project": "Neues Projekt",
+        "Comments": "Kommentare",
+        "No comments yet.": "Noch keine Kommentare.",
+        "Comment": "Kommentar",
+        "Post Comment": "Kommentar posten",
+        "Private (only admins will see your comment)": "Privat (nur Admins können den Kommentar sehen)",
+        "Accept": "Zusagen",
+        "Username": "Benutzername",
+        "Create a new project": "Neues Projekt erstellen",
+        "Project title": "Titel",
+        "Save Project": "Projekt speichern",
+        "Other rehearsals in this project": "Andere Proben in diesem Projekt",
+        "Project Participants": "Projektteilnehmer",
+        "Participant successfully removed from the semester.": "Teilnehmer erfolgreich vom Semester entfernt.",
+        "Participant successfully removed from the project.": "Teilnehmer erfolgreich vom Projekt entfernt.",
+        "Participant successfully removed from the concert.": "Teilnehmer erfolgreich vom Konzert entfernt.",
+        "Participant successfully removed from the rehearsal.": "Teilnehmer erfolgreich von der Probe entfernt.",
+        "Remove participant": "Teilnehmer entfernen",
+        "Participant could not be found.": "Teilnehmer konnte nicht gefunden werden.",
+        "Do you really want to remove this participant from the semester?": "Diesen Benutzer wirklich vom Semester entfernen?",
+        "Do you really want to remove this participant from the project?": "Diesen Benutzer wirklich vom Projekt entfernen?",
+        "Do you really want to remove this participant from the concert?": "Diesen Benutzer wirklich vom Konzert entfernen?",
+        "Do you really want to remove this participant from the rehearsal?": "Diesen Benutzer wirklich von der Probe entfernen?",
+        "This is a main project in the semester.": "Das ist ein Hauptprojekt im Semester.",
+        "People that attend the semester will automatically participate in this project as well.": "Alle, die zum Semester zusagen, werden auch automatisch zu diesem Projekt angemeldet.",
+        "validation": {
+            "accepted": "The {attribute} must be accepted.",
+            "active_url": "The {attribute} is not a valid URL.",
+            "after": "The {attribute} must be a date after {date}.",
+            "after_or_equal": "The {attribute} must be a date after or equal to {date}.",
+            "alpha": "The {attribute} may only contain letters.",
+            "alpha_dash": "The {attribute} may only contain letters, numbers, and dashes.",
+            "alpha_num": "The {attribute} may only contain letters and numbers.",
+            "array": "The {attribute} must be an array.",
+            "before": "The {attribute} must be a date before {date}.",
+            "before_or_equal": "The {attribute} must be a date before or equal to {date}.",
+            "between": {
+                "numeric": "The {attribute} must be between {min} and {max}.",
+                "file": "The {attribute} must be between {min} and {max} kilobytes.",
+                "string": "The {attribute} must be between {min} and {max} characters.",
+                "array": "The {attribute} must have between {min} and {max} items."
+            },
+            "boolean": "The {attribute} field must be true or false.",
+            "confirmed": "The {attribute} confirmation does not match.",
+            "date": "The {attribute} is not a valid date.",
+            "date_format": "The {attribute} does not match the format {format}.",
+            "different": "The {attribute} and {other} must be different.",
+            "digits": "The {attribute} must be {digits} digits.",
+            "digits_between": "The {attribute} must be between {min} and {max} digits.",
+            "dimensions": "The {attribute} has invalid image dimensions.",
+            "distinct": "The {attribute} field has a duplicate value.",
+            "email": "The {attribute} must be a valid email address.",
+            "exists": "The selected {attribute} is invalid.",
+            "file": "The {attribute} must be a file.",
+            "filled": "The {attribute} field must have a value.",
+            "image": "The {attribute} must be an image.",
+            "in": "The selected {attribute} is invalid.",
+            "in_array": "The {attribute} field does not exist in {other}.",
+            "integer": "The {attribute} must be an integer.",
+            "ip": "The {attribute} must be a valid IP address.",
+            "ipv4": "The {attribute} must be a valid IPv4 address.",
+            "ipv6": "The {attribute} must be a valid IPv6 address.",
+            "json": "The {attribute} must be a valid JSON string.",
+            "max": {
+                "numeric": "The {attribute} may not be greater than {max}.",
+                "file": "The {attribute} may not be greater than {max} kilobytes.",
+                "string": "The {attribute} may not be greater than {max} characters.",
+                "array": "The {attribute} may not have more than {max} items."
+            },
+            "mimes": "The {attribute} must be a file of type: {values}.",
+            "mimetypes": "The {attribute} must be a file of type: {values}.",
+            "min": {
+                "numeric": "The {attribute} must be at least {min}.",
+                "file": "The {attribute} must be at least {min} kilobytes.",
+                "string": "The {attribute} must be at least {min} characters.",
+                "array": "The {attribute} must have at least {min} items."
+            },
+            "not_in": "The selected {attribute} is invalid.",
+            "numeric": "The {attribute} must be a number.",
+            "present": "The {attribute} field must be present.",
+            "regex": "The {attribute} format is invalid.",
+            "required": "Dieses Feld ist ein Pflichtfeld.",
+            "required_if": "The {attribute} field is required when {other} is {value}.",
+            "required_unless": "The {attribute} field is required unless {other} is in {values}.",
+            "required_with": "The {attribute} field is required when {values} is present.",
+            "required_with_all": "The {attribute} field is required when {values} is present.",
+            "required_without": "The {attribute} field is required when {values} is not present.",
+            "required_without_all": "The {attribute} field is required when none of {values} are present.",
+            "same": "The {attribute} and {other} must match.",
+            "size": {
+                "numeric": "The {attribute} must be {size}.",
+                "file": "The {attribute} must be {size} kilobytes.",
+                "string": "The {attribute} must be {size} characters.",
+                "array": "The {attribute} must contain {size} items."
+            },
+            "string": "The {attribute} must be a string.",
+            "timezone": "The {attribute} must be a valid zone.",
+            "unique": "The {attribute} has already been taken.",
+            "uploaded": "The {attribute} failed to upload.",
+            "url": "The {attribute} format is invalid.",
+            "custom": {
+                "attribute-name": {
+                    "rule-name": "custom-message"
+                }
+            },
+            "attributes": []
+        }
+    },
+    "en": {
+        "passwords": {
+            "password": "Passwords must be at least six characters and match the confirmation.",
+            "reset": "Your password has been reset!",
+            "sent": "We have e-mailed your password reset link!",
+            "token": "This password reset token is invalid.",
+            "user": "We can't find a user with that e-mail address."
+        },
+        "auth": {
+            "failed": "These credentials do not match our records.",
+            "throttle": "Too many login attempts. Please try again in {seconds} seconds."
+        },
+        "pagination": {
+            "previous": "&laquo; Previous",
+            "next": "Next &raquo;"
+        },
+        "validation": {
+            "accepted": "The {attribute} must be accepted.",
+            "active_url": "The {attribute} is not a valid URL.",
+            "after": "The {attribute} must be a date after {date}.",
+            "after_or_equal": "The {attribute} must be a date after or equal to {date}.",
+            "alpha": "The {attribute} may only contain letters.",
+            "alpha_dash": "The {attribute} may only contain letters, numbers, and dashes.",
+            "alpha_num": "The {attribute} may only contain letters and numbers.",
+            "array": "The {attribute} must be an array.",
+            "before": "The {attribute} must be a date before {date}.",
+            "before_or_equal": "The {attribute} must be a date before or equal to {date}.",
+            "between": {
+                "numeric": "The {attribute} must be between {min} and {max}.",
+                "file": "The {attribute} must be between {min} and {max} kilobytes.",
+                "string": "The {attribute} must be between {min} and {max} characters.",
+                "array": "The {attribute} must have between {min} and {max} items."
+            },
+            "boolean": "The {attribute} field must be true or false.",
+            "confirmed": "The {attribute} confirmation does not match.",
+            "date": "The {attribute} is not a valid date.",
+            "date_format": "The {attribute} does not match the format {format}.",
+            "different": "The {attribute} and {other} must be different.",
+            "digits": "The {attribute} must be {digits} digits.",
+            "digits_between": "The {attribute} must be between {min} and {max} digits.",
+            "dimensions": "The {attribute} has invalid image dimensions.",
+            "distinct": "The {attribute} field has a duplicate value.",
+            "email": "The {attribute} must be a valid email address.",
+            "exists": "The selected {attribute} is invalid.",
+            "file": "The {attribute} must be a file.",
+            "filled": "The {attribute} field must have a value.",
+            "image": "The {attribute} must be an image.",
+            "in": "The selected {attribute} is invalid.",
+            "in_array": "The {attribute} field does not exist in {other}.",
+            "integer": "The {attribute} must be an integer.",
+            "ip": "The {attribute} must be a valid IP address.",
+            "ipv4": "The {attribute} must be a valid IPv4 address.",
+            "ipv6": "The {attribute} must be a valid IPv6 address.",
+            "json": "The {attribute} must be a valid JSON string.",
+            "max": {
+                "numeric": "The {attribute} may not be greater than {max}.",
+                "file": "The {attribute} may not be greater than {max} kilobytes.",
+                "string": "The {attribute} may not be greater than {max} characters.",
+                "array": "The {attribute} may not have more than {max} items."
+            },
+            "mimes": "The {attribute} must be a file of type: {values}.",
+            "mimetypes": "The {attribute} must be a file of type: {values}.",
+            "min": {
+                "numeric": "The {attribute} must be at least {min}.",
+                "file": "The {attribute} must be at least {min} kilobytes.",
+                "string": "The {attribute} must be at least {min} characters.",
+                "array": "The {attribute} must have at least {min} items."
+            },
+            "not_in": "The selected {attribute} is invalid.",
+            "numeric": "The {attribute} must be a number.",
+            "present": "The {attribute} field must be present.",
+            "regex": "The {attribute} format is invalid.",
+            "required": "The {attribute} field is required.",
+            "required_if": "The {attribute} field is required when {other} is {value}.",
+            "required_unless": "The {attribute} field is required unless {other} is in {values}.",
+            "required_with": "The {attribute} field is required when {values} is present.",
+            "required_with_all": "The {attribute} field is required when {values} is present.",
+            "required_without": "The {attribute} field is required when {values} is not present.",
+            "required_without_all": "The {attribute} field is required when none of {values} are present.",
+            "same": "The {attribute} and {other} must match.",
+            "size": {
+                "numeric": "The {attribute} must be {size}.",
+                "file": "The {attribute} must be {size} kilobytes.",
+                "string": "The {attribute} must be {size} characters.",
+                "array": "The {attribute} must contain {size} items."
+            },
+            "string": "The {attribute} must be a string.",
+            "timezone": "The {attribute} must be a valid zone.",
+            "unique": "The {attribute} has already been taken.",
+            "uploaded": "The {attribute} failed to upload.",
+            "url": "The {attribute} format is invalid.",
+            "custom": {
+                "attribute-name": {
+                    "rule-name": "custom-message"
+                }
+            },
+            "attributes": []
+        }
+    }
+});
+
+/***/ }),
+/* 193 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    global: {
+        methods: {
+            urlEncodeArray: function urlEncodeArray(array, name) {
+                var urlEncodedString = '';
+
+                array.map(function (item) {
+                    urlEncodedString += name + '[]=' + item + '&';
+                });
+
+                return urlEncodedString;
+            }
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

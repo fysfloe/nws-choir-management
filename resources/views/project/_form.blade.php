@@ -34,15 +34,17 @@
         </div><!-- .form-group -->
 
         <div class="form-group{{ $errors->has('is_main') ? ' has-error' : '' }}">
-            <input type="checkbox" class="form-check-input" name="is_main" id="is_main" @if ((isset($project) && $project->is_main) || old('is_main')) checked @endif>
-            {{ Form::label('is_main', __('This is a main project in the semester.'), ['class' => 'form-check-label']) }}
-            &nbsp;<span class="oi oi-info" data-toggle="tooltip" title="{{ __('People that attend the semester will automatically participate in this project as well.') }}"></span>
-    
-            @if ($errors->has('is_main'))
-                <span class="help-block text-danger">
-                    <strong>{{ $errors->first('is_main') }}</strong>
-                </span>
-            @endif
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="is_main" id="is_main" @if ((isset($project) && $project->is_main) || old('is_main')) checked @endif>
+                {{ Form::label('is_main', __('This is a main project in the semester.'), ['class' => 'form-check-label']) }}
+                &nbsp;<span class="oi oi-info" data-toggle="tooltip" title="{{ __('People that attend the semester will automatically participate in this project as well.') }}"></span>
+        
+                @if ($errors->has('is_main'))
+                    <span class="help-block text-danger">
+                        <strong>{{ $errors->first('is_main') }}</strong>
+                    </span>
+                @endif
+            </div>
         </div><!-- .form-group -->
     </div><!-- .col -->
 

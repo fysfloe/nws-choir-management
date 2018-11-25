@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
         // Route::get('/', 'AdminController@welcome');
         Route::get('/users/export', 'UserController@export')->name('users.export');
-        Route::get('/users/multi-archive', 'UserController@multiArchive')->name('users.multiArchive');
+        Route::post('/users/multi-archive', 'UserController@multiArchive')->name('users.multiArchive');
         Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
         Route::get('/load-users', 'UserController@loadUsers')->name('users.load');
         // Concerts
@@ -80,7 +80,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/concert/{concert}/addUser', 'ConcertController@showAddUser')->name('concert.showAddUser');
         Route::post('/concert/{concert}/addUser', 'ConcertController@addUser')->name('concert.addUser');
         Route::get('/concert/load-participants/{concert}', 'ConcertController@loadParticipants')->name('concert.loadParticipants');
-        Route::delete('/concert/{concert}/removeUser', 'ConcertController@removeUser')->name('concert.removeUser');
+        Route::post('/concert/{concert}/removeParticipants', 'ConcertController@removeParticipants')->name('concert.removeParticipants');
+        Route::delete('/concert/{concert}/removeParticipant', 'ConcertController@removeParticipant')->name('concert.removeParticipant');
         // Projects
         Route::get('/project/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
         Route::get('/projects/create', 'ProjectController@create')->name('project.create');
@@ -98,7 +99,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/project/{project}/addUser', 'ProjectController@showAddUser')->name('project.showAddUser');
         Route::post('/project/{project}/addUser', 'ProjectController@addUser')->name('project.addUser');
         Route::get('/project/load-participants/{project}', 'ProjectController@loadParticipants')->name('project.loadParticipants');
-        Route::delete('/project/{project}/removeUser', 'ProjectController@removeUser')->name('project.removeUser');
+        Route::post('/project/{project}/removeParticipants', 'ProjectController@removeParticipants')->name('project.removeParticipants');
+        Route::delete('/project/{project}/removeParticipant', 'ProjectController@removeParticipant')->name('project.removeParticipant');
         // Rehearsals
         Route::get('/rehearsals/create', 'RehearsalController@create')->name('rehearsal.create');
         Route::post('/rehearsals/store', 'RehearsalController@store')->name('rehearsal.store');
@@ -113,7 +115,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/rehearsal/load-participants/{rehearsal}', 'RehearsalController@loadParticipants')->name('rehearsal.loadParticipants');
         Route::get('/rehearsal/{rehearsal}/participants', 'RehearsalController@participants')->name('rehearsal.participants');
         Route::get('/rehearsal/{rehearsal}/addProjectParticipants', 'RehearsalController@addProjectParticipants')->name('rehearsal.addProjectParticipants');
-        Route::delete('/rehearsal/{rehearsal}/removeUser', 'RehearsalController@removeUser')->name('rehearsal.removeUser');
+        Route::post('/rehearsal/{rehearsal}/removeParticipants', 'RehearsalController@removeParticipants')->name('rehearsal.removeParticipants');
+        Route::delete('/rehearsal/{rehearsal}/removeParticipant', 'RehearsalController@removeParticipant')->name('rehearsal.removeParticipant');
         // Voices
         Route::resource('/voices', 'VoiceController');
         Route::get('/voice/set', 'VoiceController@showSetMulti')->name('voice.showSetMulti');
@@ -127,7 +130,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('/semesters', 'SemesterController');
         Route::get('/semesters/{semester}/addUser', 'SemesterController@showAddUser')->name('semester.showAddUser');
         Route::post('/semesters/{semester}/addUser', 'SemesterController@addUser')->name('semester.addUser');
-        Route::delete('/semesters/{semester}/removeUser', 'SemesterController@removeUser')->name('semester.removeUser');
+        Route::post('/semester/{semester}/removeParticipants', 'SemesterController@removeParticipants')->name('semester.removeParticipants');
+        Route::delete('/semesters/{semester}/removeParticipant', 'SemesterController@removeParticipant')->name('semester.removeParticipant');
         Route::get('/semesters/{semester}/participants', 'SemesterController@participants')->name('semester.participants');
         Route::get('/semesters/load-participants/{semester}', 'SemesterController@loadParticipants')->name('semester.loadParticipants');
     });

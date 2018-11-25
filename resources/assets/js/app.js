@@ -15,18 +15,32 @@ window.Vue = require('vue');
 
 import VueResource from 'vue-resource';
 import VuejsDialog from "vuejs-dialog"
+import VueInternationalization from 'vue-i18n';
+import Locale from './vue-i18n-locales.generated';
+import mixins from './mixins';
 
 Vue.use(VueResource);
 Vue.use(VuejsDialog);
+Vue.use(VueInternationalization);
 
 Vue.component('user-list', require('./components/UserList.vue'));
 Vue.component('filters', require('./components/Filters.vue'));
 Vue.component('picture-input', require('vue-picture-input'));
 Vue.component('accept-decline', require('./components/AcceptDecline.vue'));
 Vue.component('attendance', require('./components/Attendance.vue'));
+Vue.mixin(mixins.global);
+
+const lang = document.documentElement.lang.substr(0, 2); 
+
+const i18n = new VueInternationalization({
+    locale: lang,
+    messages: Locale
+});
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    i18n,
+    mixins
 });
 
 $(function () {

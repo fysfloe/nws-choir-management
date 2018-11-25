@@ -9931,10 +9931,6 @@ a.text-dark:hover {
   width: 100%;
 }
 
-.form-check-input {
-  margin-left: 0;
-}
-
 input.date {
   margin-bottom: 0.5em;
 }
@@ -10101,10 +10097,6 @@ input.date {
 }
 
 .list-table header .dropdown.list-actions {
-  display: none;
-}
-
-.list-table header .dropdown.list-actions.active {
   display: inline-block;
 }
 

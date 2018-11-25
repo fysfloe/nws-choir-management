@@ -479,7 +479,7 @@ class ProjectController extends Controller
         })->download('csv');
     }
 
-    public function removeUser(Project $project, Request $request)
+    public function removeParticipant(Project $project, Request $request)
     {
         $user = User::find($request->get('user_id'));
         
@@ -492,5 +492,20 @@ class ProjectController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function removeParticipants(Project $project, Request $request)
+    {
+        $users = $request->get('users');
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+
+            $project->participants()->detach($user);
+        }
+
+        return response()->json([
+            'message' => __('Participants successfully removed from the project.')
+        ]);
     }
 }

@@ -221,8 +221,8 @@ class UserController extends Controller
             $user->delete();
         }
 
-        $request->session()->flash('alert-success', __('Users successfully archived.'));
-
-        return redirect()->back();
+        return response()->json([
+            'message' => __('Users successfully archived.')
+        ]);
     }
 }

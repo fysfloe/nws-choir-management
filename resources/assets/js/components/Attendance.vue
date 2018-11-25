@@ -1,19 +1,19 @@
 <template>
-    <div class="btn-group attendance-buttons" role="group" :aria-label="texts.acceptOrDecline">
-        <button @click="confirm" :class="{ 'btn': true, 'btn-success': isConfirmed, 'btn-default': !isConfirmed }" data-toggle="tooltip" :title="texts.present">
+    <div class="btn-group attendance-buttons" role="group" :aria-label="$t('Accept or decline')">
+        <button @click="confirm" :class="{ 'btn': true, 'btn-success': isConfirmed, 'btn-default': !isConfirmed }" data-toggle="tooltip" :title="$t('Present')">
             <span class="oi oi-check"></span>
         </button>
-        <button @click="excuse" :class="{ 'btn': true, 'btn-warning': isExcused, 'btn-default': !isExcused }" data-toggle="tooltip" :title="texts.excused">
+        <button @click="excuse" :class="{ 'btn': true, 'btn-warning': isExcused, 'btn-default': !isExcused }" data-toggle="tooltip" :title="$t('Excused')">
             <span class="oi oi-medical-cross"></span>
         </button>
-        <button @click="unexcuse" :class="{ 'btn': true, 'btn-danger': isUnexcused, 'btn-default': !isUnexcused }" data-toggle="tooltip" :title="texts.unexcused">
+        <button @click="unexcuse" :class="{ 'btn': true, 'btn-danger': isUnexcused, 'btn-default': !isUnexcused }" data-toggle="tooltip" :title="$t('Unexcused')">
             <span class="oi oi-x"></span>
         </button>
     </div>
 </template>
 <script>
 export default {
-    props: ['routes', 'user', 'texts'],
+    props: ['routes', 'user'],
     data() {
         return {
             isConfirmed: this.user.confirmed === 1,
