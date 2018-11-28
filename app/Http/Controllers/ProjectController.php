@@ -69,7 +69,7 @@ class ProjectController extends Controller
     public function loadItems(Request $request)
     {
         $projects = (new GetFilteredProjectsService())
-            ->handle($request->get('search'), $request->get('sort'), $request->get('dir'));
+            ->handle(Auth::user(), $request->get('search'), $request->get('sort'), $request->get('dir'));
 
         return json_encode(ProjectResource::collection($projects));
     }
