@@ -41,6 +41,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link @if ($tab === 'rehearsals') active @endif" id="rehearsals-tab" href="{{ route('project.rehearsals', $project) }}" role="tab" aria-controls="rehearsals">
+                <span class="oi oi-musical-note"></span>&nbsp;
+                {{ __('Rehearsals') }}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link @if ($tab === 'comments') active @endif" href="{{ route('project.comments', $project) }}" role="tab" aria-controls="info">
                 <span class="oi oi-comment-square"></span>&nbsp;
                 {{ __('Comments') }} ({{ count($project->comments) }})

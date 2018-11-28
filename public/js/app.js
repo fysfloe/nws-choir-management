@@ -17132,6 +17132,8 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vuejs_dialog___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]);
 
 Vue.component('user-list', __webpack_require__(165));
+Vue.component('project-list', __webpack_require__(194));
+Vue.component('rehearsal-list', __webpack_require__(197));
 Vue.component('filters', __webpack_require__(168));
 Vue.component('picture-input', __webpack_require__(171));
 Vue.component('accept-decline', __webpack_require__(179));
@@ -68998,7 +69000,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 ageFrom: '',
                 ageTo: '',
                 sort: 'surname',
-                dir: 'ASC'
+                dir: 'ASC',
+                accepted: '1'
             }
         };
     },
@@ -69122,7 +69125,7 @@ var render = function() {
         attrs: {
           voices: _vm.voices,
           concerts: _vm.concerts,
-          "fetch-users": _vm.fetchUsers,
+          "fetch-items": _vm.fetchUsers,
           filters: _vm.filters,
           "active-filters": _vm.activeFilters,
           "remove-filter": _vm.removeFilter
@@ -69875,14 +69878,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['voices', 'concerts', 'fetchUsers', 'filters', 'activeFilters', 'removeFilter'],
+    props: ['voices', 'concerts', 'fetchItems', 'filters', 'activeFilters', 'removeFilter'],
     methods: {
         filter: function filter() {
             this.filters.voices = $('select[name="voices[]"]').val();
             this.filters.concerts = $('select[name="concerts[]"]').val();
-            this.fetchUsers();
+            this.fetchItems();
         },
         _removeFilter: function _removeFilter(key) {
             this.removeFilter(key);
@@ -69912,202 +69924,279 @@ var render = function() {
           }
         },
         [
-          _c("div", { staticClass: "form-group" }, [
-            _c(
-              "label",
-              { staticClass: "control-label", attrs: { for: "search" } },
-              [_vm._v(_vm._s(_vm.$t("Search")))]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.search,
-                  expression: "filters.search"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { name: "search", id: "search" },
-              domProps: { value: _vm.filters.search },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filters, "search", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c(
-              "label",
-              { staticClass: "control-label", attrs: { for: "voices" } },
-              [_vm._v(_vm._s(_vm.$t("Voices")))]
-            ),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.voices,
-                    expression: "filters.voices"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { name: "voices[]", id: "voices", multiple: "multiple" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.filters,
-                        "voices",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    },
-                    function($event) {
-                      _vm.addValue(_vm.event, _vm.filters.voices)
+          _vm.filters.hasOwnProperty("search")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "search" } },
+                  [_vm._v(_vm._s(_vm.$t("Search")))]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filters.search,
+                      expression: "filters.search"
                     }
-                  ]
-                }
-              },
-              _vm._l(_vm.voices, function(voice, key) {
-                return _c("option", { key: key, domProps: { value: key } }, [
-                  _vm._v(_vm._s(voice))
-                ])
-              })
-            )
-          ]),
+                  ],
+                  staticClass: "form-control",
+                  attrs: { name: "search", id: "search" },
+                  domProps: { value: _vm.filters.search },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters, "search", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c(
-              "label",
-              { staticClass: "control-label", attrs: { for: "concerts" } },
-              [_vm._v(_vm._s(_vm.$t("Concerts")))]
-            ),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
+          _vm.filters.hasOwnProperty("voices")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "voices" } },
+                  [_vm._v(_vm._s(_vm.$t("Voices")))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
                   {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.concerts,
-                    expression: "filters.concerts"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  name: "concerts[]",
-                  id: "concerts",
-                  multiple: "multiple"
-                },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.filters,
-                      "concerts",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filters.voices,
+                        expression: "filters.voices"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      name: "voices[]",
+                      id: "voices",
+                      multiple: "multiple"
+                    },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.filters,
+                            "voices",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                        function($event) {
+                          _vm.addValue(_vm.event, _vm.filters.voices)
+                        }
+                      ]
+                    }
+                  },
+                  _vm._l(_vm.voices, function(voice, key) {
+                    return _c(
+                      "option",
+                      { key: key, domProps: { value: key } },
+                      [_vm._v(_vm._s(voice))]
                     )
-                  }
-                }
-              },
-              _vm._l(_vm.concerts, function(concert, key) {
-                return _c("option", { key: key, domProps: { value: key } }, [
-                  _vm._v(_vm._s(concert))
-                ])
-              })
-            )
-          ]),
+                  })
+                )
+              ])
+            : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group age-filter" }, [
-            _c(
-              "label",
-              { staticClass: "control-label", attrs: { for: "age" } },
-              [_vm._v(_vm._s(_vm.$t("Age")))]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.ageFrom,
-                  expression: "filters.ageFrom"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                name: "age-from",
-                min: "10",
-                max: "110",
-                placeholder: "Min"
-              },
-              domProps: { value: _vm.filters.ageFrom },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+          _vm.filters.hasOwnProperty("concerts")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "concerts" } },
+                  [_vm._v(_vm._s(_vm.$t("Concerts")))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filters.concerts,
+                        expression: "filters.concerts"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      name: "concerts[]",
+                      id: "concerts",
+                      multiple: "multiple"
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.filters,
+                          "concerts",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  _vm._l(_vm.concerts, function(concert, key) {
+                    return _c(
+                      "option",
+                      { key: key, domProps: { value: key } },
+                      [_vm._v(_vm._s(concert))]
+                    )
+                  })
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filters.hasOwnProperty("ageFrom") ||
+          _vm.filters.hasOwnProperty("ageTo")
+            ? _c("div", { staticClass: "form-group age-filter" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "age" } },
+                  [_vm._v(_vm._s(_vm.$t("Age")))]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filters.ageFrom,
+                      expression: "filters.ageFrom"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "number",
+                    name: "age-from",
+                    min: "10",
+                    max: "110",
+                    placeholder: "Min"
+                  },
+                  domProps: { value: _vm.filters.ageFrom },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters, "ageFrom", $event.target.value)
+                    }
                   }
-                  _vm.$set(_vm.filters, "ageFrom", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.ageTo,
-                  expression: "filters.ageTo"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                name: "age-to",
-                min: "10",
-                max: "110",
-                placeholder: "Max"
-              },
-              domProps: { value: _vm.filters.ageTo },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filters.ageTo,
+                      expression: "filters.ageTo"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "number",
+                    name: "age-to",
+                    min: "10",
+                    max: "110",
+                    placeholder: "Max"
+                  },
+                  domProps: { value: _vm.filters.ageTo },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters, "ageTo", $event.target.value)
+                    }
                   }
-                  _vm.$set(_vm.filters, "ageTo", $event.target.value)
-                }
-              }
-            })
-          ]),
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filters.hasOwnProperty("accepted")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "accepted" } },
+                  [_vm._v(_vm._s(_vm.$t("Answer")))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filters.accepted,
+                        expression: "filters.accepted"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "accepted", id: "accepted" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.filters,
+                          "accepted",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v(_vm._s(_vm.$t("Accepted")))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [
+                      _vm._v(_vm._s(_vm.$t("Declined")))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "not answered" } }, [
+                      _vm._v(_vm._s(_vm.$t("Not answered")))
+                    ])
+                  ]
+                )
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _vm._v("\n                 "),
@@ -73630,6 +73719,16 @@ VueI18n.version = '8.3.2';
         "This is a main project in the semester.": "Das ist ein Hauptprojekt im Semester.",
         "People that attend the semester will automatically participate in this project as well.": "Alle, die zum Semester zusagen, werden auch automatisch zu diesem Projekt angemeldet.",
         "Remove participants": "Teilnehmer entfernen",
+        "Reset Password": "Passwort zurücksetzen",
+        "Forgot Your Password?": "Passwort vergessen?",
+        "Send Password Reset Link": "Link zum Zurücksetzen senden",
+        "Login": "Anmelden",
+        "Remove comment": "Kommentar entfernen",
+        "Comment successfully removed.": "Kommentar erfolgreich entfernt.",
+        "Answer": "Antwort",
+        "Accepted": "Zugesagt",
+        "Declined": "Abgesagt",
+        "Not answered": "Nicht geantwortet",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",
@@ -73834,6 +73933,1251 @@ VueI18n.version = '8.3.2';
         }
     }
 });
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(195)
+/* template */
+var __vue_template__ = __webpack_require__(196)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ProjectList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7551a920", Component.options)
+  } else {
+    hotAPI.reload("data-v-7551a920", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 195 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'canManageProjects': {
+            type: [Boolean, Number]
+        },
+        'fetchAction': {
+            type: String
+        },
+        'sortOptions': {
+            type: Object
+        },
+        'actions': {
+            type: Array
+        }
+    },
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            loading: false,
+            activeFilters: {},
+            items: [],
+            selectedItems: [],
+            filters: {
+                search: '',
+                sort: 'title',
+                dir: 'ASC'
+            }
+        };
+    },
+
+    computed: {
+        checkedAll: {
+            get: function get() {
+                return this.selectedItems.length === this.items.length;
+            }
+        }
+    },
+    mounted: function mounted() {
+        this.fetchItems();
+    },
+
+    methods: {
+        toggleItem: function toggleItem(event, id) {
+            if (event.target.checked) {
+                this.selectedItems.push(id);
+            } else {
+                this.selectedItems.splice(this.selectedItems.indexOf(id), 1);
+            }
+        },
+        checkAll: function checkAll(event) {
+            if (event.target.checked) {
+                this.selectedItems = this.items.map(function (item) {
+                    return item.id;
+                });
+            } else {
+                this.selectedItems = [];
+            }
+        },
+        postAction: function postAction(event, confirm, confirmMessage) {
+            var _this = this;
+
+            if (confirm) {
+                this.$dialog.confirm(confirmMessage).then(function (dialog) {
+                    var route = event.target.getAttribute('href');
+
+                    _this.$http.post(route, { users: _this.selectedItems, _token: _this.csrf }).then(function (response) {
+                        _this.fetchItems();
+                    }, function (response) {
+                        console.log(response);
+                    });
+                });
+            }
+        },
+        changeSortDir: function changeSortDir() {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchItems();
+        },
+        changeSort: function changeSort(sort) {
+            this.filters.sort = sort;
+
+            this.fetchItems();
+        },
+        fetchItems: function fetchItems() {
+            var _this2 = this;
+
+            this.loading = true;
+
+            for (var key in this.filters) {
+                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key].join(', ');
+                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key];
+                }
+            }
+
+            this.$http.get(this.fetchAction, { params: this.filters }).then(function (response) {
+                _this2.loading = false;
+                _this2.items = response.body;
+            }, function (response) {});
+        },
+        removeFilter: function removeFilter(key) {
+            delete this.activeFilters[key];
+            if (typeof this.filters[key] === 'string') {
+                this.filters[key] = '';
+            } else if (this.filters[key].constructor === Array) {
+                this.filters[key] = [];
+            }
+
+            this.fetchItems();
+        },
+        hasAction: function hasAction(name) {
+            return this.actions.indexOf(name) !== -1;
+        }
+    }
+});
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("filters", {
+        attrs: {
+          "fetch-items": _vm.fetchItems,
+          filters: _vm.filters,
+          "active-filters": _vm.activeFilters,
+          "remove-filter": _vm.removeFilter
+        }
+      }),
+      _vm._v(" "),
+      _vm.loading
+        ? _c("div", { staticClass: "loader" })
+        : _vm.items.length > 0
+          ? _c("div", { staticClass: "list-table" }, [
+              _c("header", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  {
+                    class: {
+                      "col-md-10": true,
+                      "has-checkbox": _vm.canManageProjects
+                    }
+                  },
+                  [
+                    _vm.canManageProjects
+                      ? _c("input", {
+                          staticClass: "check-all",
+                          attrs: { type: "checkbox" },
+                          domProps: { checked: _vm.checkedAll },
+                          on: { click: _vm.checkAll }
+                        })
+                      : _vm._e(),
+                    _vm._v(" \n\n                "),
+                    _vm.selectedItems.length > 0
+                      ? _c("div", { staticClass: "dropdown list-actions" }, [
+                          _vm._m(0, false, false),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "dropdown-menu",
+                              attrs: { "aria-labelledby": "actions" }
+                            },
+                            [
+                              _vm.hasAction("remove")
+                                ? _c(
+                                    "a",
+                                    {
+                                      staticClass: "dropdown-item",
+                                      attrs: {
+                                        href: "/admin/projects/multiRemove"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          _vm.postAction(
+                                            $event,
+                                            true,
+                                            _vm.$t(
+                                              "Do you really want to remove these projects?"
+                                            )
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("span", { staticClass: "oi oi-box" }),
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(_vm.$t("Remove")) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(
+                      "\n\n                " +
+                        _vm._s(_vm.$t("Project")) +
+                        "\n                "
+                    ),
+                    _c("div", { staticClass: "btn-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-default btn-sm",
+                          attrs: { type: "button" },
+                          on: { click: _vm.changeSortDir }
+                        },
+                        [
+                          _c("span", {
+                            class: {
+                              oi: true,
+                              "oi-sort-ascending": _vm.filters.dir === "ASC",
+                              "oi-sort-descending": _vm.filters.dir === "DESC"
+                            }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-default btn-sm dropdown-toggle dropdown-toggle-split",
+                          attrs: {
+                            type: "button",
+                            id: "sortOrder",
+                            "data-toggle": "dropdown",
+                            "aria-haspopup": "true",
+                            "aria-expanded": "false"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.sortOptions[this.filters.sort]) +
+                              "\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "dropdown-menu",
+                          attrs: { "aria-labelledby": "sortOrder" }
+                        },
+                        _vm._l(_vm.sortOptions, function(sortOption, key) {
+                          return _c(
+                            "a",
+                            {
+                              key: key,
+                              staticClass: "dropdown-item",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  _vm.changeSort(key)
+                                }
+                              }
+                            },
+                            [_vm._v(_vm._s(sortOption))]
+                          )
+                        })
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2 row-count" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.$t("Total") + ": " + _vm.items.length) +
+                      "\n            "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "projects" },
+                _vm._l(_vm.items, function(project) {
+                  return _c(
+                    "a",
+                    {
+                      key: project.id,
+                      attrs: { href: "/project/" + project.id }
+                    },
+                    [
+                      _c("li", { staticClass: "row align-items-center" }, [
+                        _c("div", { staticClass: "col-md-11" }, [
+                          _c(
+                            "div",
+                            { staticClass: "flex align-items-center" },
+                            [
+                              _vm.canManageProjects
+                                ? _c("input", {
+                                    attrs: { type: "checkbox" },
+                                    domProps: {
+                                      value: project.id,
+                                      checked:
+                                        _vm.selectedItems.indexOf(
+                                          project.id
+                                        ) !== -1
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.toggleItem($event, project.id)
+                                      }
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" \n                            "),
+                              _vm._m(1, true, false),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "name" }, [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(project.title) +
+                                    "\n                                "
+                                ),
+                                _c("small", [
+                                  project.accepted === 0
+                                    ? _c("span", {
+                                        staticClass: "text-danger oi oi-x",
+                                        attrs: {
+                                          title: _vm.$t("You are attending!")
+                                        }
+                                      })
+                                    : project.accepted === 1
+                                      ? _c("span", {
+                                          staticClass:
+                                            "text-success oi oi-check",
+                                          attrs: {
+                                            title: _vm.$t(
+                                              "You are not attending."
+                                            )
+                                          }
+                                        })
+                                      : _c("span", {
+                                          staticClass:
+                                            "text-muted oi oi-question-mark",
+                                          attrs: {
+                                            title: _vm.$t(
+                                              "You did not answer yet."
+                                            )
+                                          }
+                                        })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _c("small", { staticClass: "text-muted" }, [
+                                    _c("span", { staticClass: "oi oi-plus" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(project.created_at) +
+                                        "\n                                        "
+                                    ),
+                                    _vm.canManageProjects
+                                      ? _c("span", { staticClass: "ml-2" }, [
+                                          _c("span", {
+                                            staticClass: "oi oi-person"
+                                          }),
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(project.creator) +
+                                              "\n                                        "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ])
+                                ])
+                              ])
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm.canManageProjects
+                          ? _c("div", { staticClass: "col-md-1 actions" }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "dropdown-toggle no-caret",
+                                  attrs: {
+                                    href: "#",
+                                    id: "singleActions" + project.id,
+                                    role: "button",
+                                    "data-toggle": "dropdown",
+                                    "aria-haspopup": "true",
+                                    "aria-expanded": "false"
+                                  }
+                                },
+                                [_c("span", { staticClass: "oi oi-ellipses" })]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "dropdown-menu dropdown-menu-right",
+                                  attrs: {
+                                    "aria-labelledby":
+                                      "singleActions" + project.id
+                                  }
+                                },
+                                [
+                                  _vm.hasAction("edit")
+                                    ? _c(
+                                        "a",
+                                        {
+                                          staticClass: "dropdown-item",
+                                          attrs: {
+                                            href:
+                                              "admin/project/edit/" + project.id
+                                          }
+                                        },
+                                        [
+                                          _c("span", {
+                                            staticClass: "oi oi-pencil"
+                                          }),
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(_vm.$t("Edit")) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.hasAction("remove")
+                                    ? _c(
+                                        "form",
+                                        {
+                                          staticClass: "form-inline",
+                                          attrs: {
+                                            method: "POST",
+                                            action:
+                                              "/admin/projects/delete/" +
+                                              project.id
+                                          }
+                                        },
+                                        [
+                                          _c("input", {
+                                            attrs: {
+                                              name: "_method",
+                                              type: "hidden",
+                                              value: "DELETE"
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "button",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "confirm",
+                                                  rawName: "v-confirm",
+                                                  value: _vm.$t(
+                                                    "Do you really want to remove this project?"
+                                                  ),
+                                                  expression:
+                                                    "$t('Do you really want to remove this project?')"
+                                                }
+                                              ],
+                                              staticClass:
+                                                "btn btn-link dropdown-item",
+                                              attrs: { type: "submit" }
+                                            },
+                                            [
+                                              _c("span", {
+                                                staticClass: "oi oi-box"
+                                              }),
+                                              _vm._v(
+                                                " " +
+                                                  _vm._s(_vm.$t("Remove")) +
+                                                  "\n                                "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            attrs: {
+                                              type: "hidden",
+                                              name: "_token"
+                                            },
+                                            domProps: { value: _vm.csrf }
+                                          })
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ]
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    ]
+                  )
+                })
+              )
+            ])
+          : _c("div", { staticClass: "no-results" }, [
+              _vm._v(_vm._s(_vm.$t("No results found.")))
+            ])
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "dropdown-toggle no-caret",
+        attrs: {
+          href: "#",
+          role: "button",
+          id: "actions",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("span", { staticClass: "oi oi-ellipses" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "avatar avatar-default" }, [
+      _c("span", { staticClass: "oi oi-musical-note" })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7551a920", module.exports)
+  }
+}
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(198)
+/* template */
+var __vue_template__ = __webpack_require__(199)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/RehearsalList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-626c01b4", Component.options)
+  } else {
+    hotAPI.reload("data-v-626c01b4", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 198 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'user': {
+            type: Object,
+            required: true
+        },
+        'canManageRehearsals': {
+            type: [Boolean, Number]
+        },
+        'fetchAction': {
+            type: String
+        },
+        'sortOptions': {
+            type: Object
+        },
+        'actions': {
+            type: Array
+        }
+    },
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            loading: false,
+            items: [],
+            activeFilters: {},
+            filters: {
+                sort: 'date',
+                dir: 'ASC'
+            }
+        };
+    },
+    mounted: function mounted() {
+        this.fetchItems();
+    },
+
+    methods: {
+        changeSortDir: function changeSortDir() {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchItems();
+        },
+        changeSort: function changeSort(sort) {
+            this.filters.sort = sort;
+
+            this.fetchItems();
+        },
+        fetchItems: function fetchItems() {
+            var _this = this;
+
+            this.loading = true;
+
+            for (var key in this.filters) {
+                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key].join(', ');
+                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key];
+                }
+            }
+
+            this.$http.get(this.fetchAction, { params: this.filters }).then(function (response) {
+                _this.loading = false;
+                _this.items = response.body;
+            }, function (response) {});
+        },
+        hasAction: function hasAction(name) {
+            return this.actions.indexOf(name) !== -1;
+        },
+        hasAccepted: function hasAccepted(rehearsal) {
+            var _this2 = this;
+
+            return rehearsal.promises.filter(function (user) {
+                return user.id === _this2.user.id;
+            }).length > 0;
+        },
+        hasDeclined: function hasDeclined(rehearsal) {
+            var _this3 = this;
+
+            return rehearsal.denials.filter(function (user) {
+                return user.id === _this3.user.id;
+            }).length > 0;
+        }
+    }
+});
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.loading
+      ? _c("div", { staticClass: "loader" })
+      : _vm.items.length > 0
+        ? _c("div", { staticClass: "list-table" }, [
+            _c("header", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-10" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.$t("Rehearsal")) +
+                    "\n                "
+                ),
+                _c("div", { staticClass: "btn-group" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default btn-sm",
+                      attrs: { type: "button" },
+                      on: { click: _vm.changeSortDir }
+                    },
+                    [
+                      _c("span", {
+                        class: {
+                          oi: true,
+                          "oi-sort-ascending": _vm.filters.dir === "ASC",
+                          "oi-sort-descending": _vm.filters.dir === "DESC"
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-default btn-sm dropdown-toggle dropdown-toggle-split",
+                      attrs: {
+                        type: "button",
+                        id: "sortOrder",
+                        "data-toggle": "dropdown",
+                        "aria-haspopup": "true",
+                        "aria-expanded": "false"
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.sortOptions[this.filters.sort]) +
+                          "\n                    "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "dropdown-menu",
+                      attrs: { "aria-labelledby": "sortOrder" }
+                    },
+                    _vm._l(_vm.sortOptions, function(sortOption, key) {
+                      return _c(
+                        "a",
+                        {
+                          key: key,
+                          staticClass: "dropdown-item",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.changeSort(key)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(sortOption))]
+                      )
+                    })
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2 row-count" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.$t("Total") + ": " + _vm.items.length) +
+                    "\n            "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              { staticClass: "rehearsals" },
+              _vm._l(_vm.items, function(rehearsal) {
+                return _c(
+                  "a",
+                  {
+                    key: rehearsal.id,
+                    attrs: { href: "/rehearsal/" + rehearsal.id }
+                  },
+                  [
+                    _c("li", { staticClass: "row align-items-center" }, [
+                      _c("div", { staticClass: "col-md-8" }, [
+                        _c("div", { staticClass: "flex align-items-center" }, [
+                          _c("div", { staticClass: "avatar avatar-default" }, [
+                            _c("span", [_vm._v(_vm._s(rehearsal.date.day))])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "name" }, [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(rehearsal.title) +
+                                "\n                                "
+                            ),
+                            _c("div", [
+                              _c("small", { staticClass: "text-muted" }, [
+                                _c("span", { staticClass: "oi oi-clock" }),
+                                _vm._v(
+                                  " " +
+                                    _vm._s(rehearsal.start_time) +
+                                    " – " +
+                                    _vm._s(rehearsal.end_time) +
+                                    "\n                                        "
+                                ),
+                                _c("span", {
+                                  staticClass: "ml-2 oi oi-map-marker"
+                                }),
+                                _vm._v(
+                                  " " +
+                                    _vm._s(rehearsal.place) +
+                                    "\n                                    "
+                                )
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col-md-3" },
+                        [
+                          _c("accept-decline", {
+                            attrs: {
+                              "accept-route":
+                                "/rehearsal/accept/" +
+                                rehearsal.id +
+                                "/" +
+                                _vm.user.id,
+                              "decline-route":
+                                "/rehearsal/decline/" +
+                                rehearsal.id +
+                                "/" +
+                                _vm.user.id,
+                              accepted: _vm.hasAccepted(rehearsal),
+                              declined: _vm.hasDeclined(rehearsal)
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.canManageRehearsals
+                        ? _c("div", { staticClass: "col-md-1 actions" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "dropdown-toggle no-caret",
+                                attrs: {
+                                  href: "#",
+                                  id: "singleActions" + rehearsal.id,
+                                  role: "button",
+                                  "data-toggle": "dropdown",
+                                  "aria-haspopup": "true",
+                                  "aria-expanded": "false"
+                                }
+                              },
+                              [_c("span", { staticClass: "oi oi-ellipses" })]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "dropdown-menu dropdown-menu-right",
+                                attrs: {
+                                  "aria-labelledby":
+                                    "singleActions" + rehearsal.id
+                                }
+                              },
+                              [
+                                _vm.hasAction("edit")
+                                  ? _c(
+                                      "a",
+                                      {
+                                        staticClass: "dropdown-item",
+                                        attrs: {
+                                          href:
+                                            "admin/rehearsal/edit/" +
+                                            rehearsal.id
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "oi oi-pencil"
+                                        }),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(_vm.$t("Edit")) +
+                                            "\n                            "
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.hasAction("remove")
+                                  ? _c(
+                                      "form",
+                                      {
+                                        staticClass: "form-inline",
+                                        attrs: {
+                                          method: "POST",
+                                          action:
+                                            "/admin/rehearsals/delete/" +
+                                            rehearsal.id
+                                        }
+                                      },
+                                      [
+                                        _c("input", {
+                                          attrs: {
+                                            name: "_method",
+                                            type: "hidden",
+                                            value: "DELETE"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "confirm",
+                                                rawName: "v-confirm",
+                                                value: _vm.$t(
+                                                  "Do you really want to remove this rehearsal?"
+                                                ),
+                                                expression:
+                                                  "$t('Do you really want to remove this rehearsal?')"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "btn btn-link dropdown-item",
+                                            attrs: { type: "submit" }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "oi oi-box"
+                                            }),
+                                            _vm._v(
+                                              " " +
+                                                _vm._s(_vm.$t("Remove")) +
+                                                "\n                                "
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          attrs: {
+                                            type: "hidden",
+                                            name: "_token"
+                                          },
+                                          domProps: { value: _vm.csrf }
+                                        })
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ]
+                )
+              })
+            )
+          ])
+        : _c("div", { staticClass: "no-results" }, [
+            _vm._v(_vm._s(_vm.$t("No results found.")))
+          ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-626c01b4", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

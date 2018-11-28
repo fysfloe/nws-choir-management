@@ -3,7 +3,7 @@
         <filters
         :voices="voices"
         :concerts="concerts"
-        :fetch-users="fetchUsers"
+        :fetch-items="fetchUsers"
         :filters="filters"
         :active-filters="activeFilters"
         :remove-filter="removeFilter"
@@ -203,7 +203,8 @@ export default {
                 ageFrom: '',
                 ageTo: '',
                 sort: 'surname',
-                dir: 'ASC'
+                dir: 'ASC',
+                accepted: '1'
             }
         }
     },

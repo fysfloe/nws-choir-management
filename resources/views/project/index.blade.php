@@ -11,7 +11,16 @@
         @endpermission
     </header>
 
-    @include('project._filters')
+    <project-list
+        :can-manage-projects="{{ Auth::user()->can('manageProjects') ? 1 : 0 }}"
+        fetch-action="{{ route('project.loadItems') }}"
+        :sort-options="{{ json_encode([
+            'title' => __('Title')
+        ]) }}"
+        :actions="{{ json_encode(['remove', 'edit']) }}"
+    ></project-list>
+
+    {{-- @include('project._filters')
 
     @if(count($projects) > 0)
         <div class="list-table">
@@ -69,6 +78,6 @@
         <div class="no-results">
             <small class="text-muted">{{ __('No projects found.') }}</small>
         </div>
-    @endif
+    @endif --}}
 
 @endsection

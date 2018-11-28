@@ -212,5 +212,11 @@
     "Reset Password": "Passwort zurücksetzen",
     "Forgot Your Password?": "Passwort vergessen?",
     "Send Password Reset Link": "Link zum Zurücksetzen senden",
-    "Login": "Anmelden"
+    "Login": "Anmelden",
+    "Remove comment": "Kommentar entfernen",
+    "Comment successfully removed.": "Kommentar erfolgreich entfernt.",
+    "Answer": "Antwort",
+    "Accepted": "Zugesagt",
+    "Declined": "Abgesagt",
+    "Not answered": "Nicht geantwortet"
 }

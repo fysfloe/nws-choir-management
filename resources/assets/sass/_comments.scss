@@ -21,5 +21,18 @@
         .comment-content {
             padding: 0.75rem;
         }
+
+        .remove-comment-form {
+            position: absolute;
+            right: 0.25rem;
+            top: 0.25rem;
+            line-height: 0;
+
+            .btn {
+                font-size: 0.75rem;
+                padding: 0;
+                line-height: 1;
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ use App\Project;
 
 use App\Services\GetFilteredUsersService;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\RehearsalResource;
 
 use App\Http\Requests\StoreRehearsal;
 use App\Http\Requests\StoreComment;
@@ -45,6 +46,21 @@ class RehearsalController extends Controller
             'rehearsals' => $rehearsals,
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadItems(Request $request)
+    {
+        $where = [['deleted_at', '=', null]];
+
+        if ($request->get('project_id')) {
+            $where[] = ['project_id', '=', $request->get('project_id')];
+        }
+
+        $rehearsals = Rehearsal::where($where)
+            ->orderBy($request->get('sort'), $request->get('dir'))
+            ->get();
+
+        return json_encode(RehearsalResource::collection($rehearsals));
     }
 
     /**

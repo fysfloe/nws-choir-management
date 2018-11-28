@@ -16,7 +16,7 @@
     &.avatar-default {
         background: darken($lightgrey, 3);
 
-        span.oi {
+        span {
             font-size: 3rem;
             width: 100%;
             display: inline-block;
@@ -24,6 +24,8 @@
             color: darken($lightgrey, 12);
             text-align: center;
             line-height: 1.5;
+            letter-spacing: -0.2rem;
+            font-weight: bold;
         }
 
         &.avatar-big {
@@ -34,7 +36,7 @@
     }
 }
 
-ul.users {
+ul.users, ul.projects, ul.rehearsals {
     .avatar {
         margin: 0 1rem;
     }

@@ -9,14 +9,21 @@
                     @foreach ($project->comments as $comment)
                         <div class="comment row">
                             <div class="col-md-3 flex comment-info">
-                                
-                                    <div class="avatar">
-                                        @if ($comment->user->avatar)
-                                            <img src="{{ asset('/storage/avatars/' . $comment->user->avatar) }}" alt="{{ $comment->user->firstname . ' ' . $comment->user->surname }}">
-                                        @else
-                                            <img src="{{ asset('img/default_avatar.svg') }}">
-                                        @endif
-                                    </div>
+                                @if (Auth::user() == $comment->user)
+                                <form method="POST" class="form-inline remove-comment-form" action="{{ route('project.removeComment', [$project, $comment]) }}">
+                                    <button type="submit" class="btn">
+                                        <span class="oi oi-x" data-toggle="tooltip" title="{{ __('Remove comment') }}"></span> 
+                                    </button>
+                                    {{ csrf_field() }}
+                                </form>
+                                @endif
+                                <div class="avatar">
+                                    @if ($comment->user->avatar)
+                                        <img src="{{ asset('/storage/avatars/' . $comment->user->avatar) }}" alt="{{ $comment->user->firstname . ' ' . $comment->user->surname }}">
+                                    @else
+                                        <img src="{{ asset('img/default_avatar.svg') }}">
+                                    @endif
+                                </div>
                                 <div>
                                     <strong>
                                         {{ $comment->user->firstname }} {{ $comment->user->surname }}

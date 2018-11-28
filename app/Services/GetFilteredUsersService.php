@@ -117,9 +117,19 @@ class GetFilteredUsersService {
             LEFT OUTER JOIN voices ON voices.id = user_project.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL
-        AND user_project.project_id = $project->id
-        AND user_project.accepted = 1
+        AND (user_project.project_id = $project->id OR user_project.project_id IS NULL) 
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+
+        if (isset($filters['accepted'])) {
+            if ($filters['accepted'] === 'not answered') {
+                $query .= "AND user_project.accepted IS NULL ";
+            } else {
+                $query .= "AND user_project.accepted = " . $filters['accepted'] . " ";
+            }
+        } else {
+            $query .= "AND user_project.accepted = 1 ";
+        }
+        
 
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
         if ($ageFrom) {

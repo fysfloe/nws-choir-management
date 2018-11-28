@@ -9,6 +9,7 @@ use App\User;
 use App\Voice;
 use App\Project;
 use App\Semester;
+use App\Comment;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
@@ -17,7 +18,9 @@ use App\Http\Requests\StoreProject;
 
 use App\Events\ProjectAnsweredEvent;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\ProjectResource;
 use App\Services\GetFilteredUsersService;
+use App\Services\GetFilteredProjectsService;
 
 class ProjectController extends Controller
 {
@@ -61,6 +64,14 @@ class ProjectController extends Controller
             'activeFilters' => $activeFilters,
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadItems(Request $request)
+    {
+        $projects = (new GetFilteredProjectsService())
+            ->handle($request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        return json_encode(ProjectResource::collection($projects));
     }
 
     /**
@@ -153,6 +164,19 @@ class ProjectController extends Controller
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         $comment = $project->comments()->create($input);
+
+        return redirect()->back();
+    }
+
+    public function removeComment(Project $project, Comment $comment, Request $request)
+    {
+        if ($comment->user == Auth::user()) {
+            $comment->delete();
+
+            $request->session()->flash('alert-success', __('Comment successfully removed.'));
+        } else {
+            $request->session()->flash('alert-danger', __('You cannot remove other peoples comments.'));
+        }
 
         return redirect()->back();
     }
@@ -261,27 +285,23 @@ class ProjectController extends Controller
         ]);
     }
 
+    public function rehearsals(Request $request, Project $project)
+    {
+        $this->breadcrumbs->addCrumb($project->title, $project->slug);
+ 
+        return view('project.rehearsals')->with([
+            'tab' => 'rehearsals',
+            'project' => $project,
+            'route' => ['project.rehearsals', $project],
+            'breadcrumbs' => $this->breadcrumbs
+        ]);
+    }
+
     public function loadParticipants(Request $request, Project $project)
     {
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
-
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
-        }
 
         return json_encode(UserResource::collection($users));
     }

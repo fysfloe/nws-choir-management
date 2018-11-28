@@ -10169,11 +10169,13 @@ input.date {
   border: 0.1em dotted #d3e0e9;
 }
 
-.user-actions {
+.user-actions,
+.actions {
   text-align: right;
 }
 
-.user-actions span.oi {
+.user-actions span.oi,
+.actions span.oi {
   color: #149EB5;
 }
 
@@ -10469,7 +10471,7 @@ header.page-header a.btn-link {
   background: #ebf1f5;
 }
 
-.avatar.avatar-default span.oi {
+.avatar.avatar-default span {
   font-size: 3rem;
   width: 100%;
   display: inline-block;
@@ -10477,13 +10479,17 @@ header.page-header a.btn-link {
   color: #ccdbe6;
   text-align: center;
   line-height: 1.5;
+  letter-spacing: -0.2rem;
+  font-weight: bold;
 }
 
 .avatar.avatar-default.avatar-big span.oi {
   font-size: 8.5rem;
 }
 
-ul.users .avatar {
+ul.users .avatar,
+ul.projects .avatar,
+ul.rehearsals .avatar {
   margin: 0 1rem;
 }
 
@@ -10531,6 +10537,19 @@ ul.users .avatar {
 
 .comment-stream .comment .comment-content {
   padding: 0.75rem;
+}
+
+.comment-stream .comment .remove-comment-form {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  line-height: 0;
+}
+
+.comment-stream .comment .remove-comment-form .btn {
+  font-size: 0.75rem;
+  padding: 0;
+  line-height: 1;
 }
 
 .navbar-dark .navbar-brand {

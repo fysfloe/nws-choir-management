@@ -24,6 +24,8 @@ Vue.use(VuejsDialog);
 Vue.use(VueInternationalization);
 
 Vue.component('user-list', require('./components/UserList.vue'));
+Vue.component('project-list', require('./components/ProjectList.vue'));
+Vue.component('rehearsal-list', require('./components/RehearsalList.vue'));
 Vue.component('filters', require('./components/Filters.vue'));
 Vue.component('picture-input', require('vue-picture-input'));
 Vue.component('accept-decline', require('./components/AcceptDecline.vue'));

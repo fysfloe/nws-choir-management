@@ -29,15 +29,19 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('concert/{concert}/createComment', 'ConcertController@createComment')->name('concert.createComment');
 
     Route::get('/projects', 'ProjectController@index')->name('projects');
+    Route::get('/projects/loadItems', 'ProjectController@loadItems')->name('project.loadItems');
     Route::get('/project/{project}', 'ProjectController@show')->name('project.show');
     Route::get('/project/comments/{project}', 'ProjectController@comments')->name('project.comments');
-    Route::post('project/{project}/createComment', 'ProjectController@createComment')->name('project.createComment');
+    Route::post('/project/{project}/createComment', 'ProjectController@createComment')->name('project.createComment');
+    Route::post('/project/{project}/removeComment/{comment}', 'ProjectController@removeComment')->name('project.removeComment');
     Route::get('/project/{project}/participants', 'ProjectController@participants')->name('project.participants');
+    Route::get('/project/{project}/rehearsals', 'ProjectController@rehearsals')->name('project.rehearsals');
     Route::get('/project/{project}/voices', 'ProjectController@voices')->name('project.voices');
     Route::get('/project/accept/{project}', 'ProjectController@accept')->name('project.accept');
     Route::get('/project/decline/{project}', 'ProjectController@decline')->name('project.decline');
 
     Route::get('/rehearsals', 'RehearsalController@index')->name('rehearsals');
+    Route::get('/rehearsal/loadItems', 'RehearsalController@loadItems')->name('rehearsal.loadItems');
     Route::get('/rehearsal/{rehearsal}', 'RehearsalController@show')->name('rehearsal.show');
     Route::get('/rehearsal/accept/{rehearsal}/{user_id?}', 'RehearsalController@accept')->name('rehearsal.accept');
     Route::get('/rehearsal/decline/{rehearsal}/{user_id?}', 'RehearsalController@decline')->name('rehearsal.decline');
