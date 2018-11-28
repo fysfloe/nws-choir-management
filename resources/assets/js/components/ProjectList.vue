@@ -1,0 +1,216 @@
+<template>
+    <div>
+        <filters
+        :fetch-items="fetchItems"
+        :filters="filters"
+        :active-filters="activeFilters"
+        :remove-filter="removeFilter"
+        ></filters>
+
+        <div class="loader" v-if="loading"></div>
+
+        <div class="list-table" v-else-if="items.length > 0">
+            <header class="row">
+                <div :class="{'col-md-10': true, 'has-checkbox': canManageProjects}">
+                    <input v-if="canManageProjects" type="checkbox" @click="checkAll" class="check-all" :checked="checkedAll">&nbsp;
+
+                    <div class="dropdown list-actions" v-if="selectedItems.length > 0">
+                        <a class="dropdown-toggle no-caret" href="#" role="button" id="actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="oi oi-ellipses"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="actions">
+                            <a v-if="hasAction('remove')" class="dropdown-item" href="/admin/projects/multiRemove" @click.prevent="postAction($event, true, $t('Do you really want to remove these projects?'))">
+                                <span class="oi oi-box"></span> {{ $t('Remove') }}
+                            </a>
+                        </div>
+                    </div>
+
+                    {{ $t('Project') }}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm" @click="changeSortDir">
+                            <span :class="{'oi': true, 'oi-sort-ascending': filters.dir === 'ASC', 'oi-sort-descending': filters.dir === 'DESC'}"></span>
+                        </button>
+
+                        <button class="btn btn-default btn-sm dropdown-toggle dropdown-toggle-split" type="button" id="sortOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ sortOptions[this.filters.sort] }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="sortOrder">
+                            <a @click="changeSort(key)" class="dropdown-item" href="#" :key="key" v-for="(sortOption, key) in sortOptions">{{ sortOption }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 row-count">
+                    {{ $t('Total') + ': ' + items.length }}
+                </div>
+            </header>
+
+            <ul class="projects">
+                <a :href="`/project/${project.id}`" v-for="project in items" :key="project.id">
+                <li class="row align-items-center">
+                        <div class="col-md-11">
+                            <div class="flex align-items-center">
+                                <input v-if="canManageProjects" type="checkbox" @click="toggleItem($event, project.id)" :value="project.id" :checked="selectedItems.indexOf(project.id) !== -1">&nbsp;
+                                <div class="avatar avatar-default">
+                                    <span class="oi oi-musical-note"></span>
+                                </div>
+                                <div class="name">
+                                    {{ project.title }}
+                                    <small>
+                                        <span class="text-danger oi oi-x" :title="$t('You are attending!')" v-if="project.accepted === 0"></span>
+                                        <span class="text-success oi oi-check" :title="$t('You are not attending.')" v-else-if="project.accepted === 1"></span>
+                                        <span class="text-muted oi oi-question-mark" :title="$t('You did not answer yet.')" v-else></span>
+                                    </small>
+                                    <div>
+                                        <small class="text-muted">
+                                            <span class="oi oi-plus"></span> {{ project.created_at }}
+                                            <span class="ml-2" v-if="canManageProjects">
+                                                <span class="oi oi-person"></span> {{ project.creator }}
+                                            </span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 actions" v-if="canManageProjects">
+                            <a class="dropdown-toggle no-caret" href="#" :id="`singleActions${project.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="oi oi-ellipses"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="`singleActions${project.id}`">
+                                <a class="dropdown-item" :href="`admin/project/edit/${project.id}`" v-if="hasAction('edit')">
+                                    <span class="oi oi-pencil"></span> {{ $t('Edit') }}
+                                </a>
+                                <form method="POST" class="form-inline" :action="`/admin/projects/delete/${project.id}`" v-if="hasAction('remove')">
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button type="submit" v-confirm="$t('Do you really want to remove this project?')" class="btn btn-link dropdown-item">
+                                        <span class="oi oi-box"></span> {{ $t('Remove') }}
+                                    </button>
+                                    <input type="hidden" name="_token" :value="csrf">
+                                </form>
+                            </div>
+                        </div>
+                </li>
+                </a>
+            </ul>
+        </div>
+        <div v-else class="no-results">{{ $t('No results found.') }}</div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        'canManageProjects': {
+            type: [Boolean, Number]
+        }, 
+        'fetchAction': {
+            type: String
+        }, 
+        'sortOptions': {
+            type: Object 
+        },
+        'actions': {
+            type: Array
+        }
+    },
+    data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            loading: false,
+            activeFilters: {},
+            items: [],
+            selectedItems: [],
+            filters: {
+                search: '',
+                sort: 'title',
+                dir: 'ASC'
+            }
+        }
+    },
+    computed: {
+        checkedAll: {
+            get () {
+                return this.selectedItems.length === this.items.length;
+            }
+        }
+    },
+    mounted() {
+        this.fetchItems();
+    },
+    methods: {
+        toggleItem: function (event, id) {
+            if (event.target.checked) {
+                this.selectedItems.push(id);
+            } else {
+                this.selectedItems.splice(this.selectedItems.indexOf(id), 1);
+            }
+        },
+        checkAll: function (event) {
+            if (event.target.checked) {
+                this.selectedItems = this.items.map(item => item.id);
+            } else {
+                this.selectedItems = [];
+            }
+        },
+        postAction: function (event, confirm, confirmMessage) {
+            if (confirm) {
+                this.$dialog.confirm(confirmMessage)
+                    .then(dialog => {
+                        let route = event.target.getAttribute('href');
+
+                        this.$http.post(route, {users: this.selectedItems, _token: this.csrf})
+                            .then(response => {
+                                this.fetchItems();
+                            }, response => {
+                                console.log(response);
+                            });
+                    });
+            }
+        },
+        changeSortDir: function () {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchItems();
+        },
+        changeSort: function(sort) {
+            this.filters.sort = sort;
+
+            this.fetchItems();
+        },
+        fetchItems: function () {
+            this.loading = true;
+
+            for (let key in this.filters) {
+                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key].join(', ');
+                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key];
+                }
+            }
+
+            this.$http.get(this.fetchAction, {params: this.filters}).then(response => {
+                this.loading = false;
+                this.items = response.body;
+            }, response => {})
+        },
+        removeFilter: function (key) {
+            delete this.activeFilters[key];
+            if (typeof this.filters[key] === 'string') {
+                this.filters[key] = '';
+            } else if (this.filters[key].constructor === Array) {
+                this.filters[key] = [];
+            }
+
+            this.fetchItems();
+        },
+        hasAction: function (name) {
+            return this.actions.indexOf(name) !== -1
+        }
+    }
+}
+</script>
