@@ -220,6 +220,7 @@ export default {
         "Accepted": "Zugesagt",
         "Declined": "Abgesagt",
         "Not answered": "Nicht geantwortet",
+        "missed rehearsals": "Fehlproben",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",

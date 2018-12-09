@@ -68931,6 +68931,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -69374,7 +69380,8 @@ var render = function() {
                           class:
                             "col-md-" +
                             (_vm.withAttendanceConfirmation ||
-                            _vm.withAcceptDecline
+                            _vm.withAcceptDecline ||
+                            user.hasOwnProperty("missedRehearsals")
                               ? "8"
                               : "11")
                         },
@@ -69520,6 +69527,34 @@ var render = function() {
                           )
                         ]
                       ),
+                      _vm._v(" "),
+                      user.hasOwnProperty("missedRehearsals")
+                        ? _c("div", { staticClass: "col-md-3" }, [
+                            _c(
+                              "small",
+                              {
+                                class: {
+                                  "text-danger": user.missedRehearsals > 3,
+                                  "text-success": user.missedRehearsals === 0,
+                                  "text-warning":
+                                    user.missedRehearsals > 0 &&
+                                    user.missedRehearsals <= 3
+                                },
+                                attrs: {
+                                  "data-toggle": "tooltip",
+                                  title: _vm.$t("missed rehearsals")
+                                }
+                              },
+                              [
+                                _c("span", { staticClass: "oi oi-ban" }),
+                                _vm._v(" \n                        "),
+                                _c("strong", [
+                                  _vm._v(_vm._s("" + user.missedRehearsals))
+                                ])
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _vm.withAttendanceConfirmation
                         ? _c(
@@ -73729,6 +73764,7 @@ VueI18n.version = '8.3.2';
         "Accepted": "Zugesagt",
         "Declined": "Abgesagt",
         "Not answered": "Nicht geantwortet",
+        "missed rehearsals": "Fehlproben",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",
@@ -74783,6 +74819,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -75020,22 +75057,24 @@ var render = function() {
                         "div",
                         { staticClass: "col-md-3" },
                         [
-                          _c("accept-decline", {
-                            attrs: {
-                              "accept-route":
-                                "/rehearsal/accept/" +
-                                rehearsal.id +
-                                "/" +
-                                _vm.user.id,
-                              "decline-route":
-                                "/rehearsal/decline/" +
-                                rehearsal.id +
-                                "/" +
-                                _vm.user.id,
-                              accepted: _vm.hasAccepted(rehearsal),
-                              declined: _vm.hasDeclined(rehearsal)
-                            }
-                          })
+                          !rehearsal.isOver
+                            ? _c("accept-decline", {
+                                attrs: {
+                                  "accept-route":
+                                    "/rehearsal/accept/" +
+                                    rehearsal.id +
+                                    "/" +
+                                    _vm.user.id,
+                                  "decline-route":
+                                    "/rehearsal/decline/" +
+                                    rehearsal.id +
+                                    "/" +
+                                    _vm.user.id,
+                                  accepted: _vm.hasAccepted(rehearsal),
+                                  declined: _vm.hasDeclined(rehearsal)
+                                }
+                              })
+                            : _vm._e()
                         ],
                         1
                       ),
@@ -75076,7 +75115,7 @@ var render = function() {
                                         staticClass: "dropdown-item",
                                         attrs: {
                                           href:
-                                            "admin/rehearsal/edit/" +
+                                            "/admin/rehearsal/edit/" +
                                             rehearsal.id
                                         }
                                       },

@@ -22,7 +22,7 @@ class SemesterController extends Controller
     {
         parent::__construct();
 
-        $this->breadcrumbs->addCrumb(__('Semesters'), 'semesters');
+        $this->breadcrumbs->addCrumb(__('Semesters'), 'admin/semesters');
     }
 
     /**
@@ -112,43 +112,9 @@ class SemesterController extends Controller
     {
         $this->breadcrumbs->addCrumb($semester->__toString(), URL::action('SemesterController@participants', ['semester' => $semester]));
 
-        $sort = $request->get('sort');
+        $filters = $request->all();
 
-        if (!$sort) $sort = 'id';
-
-        $dir = $request->get('dir');
-        $search = $request->get('search');
-        $voices = $request->get('voices');
-
-        $query = "SELECT users.* "
-            . "FROM users
-            LEFT OUTER JOIN user_semester ON users.id = user_semester.user_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL
-        AND user_semester.semester_id = $semester->id
-        AND user_semester.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = $request->get('age-from');
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = $request->get('age-to');
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND users.voice IN ($voices) ";
-        }
-
-        $query .= "GROUP BY users.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
+        $users = (new GetFilteredUsersService())->semesterParticipants($semester, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
         $activeFilters = [];
         foreach ($request->all() as $key => $val) {

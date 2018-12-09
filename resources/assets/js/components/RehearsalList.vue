@@ -45,6 +45,7 @@
                         </div>
                         <div class="col-md-3">
                             <accept-decline
+                                    v-if="!rehearsal.isOver"
                                     :accept-route="`/rehearsal/accept/${rehearsal.id}/${user.id}`"
                                     :decline-route="`/rehearsal/decline/${rehearsal.id}/${user.id}`"
                                     :accepted="hasAccepted(rehearsal)"
@@ -58,7 +59,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="`singleActions${rehearsal.id}`">
-                                <a class="dropdown-item" :href="`admin/rehearsal/edit/${rehearsal.id}`" v-if="hasAction('edit')">
+                                <a class="dropdown-item" :href="`/admin/rehearsal/edit/${rehearsal.id}`" v-if="hasAction('edit')">
                                     <span class="oi oi-pencil"></span> {{ $t('Edit') }}
                                 </a>
                                 <form method="POST" class="form-inline" :action="`/admin/rehearsals/delete/${rehearsal.id}`" v-if="hasAction('remove')">

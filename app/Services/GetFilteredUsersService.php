@@ -109,16 +109,20 @@ class GetFilteredUsersService {
         if (!$sort) $sort = 'surname';
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
-        $projects = isset($filters['projects']) ? $filters['projects'] : null;
 
-        $query = "SELECT users.*, voices.name as voiceName "
-            . "FROM users
-            LEFT OUTER JOIN user_project ON users.id = user_project.user_id
-            LEFT OUTER JOIN voices ON voices.id = user_project.voice_id ";
+        $missedRehearsalsQuery = "SELECT COUNT(1) FROM rehearsals 
+          LEFT JOIN user_rehearsal ON user_rehearsal.rehearsal_id = rehearsals.id
+          WHERE rehearsals.project_id = " . $project->id . " AND CONCAT(rehearsals.date, ' ', rehearsals.start_time) < NOW() 
+          AND user_rehearsal.user_id = u.id AND (user_rehearsal.accepted = 0 OR (user_rehearsal.confirmed = 0 AND user_rehearsal.excused = 0))";
 
-        $query .= "WHERE users.deleted_at IS NULL
+        $query = "SELECT u.*, voices.name as voiceName, ($missedRehearsalsQuery) AS missedRehearsals "
+            . "FROM users u
+            LEFT JOIN user_project ON u.id = user_project.user_id
+            LEFT JOIN voices ON voices.id = user_project.voice_id ";
+
+        $query .= "WHERE u.deleted_at IS NULL
         AND (user_project.project_id = $project->id OR user_project.project_id IS NULL) 
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+        AND (u.firstname LIKE '%$search%' OR u.surname LIKE '%$search%' OR u.email LIKE '%$search%') ";
 
         if (isset($filters['accepted'])) {
             if ($filters['accepted'] === 'not answered') {
@@ -134,14 +138,14 @@ class GetFilteredUsersService {
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
         if ($ageFrom) {
             $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
+            $query .= "AND u.birthdate < '$minDate' ";
         }
 
         $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
         if ($ageTo) {
             $ageTo += 1;
             $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
+            $query .= "AND u.birthdate >= '$maxDate' ";
         }
         if ($voices !== null && count($voices) > 0) {
             $voices = implode(',', $voices);
@@ -152,7 +156,7 @@ class GetFilteredUsersService {
             $sort = 'voice.name';
         }
 
-        $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";
+        $query .= "GROUP BY u.id, voices.id ORDER BY $sort $dir";
 
         $users = User::fromQuery($query);
 
@@ -165,17 +169,23 @@ class GetFilteredUsersService {
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
 
-        $query = "SELECT users.*, user_rehearsal.confirmed as confirmed, user_rehearsal.excused as excused"
-            . " FROM users 
-            LEFT OUTER JOIN user_project ON users.id = user_project.user_id 
-            LEFT OUTER JOIN user_rehearsal ON users.id = user_rehearsal.user_id";
-        
-        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
+        $query = "SELECT users.*, user_rehearsal.confirmed as confirmed, user_rehearsal.excused as excused 
+            FROM users 
+            LEFT JOIN user_rehearsal ON users.id = user_rehearsal.user_id
+            LEFT JOIN voices as voice ON voice.id = users.voice_id
+            WHERE users.deleted_at IS NULL
+            AND (user_rehearsal.rehearsal_id = $rehearsal->id OR user_rehearsal.rehearsal_id IS NULL)
+            AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
-        $query .= "WHERE users.deleted_at IS NULL
-        AND user_rehearsal.rehearsal_id = $rehearsal->id
-        AND user_rehearsal.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+        if (isset($filters['accepted'])) {
+            if ($filters['accepted'] === 'not answered') {
+                $query .= "AND NOT EXISTS(SELECT ur.rehearsal_id FROM user_rehearsal ur WHERE ur.rehearsal_id = $rehearsal->id AND ur.user_id = users.id) ";
+            } else {
+                $query .= "AND user_rehearsal.accepted = " . $filters['accepted'] . " ";
+            }
+        } else {
+            $query .= "AND user_rehearsal.accepted = 1 ";
+        }
 
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
         if ($ageFrom) {
@@ -201,6 +211,8 @@ class GetFilteredUsersService {
         $query .= "GROUP BY users.id ORDER BY $sort $dir";
 
         $users = User::fromQuery($query);
+        var_dump($query);
+        die();
 
         return $users;
     }
@@ -211,7 +223,12 @@ class GetFilteredUsersService {
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
 
-        $query = "SELECT users.* "
+        $missedRehearsalsQuery = "SELECT COUNT(1) FROM rehearsals 
+          LEFT JOIN user_rehearsal ON user_rehearsal.rehearsal_id = rehearsals.id
+          WHERE rehearsals.semester_id = " . $semester->id . " AND CONCAT(rehearsals.date, ' ', rehearsals.start_time) < NOW() 
+          AND user_rehearsal.user_id = users.id AND (user_rehearsal.accepted = 0 OR (user_rehearsal.confirmed = 0 AND user_rehearsal.excused = 0))";
+
+        $query = "SELECT users.*, ($missedRehearsalsQuery) as missedRehearsals "
             . "FROM users
             LEFT OUTER JOIN user_semester ON users.id = user_semester.user_id ";
         
@@ -221,6 +238,16 @@ class GetFilteredUsersService {
         AND user_semester.semester_id = $semester->id
         AND user_semester.accepted = 1
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+
+        if (isset($filters['accepted'])) {
+            if ($filters['accepted'] === 'not answered') {
+                $query .= "AND user_semester.accepted IS NULL ";
+            } else {
+                $query .= "AND user_semester.accepted = " . $filters['accepted'] . " ";
+            }
+        } else {
+            $query .= "AND user_semester.accepted = 1 ";
+        }
 
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;        
         if ($ageFrom) {

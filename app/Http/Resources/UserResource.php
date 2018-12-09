@@ -37,6 +37,10 @@ class UserResource extends Resource
             $user['excused'] = $this->resource->excused;
         }
 
+        if ($this->resource->missedRehearsals !== null) {
+            $user['missedRehearsals'] = $this->missedRehearsals;
+        }
+
         return $user;
     }
 }

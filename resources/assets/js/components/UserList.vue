@@ -58,7 +58,7 @@
 
             <ul class="users">
                 <li class="row align-items-center" v-for="user in _users" :key="user.id">
-                    <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline ? '8' : '11')">
+                    <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline || user.hasOwnProperty('missedRehearsals') ? '8' : '11')">
                         <div class="flex align-items-center">
                             <input type="checkbox" @click="toggleUser($event, user.id)" :value="user.id" :checked="selectedUsers.indexOf(user.id) !== -1">&nbsp;
                             <div class="avatar" v-if="user.avatar">
@@ -85,6 +85,12 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-3" v-if="user.hasOwnProperty('missedRehearsals')">
+                        <small data-toggle="tooltip" :title="$t('missed rehearsals')" :class="{'text-danger': user.missedRehearsals > 3, 'text-success': user.missedRehearsals === 0, 'text-warning': user.missedRehearsals > 0 && user.missedRehearsals <= 3}">
+                            <span class="oi oi-ban"></span>&nbsp;
+                            <strong>{{ `${user.missedRehearsals}` }}</strong>
+                        </small>
                     </div>
                     <div class="col-md-3" v-if="withAttendanceConfirmation">
                         <attendance 

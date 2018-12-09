@@ -14,6 +14,11 @@ class RehearsalResource extends Resource
      */
     public function toArray($request)
     {
+        $dateTime = new \DateTime($this->date);
+        $startTime = new \DateTime($this->start_time);
+        $dateTime->setTime($startTime->format('H'), $startTime->format('i'));
+        $now = new \DateTime();
+
         $rehearsal = [
             'id' => $this->id,
             'title' => $this->date->format('d.m.Y'),
@@ -25,7 +30,8 @@ class RehearsalResource extends Resource
             'end_time' => $this->end_time,
             'place' => $this->place,
             'promises' => UserResource::collection($this->promises),
-            'denials' => UserResource::collection($this->denials)
+            'denials' => UserResource::collection($this->denials),
+            'isOver' => $dateTime < $now
         ];
 
         if ($this->resource->accepted !== null) {
