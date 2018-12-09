@@ -224,22 +224,6 @@ class SemesterController extends Controller
                 ->withErrors(['end_date' => __('The end date must be greater than the start date.')]);
         }
 
-        if (count(
-            Semester::where([
-                ['start_date', '<=', $semesterInput['start_date']],
-                ['end_date', '>=', $semesterInput['start_date']],
-                ['id', '!=', $semester->id]
-            ])->orWhere([
-                ['start_date', '<=', $semesterInput['end_date']],
-                ['end_date', '>=', $semesterInput['end_date']],
-                ['id', '!=', $semester->id]
-            ])->get()
-        ) > 0) {
-            return redirect()->back()
-                ->withInput($request->input)
-                ->withErrors(['end_date' => __('This semesters dates collide with an already existing semester.')]);
-        }
-
         $semester->update($semesterInput);
 
         $request->session()->flash('alert-success', __('Semester successfully updated!'));
