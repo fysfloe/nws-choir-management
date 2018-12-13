@@ -52,7 +52,12 @@ class Project extends Model
         if (Auth::user()->hasRole('admin')) {
             return $this->morphMany('App\Comment', 'commentable')->orderBy('created_at', 'DESC');
         } else {
-            return $this->morphMany('App\Comment', 'commentable')->where('private', false)->orWhere('user_id', Auth::user()->id)->orderBy('created_at', 'DESC');
+            return $this->morphMany('App\Comment', 'commentable')
+                ->where('private', '=',  false)
+                ->orWhere('user_id', Auth::user()->id)
+                ->where('commentable_id', '=', $this->id)
+                ->where('commentable_type', '=', self::class)
+                ->orderBy('created_at', 'DESC');
         }
     }
 

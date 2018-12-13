@@ -13,7 +13,7 @@
         @endpermission
 
         <rehearsal-list
-            :can-manage-rehearsals="{{ Auth::user()->can('manageRehearsals') }}"
+            :can-manage-rehearsals="{{ Auth::user()->can('manageRehearsals') ? 1 : 0 }}"
             fetch-action="{{ route('rehearsal.loadItems') }}?project_id={{$project->id}}"
             :sort-options="{{ json_encode([
                 'date' => __('Date')
