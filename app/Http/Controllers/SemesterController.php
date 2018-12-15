@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Semester;
-use App\User;
-use App\Voice;
-
 use App\Events\SemesterAnsweredEvent;
 use App\Http\Requests\StoreSemester;
-use App\Services\GetFilteredUsersService;
+use App\Http\Resources\SemesterResource;
 use App\Http\Resources\UserResource;
-
+use App\Semester;
+use App\Services\GetFilteredUsersService;
+use App\User;
+use App\Voice;
 use Auth;
+use Illuminate\Http\Request;
 use URL;
 
 class SemesterController extends Controller
@@ -38,6 +36,15 @@ class SemesterController extends Controller
             'semesters' => $semesters,
             'breadcrumbs' => $this->breadcrumbs
         ]);
+    }
+
+    public function loadItems(Request $request)
+    {
+        $semesters = Semester::where('deleted_at', '=', null)
+            ->orderBy($request->get('sort'), $request->get('dir'))
+            ->get();
+
+        return json_encode(SemesterResource::collection($semesters));
     }
 
     /**

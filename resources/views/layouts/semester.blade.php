@@ -37,12 +37,14 @@
                 {{ __('Info') }}
             </a>
         </li>
+        @permission('manageSemesters')
         <li class="nav-item">
             <a class="nav-link @if ($tab === 'participants') active @endif" id="participants-tab" href="{{ route('semester.participants', $semester) }}" role="tab" aria-controls="participants">
                 <span class="oi oi-people"></span>&nbsp;
                 {{ __('Participants') }}
             </a>
         </li>
+        @endpermission
     </ul>
 
     @yield('semesterContent')

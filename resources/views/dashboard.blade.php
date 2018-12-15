@@ -158,14 +158,11 @@
                                             <p>
                                                 {{ __('You didn\'t tell us yet, if you are attending this semester.') }}
                                             </p>
-                                            <div class="btn-group accept-decline" role="group" aria-label="{{ __('Accept or decline') }}">
-                                                <a href="{{ route('semester.accept', $currentSemester) }}" class="btn btn-sm btn-default">
-                                                    <span class="oi oi-check" aria-hidden="true"></span> {{ __('Attend') }}
-                                                </a>
-                                                <a href="{{ route('semester.decline', $currentSemester) }}" class="btn btn-sm btn-default">
-                                                    <span class="oi oi-x" aria-hidden="true"></span> {{ __('Decline') }}
-                                                </a>
-                                            </div>
+                                            <accept-decline
+                                                    accept-route="{{ route('semester.accept', $currentSemester) }}"
+                                                    decline-route="{{ route('semester.decline', $currentSemester) }}"
+                                            >
+                                            </accept-decline>
                                         </li>
                                     @endif
                                 </ul>

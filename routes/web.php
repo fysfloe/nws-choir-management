@@ -48,6 +48,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/rehearsal/comments/{rehearsal}', 'RehearsalController@comments')->name('rehearsal.comments');
     Route::post('rehearsal/{rehearsal}/createComment', 'RehearsalController@createComment')->name('rehearsal.createComment');
 
+    Route::get('/semesters', 'SemesterController@index')->name('semesters');
+    Route::get('/semester/loadItems', 'SemesterController@loadItems')->name('semester.loadItems');
+    Route::get('/semester/{semester}', 'SemesterController@show')->name('semester.show');
+
     Route::get('/voice/showSet/{user?}', 'VoiceController@showSet')->name('voice.showSet');
     Route::post('/voice/set/{user?}', 'VoiceController@set')->name('voice.set');
     Route::get('/semester/accept/{semester}', 'SemesterController@accept')->name('semester.accept');

@@ -10489,7 +10489,8 @@ header.page-header a.btn-link {
 
 ul.users .avatar,
 ul.projects .avatar,
-ul.rehearsals .avatar {
+ul.rehearsals .avatar,
+ul.semesters .avatar {
   margin: 0 1rem;
 }
 

@@ -4899,33 +4899,6 @@ module.exports = {
 /* 2 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -5029,6 +5002,33 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -17091,7 +17091,7 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(132);
-module.exports = __webpack_require__(185);
+module.exports = __webpack_require__(197);
 
 
 /***/ }),
@@ -17103,9 +17103,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_resource__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_dialog__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_dialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuejs_dialog__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_i18n__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_i18n_locales_generated__ = __webpack_require__(192);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_i18n__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_i18n_locales_generated__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins__ = __webpack_require__(167);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -17131,13 +17131,14 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_resource__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vuejs_dialog___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_i18n__["a" /* default */]);
 
-Vue.component('user-list', __webpack_require__(165));
-Vue.component('project-list', __webpack_require__(194));
-Vue.component('rehearsal-list', __webpack_require__(197));
-Vue.component('filters', __webpack_require__(168));
-Vue.component('picture-input', __webpack_require__(171));
-Vue.component('accept-decline', __webpack_require__(179));
-Vue.component('attendance', __webpack_require__(182));
+Vue.component('user-list', __webpack_require__(168));
+Vue.component('project-list', __webpack_require__(171));
+Vue.component('rehearsal-list', __webpack_require__(174));
+Vue.component('semester-list', __webpack_require__(177));
+Vue.component('filters', __webpack_require__(180));
+Vue.component('picture-input', __webpack_require__(183));
+Vue.component('accept-decline', __webpack_require__(191));
+Vue.component('attendance', __webpack_require__(194));
 Vue.mixin(__WEBPACK_IMPORTED_MODULE_4__mixins__["a" /* default */].global);
 
 var lang = document.documentElement.lang.substr(0, 2);
@@ -17205,7 +17206,7 @@ $(function () {
         $('#username').val($('#firstname').val() + ' ' + $('#surname').val());
     });
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
 /* 133 */
@@ -19651,7 +19652,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
 /* 134 */
@@ -36802,7 +36803,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(6)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(6)(module)))
 
 /***/ }),
 /* 136 */
@@ -66966,7 +66967,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(5).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(5).setImmediate))
 
 /***/ }),
 /* 161 */
@@ -67159,7 +67160,7 @@ module.exports = Vue$3;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(8)))
 
 /***/ }),
 /* 162 */
@@ -68743,3161 +68744,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /***/ }),
 /* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(166)
-/* template */
-var __vue_template__ = __webpack_require__(167)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/UserList.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0bf3ffc0", Component.options)
-  } else {
-    hotAPI.reload("data-v-0bf3ffc0", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 166 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        'concerts': {
-            type: [Array, Object]
-        },
-        'users': {
-            type: Array
-        },
-        'canManageUsers': {
-            type: [Boolean, Number]
-        },
-        'showRoles': {
-            type: Boolean
-        },
-        'fetchUsersAction': {
-            type: String
-        },
-        'voices': {
-            type: Object
-        },
-        'sortOptions': {
-            type: Object
-        },
-        'setVoiceRoute': {
-            type: String
-        },
-        'withAttendanceConfirmation': {
-            type: Boolean
-        },
-        'attendanceRoutes': {
-            type: Object
-        },
-        'withAcceptDecline': {
-            type: Boolean
-        },
-        'acceptDeclineRoutes': {
-            type: Object
-        },
-        'removeUserRoute': {
-            type: String
-        },
-        'removeParticipantsRoute': {
-            type: String
-        },
-        'promises': {
-            type: Array
-        },
-        'denials': {
-            type: Array
-        },
-        'actions': {
-            type: Array
-        }
-    },
-    data: function data() {
-        return {
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            loading: false,
-            _users: [],
-            activeFilters: {},
-            selectedUsers: [],
-            filters: {
-                search: '',
-                voices: [],
-                concerts: [],
-                ageFrom: '',
-                ageTo: '',
-                sort: 'surname',
-                dir: 'ASC',
-                accepted: '1'
-            }
-        };
-    },
-
-    computed: {
-        checkedAll: {
-            get: function get() {
-                return this.selectedUsers.length === this._users.length;
-            }
-        }
-    },
-    created: function created() {
-        this._users = this.users;
-    },
-    mounted: function mounted() {
-        console.log(this.$refs.checkAll);
-    },
-
-    methods: {
-        toggleUser: function toggleUser(event, id) {
-            if (event.target.checked) {
-                this.selectedUsers.push(id);
-            } else {
-                this.selectedUsers.splice(this.selectedUsers.indexOf(id), 1);
-            }
-        },
-        postUserAction: function postUserAction(event, confirm, confirmMessage) {
-            var _this = this;
-
-            if (confirm) {
-                this.$dialog.confirm(confirmMessage).then(function (dialog) {
-                    var route = event.target.getAttribute('href');
-
-                    _this.$http.post(route, { users: _this.selectedUsers, _token: _this.csrf }).then(function (response) {
-                        _this.fetchUsers();
-                    }, function (response) {
-                        console.log(response);
-                    });
-                });
-            }
-        },
-        checkAll: function checkAll(event) {
-            if (event.target.checked) {
-                this.selectedUsers = this._users.map(function (user) {
-                    return user.id;
-                });
-            } else {
-                this.selectedUsers = [];
-            }
-        },
-        changeSortDir: function changeSortDir() {
-            if (this.filters.dir === 'ASC') {
-                this.filters.dir = 'DESC';
-            } else {
-                this.filters.dir = 'ASC';
-            }
-
-            this.fetchUsers();
-        },
-        changeSort: function changeSort(sort) {
-            this.filters.sort = sort;
-
-            this.fetchUsers();
-        },
-        fetchUsers: function fetchUsers() {
-            var _this2 = this;
-
-            this.loading = true;
-
-            for (var key in this.filters) {
-                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
-                    this.activeFilters[key] = this.filters[key].join(', ');
-                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
-                    this.activeFilters[key] = this.filters[key];
-                }
-            }
-
-            this.$http.get(this.fetchUsersAction, { params: this.filters }).then(function (response) {
-                _this2.loading = false;
-                _this2._users = response.body;
-            }, function (response) {});
-        },
-        removeFilter: function removeFilter(key) {
-            delete this.activeFilters[key];
-            if (typeof this.filters[key] === 'string') {
-                this.filters[key] = '';
-            } else if (this.filters[key].constructor === Array) {
-                this.filters[key] = [];
-            }
-
-            this.fetchUsers();
-        },
-        hasAccepted: function hasAccepted(id) {
-            return this.promises.filter(function (user) {
-                return user.id === id;
-            }).length > 0;
-        },
-        hasDeclined: function hasDeclined(id) {
-            return this.denials.filter(function (user) {
-                return user.id === id;
-            }).length > 0;
-        },
-        hasAction: function hasAction(name) {
-            return this.actions.indexOf(name) !== -1;
-        }
-    }
-});
-
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("filters", {
-        attrs: {
-          voices: _vm.voices,
-          concerts: _vm.concerts,
-          "fetch-items": _vm.fetchUsers,
-          filters: _vm.filters,
-          "active-filters": _vm.activeFilters,
-          "remove-filter": _vm.removeFilter
-        }
-      }),
-      _vm._v(" "),
-      _vm.loading
-        ? _c("div", { staticClass: "loader" })
-        : _vm._users.length > 0
-          ? _c("div", { staticClass: "list-table" }, [
-              _c("header", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-10 has-checkbox" }, [
-                  _c("input", {
-                    staticClass: "check-all",
-                    attrs: { type: "checkbox" },
-                    domProps: { checked: _vm.checkedAll },
-                    on: { click: _vm.checkAll }
-                  }),
-                  _vm._v(" \n\n                "),
-                  _vm.selectedUsers.length > 0
-                    ? _c("div", { staticClass: "dropdown list-actions" }, [
-                        _vm._m(0, false, false),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "dropdown-menu",
-                            attrs: { "aria-labelledby": "userActions" }
-                          },
-                          [
-                            _vm.hasAction("archive")
-                              ? _c(
-                                  "a",
-                                  {
-                                    staticClass: "dropdown-item",
-                                    attrs: {
-                                      href: "/admin/users/multiArchive"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        _vm.postUserAction(
-                                          $event,
-                                          true,
-                                          _vm.$t(
-                                            "Do you really want to archive these users?"
-                                          )
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("span", { staticClass: "oi oi-box" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.$t("Archive")) +
-                                        "\n                        "
-                                    )
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.hasAction("setVoice")
-                              ? _c(
-                                  "a",
-                                  {
-                                    staticClass: "dropdown-item",
-                                    attrs: {
-                                      "data-href": "/admin/voice/set",
-                                      href:
-                                        "/admin/voice/set?" +
-                                        _vm.urlEncodeArray(
-                                          _vm.selectedUsers,
-                                          "users"
-                                        ),
-                                      "data-toggle": "modal",
-                                      "data-target": "#mainModal"
-                                    }
-                                  },
-                                  [
-                                    _c("span", { staticClass: "oi oi-pulse" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.$t("Set voice")) +
-                                        "\n                        "
-                                    )
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.showRoles && _vm.hasAction("setRole")
-                              ? _c(
-                                  "a",
-                                  {
-                                    staticClass: "dropdown-item",
-                                    attrs: {
-                                      "data-href": "/admin/role/set",
-                                      href:
-                                        "/admin/role/set?" +
-                                        _vm.urlEncodeArray(
-                                          _vm.selectedUsers,
-                                          "users"
-                                        ),
-                                      "data-toggle": "modal",
-                                      "data-target": "#mainModal"
-                                    }
-                                  },
-                                  [
-                                    _c("span", { staticClass: "oi oi-key" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.$t("Set role")) +
-                                        "\n                        "
-                                    )
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.hasAction("removeParticipant")
-                              ? _c(
-                                  "a",
-                                  {
-                                    staticClass: "dropdown-item",
-                                    attrs: {
-                                      href: _vm.removeParticipantsRoute
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        _vm.postUserAction(
-                                          $event,
-                                          true,
-                                          _vm.$t(
-                                            "Do you really want to remove these participants?"
-                                          )
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("span", { staticClass: "oi oi-minus" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.$t("Remove participants")) +
-                                        "\n                        "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          ]
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(
-                    "\n\n                " +
-                      _vm._s(_vm.$t("User")) +
-                      "\n                "
-                  ),
-                  _c("div", { staticClass: "btn-group" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-default btn-sm",
-                        attrs: { type: "button" },
-                        on: { click: _vm.changeSortDir }
-                      },
-                      [
-                        _c("span", {
-                          class: {
-                            oi: true,
-                            "oi-sort-ascending": _vm.filters.dir === "ASC",
-                            "oi-sort-descending": _vm.filters.dir === "DESC"
-                          }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-default btn-sm dropdown-toggle dropdown-toggle-split",
-                        attrs: {
-                          type: "button",
-                          id: "sortOrder",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.sortOptions[this.filters.sort]) +
-                            "\n                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "dropdown-menu",
-                        attrs: { "aria-labelledby": "sortOrder" }
-                      },
-                      _vm._l(_vm.sortOptions, function(sortOption, key) {
-                        return _c(
-                          "a",
-                          {
-                            key: key,
-                            staticClass: "dropdown-item",
-                            attrs: { href: "#" },
-                            on: {
-                              click: function($event) {
-                                _vm.changeSort(key)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(sortOption))]
-                        )
-                      })
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-2 row-count" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.$t("Total") + ": " + _vm._users.length) +
-                      "\n            "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "ul",
-                { staticClass: "users" },
-                _vm._l(_vm._users, function(user) {
-                  return _c(
-                    "li",
-                    { key: user.id, staticClass: "row align-items-center" },
-                    [
-                      _c(
-                        "div",
-                        {
-                          class:
-                            "col-md-" +
-                            (_vm.withAttendanceConfirmation ||
-                            _vm.withAcceptDecline
-                              ? "8"
-                              : "11")
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "flex align-items-center" },
-                            [
-                              _c("input", {
-                                attrs: { type: "checkbox" },
-                                domProps: {
-                                  value: user.id,
-                                  checked:
-                                    _vm.selectedUsers.indexOf(user.id) !== -1
-                                },
-                                on: {
-                                  click: function($event) {
-                                    _vm.toggleUser($event, user.id)
-                                  }
-                                }
-                              }),
-                              _vm._v(" \n                        "),
-                              user.avatar
-                                ? _c("div", { staticClass: "avatar" }, [
-                                    _c("img", {
-                                      attrs: {
-                                        src: "/storage/avatars/" + user.avatar,
-                                        alt: user.firstname + " " + user.surname
-                                      }
-                                    })
-                                  ])
-                                : _c(
-                                    "div",
-                                    { staticClass: "avatar avatar-default" },
-                                    [
-                                      _c("span", {
-                                        staticClass: "oi oi-person"
-                                      })
-                                    ]
-                                  ),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "name" }, [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(user.firstname) +
-                                    " " +
-                                    _vm._s(user.surname) +
-                                    "\n                            "
-                                ),
-                                _c("div", [
-                                  _c(
-                                    "a",
-                                    {
-                                      attrs: {
-                                        href: _vm.setVoiceRoute + "/" + user.id,
-                                        "data-toggle": "modal",
-                                        "data-target": "#mainModal"
-                                      }
-                                    },
-                                    [
-                                      user.voice
-                                        ? _c(
-                                            "span",
-                                            {
-                                              staticClass:
-                                                "badge badge-secondary badge-pill"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                        " +
-                                                  _vm._s(user.voice.name) +
-                                                  "\n                                    "
-                                              )
-                                            ]
-                                          )
-                                        : _c(
-                                            "small",
-                                            {
-                                              staticClass:
-                                                "badge badge-light badge-pill text-muted"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "(" +
-                                                  _vm._s(_vm.$t("None set")) +
-                                                  ")"
-                                              )
-                                            ]
-                                          )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _vm.showRoles
-                                    ? _c(
-                                        "a",
-                                        {
-                                          attrs: {
-                                            href: "/admin/role/set/" + user.id,
-                                            "data-toggle": "modal",
-                                            "data-target": "#mainModal"
-                                          }
-                                        },
-                                        _vm._l(user.roles, function(role) {
-                                          return user.roles &&
-                                            user.roles.length > 0
-                                            ? _c(
-                                                "span",
-                                                {
-                                                  key: role.id,
-                                                  staticClass:
-                                                    "badge badge-info"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                                        " +
-                                                      _vm._s(role.name) +
-                                                      "\n                                    "
-                                                  )
-                                                ]
-                                              )
-                                            : _c(
-                                                "small",
-                                                {
-                                                  staticClass:
-                                                    "badge badge-light text-muted"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "(" +
-                                                      _vm._s(
-                                                        _vm.$t("None set")
-                                                      ) +
-                                                      ")"
-                                                  )
-                                                ]
-                                              )
-                                        })
-                                      )
-                                    : _vm._e()
-                                ])
-                              ])
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm.withAttendanceConfirmation
-                        ? _c(
-                            "div",
-                            { staticClass: "col-md-3" },
-                            [
-                              _c("attendance", {
-                                attrs: {
-                                  routes: _vm.attendanceRoutes,
-                                  user: user
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.withAcceptDecline
-                        ? _c(
-                            "div",
-                            { staticClass: "col-md-3" },
-                            [
-                              _c("accept-decline", {
-                                attrs: {
-                                  "accept-route":
-                                    _vm.acceptDeclineRoutes["accept"] +
-                                    "/" +
-                                    user.id,
-                                  "decline-route":
-                                    _vm.acceptDeclineRoutes["decline"] +
-                                    "/" +
-                                    user.id,
-                                  accepted: _vm.hasAccepted(user.id),
-                                  declined: _vm.hasDeclined(user.id)
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-1 user-actions" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-toggle no-caret",
-                            attrs: {
-                              href: "#",
-                              id: "singleUserActions" + user.id,
-                              role: "button",
-                              "data-toggle": "dropdown",
-                              "aria-haspopup": "true",
-                              "aria-expanded": "false"
-                            }
-                          },
-                          [_c("span", { staticClass: "oi oi-ellipses" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "dropdown-menu dropdown-menu-right",
-                            attrs: {
-                              "aria-labelledby": "singleUserActions" + user.id
-                            }
-                          },
-                          [
-                            _vm.hasAction("editProfile")
-                              ? _c(
-                                  "a",
-                                  {
-                                    staticClass: "dropdown-item",
-                                    attrs: { href: "/profile/edit/" + user.id }
-                                  },
-                                  [
-                                    _c("span", { staticClass: "oi oi-pencil" }),
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(_vm.$t("Edit profile")) +
-                                        "\n                        "
-                                    )
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.hasAction("archive")
-                              ? _c(
-                                  "form",
-                                  {
-                                    staticClass: "form-inline",
-                                    attrs: {
-                                      method: "POST",
-                                      action: "/admin/users/" + user.id
-                                    }
-                                  },
-                                  [
-                                    _c("input", {
-                                      attrs: {
-                                        name: "_method",
-                                        type: "hidden",
-                                        value: "DELETE"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        directives: [
-                                          {
-                                            name: "confirm",
-                                            rawName: "v-confirm",
-                                            value: _vm.$t(
-                                              "Do you really want to archive this user?"
-                                            ),
-                                            expression:
-                                              "$t('Do you really want to archive this user?')"
-                                          }
-                                        ],
-                                        staticClass:
-                                          "btn btn-link dropdown-item",
-                                        attrs: { type: "submit" }
-                                      },
-                                      [
-                                        _c("span", {
-                                          staticClass: "oi oi-box"
-                                        }),
-                                        _vm._v(
-                                          " " +
-                                            _vm._s(_vm.$t("Archive")) +
-                                            "\n                            "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: { type: "hidden", name: "_token" },
-                                      domProps: { value: _vm.csrf }
-                                    })
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.hasAction("removeParticipant")
-                              ? _c(
-                                  "form",
-                                  {
-                                    staticClass: "form-inline",
-                                    attrs: {
-                                      method: "POST",
-                                      action: _vm.removeUserRoute
-                                    }
-                                  },
-                                  [
-                                    _c("input", {
-                                      attrs: {
-                                        name: "_method",
-                                        type: "hidden",
-                                        value: "DELETE"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "user_id"
-                                      },
-                                      domProps: { value: user.id }
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "button",
-                                      {
-                                        directives: [
-                                          {
-                                            name: "confirm",
-                                            rawName: "v-confirm",
-                                            value: _vm.$t(
-                                              "Do you really want to remove this user?"
-                                            ),
-                                            expression:
-                                              "$t('Do you really want to remove this user?')"
-                                          }
-                                        ],
-                                        staticClass:
-                                          "btn btn-link dropdown-item",
-                                        attrs: { type: "submit" }
-                                      },
-                                      [
-                                        _c("span", {
-                                          staticClass: "oi oi-minus"
-                                        }),
-                                        _vm._v(
-                                          " " +
-                                            _vm._s(
-                                              _vm.$t("Remove participant")
-                                            ) +
-                                            "\n                            "
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      attrs: { type: "hidden", name: "_token" },
-                                      domProps: { value: _vm.csrf }
-                                    })
-                                  ]
-                                )
-                              : _vm._e()
-                          ]
-                        )
-                      ])
-                    ]
-                  )
-                })
-              )
-            ])
-          : _c("div", { staticClass: "no-results" }, [
-              _vm._v(_vm._s(_vm.$t("No users found.")))
-            ])
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "dropdown-toggle no-caret",
-        attrs: {
-          href: "#",
-          role: "button",
-          id: "userActions",
-          "data-toggle": "dropdown",
-          "aria-haspopup": "true",
-          "aria-expanded": "false"
-        }
-      },
-      [_c("span", { staticClass: "oi oi-ellipses" })]
-    )
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0bf3ffc0", module.exports)
-  }
-}
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(169)
-/* template */
-var __vue_template__ = __webpack_require__(170)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Filters.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0d464a94", Component.options)
-  } else {
-    hotAPI.reload("data-v-0d464a94", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 169 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['voices', 'concerts', 'fetchItems', 'filters', 'activeFilters', 'removeFilter'],
-    methods: {
-        filter: function filter() {
-            this.filters.voices = $('select[name="voices[]"]').val();
-            this.filters.concerts = $('select[name="concerts[]"]').val();
-            this.fetchItems();
-        },
-        _removeFilter: function _removeFilter(key) {
-            this.removeFilter(key);
-        }
-    }
-});
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "filters" }, [
-    _c("div", { staticClass: "collapse show", attrs: { id: "filtersInner" } }, [
-      _c(
-        "form",
-        {
-          staticClass: "filter-form",
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              _vm.filter($event)
-            }
-          }
-        },
-        [
-          _vm.filters.hasOwnProperty("search")
-            ? _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  { staticClass: "control-label", attrs: { for: "search" } },
-                  [_vm._v(_vm._s(_vm.$t("Search")))]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filters.search,
-                      expression: "filters.search"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { name: "search", id: "search" },
-                  domProps: { value: _vm.filters.search },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.filters, "search", $event.target.value)
-                    }
-                  }
-                })
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.filters.hasOwnProperty("voices")
-            ? _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  { staticClass: "control-label", attrs: { for: "voices" } },
-                  [_vm._v(_vm._s(_vm.$t("Voices")))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filters.voices,
-                        expression: "filters.voices"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      name: "voices[]",
-                      id: "voices",
-                      multiple: "multiple"
-                    },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.filters,
-                            "voices",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        function($event) {
-                          _vm.addValue(_vm.event, _vm.filters.voices)
-                        }
-                      ]
-                    }
-                  },
-                  _vm._l(_vm.voices, function(voice, key) {
-                    return _c(
-                      "option",
-                      { key: key, domProps: { value: key } },
-                      [_vm._v(_vm._s(voice))]
-                    )
-                  })
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.filters.hasOwnProperty("concerts")
-            ? _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  { staticClass: "control-label", attrs: { for: "concerts" } },
-                  [_vm._v(_vm._s(_vm.$t("Concerts")))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filters.concerts,
-                        expression: "filters.concerts"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      name: "concerts[]",
-                      id: "concerts",
-                      multiple: "multiple"
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.filters,
-                          "concerts",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  _vm._l(_vm.concerts, function(concert, key) {
-                    return _c(
-                      "option",
-                      { key: key, domProps: { value: key } },
-                      [_vm._v(_vm._s(concert))]
-                    )
-                  })
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.filters.hasOwnProperty("ageFrom") ||
-          _vm.filters.hasOwnProperty("ageTo")
-            ? _c("div", { staticClass: "form-group age-filter" }, [
-                _c(
-                  "label",
-                  { staticClass: "control-label", attrs: { for: "age" } },
-                  [_vm._v(_vm._s(_vm.$t("Age")))]
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filters.ageFrom,
-                      expression: "filters.ageFrom"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "number",
-                    name: "age-from",
-                    min: "10",
-                    max: "110",
-                    placeholder: "Min"
-                  },
-                  domProps: { value: _vm.filters.ageFrom },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.filters, "ageFrom", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.filters.ageTo,
-                      expression: "filters.ageTo"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "number",
-                    name: "age-to",
-                    min: "10",
-                    max: "110",
-                    placeholder: "Max"
-                  },
-                  domProps: { value: _vm.filters.ageTo },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.filters, "ageTo", $event.target.value)
-                    }
-                  }
-                })
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.filters.hasOwnProperty("accepted")
-            ? _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  { staticClass: "control-label", attrs: { for: "accepted" } },
-                  [_vm._v(_vm._s(_vm.$t("Answer")))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filters.accepted,
-                        expression: "filters.accepted"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { name: "accepted", id: "accepted" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.filters,
-                          "accepted",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "1" } }, [
-                      _vm._v(_vm._s(_vm.$t("Accepted")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "0" } }, [
-                      _vm._v(_vm._s(_vm.$t("Declined")))
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "not answered" } }, [
-                      _vm._v(_vm._s(_vm.$t("Not answered")))
-                    ])
-                  ]
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _vm._v("\n                 "),
-            _c("br"),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary btn-sm",
-                attrs: { type: "submit" }
-              },
-              [_vm._v(_vm._s(_vm.$t("Apply filters")))]
-            )
-          ])
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    Object.keys(_vm.activeFilters).length > 0
-      ? _c(
-          "ul",
-          { staticClass: "active-filters" },
-          _vm._l(_vm.activeFilters, function(val, key) {
-            return key !== "sort" && key !== "dir"
-              ? _c(
-                  "li",
-                  {
-                    key: key,
-                    staticClass: "badge badge-pill badge-default",
-                    attrs: { "data-field": key },
-                    on: {
-                      click: function($event) {
-                        _vm._removeFilter(key)
-                      }
-                    }
-                  },
-                  [
-                    _c("strong", [_vm._v(_vm._s(key))]),
-                    _vm._v(
-                      ":\n            " +
-                        _vm._s(key === "voices" ? _vm.voices[val] : val) +
-                        "\n        "
-                    )
-                  ]
-                )
-              : _vm._e()
-          })
-        )
-      : _c("span", { staticClass: "text-muted" }, [
-          _vm._v(_vm._s(_vm.$t("No active filters")))
-        ]),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        staticClass: "show-filters",
-        attrs: {
-          "data-toggle": "collapse",
-          href: "#filtersInner",
-          "aria-expanded": "false",
-          "aria-controls": "filtersInner"
-        }
-      },
-      [_vm._v("\n        " + _vm._s(_vm.$t("Show/hide filters")) + "\n    ")]
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0d464a94", module.exports)
-  }
-}
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(172)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(177)
-/* template */
-var __vue_template__ = __webpack_require__(178)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-431cb064"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "node_modules/vue-picture-input/PictureInput.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-431cb064", Component.options)
-  } else {
-    hotAPI.reload("data-v-431cb064", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(173);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(175)("10acecb8", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../css-loader/index.js!../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-431cb064\",\"scoped\":true,\"hasInlineConfig\":true}!../vue-loader/lib/selector.js?type=styles&index=0&bustCache!./PictureInput.vue", function() {
-     var newContent = require("!!../css-loader/index.js!../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-431cb064\",\"scoped\":true,\"hasInlineConfig\":true}!../vue-loader/lib/selector.js?type=styles&index=0&bustCache!./PictureInput.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(174)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.picture-input[data-v-431cb064] {\n  width: 100%;\n  margin: 0 auto;\n  text-align: center;\n}\n.preview-container[data-v-431cb064] {\n  width: 100%;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  margin: 0 auto;\n  cursor: pointer;\n  overflow: hidden;\n}\n.picture-preview[data-v-431cb064] {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  z-index: 10001;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  background-color: rgba(200,200,200,.25);\n}\n.picture-preview.dragging-over[data-v-431cb064] {\n  -webkit-filter: brightness(0.5);\n          filter: brightness(0.5);\n}\n.picture-inner[data-v-431cb064] {\n  position: relative;\n  z-index: 10002;\n  pointer-events: none;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  margin: 1em auto;\n  padding: 0.5em;\n  border: .3em dashed rgba(66,66,66,.15);\n  border-radius: 8px;\n  width: calc(100% - 2.5em);\n  height: calc(100% - 2.5em);\n  display: table;\n}\n.picture-inner .picture-inner-text[data-v-431cb064] {\n  display: table-cell;\n  vertical-align: middle;\n  text-align: center;\n  font-size: 2em;\n  line-height: 1.5;\n}\nbutton[data-v-431cb064] {\n  margin: 1em .25em;\n  cursor: pointer;\n}\ninput[type=file][data-v-431cb064] {\n  display: none;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(176)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 177 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'picture-input',
-  props: {
-    width: {
-      type: [String, Number],
-      default: Number.MAX_SAFE_INTEGER
-    },
-    height: {
-      type: [String, Number],
-      default: Number.MAX_SAFE_INTEGER
-    },
-    margin: {
-      type: [String, Number],
-      default: 0
-    },
-    accept: {
-      type: String,
-      default: 'image/*'
-    },
-    size: {
-      type: [String, Number],
-      default: Number.MAX_SAFE_INTEGER
-    },
-    name: {
-      type: String,
-      default: null
-    },
-    id: {
-      type: [String, Number],
-      default: null
-    },
-    buttonClass: {
-      type: String,
-      default: 'btn btn-primary button'
-    },
-    removeButtonClass: {
-      type: String,
-      default: 'btn btn-secondary button secondary'
-    },
-    aspectButtonClass: {
-      type: String,
-      default: 'btn btn-secondary button secondary'
-    },
-    prefill: {
-      type: [String, File],
-      default: ''
-    },
-    prefillOptions: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    },
-    crop: {
-      type: Boolean,
-      default: true
-    },
-    radius: {
-      type: [String, Number],
-      default: 0
-    },
-    removable: {
-      type: Boolean,
-      default: false
-    },
-    hideChangeButton: {
-      type: Boolean,
-      default: false
-    },
-    autoToggleAspectRatio: {
-      type: Boolean,
-      default: false
-    },
-    toggleAspectRatio: {
-      type: Boolean,
-      default: false
-    },
-    changeOnClick: {
-      type: Boolean,
-      default: true
-    },
-    plain: {
-      type: Boolean,
-      default: false
-    },
-    zIndex: {
-      type: Number,
-      default: 10000
-    },
-    alertOnError: {
-      type: Boolean,
-      default: true
-    },
-    customStrings: {
-      type: Object,
-      default: function _default() {
-        return {};
-      }
-    }
-  },
-  watch: {
-    prefill: function prefill() {
-      if (this.prefill) {
-        this.preloadImage(this.prefill, this.prefillOptions);
-      } else {
-        this.removeImage();
-      }
-    }
-  },
-  data: function data() {
-    return {
-      imageSelected: false,
-      previewHeight: 0,
-      previewWidth: 0,
-      draggingOver: false,
-      canvasWidth: 0,
-      canvasHeight: 0,
-      strings: {
-        upload: '<p>Your device does not support file uploading.</p>',
-        drag: 'Drag an image or <br>click here to select a file',
-        tap: 'Tap here to select a photo <br>from your gallery',
-        change: 'Change Photo',
-        aspect: 'Landscape/Portrait',
-        remove: 'Remove Photo',
-        select: 'Select a Photo',
-        selected: '<p>Photo successfully selected!</p>',
-        fileSize: 'The file size exceeds the limit',
-        fileType: 'This file type is not supported.'
-      }
-    };
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    this.updateStrings();
-    if (this.prefill) {
-      this.preloadImage(this.prefill, this.prefillOptions);
-    }
-
-    this.$nextTick(function () {
-      window.addEventListener('resize', _this.onResize);
-      _this.onResize();
-    });
-    if (this.supportsPreview) {
-      this.pixelRatio = Math.round(window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI);
-      var canvas = this.$refs.previewCanvas;
-      if (canvas.getContext) {
-        this.context = canvas.getContext('2d');
-        this.context.scale(this.pixelRatio, this.pixelRatio);
-      }
-    }
-    if (this.accept !== 'image/*') {
-      this.fileTypes = this.accept.split(',');
-      this.fileTypes = this.fileTypes.map(function (s) {
-        return s.trim();
-      });
-    }
-
-    this.canvasWidth = this.width;
-    this.canvasHeight = this.height;
-
-    this.$on('error', this.onError);
-  },
-  beforeDestroy: function beforeDestroy() {
-    window.removeEventListener('resize', this.onResize);
-    this.$off('error', this.onError);
-  },
-
-  methods: {
-    updateStrings: function updateStrings() {
-      for (var s in this.customStrings) {
-        if (s in this.strings && typeof this.customStrings[s] === 'string') {
-          this.strings[s] = this.customStrings[s];
-        }
-      }
-    },
-    onClick: function onClick() {
-      if (!this.imageSelected) {
-        this.selectImage();
-        return;
-      }
-
-      if (this.changeOnClick) {
-        this.selectImage();
-      }
-
-      this.$emit('click');
-    },
-    onResize: function onResize() {
-      this.resizeCanvas();
-
-      if (this.imageObject) {
-        this.drawImage(this.imageObject);
-      }
-    },
-    onDragStart: function onDragStart() {
-      if (!this.supportsDragAndDrop) {
-        return;
-      }
-      this.draggingOver = true;
-    },
-    onDragStop: function onDragStop() {
-      if (!this.supportsDragAndDrop) {
-        return;
-      }
-      this.draggingOver = false;
-    },
-    onFileDrop: function onFileDrop(e) {
-      this.onDragStop();
-      this.onFileChange(e);
-    },
-    onFileChange: function onFileChange(e, prefill) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) {
-        return;
-      }
-      if (files[0].size <= 0 || files[0].size > this.size * 1024 * 1024) {
-        this.$emit('error', {
-          type: 'fileSize',
-          fileSize: files[0].size,
-          fileType: files[0].type,
-          fileName: files[0].name,
-          message: this.strings.fileSize + ' (' + this.size + 'MB)'
-        });
-        return;
-      }
-      if (files[0].name === this.fileName && files[0].size === this.fileSize && this.fileModified === files[0].lastModified) {
-        return;
-      }
-
-      this.file = files[0];
-      this.fileName = files[0].name;
-      this.fileSize = files[0].size;
-      this.fileModified = files[0].lastModified;
-      this.fileType = files[0].type;
-
-      if (this.accept === 'image/*') {
-        if (files[0].type.substr(0, 6) !== 'image/') {
-          return;
-        }
-      } else {
-        if (this.fileTypes.indexOf(files[0].type) === -1) {
-          this.$emit('error', {
-            type: 'fileType',
-            fileSize: files[0].size,
-            fileType: files[0].type,
-            fileName: files[0].name,
-            message: this.strings.fileType
-          });
-          return;
-        }
-      }
-      this.imageSelected = true;
-      this.image = '';
-      if (this.supportsPreview) {
-        this.loadImage(files[0], prefill || false);
-      } else {
-        if (prefill) {
-          this.$emit('prefill');
-        } else {
-          this.$emit('change', this.image);
-        }
-      }
-    },
-    onError: function onError(error) {
-      if (this.alertOnError) {
-        alert(error.message);
-      }
-    },
-    loadImage: function loadImage(file, prefill) {
-      var _this2 = this;
-
-      this.getEXIFOrientation(file, function (orientation) {
-        _this2.setOrientation(orientation);
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          _this2.image = e.target.result;
-          if (prefill) {
-            _this2.$emit('prefill');
-          } else {
-            _this2.$emit('change', _this2.image);
-          }
-          _this2.imageObject = new Image();
-          _this2.imageObject.onload = function () {
-            if (_this2.autoToggleAspectRatio) {
-              var canvasOrientation = _this2.getOrientation(_this2.canvasWidth, _this2.canvasHeight);
-              var imageOrientation = _this2.getOrientation(_this2.imageObject.width, _this2.imageObject.height);
-              if (canvasOrientation !== imageOrientation) {
-                _this2.rotateCanvas();
-              }
-            }
-            _this2.drawImage(_this2.imageObject);
-          };
-          _this2.imageObject.src = _this2.image;
-        };
-        reader.readAsDataURL(file);
-      });
-    },
-    drawImage: function drawImage(image) {
-      this.imageWidth = image.width;
-      this.imageHeight = image.height;
-      this.imageRatio = image.width / image.height;
-      var offsetX = 0;
-      var offsetY = 0;
-      var scaledWidth = this.previewWidth;
-      var scaledHeight = this.previewHeight;
-      var previewRatio = this.previewWidth / this.previewHeight;
-      if (this.crop) {
-        if (this.imageRatio >= previewRatio) {
-          scaledWidth = scaledHeight * this.imageRatio;
-          offsetX = (this.previewWidth - scaledWidth) / 2;
-        } else {
-          scaledHeight = scaledWidth / this.imageRatio;
-          offsetY = (this.previewHeight - scaledHeight) / 2;
-        }
-      } else {
-        if (this.imageRatio >= previewRatio) {
-          scaledHeight = scaledWidth / this.imageRatio;
-          offsetY = (this.previewHeight - scaledHeight) / 2;
-        } else {
-          scaledWidth = scaledHeight * this.imageRatio;
-          offsetX = (this.previewWidth - scaledWidth) / 2;
-        }
-      }
-      var canvas = this.$refs.previewCanvas;
-      canvas.style.background = 'none';
-      canvas.width = this.previewWidth * this.pixelRatio;
-      canvas.height = this.previewHeight * this.pixelRatio;
-      this.context.setTransform(1, 0, 0, 1, 0, 0);
-      this.context.clearRect(0, 0, canvas.width, canvas.height);
-      if (this.rotate) {
-        this.context.translate(offsetX * this.pixelRatio, offsetY * this.pixelRatio);
-        this.context.translate(scaledWidth / 2 * this.pixelRatio, scaledHeight / 2 * this.pixelRatio);
-        this.context.rotate(this.rotate);
-        offsetX = -scaledWidth / 2;
-        offsetY = -scaledHeight / 2;
-      }
-      this.context.drawImage(image, offsetX * this.pixelRatio, offsetY * this.pixelRatio, scaledWidth * this.pixelRatio, scaledHeight * this.pixelRatio);
-    },
-    selectImage: function selectImage() {
-      this.$refs.fileInput.click();
-    },
-    removeImage: function removeImage() {
-      this.$refs.fileInput.value = '';
-      this.$refs.fileInput.type = '';
-      this.$refs.fileInput.type = 'file';
-      this.fileName = '';
-      this.fileType = '';
-      this.fileSize = 0;
-      this.fileModified = 0;
-      this.imageSelected = false;
-      this.image = '';
-      this.file = null;
-      this.imageObject = null;
-      this.$refs.previewCanvas.style.backgroundColor = 'rgba(200,200,200,.25)';
-      this.$refs.previewCanvas.width = this.previewWidth * this.pixelRatio;
-      this.$emit('remove');
-    },
-    rotateImage: function rotateImage() {
-      this.rotateCanvas();
-
-      if (this.imageObject) {
-        this.drawImage(this.imageObject);
-      }
-
-      var newOrientation = this.getOrientation(this.canvasWidth, this.canvasHeight);
-      this.$emit('aspectratiochange', newOrientation);
-    },
-    resizeCanvas: function resizeCanvas() {
-      var previewRatio = this.canvasWidth / this.canvasHeight;
-      var newWidth = this.$refs.container.clientWidth;
-      if (!this.toggleAspectRatio && newWidth === this.containerWidth) {
-        return;
-      }
-      this.containerWidth = newWidth;
-      this.previewWidth = Math.min(this.containerWidth - this.margin * 2, this.canvasWidth);
-      this.previewHeight = this.previewWidth / previewRatio;
-    },
-    getOrientation: function getOrientation(width, height) {
-      var orientation = 'square';
-
-      if (width > height) {
-        orientation = 'landscape';
-      } else if (width < height) {
-        orientation = 'portrait';
-      }
-
-      return orientation;
-    },
-    switchCanvasOrientation: function switchCanvasOrientation() {
-      var canvasWidth = this.canvasWidth;
-      var canvasHeight = this.canvasHeight;
-
-      this.canvasWidth = canvasHeight;
-      this.canvasHeight = canvasWidth;
-    },
-    rotateCanvas: function rotateCanvas() {
-      this.switchCanvasOrientation();
-      this.resizeCanvas();
-    },
-    setOrientation: function setOrientation(orientation) {
-      this.rotate = false;
-      if (orientation === 8) {
-        this.rotate = -Math.PI / 2;
-      } else if (orientation === 6) {
-        this.rotate = Math.PI / 2;
-      } else if (orientation === 3) {
-        this.rotate = -Math.PI;
-      }
-    },
-    getEXIFOrientation: function getEXIFOrientation(file, callback) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        var view = new DataView(e.target.result);
-        if (view.getUint16(0, false) !== 0xFFD8) {
-          return callback(-2);
-        }
-        var length = view.byteLength;
-        var offset = 2;
-        while (offset < length) {
-          var marker = view.getUint16(offset, false);
-          offset += 2;
-          if (marker === 0xFFE1) {
-            if (view.getUint32(offset += 2, false) !== 0x45786966) {
-              return callback(-1);
-            }
-            var little = view.getUint16(offset += 6, false) === 0x4949;
-            offset += view.getUint32(offset + 4, little);
-            var tags = view.getUint16(offset, little);
-            offset += 2;
-            for (var i = 0; i < tags; i++) {
-              if (view.getUint16(offset + i * 12, little) === 0x0112) {
-                return callback(view.getUint16(offset + i * 12 + 8, little));
-              }
-            }
-          } else if ((marker & 0xFF00) !== 0xFF00) {
-            break;
-          } else {
-            offset += view.getUint16(offset, false);
-          }
-        }
-        return callback(-1);
-      };
-      reader.readAsArrayBuffer(file.slice(0, 65536));
-    },
-    preloadImage: function preloadImage(source, options) {
-      var _this4 = this;
-
-      // ie 11 support
-      var File = window.File;
-      try {
-        new File([], ''); // eslint-disable-line
-      } catch (e) {
-        File = function (_Blob) {
-          _inherits(File, _Blob);
-
-          function File(chunks, filename) {
-            var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-            _classCallCheck(this, File);
-
-            var _this3 = _possibleConstructorReturn(this, (File.__proto__ || Object.getPrototypeOf(File)).call(this, chunks, opts));
-
-            _this3.lastModifiedDate = new Date();
-            _this3.lastModified = +_this3.lastModifiedDate;
-            _this3.name = filename;
-            return _this3;
-          }
-
-          return File;
-        }(Blob);
-      }
-      options = Object.assign({}, options);
-      if ((typeof source === 'undefined' ? 'undefined' : _typeof(source)) === 'object') {
-        this.imageSelected = true;
-        this.image = '';
-        if (this.supportsPreview) {
-          this.loadImage(source, true);
-        } else {
-          this.$emit('prefill');
-        }
-        return;
-      }
-      var headers = new Headers();
-      headers.append('Accept', 'image/*');
-      fetch(source, {
-        method: 'GET',
-        mode: 'cors',
-        headers: headers
-      }).then(function (response) {
-        return response.blob();
-      }).then(function (imageBlob) {
-        var e = { target: { files: [] } };
-        var fileName = options.fileName || source.split('/').slice(-1)[0];
-        var mediaType = options.mediaType || 'image/' + (options.fileType || fileName.split('.').slice(-1)[0]);
-        mediaType = mediaType.replace('jpg', 'jpeg');
-        e.target.files[0] = new File([imageBlob], fileName, { type: mediaType });
-        _this4.onFileChange(e, true);
-      }).catch(function (err) {
-        _this4.$emit('error', {
-          type: 'failedPrefill',
-          message: 'Failed loading prefill image: ' + err
-        });
-      });
-    }
-  },
-  computed: {
-    supportsUpload: function supportsUpload() {
-      if (navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/)) {
-        return false;
-      }
-      var el = document.createElement('input');
-      el.type = 'file';
-      return !el.disabled;
-    },
-    supportsPreview: function supportsPreview() {
-      return window.FileReader && !!window.CanvasRenderingContext2D;
-    },
-    supportsDragAndDrop: function supportsDragAndDrop() {
-      var div = document.createElement('div');
-      return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && !('ontouchstart' in window || navigator.msMaxTouchPoints);
-    },
-    computedClasses: function computedClasses() {
-      var classObject = {};
-      classObject['dragging-over'] = this.draggingOver;
-      return classObject;
-    },
-    fontSize: function fontSize() {
-      return Math.min(0.04 * this.previewWidth, 21) + 'px';
-    }
-  }
-});
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      ref: "container",
-      staticClass: "picture-input",
-      attrs: { id: "picture-input" }
-    },
-    [
-      !_vm.supportsUpload
-        ? _c("div", { domProps: { innerHTML: _vm._s(_vm.strings.upload) } })
-        : _vm.supportsPreview
-          ? _c("div", [
-              _c(
-                "div",
-                {
-                  staticClass: "preview-container",
-                  style: {
-                    maxWidth: _vm.previewWidth + "px",
-                    height: _vm.previewHeight + "px",
-                    borderRadius: _vm.radius + "%"
-                  }
-                },
-                [
-                  _c("canvas", {
-                    ref: "previewCanvas",
-                    staticClass: "picture-preview",
-                    class: _vm.computedClasses,
-                    style: {
-                      height: _vm.previewHeight + "px",
-                      zIndex: _vm.zIndex + 1
-                    },
-                    on: {
-                      drag: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                      },
-                      dragover: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                      },
-                      dragstart: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                        _vm.onDragStart($event)
-                      },
-                      dragenter: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                        _vm.onDragStart($event)
-                      },
-                      dragend: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                        _vm.onDragStop($event)
-                      },
-                      dragleave: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                        _vm.onDragStop($event)
-                      },
-                      drop: function($event) {
-                        $event.stopPropagation()
-                        $event.preventDefault()
-                        _vm.onFileDrop($event)
-                      },
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.onClick($event)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  !_vm.imageSelected && !_vm.plain
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "picture-inner",
-                          style: {
-                            top: -_vm.previewHeight + "px",
-                            marginBottom: -_vm.previewHeight + "px",
-                            fontSize: _vm.fontSize,
-                            borderRadius: _vm.radius + "%",
-                            zIndex: _vm.zIndex + 2
-                          }
-                        },
-                        [
-                          _vm.supportsDragAndDrop
-                            ? _c("span", {
-                                staticClass: "picture-inner-text",
-                                domProps: {
-                                  innerHTML: _vm._s(_vm.strings.drag)
-                                }
-                              })
-                            : _c("span", {
-                                staticClass: "picture-inner-text",
-                                domProps: { innerHTML: _vm._s(_vm.strings.tap) }
-                              })
-                        ]
-                      )
-                    : _vm._e()
-                ]
-              ),
-              _vm._v(" "),
-              _vm.imageSelected && !_vm.hideChangeButton
-                ? _c(
-                    "button",
-                    {
-                      class: _vm.buttonClass,
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.selectImage($event)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.strings.change))]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.imageSelected && _vm.removable
-                ? _c(
-                    "button",
-                    {
-                      class: _vm.removeButtonClass,
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.removeImage($event)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.strings.remove))]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.imageSelected &&
-              _vm.toggleAspectRatio &&
-              _vm.width !== _vm.height
-                ? _c(
-                    "button",
-                    {
-                      class: _vm.aspectButtonClass,
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.rotateImage($event)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.strings.aspect))]
-                  )
-                : _vm._e()
-            ])
-          : _c("div", [
-              !_vm.imageSelected
-                ? _c(
-                    "button",
-                    {
-                      class: _vm.buttonClass,
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.selectImage($event)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.strings.select))]
-                  )
-                : _c("div", [
-                    _c("div", {
-                      domProps: { innerHTML: _vm._s(_vm.strings.selected) }
-                    }),
-                    _vm._v(" "),
-                    !_vm.hideChangeButton
-                      ? _c(
-                          "button",
-                          {
-                            class: _vm.buttonClass,
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                _vm.selectImage($event)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.strings.change))]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.removable
-                      ? _c(
-                          "button",
-                          {
-                            class: _vm.removeButtonClass,
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                _vm.removeImage($event)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.strings.remove))]
-                        )
-                      : _vm._e()
-                  ])
-            ]),
-      _vm._v(" "),
-      _c("input", {
-        ref: "fileInput",
-        attrs: { type: "file", name: _vm.name, id: _vm.id, accept: _vm.accept },
-        on: { change: _vm.onFileChange }
-      })
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-431cb064", module.exports)
-  }
-}
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(180)
-/* template */
-var __vue_template__ = __webpack_require__(181)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/AcceptDecline.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7959a5b2", Component.options)
-  } else {
-    hotAPI.reload("data-v-7959a5b2", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 180 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined'],
-    data: function data() {
-        return {
-            hasAccepted: this.accepted,
-            hasDeclined: this.declined,
-            loading: {
-                accept: false,
-                decline: false
-            }
-        };
-    },
-
-    methods: {
-        accept: function accept(event) {
-            var _this = this;
-
-            event.preventDefault();
-
-            if (!this.hasAccepted) {
-                this.showCommentField = true;
-                this.loading.accept = true;
-
-                this.$http.get(this.acceptRoute).then(function (response) {
-                    _this.loading.accept = false;
-                    _this.hasAccepted = true;
-                    _this.hasDeclined = false;
-                }, function (response) {
-                    _this.loading.accept = false;
-
-                    _this.$emit('alert', response);
-                });
-            }
-        },
-        decline: function decline(event) {
-            var _this2 = this;
-
-            event.preventDefault();
-
-            if (!this.hasDeclined) {
-                this.showCommentField = true;
-                this.loading.decline = true;
-
-                this.$http.get(this.declineRoute).then(function (response) {
-                    _this2.loading.decline = false;
-                    _this2.hasDeclined = true;
-                    _this2.hasAccepted = false;
-                }, function (response) {
-                    _this2.loading.decline = false;
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 181 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "btn-group accept-decline",
-      attrs: { role: "group", "aria-label": _vm.$t("Accept or decline") }
-    },
-    [
-      _c(
-        "button",
-        {
-          class: {
-            "btn-success": _vm.hasAccepted,
-            "btn-default": !_vm.hasAccepted,
-            btn: true
-          },
-          attrs: {
-            "data-toggle": "tooltip",
-            title: _vm.hasAccepted ? _vm.$t("Attending") : _vm.$t("Accept")
-          },
-          on: { click: _vm.accept }
-        },
-        [_c("span", { class: { oi: true, "oi-check": true } })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          class: {
-            "btn-danger": _vm.hasDeclined,
-            "btn-default": !_vm.hasDeclined,
-            btn: true
-          },
-          attrs: {
-            "data-toggle": "tooltip",
-            title: _vm.hasDeclined ? _vm.$t("Not attending") : _vm.$t("Decline")
-          },
-          on: { click: _vm.decline }
-        },
-        [_c("span", { class: { oi: true, "oi-x": true } })]
-      )
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7959a5b2", module.exports)
-  }
-}
-
-/***/ }),
-/* 182 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(183)
-/* template */
-var __vue_template__ = __webpack_require__(184)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Attendance.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-667f93e0", Component.options)
-  } else {
-    hotAPI.reload("data-v-667f93e0", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 183 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['routes', 'user'],
-    data: function data() {
-        return {
-            isConfirmed: this.user.confirmed === 1,
-            isExcused: this.user.excused === 1,
-            isUnexcused: this.user.confirmed === 0 && this.user.excused === 0
-        };
-    },
-
-    methods: {
-        confirm: function confirm() {
-            var _this = this;
-
-            this.$http.get(this.routes.confirm + '/' + this.user.id).then(function (response) {
-                _this.isExcused = false;
-                _this.isUnexcused = false;
-                _this.isConfirmed = true;
-            }, function (response) {});
-        },
-        excuse: function excuse() {
-            var _this2 = this;
-
-            this.$http.get(this.routes.excused + '/' + this.user.id).then(function (response) {
-                _this2.isExcused = true;
-                _this2.isUnexcused = false;
-                _this2.isConfirmed = false;
-            }, function (response) {});
-        },
-        unexcuse: function unexcuse() {
-            var _this3 = this;
-
-            this.$http.get(this.routes.unexcused + '/' + this.user.id).then(function (response) {
-                _this3.isExcused = false;
-                _this3.isUnexcused = true;
-                _this3.isConfirmed = false;
-            }, function (response) {});
-        }
-    }
-});
-
-/***/ }),
-/* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "btn-group attendance-buttons",
-      attrs: { role: "group", "aria-label": _vm.$t("Accept or decline") }
-    },
-    [
-      _c(
-        "button",
-        {
-          class: {
-            btn: true,
-            "btn-success": _vm.isConfirmed,
-            "btn-default": !_vm.isConfirmed
-          },
-          attrs: { "data-toggle": "tooltip", title: _vm.$t("Present") },
-          on: { click: _vm.confirm }
-        },
-        [_c("span", { staticClass: "oi oi-check" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          class: {
-            btn: true,
-            "btn-warning": _vm.isExcused,
-            "btn-default": !_vm.isExcused
-          },
-          attrs: { "data-toggle": "tooltip", title: _vm.$t("Excused") },
-          on: { click: _vm.excuse }
-        },
-        [_c("span", { staticClass: "oi oi-medical-cross" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          class: {
-            btn: true,
-            "btn-danger": _vm.isUnexcused,
-            "btn-default": !_vm.isUnexcused
-          },
-          attrs: { "data-toggle": "tooltip", title: _vm.$t("Unexcused") },
-          on: { click: _vm.unexcuse }
-        },
-        [_c("span", { staticClass: "oi oi-x" })]
-      )
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-667f93e0", module.exports)
-  }
-}
-
-/***/ }),
-/* 185 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73503,7 +70349,7 @@ VueI18n.version = '8.3.2';
 
 
 /***/ }),
-/* 192 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73914,7 +70760,7 @@ VueI18n.version = '8.3.2';
 });
 
 /***/ }),
-/* 193 */
+/* 167 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73935,15 +70781,1048 @@ VueI18n.version = '8.3.2';
 });
 
 /***/ }),
-/* 194 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(195)
+var __vue_script__ = __webpack_require__(169)
 /* template */
-var __vue_template__ = __webpack_require__(196)
+var __vue_template__ = __webpack_require__(170)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/UserList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0bf3ffc0", Component.options)
+  } else {
+    hotAPI.reload("data-v-0bf3ffc0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 169 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'concerts': {
+            type: [Array, Object]
+        },
+        'users': {
+            type: Array
+        },
+        'canManageUsers': {
+            type: [Boolean, Number]
+        },
+        'showRoles': {
+            type: Boolean
+        },
+        'fetchUsersAction': {
+            type: String
+        },
+        'voices': {
+            type: Object
+        },
+        'sortOptions': {
+            type: Object
+        },
+        'setVoiceRoute': {
+            type: String
+        },
+        'withAttendanceConfirmation': {
+            type: Boolean
+        },
+        'attendanceRoutes': {
+            type: Object
+        },
+        'withAcceptDecline': {
+            type: Boolean
+        },
+        'acceptDeclineRoutes': {
+            type: Object
+        },
+        'removeUserRoute': {
+            type: String
+        },
+        'removeParticipantsRoute': {
+            type: String
+        },
+        'promises': {
+            type: Array
+        },
+        'denials': {
+            type: Array
+        },
+        'actions': {
+            type: Array
+        }
+    },
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            loading: false,
+            _users: [],
+            activeFilters: {},
+            selectedUsers: [],
+            filters: {
+                search: '',
+                voices: [],
+                concerts: [],
+                ageFrom: '',
+                ageTo: '',
+                sort: 'surname',
+                dir: 'ASC',
+                accepted: '1'
+            }
+        };
+    },
+
+    computed: {
+        checkedAll: {
+            get: function get() {
+                return this.selectedUsers.length === this._users.length;
+            }
+        }
+    },
+    created: function created() {
+        this._users = this.users;
+    },
+    mounted: function mounted() {
+        console.log(this.$refs.checkAll);
+    },
+
+    methods: {
+        toggleUser: function toggleUser(event, id) {
+            if (event.target.checked) {
+                this.selectedUsers.push(id);
+            } else {
+                this.selectedUsers.splice(this.selectedUsers.indexOf(id), 1);
+            }
+        },
+        postUserAction: function postUserAction(event, confirm, confirmMessage) {
+            var _this = this;
+
+            if (confirm) {
+                this.$dialog.confirm(confirmMessage).then(function (dialog) {
+                    var route = event.target.getAttribute('href');
+
+                    _this.$http.post(route, { users: _this.selectedUsers, _token: _this.csrf }).then(function (response) {
+                        _this.fetchUsers();
+                    }, function (response) {
+                        console.log(response);
+                    });
+                });
+            }
+        },
+        checkAll: function checkAll(event) {
+            if (event.target.checked) {
+                this.selectedUsers = this._users.map(function (user) {
+                    return user.id;
+                });
+            } else {
+                this.selectedUsers = [];
+            }
+        },
+        changeSortDir: function changeSortDir() {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchUsers();
+        },
+        changeSort: function changeSort(sort) {
+            this.filters.sort = sort;
+
+            this.fetchUsers();
+        },
+        fetchUsers: function fetchUsers() {
+            var _this2 = this;
+
+            this.loading = true;
+
+            for (var key in this.filters) {
+                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key].join(', ');
+                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key];
+                }
+            }
+
+            this.$http.get(this.fetchUsersAction, { params: this.filters }).then(function (response) {
+                _this2.loading = false;
+                _this2._users = response.body;
+            }, function (response) {});
+        },
+        removeFilter: function removeFilter(key) {
+            delete this.activeFilters[key];
+            if (typeof this.filters[key] === 'string') {
+                this.filters[key] = '';
+            } else if (this.filters[key].constructor === Array) {
+                this.filters[key] = [];
+            }
+
+            this.fetchUsers();
+        },
+        hasAccepted: function hasAccepted(id) {
+            return this.promises.filter(function (user) {
+                return user.id === id;
+            }).length > 0;
+        },
+        hasDeclined: function hasDeclined(id) {
+            return this.denials.filter(function (user) {
+                return user.id === id;
+            }).length > 0;
+        },
+        hasAction: function hasAction(name) {
+            return this.actions.indexOf(name) !== -1;
+        }
+    }
+});
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("filters", {
+        attrs: {
+          voices: _vm.voices,
+          concerts: _vm.concerts,
+          "fetch-items": _vm.fetchUsers,
+          filters: _vm.filters,
+          "active-filters": _vm.activeFilters,
+          "remove-filter": _vm.removeFilter
+        }
+      }),
+      _vm._v(" "),
+      _vm.loading
+        ? _c("div", { staticClass: "loader" })
+        : _vm._users.length > 0
+          ? _c("div", { staticClass: "list-table" }, [
+              _c("header", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-10 has-checkbox" }, [
+                  _c("input", {
+                    staticClass: "check-all",
+                    attrs: { type: "checkbox" },
+                    domProps: { checked: _vm.checkedAll },
+                    on: { click: _vm.checkAll }
+                  }),
+                  _vm._v(" \n\n                "),
+                  _vm.selectedUsers.length > 0
+                    ? _c("div", { staticClass: "dropdown list-actions" }, [
+                        _vm._m(0, false, false),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "dropdown-menu",
+                            attrs: { "aria-labelledby": "userActions" }
+                          },
+                          [
+                            _vm.hasAction("archive")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      href: "/admin/users/multiArchive"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        _vm.postUserAction(
+                                          $event,
+                                          true,
+                                          _vm.$t(
+                                            "Do you really want to archive these users?"
+                                          )
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-box" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Archive")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("setVoice")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      "data-href": "/admin/voice/set",
+                                      href:
+                                        "/admin/voice/set?" +
+                                        _vm.urlEncodeArray(
+                                          _vm.selectedUsers,
+                                          "users"
+                                        ),
+                                      "data-toggle": "modal",
+                                      "data-target": "#mainModal"
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-pulse" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Set voice")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.showRoles && _vm.hasAction("setRole")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      "data-href": "/admin/role/set",
+                                      href:
+                                        "/admin/role/set?" +
+                                        _vm.urlEncodeArray(
+                                          _vm.selectedUsers,
+                                          "users"
+                                        ),
+                                      "data-toggle": "modal",
+                                      "data-target": "#mainModal"
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-key" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Set role")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("removeParticipant")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: {
+                                      href: _vm.removeParticipantsRoute
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        _vm.postUserAction(
+                                          $event,
+                                          true,
+                                          _vm.$t(
+                                            "Do you really want to remove these participants?"
+                                          )
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-minus" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Remove participants")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(
+                    "\n\n                " +
+                      _vm._s(_vm.$t("User")) +
+                      "\n                "
+                  ),
+                  _c("div", { staticClass: "btn-group" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-default btn-sm",
+                        attrs: { type: "button" },
+                        on: { click: _vm.changeSortDir }
+                      },
+                      [
+                        _c("span", {
+                          class: {
+                            oi: true,
+                            "oi-sort-ascending": _vm.filters.dir === "ASC",
+                            "oi-sort-descending": _vm.filters.dir === "DESC"
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-default btn-sm dropdown-toggle dropdown-toggle-split",
+                        attrs: {
+                          type: "button",
+                          id: "sortOrder",
+                          "data-toggle": "dropdown",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.sortOptions[this.filters.sort]) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "dropdown-menu",
+                        attrs: { "aria-labelledby": "sortOrder" }
+                      },
+                      _vm._l(_vm.sortOptions, function(sortOption, key) {
+                        return _c(
+                          "a",
+                          {
+                            key: key,
+                            staticClass: "dropdown-item",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                _vm.changeSort(key)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(sortOption))]
+                        )
+                      })
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2 row-count" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.$t("Total") + ": " + _vm._users.length) +
+                      "\n            "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "users" },
+                _vm._l(_vm._users, function(user) {
+                  return _c(
+                    "li",
+                    { key: user.id, staticClass: "row align-items-center" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          class:
+                            "col-md-" +
+                            (_vm.withAttendanceConfirmation ||
+                            _vm.withAcceptDecline
+                              ? "8"
+                              : "11")
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "flex align-items-center" },
+                            [
+                              _c("input", {
+                                attrs: { type: "checkbox" },
+                                domProps: {
+                                  value: user.id,
+                                  checked:
+                                    _vm.selectedUsers.indexOf(user.id) !== -1
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.toggleUser($event, user.id)
+                                  }
+                                }
+                              }),
+                              _vm._v(" \n                        "),
+                              user.avatar
+                                ? _c("div", { staticClass: "avatar" }, [
+                                    _c("img", {
+                                      attrs: {
+                                        src: "/storage/avatars/" + user.avatar,
+                                        alt: user.firstname + " " + user.surname
+                                      }
+                                    })
+                                  ])
+                                : _c(
+                                    "div",
+                                    { staticClass: "avatar avatar-default" },
+                                    [
+                                      _c("span", {
+                                        staticClass: "oi oi-person"
+                                      })
+                                    ]
+                                  ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "name" }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(user.firstname) +
+                                    " " +
+                                    _vm._s(user.surname) +
+                                    "\n                            "
+                                ),
+                                _c("div", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        href: _vm.setVoiceRoute + "/" + user.id,
+                                        "data-toggle": "modal",
+                                        "data-target": "#mainModal"
+                                      }
+                                    },
+                                    [
+                                      user.voice
+                                        ? _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "badge badge-secondary badge-pill"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                        " +
+                                                  _vm._s(user.voice.name) +
+                                                  "\n                                    "
+                                              )
+                                            ]
+                                          )
+                                        : _c(
+                                            "small",
+                                            {
+                                              staticClass:
+                                                "badge badge-light badge-pill text-muted"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "(" +
+                                                  _vm._s(_vm.$t("None set")) +
+                                                  ")"
+                                              )
+                                            ]
+                                          )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.showRoles
+                                    ? _c(
+                                        "a",
+                                        {
+                                          attrs: {
+                                            href: "/admin/role/set/" + user.id,
+                                            "data-toggle": "modal",
+                                            "data-target": "#mainModal"
+                                          }
+                                        },
+                                        _vm._l(user.roles, function(role) {
+                                          return user.roles &&
+                                            user.roles.length > 0
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  key: role.id,
+                                                  staticClass:
+                                                    "badge badge-info"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                        " +
+                                                      _vm._s(role.name) +
+                                                      "\n                                    "
+                                                  )
+                                                ]
+                                              )
+                                            : _c(
+                                                "small",
+                                                {
+                                                  staticClass:
+                                                    "badge badge-light text-muted"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "(" +
+                                                      _vm._s(
+                                                        _vm.$t("None set")
+                                                      ) +
+                                                      ")"
+                                                  )
+                                                ]
+                                              )
+                                        })
+                                      )
+                                    : _vm._e()
+                                ])
+                              ])
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.withAttendanceConfirmation
+                        ? _c(
+                            "div",
+                            { staticClass: "col-md-3" },
+                            [
+                              _c("attendance", {
+                                attrs: {
+                                  routes: _vm.attendanceRoutes,
+                                  user: user
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.withAcceptDecline
+                        ? _c(
+                            "div",
+                            { staticClass: "col-md-3" },
+                            [
+                              _c("accept-decline", {
+                                attrs: {
+                                  "accept-route":
+                                    _vm.acceptDeclineRoutes["accept"] +
+                                    "/" +
+                                    user.id,
+                                  "decline-route":
+                                    _vm.acceptDeclineRoutes["decline"] +
+                                    "/" +
+                                    user.id,
+                                  accepted: _vm.hasAccepted(user.id),
+                                  declined: _vm.hasDeclined(user.id)
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-1 user-actions" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-toggle no-caret",
+                            attrs: {
+                              href: "#",
+                              id: "singleUserActions" + user.id,
+                              role: "button",
+                              "data-toggle": "dropdown",
+                              "aria-haspopup": "true",
+                              "aria-expanded": "false"
+                            }
+                          },
+                          [_c("span", { staticClass: "oi oi-ellipses" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "dropdown-menu dropdown-menu-right",
+                            attrs: {
+                              "aria-labelledby": "singleUserActions" + user.id
+                            }
+                          },
+                          [
+                            _vm.hasAction("editProfile")
+                              ? _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { href: "/profile/edit/" + user.id }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "oi oi-pencil" }),
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(_vm.$t("Edit profile")) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("archive")
+                              ? _c(
+                                  "form",
+                                  {
+                                    staticClass: "form-inline",
+                                    attrs: {
+                                      method: "POST",
+                                      action: "/admin/users/" + user.id
+                                    }
+                                  },
+                                  [
+                                    _c("input", {
+                                      attrs: {
+                                        name: "_method",
+                                        type: "hidden",
+                                        value: "DELETE"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "confirm",
+                                            rawName: "v-confirm",
+                                            value: _vm.$t(
+                                              "Do you really want to archive this user?"
+                                            ),
+                                            expression:
+                                              "$t('Do you really want to archive this user?')"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "btn btn-link dropdown-item",
+                                        attrs: { type: "submit" }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "oi oi-box"
+                                        }),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(_vm.$t("Archive")) +
+                                            "\n                            "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: { type: "hidden", name: "_token" },
+                                      domProps: { value: _vm.csrf }
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.hasAction("removeParticipant")
+                              ? _c(
+                                  "form",
+                                  {
+                                    staticClass: "form-inline",
+                                    attrs: {
+                                      method: "POST",
+                                      action: _vm.removeUserRoute
+                                    }
+                                  },
+                                  [
+                                    _c("input", {
+                                      attrs: {
+                                        name: "_method",
+                                        type: "hidden",
+                                        value: "DELETE"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "user_id"
+                                      },
+                                      domProps: { value: user.id }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        directives: [
+                                          {
+                                            name: "confirm",
+                                            rawName: "v-confirm",
+                                            value: _vm.$t(
+                                              "Do you really want to remove this user?"
+                                            ),
+                                            expression:
+                                              "$t('Do you really want to remove this user?')"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "btn btn-link dropdown-item",
+                                        attrs: { type: "submit" }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "oi oi-minus"
+                                        }),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(
+                                              _vm.$t("Remove participant")
+                                            ) +
+                                            "\n                            "
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      attrs: { type: "hidden", name: "_token" },
+                                      domProps: { value: _vm.csrf }
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+                })
+              )
+            ])
+          : _c("div", { staticClass: "no-results" }, [
+              _vm._v(_vm._s(_vm.$t("No users found.")))
+            ])
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "dropdown-toggle no-caret",
+        attrs: {
+          href: "#",
+          role: "button",
+          id: "userActions",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("span", { staticClass: "oi oi-ellipses" })]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0bf3ffc0", module.exports)
+  }
+}
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(172)
+/* template */
+var __vue_template__ = __webpack_require__(173)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73983,7 +71862,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 195 */
+/* 172 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -74211,7 +72090,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 196 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -74650,15 +72529,15 @@ if (false) {
 }
 
 /***/ }),
-/* 197 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(198)
+var __vue_script__ = __webpack_require__(175)
 /* template */
-var __vue_template__ = __webpack_require__(199)
+var __vue_template__ = __webpack_require__(176)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -74698,7 +72577,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 198 */
+/* 175 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -74873,7 +72752,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 199 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -75178,6 +73057,2651 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-626c01b4", module.exports)
   }
 }
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(178)
+/* template */
+var __vue_template__ = __webpack_require__(179)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/SemesterList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-89c9fea6", Component.options)
+  } else {
+    hotAPI.reload("data-v-89c9fea6", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 178 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'user': {
+            type: Object,
+            required: true
+        },
+        'canManageSemesters': {
+            type: [Boolean, Number]
+        },
+        'fetchAction': {
+            type: String
+        },
+        'sortOptions': {
+            type: Object
+        },
+        'actions': {
+            type: Array
+        }
+    },
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            loading: false,
+            items: [],
+            activeFilters: {},
+            filters: {
+                sort: 'start_date',
+                dir: 'ASC'
+            }
+        };
+    },
+    mounted: function mounted() {
+        this.fetchItems();
+    },
+
+    methods: {
+        changeSortDir: function changeSortDir() {
+            if (this.filters.dir === 'ASC') {
+                this.filters.dir = 'DESC';
+            } else {
+                this.filters.dir = 'ASC';
+            }
+
+            this.fetchItems();
+        },
+        changeSort: function changeSort(sort) {
+            this.filters.sort = sort;
+
+            this.fetchItems();
+        },
+        fetchItems: function fetchItems() {
+            var _this = this;
+
+            this.loading = true;
+
+            for (var key in this.filters) {
+                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key].join(', ');
+                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
+                    this.activeFilters[key] = this.filters[key];
+                }
+            }
+
+            this.$http.get(this.fetchAction, { params: this.filters }).then(function (response) {
+                _this.loading = false;
+                _this.items = response.body;
+            }, function (response) {});
+        },
+        hasAction: function hasAction(name) {
+            return this.actions.indexOf(name) !== -1;
+        },
+        hasAccepted: function hasAccepted(semester) {
+            var _this2 = this;
+
+            return semester.promises.filter(function (user) {
+                return user.id === _this2.user.id;
+            }).length > 0;
+        },
+        hasDeclined: function hasDeclined(semester) {
+            var _this3 = this;
+
+            return semester.denials.filter(function (user) {
+                return user.id === _this3.user.id;
+            }).length > 0;
+        }
+    }
+});
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.loading
+      ? _c("div", { staticClass: "loader" })
+      : _vm.items.length > 0
+        ? _c("div", { staticClass: "list-table" }, [
+            _c("header", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-10" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.$t("Semester")) +
+                    "\n                "
+                ),
+                _c("div", { staticClass: "btn-group" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default btn-sm",
+                      attrs: { type: "button" },
+                      on: { click: _vm.changeSortDir }
+                    },
+                    [
+                      _c("span", {
+                        class: {
+                          oi: true,
+                          "oi-sort-ascending": _vm.filters.dir === "ASC",
+                          "oi-sort-descending": _vm.filters.dir === "DESC"
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "btn btn-default btn-sm dropdown-toggle dropdown-toggle-split",
+                      attrs: {
+                        type: "button",
+                        id: "sortOrder",
+                        "data-toggle": "dropdown",
+                        "aria-haspopup": "true",
+                        "aria-expanded": "false"
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.sortOptions[this.filters.sort]) +
+                          "\n                    "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "dropdown-menu",
+                      attrs: { "aria-labelledby": "sortOrder" }
+                    },
+                    _vm._l(_vm.sortOptions, function(sortOption, key) {
+                      return _c(
+                        "a",
+                        {
+                          key: key,
+                          staticClass: "dropdown-item",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.changeSort(key)
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(sortOption))]
+                      )
+                    })
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-2 row-count" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.$t("Total") + ": " + _vm.items.length) +
+                    "\n            "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              { staticClass: "semesters" },
+              _vm._l(_vm.items, function(semester) {
+                return _c(
+                  "a",
+                  {
+                    key: semester.id,
+                    attrs: { href: "/semester/" + semester.id }
+                  },
+                  [
+                    _c("li", { staticClass: "row align-items-center" }, [
+                      _c("div", { staticClass: "col-md-8" }, [
+                        _c("div", { staticClass: "flex align-items-center" }, [
+                          _c("div", { staticClass: "avatar avatar-default" }, [
+                            _c("span", [_vm._v(_vm._s(semester.name))])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "name" }, [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(semester.name) +
+                                "\n                                "
+                            ),
+                            _c("div", [
+                              _c("small", { staticClass: "text-muted" }, [
+                                _c("span", { staticClass: "oi oi-calendar" }),
+                                _vm._v(
+                                  " " +
+                                    _vm._s(semester.start_date) +
+                                    " – " +
+                                    _vm._s(semester.end_date) +
+                                    "\n                                    "
+                                )
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col-md-3" },
+                        [
+                          _c("accept-decline", {
+                            attrs: {
+                              "accept-route":
+                                "/semester/accept/" +
+                                semester.id +
+                                "/" +
+                                _vm.user.id,
+                              "decline-route":
+                                "/semester/decline/" +
+                                semester.id +
+                                "/" +
+                                _vm.user.id,
+                              accepted: _vm.hasAccepted(semester),
+                              declined: _vm.hasDeclined(semester)
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.canManageSemesters
+                        ? _c("div", { staticClass: "col-md-1 actions" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "dropdown-toggle no-caret",
+                                attrs: {
+                                  href: "#",
+                                  id: "singleActions" + semester.id,
+                                  role: "button",
+                                  "data-toggle": "dropdown",
+                                  "aria-haspopup": "true",
+                                  "aria-expanded": "false"
+                                }
+                              },
+                              [_c("span", { staticClass: "oi oi-ellipses" })]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "dropdown-menu dropdown-menu-right",
+                                attrs: {
+                                  "aria-labelledby":
+                                    "singleActions" + semester.id
+                                }
+                              },
+                              [
+                                _vm.hasAction("edit")
+                                  ? _c(
+                                      "a",
+                                      {
+                                        staticClass: "dropdown-item",
+                                        attrs: {
+                                          href:
+                                            "admin/semester/edit/" + semester.id
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "oi oi-pencil"
+                                        }),
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(_vm.$t("Edit")) +
+                                            "\n                            "
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.hasAction("remove")
+                                  ? _c(
+                                      "form",
+                                      {
+                                        staticClass: "form-inline",
+                                        attrs: {
+                                          method: "POST",
+                                          action:
+                                            "/admin/semesters/delete/" +
+                                            semester.id
+                                        }
+                                      },
+                                      [
+                                        _c("input", {
+                                          attrs: {
+                                            name: "_method",
+                                            type: "hidden",
+                                            value: "DELETE"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "confirm",
+                                                rawName: "v-confirm",
+                                                value: _vm.$t(
+                                                  "Do you really want to remove this semester?"
+                                                ),
+                                                expression:
+                                                  "$t('Do you really want to remove this semester?')"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "btn btn-link dropdown-item",
+                                            attrs: { type: "submit" }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "oi oi-box"
+                                            }),
+                                            _vm._v(
+                                              " " +
+                                                _vm._s(_vm.$t("Remove")) +
+                                                "\n                                "
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          attrs: {
+                                            type: "hidden",
+                                            name: "_token"
+                                          },
+                                          domProps: { value: _vm.csrf }
+                                        })
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ]
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ]
+                )
+              })
+            )
+          ])
+        : _c("div", { staticClass: "no-results" }, [
+            _vm._v(_vm._s(_vm.$t("No results found.")))
+          ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-89c9fea6", module.exports)
+  }
+}
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(181)
+/* template */
+var __vue_template__ = __webpack_require__(182)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Filters.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0d464a94", Component.options)
+  } else {
+    hotAPI.reload("data-v-0d464a94", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 181 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['voices', 'concerts', 'fetchItems', 'filters', 'activeFilters', 'removeFilter'],
+    methods: {
+        filter: function filter() {
+            this.filters.voices = $('select[name="voices[]"]').val();
+            this.filters.concerts = $('select[name="concerts[]"]').val();
+            this.fetchItems();
+        },
+        _removeFilter: function _removeFilter(key) {
+            this.removeFilter(key);
+        }
+    }
+});
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "filters" }, [
+    _c("div", { staticClass: "collapse show", attrs: { id: "filtersInner" } }, [
+      _c(
+        "form",
+        {
+          staticClass: "filter-form",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.filter($event)
+            }
+          }
+        },
+        [
+          _vm.filters.hasOwnProperty("search")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "search" } },
+                  [_vm._v(_vm._s(_vm.$t("Search")))]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filters.search,
+                      expression: "filters.search"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { name: "search", id: "search" },
+                  domProps: { value: _vm.filters.search },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters, "search", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filters.hasOwnProperty("voices")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "voices" } },
+                  [_vm._v(_vm._s(_vm.$t("Voices")))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filters.voices,
+                        expression: "filters.voices"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      name: "voices[]",
+                      id: "voices",
+                      multiple: "multiple"
+                    },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.filters,
+                            "voices",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                        function($event) {
+                          _vm.addValue(_vm.event, _vm.filters.voices)
+                        }
+                      ]
+                    }
+                  },
+                  _vm._l(_vm.voices, function(voice, key) {
+                    return _c(
+                      "option",
+                      { key: key, domProps: { value: key } },
+                      [_vm._v(_vm._s(voice))]
+                    )
+                  })
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filters.hasOwnProperty("concerts")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "concerts" } },
+                  [_vm._v(_vm._s(_vm.$t("Concerts")))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filters.concerts,
+                        expression: "filters.concerts"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      name: "concerts[]",
+                      id: "concerts",
+                      multiple: "multiple"
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.filters,
+                          "concerts",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  _vm._l(_vm.concerts, function(concert, key) {
+                    return _c(
+                      "option",
+                      { key: key, domProps: { value: key } },
+                      [_vm._v(_vm._s(concert))]
+                    )
+                  })
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filters.hasOwnProperty("ageFrom") ||
+          _vm.filters.hasOwnProperty("ageTo")
+            ? _c("div", { staticClass: "form-group age-filter" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "age" } },
+                  [_vm._v(_vm._s(_vm.$t("Age")))]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filters.ageFrom,
+                      expression: "filters.ageFrom"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "number",
+                    name: "age-from",
+                    min: "10",
+                    max: "110",
+                    placeholder: "Min"
+                  },
+                  domProps: { value: _vm.filters.ageFrom },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters, "ageFrom", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.filters.ageTo,
+                      expression: "filters.ageTo"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "number",
+                    name: "age-to",
+                    min: "10",
+                    max: "110",
+                    placeholder: "Max"
+                  },
+                  domProps: { value: _vm.filters.ageTo },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.filters, "ageTo", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.filters.hasOwnProperty("accepted")
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  { staticClass: "control-label", attrs: { for: "accepted" } },
+                  [_vm._v(_vm._s(_vm.$t("Answer")))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filters.accepted,
+                        expression: "filters.accepted"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { name: "accepted", id: "accepted" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.filters,
+                          "accepted",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v(_vm._s(_vm.$t("Accepted")))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "0" } }, [
+                      _vm._v(_vm._s(_vm.$t("Declined")))
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "not answered" } }, [
+                      _vm._v(_vm._s(_vm.$t("Not answered")))
+                    ])
+                  ]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _vm._v("\n                 "),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-sm",
+                attrs: { type: "submit" }
+              },
+              [_vm._v(_vm._s(_vm.$t("Apply filters")))]
+            )
+          ])
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    Object.keys(_vm.activeFilters).length > 0
+      ? _c(
+          "ul",
+          { staticClass: "active-filters" },
+          _vm._l(_vm.activeFilters, function(val, key) {
+            return key !== "sort" && key !== "dir"
+              ? _c(
+                  "li",
+                  {
+                    key: key,
+                    staticClass: "badge badge-pill badge-default",
+                    attrs: { "data-field": key },
+                    on: {
+                      click: function($event) {
+                        _vm._removeFilter(key)
+                      }
+                    }
+                  },
+                  [
+                    _c("strong", [_vm._v(_vm._s(key))]),
+                    _vm._v(
+                      ":\n            " +
+                        _vm._s(key === "voices" ? _vm.voices[val] : val) +
+                        "\n        "
+                    )
+                  ]
+                )
+              : _vm._e()
+          })
+        )
+      : _c("span", { staticClass: "text-muted" }, [
+          _vm._v(_vm._s(_vm.$t("No active filters")))
+        ]),
+    _vm._v(" "),
+    _c(
+      "a",
+      {
+        staticClass: "show-filters",
+        attrs: {
+          "data-toggle": "collapse",
+          href: "#filtersInner",
+          "aria-expanded": "false",
+          "aria-controls": "filtersInner"
+        }
+      },
+      [_vm._v("\n        " + _vm._s(_vm.$t("Show/hide filters")) + "\n    ")]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0d464a94", module.exports)
+  }
+}
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(184)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(189)
+/* template */
+var __vue_template__ = __webpack_require__(190)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-431cb064"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "node_modules/vue-picture-input/PictureInput.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-431cb064", Component.options)
+  } else {
+    hotAPI.reload("data-v-431cb064", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(185);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(187)("10acecb8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../css-loader/index.js!../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-431cb064\",\"scoped\":true,\"hasInlineConfig\":true}!../vue-loader/lib/selector.js?type=styles&index=0&bustCache!./PictureInput.vue", function() {
+     var newContent = require("!!../css-loader/index.js!../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-431cb064\",\"scoped\":true,\"hasInlineConfig\":true}!../vue-loader/lib/selector.js?type=styles&index=0&bustCache!./PictureInput.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(186)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.picture-input[data-v-431cb064] {\n  width: 100%;\n  margin: 0 auto;\n  text-align: center;\n}\n.preview-container[data-v-431cb064] {\n  width: 100%;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  margin: 0 auto;\n  cursor: pointer;\n  overflow: hidden;\n}\n.picture-preview[data-v-431cb064] {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  z-index: 10001;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  background-color: rgba(200,200,200,.25);\n}\n.picture-preview.dragging-over[data-v-431cb064] {\n  -webkit-filter: brightness(0.5);\n          filter: brightness(0.5);\n}\n.picture-inner[data-v-431cb064] {\n  position: relative;\n  z-index: 10002;\n  pointer-events: none;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  margin: 1em auto;\n  padding: 0.5em;\n  border: .3em dashed rgba(66,66,66,.15);\n  border-radius: 8px;\n  width: calc(100% - 2.5em);\n  height: calc(100% - 2.5em);\n  display: table;\n}\n.picture-inner .picture-inner-text[data-v-431cb064] {\n  display: table-cell;\n  vertical-align: middle;\n  text-align: center;\n  font-size: 2em;\n  line-height: 1.5;\n}\nbutton[data-v-431cb064] {\n  margin: 1em .25em;\n  cursor: pointer;\n}\ninput[type=file][data-v-431cb064] {\n  display: none;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(188)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 189 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'picture-input',
+  props: {
+    width: {
+      type: [String, Number],
+      default: Number.MAX_SAFE_INTEGER
+    },
+    height: {
+      type: [String, Number],
+      default: Number.MAX_SAFE_INTEGER
+    },
+    margin: {
+      type: [String, Number],
+      default: 0
+    },
+    accept: {
+      type: String,
+      default: 'image/*'
+    },
+    size: {
+      type: [String, Number],
+      default: Number.MAX_SAFE_INTEGER
+    },
+    name: {
+      type: String,
+      default: null
+    },
+    id: {
+      type: [String, Number],
+      default: null
+    },
+    buttonClass: {
+      type: String,
+      default: 'btn btn-primary button'
+    },
+    removeButtonClass: {
+      type: String,
+      default: 'btn btn-secondary button secondary'
+    },
+    aspectButtonClass: {
+      type: String,
+      default: 'btn btn-secondary button secondary'
+    },
+    prefill: {
+      type: [String, File],
+      default: ''
+    },
+    prefillOptions: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    crop: {
+      type: Boolean,
+      default: true
+    },
+    radius: {
+      type: [String, Number],
+      default: 0
+    },
+    removable: {
+      type: Boolean,
+      default: false
+    },
+    hideChangeButton: {
+      type: Boolean,
+      default: false
+    },
+    autoToggleAspectRatio: {
+      type: Boolean,
+      default: false
+    },
+    toggleAspectRatio: {
+      type: Boolean,
+      default: false
+    },
+    changeOnClick: {
+      type: Boolean,
+      default: true
+    },
+    plain: {
+      type: Boolean,
+      default: false
+    },
+    zIndex: {
+      type: Number,
+      default: 10000
+    },
+    alertOnError: {
+      type: Boolean,
+      default: true
+    },
+    customStrings: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    }
+  },
+  watch: {
+    prefill: function prefill() {
+      if (this.prefill) {
+        this.preloadImage(this.prefill, this.prefillOptions);
+      } else {
+        this.removeImage();
+      }
+    }
+  },
+  data: function data() {
+    return {
+      imageSelected: false,
+      previewHeight: 0,
+      previewWidth: 0,
+      draggingOver: false,
+      canvasWidth: 0,
+      canvasHeight: 0,
+      strings: {
+        upload: '<p>Your device does not support file uploading.</p>',
+        drag: 'Drag an image or <br>click here to select a file',
+        tap: 'Tap here to select a photo <br>from your gallery',
+        change: 'Change Photo',
+        aspect: 'Landscape/Portrait',
+        remove: 'Remove Photo',
+        select: 'Select a Photo',
+        selected: '<p>Photo successfully selected!</p>',
+        fileSize: 'The file size exceeds the limit',
+        fileType: 'This file type is not supported.'
+      }
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.updateStrings();
+    if (this.prefill) {
+      this.preloadImage(this.prefill, this.prefillOptions);
+    }
+
+    this.$nextTick(function () {
+      window.addEventListener('resize', _this.onResize);
+      _this.onResize();
+    });
+    if (this.supportsPreview) {
+      this.pixelRatio = Math.round(window.devicePixelRatio || window.screen.deviceXDPI / window.screen.logicalXDPI);
+      var canvas = this.$refs.previewCanvas;
+      if (canvas.getContext) {
+        this.context = canvas.getContext('2d');
+        this.context.scale(this.pixelRatio, this.pixelRatio);
+      }
+    }
+    if (this.accept !== 'image/*') {
+      this.fileTypes = this.accept.split(',');
+      this.fileTypes = this.fileTypes.map(function (s) {
+        return s.trim();
+      });
+    }
+
+    this.canvasWidth = this.width;
+    this.canvasHeight = this.height;
+
+    this.$on('error', this.onError);
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener('resize', this.onResize);
+    this.$off('error', this.onError);
+  },
+
+  methods: {
+    updateStrings: function updateStrings() {
+      for (var s in this.customStrings) {
+        if (s in this.strings && typeof this.customStrings[s] === 'string') {
+          this.strings[s] = this.customStrings[s];
+        }
+      }
+    },
+    onClick: function onClick() {
+      if (!this.imageSelected) {
+        this.selectImage();
+        return;
+      }
+
+      if (this.changeOnClick) {
+        this.selectImage();
+      }
+
+      this.$emit('click');
+    },
+    onResize: function onResize() {
+      this.resizeCanvas();
+
+      if (this.imageObject) {
+        this.drawImage(this.imageObject);
+      }
+    },
+    onDragStart: function onDragStart() {
+      if (!this.supportsDragAndDrop) {
+        return;
+      }
+      this.draggingOver = true;
+    },
+    onDragStop: function onDragStop() {
+      if (!this.supportsDragAndDrop) {
+        return;
+      }
+      this.draggingOver = false;
+    },
+    onFileDrop: function onFileDrop(e) {
+      this.onDragStop();
+      this.onFileChange(e);
+    },
+    onFileChange: function onFileChange(e, prefill) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) {
+        return;
+      }
+      if (files[0].size <= 0 || files[0].size > this.size * 1024 * 1024) {
+        this.$emit('error', {
+          type: 'fileSize',
+          fileSize: files[0].size,
+          fileType: files[0].type,
+          fileName: files[0].name,
+          message: this.strings.fileSize + ' (' + this.size + 'MB)'
+        });
+        return;
+      }
+      if (files[0].name === this.fileName && files[0].size === this.fileSize && this.fileModified === files[0].lastModified) {
+        return;
+      }
+
+      this.file = files[0];
+      this.fileName = files[0].name;
+      this.fileSize = files[0].size;
+      this.fileModified = files[0].lastModified;
+      this.fileType = files[0].type;
+
+      if (this.accept === 'image/*') {
+        if (files[0].type.substr(0, 6) !== 'image/') {
+          return;
+        }
+      } else {
+        if (this.fileTypes.indexOf(files[0].type) === -1) {
+          this.$emit('error', {
+            type: 'fileType',
+            fileSize: files[0].size,
+            fileType: files[0].type,
+            fileName: files[0].name,
+            message: this.strings.fileType
+          });
+          return;
+        }
+      }
+      this.imageSelected = true;
+      this.image = '';
+      if (this.supportsPreview) {
+        this.loadImage(files[0], prefill || false);
+      } else {
+        if (prefill) {
+          this.$emit('prefill');
+        } else {
+          this.$emit('change', this.image);
+        }
+      }
+    },
+    onError: function onError(error) {
+      if (this.alertOnError) {
+        alert(error.message);
+      }
+    },
+    loadImage: function loadImage(file, prefill) {
+      var _this2 = this;
+
+      this.getEXIFOrientation(file, function (orientation) {
+        _this2.setOrientation(orientation);
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          _this2.image = e.target.result;
+          if (prefill) {
+            _this2.$emit('prefill');
+          } else {
+            _this2.$emit('change', _this2.image);
+          }
+          _this2.imageObject = new Image();
+          _this2.imageObject.onload = function () {
+            if (_this2.autoToggleAspectRatio) {
+              var canvasOrientation = _this2.getOrientation(_this2.canvasWidth, _this2.canvasHeight);
+              var imageOrientation = _this2.getOrientation(_this2.imageObject.width, _this2.imageObject.height);
+              if (canvasOrientation !== imageOrientation) {
+                _this2.rotateCanvas();
+              }
+            }
+            _this2.drawImage(_this2.imageObject);
+          };
+          _this2.imageObject.src = _this2.image;
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    drawImage: function drawImage(image) {
+      this.imageWidth = image.width;
+      this.imageHeight = image.height;
+      this.imageRatio = image.width / image.height;
+      var offsetX = 0;
+      var offsetY = 0;
+      var scaledWidth = this.previewWidth;
+      var scaledHeight = this.previewHeight;
+      var previewRatio = this.previewWidth / this.previewHeight;
+      if (this.crop) {
+        if (this.imageRatio >= previewRatio) {
+          scaledWidth = scaledHeight * this.imageRatio;
+          offsetX = (this.previewWidth - scaledWidth) / 2;
+        } else {
+          scaledHeight = scaledWidth / this.imageRatio;
+          offsetY = (this.previewHeight - scaledHeight) / 2;
+        }
+      } else {
+        if (this.imageRatio >= previewRatio) {
+          scaledHeight = scaledWidth / this.imageRatio;
+          offsetY = (this.previewHeight - scaledHeight) / 2;
+        } else {
+          scaledWidth = scaledHeight * this.imageRatio;
+          offsetX = (this.previewWidth - scaledWidth) / 2;
+        }
+      }
+      var canvas = this.$refs.previewCanvas;
+      canvas.style.background = 'none';
+      canvas.width = this.previewWidth * this.pixelRatio;
+      canvas.height = this.previewHeight * this.pixelRatio;
+      this.context.setTransform(1, 0, 0, 1, 0, 0);
+      this.context.clearRect(0, 0, canvas.width, canvas.height);
+      if (this.rotate) {
+        this.context.translate(offsetX * this.pixelRatio, offsetY * this.pixelRatio);
+        this.context.translate(scaledWidth / 2 * this.pixelRatio, scaledHeight / 2 * this.pixelRatio);
+        this.context.rotate(this.rotate);
+        offsetX = -scaledWidth / 2;
+        offsetY = -scaledHeight / 2;
+      }
+      this.context.drawImage(image, offsetX * this.pixelRatio, offsetY * this.pixelRatio, scaledWidth * this.pixelRatio, scaledHeight * this.pixelRatio);
+    },
+    selectImage: function selectImage() {
+      this.$refs.fileInput.click();
+    },
+    removeImage: function removeImage() {
+      this.$refs.fileInput.value = '';
+      this.$refs.fileInput.type = '';
+      this.$refs.fileInput.type = 'file';
+      this.fileName = '';
+      this.fileType = '';
+      this.fileSize = 0;
+      this.fileModified = 0;
+      this.imageSelected = false;
+      this.image = '';
+      this.file = null;
+      this.imageObject = null;
+      this.$refs.previewCanvas.style.backgroundColor = 'rgba(200,200,200,.25)';
+      this.$refs.previewCanvas.width = this.previewWidth * this.pixelRatio;
+      this.$emit('remove');
+    },
+    rotateImage: function rotateImage() {
+      this.rotateCanvas();
+
+      if (this.imageObject) {
+        this.drawImage(this.imageObject);
+      }
+
+      var newOrientation = this.getOrientation(this.canvasWidth, this.canvasHeight);
+      this.$emit('aspectratiochange', newOrientation);
+    },
+    resizeCanvas: function resizeCanvas() {
+      var previewRatio = this.canvasWidth / this.canvasHeight;
+      var newWidth = this.$refs.container.clientWidth;
+      if (!this.toggleAspectRatio && newWidth === this.containerWidth) {
+        return;
+      }
+      this.containerWidth = newWidth;
+      this.previewWidth = Math.min(this.containerWidth - this.margin * 2, this.canvasWidth);
+      this.previewHeight = this.previewWidth / previewRatio;
+    },
+    getOrientation: function getOrientation(width, height) {
+      var orientation = 'square';
+
+      if (width > height) {
+        orientation = 'landscape';
+      } else if (width < height) {
+        orientation = 'portrait';
+      }
+
+      return orientation;
+    },
+    switchCanvasOrientation: function switchCanvasOrientation() {
+      var canvasWidth = this.canvasWidth;
+      var canvasHeight = this.canvasHeight;
+
+      this.canvasWidth = canvasHeight;
+      this.canvasHeight = canvasWidth;
+    },
+    rotateCanvas: function rotateCanvas() {
+      this.switchCanvasOrientation();
+      this.resizeCanvas();
+    },
+    setOrientation: function setOrientation(orientation) {
+      this.rotate = false;
+      if (orientation === 8) {
+        this.rotate = -Math.PI / 2;
+      } else if (orientation === 6) {
+        this.rotate = Math.PI / 2;
+      } else if (orientation === 3) {
+        this.rotate = -Math.PI;
+      }
+    },
+    getEXIFOrientation: function getEXIFOrientation(file, callback) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var view = new DataView(e.target.result);
+        if (view.getUint16(0, false) !== 0xFFD8) {
+          return callback(-2);
+        }
+        var length = view.byteLength;
+        var offset = 2;
+        while (offset < length) {
+          var marker = view.getUint16(offset, false);
+          offset += 2;
+          if (marker === 0xFFE1) {
+            if (view.getUint32(offset += 2, false) !== 0x45786966) {
+              return callback(-1);
+            }
+            var little = view.getUint16(offset += 6, false) === 0x4949;
+            offset += view.getUint32(offset + 4, little);
+            var tags = view.getUint16(offset, little);
+            offset += 2;
+            for (var i = 0; i < tags; i++) {
+              if (view.getUint16(offset + i * 12, little) === 0x0112) {
+                return callback(view.getUint16(offset + i * 12 + 8, little));
+              }
+            }
+          } else if ((marker & 0xFF00) !== 0xFF00) {
+            break;
+          } else {
+            offset += view.getUint16(offset, false);
+          }
+        }
+        return callback(-1);
+      };
+      reader.readAsArrayBuffer(file.slice(0, 65536));
+    },
+    preloadImage: function preloadImage(source, options) {
+      var _this4 = this;
+
+      // ie 11 support
+      var File = window.File;
+      try {
+        new File([], ''); // eslint-disable-line
+      } catch (e) {
+        File = function (_Blob) {
+          _inherits(File, _Blob);
+
+          function File(chunks, filename) {
+            var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+            _classCallCheck(this, File);
+
+            var _this3 = _possibleConstructorReturn(this, (File.__proto__ || Object.getPrototypeOf(File)).call(this, chunks, opts));
+
+            _this3.lastModifiedDate = new Date();
+            _this3.lastModified = +_this3.lastModifiedDate;
+            _this3.name = filename;
+            return _this3;
+          }
+
+          return File;
+        }(Blob);
+      }
+      options = Object.assign({}, options);
+      if ((typeof source === 'undefined' ? 'undefined' : _typeof(source)) === 'object') {
+        this.imageSelected = true;
+        this.image = '';
+        if (this.supportsPreview) {
+          this.loadImage(source, true);
+        } else {
+          this.$emit('prefill');
+        }
+        return;
+      }
+      var headers = new Headers();
+      headers.append('Accept', 'image/*');
+      fetch(source, {
+        method: 'GET',
+        mode: 'cors',
+        headers: headers
+      }).then(function (response) {
+        return response.blob();
+      }).then(function (imageBlob) {
+        var e = { target: { files: [] } };
+        var fileName = options.fileName || source.split('/').slice(-1)[0];
+        var mediaType = options.mediaType || 'image/' + (options.fileType || fileName.split('.').slice(-1)[0]);
+        mediaType = mediaType.replace('jpg', 'jpeg');
+        e.target.files[0] = new File([imageBlob], fileName, { type: mediaType });
+        _this4.onFileChange(e, true);
+      }).catch(function (err) {
+        _this4.$emit('error', {
+          type: 'failedPrefill',
+          message: 'Failed loading prefill image: ' + err
+        });
+      });
+    }
+  },
+  computed: {
+    supportsUpload: function supportsUpload() {
+      if (navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/)) {
+        return false;
+      }
+      var el = document.createElement('input');
+      el.type = 'file';
+      return !el.disabled;
+    },
+    supportsPreview: function supportsPreview() {
+      return window.FileReader && !!window.CanvasRenderingContext2D;
+    },
+    supportsDragAndDrop: function supportsDragAndDrop() {
+      var div = document.createElement('div');
+      return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && !('ontouchstart' in window || navigator.msMaxTouchPoints);
+    },
+    computedClasses: function computedClasses() {
+      var classObject = {};
+      classObject['dragging-over'] = this.draggingOver;
+      return classObject;
+    },
+    fontSize: function fontSize() {
+      return Math.min(0.04 * this.previewWidth, 21) + 'px';
+    }
+  }
+});
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      ref: "container",
+      staticClass: "picture-input",
+      attrs: { id: "picture-input" }
+    },
+    [
+      !_vm.supportsUpload
+        ? _c("div", { domProps: { innerHTML: _vm._s(_vm.strings.upload) } })
+        : _vm.supportsPreview
+          ? _c("div", [
+              _c(
+                "div",
+                {
+                  staticClass: "preview-container",
+                  style: {
+                    maxWidth: _vm.previewWidth + "px",
+                    height: _vm.previewHeight + "px",
+                    borderRadius: _vm.radius + "%"
+                  }
+                },
+                [
+                  _c("canvas", {
+                    ref: "previewCanvas",
+                    staticClass: "picture-preview",
+                    class: _vm.computedClasses,
+                    style: {
+                      height: _vm.previewHeight + "px",
+                      zIndex: _vm.zIndex + 1
+                    },
+                    on: {
+                      drag: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                      },
+                      dragover: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                      },
+                      dragstart: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                        _vm.onDragStart($event)
+                      },
+                      dragenter: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                        _vm.onDragStart($event)
+                      },
+                      dragend: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                        _vm.onDragStop($event)
+                      },
+                      dragleave: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                        _vm.onDragStop($event)
+                      },
+                      drop: function($event) {
+                        $event.stopPropagation()
+                        $event.preventDefault()
+                        _vm.onFileDrop($event)
+                      },
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.onClick($event)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  !_vm.imageSelected && !_vm.plain
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "picture-inner",
+                          style: {
+                            top: -_vm.previewHeight + "px",
+                            marginBottom: -_vm.previewHeight + "px",
+                            fontSize: _vm.fontSize,
+                            borderRadius: _vm.radius + "%",
+                            zIndex: _vm.zIndex + 2
+                          }
+                        },
+                        [
+                          _vm.supportsDragAndDrop
+                            ? _c("span", {
+                                staticClass: "picture-inner-text",
+                                domProps: {
+                                  innerHTML: _vm._s(_vm.strings.drag)
+                                }
+                              })
+                            : _c("span", {
+                                staticClass: "picture-inner-text",
+                                domProps: { innerHTML: _vm._s(_vm.strings.tap) }
+                              })
+                        ]
+                      )
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _vm.imageSelected && !_vm.hideChangeButton
+                ? _c(
+                    "button",
+                    {
+                      class: _vm.buttonClass,
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.selectImage($event)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.strings.change))]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.imageSelected && _vm.removable
+                ? _c(
+                    "button",
+                    {
+                      class: _vm.removeButtonClass,
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.removeImage($event)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.strings.remove))]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.imageSelected &&
+              _vm.toggleAspectRatio &&
+              _vm.width !== _vm.height
+                ? _c(
+                    "button",
+                    {
+                      class: _vm.aspectButtonClass,
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.rotateImage($event)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.strings.aspect))]
+                  )
+                : _vm._e()
+            ])
+          : _c("div", [
+              !_vm.imageSelected
+                ? _c(
+                    "button",
+                    {
+                      class: _vm.buttonClass,
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.selectImage($event)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(_vm.strings.select))]
+                  )
+                : _c("div", [
+                    _c("div", {
+                      domProps: { innerHTML: _vm._s(_vm.strings.selected) }
+                    }),
+                    _vm._v(" "),
+                    !_vm.hideChangeButton
+                      ? _c(
+                          "button",
+                          {
+                            class: _vm.buttonClass,
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.selectImage($event)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.strings.change))]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.removable
+                      ? _c(
+                          "button",
+                          {
+                            class: _vm.removeButtonClass,
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.removeImage($event)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.strings.remove))]
+                        )
+                      : _vm._e()
+                  ])
+            ]),
+      _vm._v(" "),
+      _c("input", {
+        ref: "fileInput",
+        attrs: { type: "file", name: _vm.name, id: _vm.id, accept: _vm.accept },
+        on: { change: _vm.onFileChange }
+      })
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-431cb064", module.exports)
+  }
+}
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(192)
+/* template */
+var __vue_template__ = __webpack_require__(193)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AcceptDecline.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7959a5b2", Component.options)
+  } else {
+    hotAPI.reload("data-v-7959a5b2", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 192 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['acceptRoute', 'declineRoute', 'accepted', 'declined'],
+    data: function data() {
+        return {
+            hasAccepted: this.accepted,
+            hasDeclined: this.declined,
+            loading: {
+                accept: false,
+                decline: false
+            }
+        };
+    },
+
+    methods: {
+        accept: function accept(event) {
+            var _this = this;
+
+            event.preventDefault();
+
+            if (!this.hasAccepted) {
+                this.showCommentField = true;
+                this.loading.accept = true;
+
+                this.$http.get(this.acceptRoute).then(function (response) {
+                    _this.loading.accept = false;
+                    _this.hasAccepted = true;
+                    _this.hasDeclined = false;
+                }, function (response) {
+                    _this.loading.accept = false;
+
+                    _this.$emit('alert', response);
+                });
+            }
+        },
+        decline: function decline(event) {
+            var _this2 = this;
+
+            event.preventDefault();
+
+            if (!this.hasDeclined) {
+                this.showCommentField = true;
+                this.loading.decline = true;
+
+                this.$http.get(this.declineRoute).then(function (response) {
+                    _this2.loading.decline = false;
+                    _this2.hasDeclined = true;
+                    _this2.hasAccepted = false;
+                }, function (response) {
+                    _this2.loading.decline = false;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "btn-group accept-decline",
+      attrs: { role: "group", "aria-label": _vm.$t("Accept or decline") }
+    },
+    [
+      _c(
+        "button",
+        {
+          class: {
+            "btn-success": _vm.hasAccepted,
+            "btn-default": !_vm.hasAccepted,
+            btn: true
+          },
+          attrs: {
+            "data-toggle": "tooltip",
+            title: _vm.hasAccepted ? _vm.$t("Attending") : _vm.$t("Accept")
+          },
+          on: { click: _vm.accept }
+        },
+        [_c("span", { class: { oi: true, "oi-check": true } })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          class: {
+            "btn-danger": _vm.hasDeclined,
+            "btn-default": !_vm.hasDeclined,
+            btn: true
+          },
+          attrs: {
+            "data-toggle": "tooltip",
+            title: _vm.hasDeclined ? _vm.$t("Not attending") : _vm.$t("Decline")
+          },
+          on: { click: _vm.decline }
+        },
+        [_c("span", { class: { oi: true, "oi-x": true } })]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7959a5b2", module.exports)
+  }
+}
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(195)
+/* template */
+var __vue_template__ = __webpack_require__(196)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Attendance.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-667f93e0", Component.options)
+  } else {
+    hotAPI.reload("data-v-667f93e0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 195 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['routes', 'user'],
+    data: function data() {
+        return {
+            isConfirmed: this.user.confirmed === 1,
+            isExcused: this.user.excused === 1,
+            isUnexcused: this.user.confirmed === 0 && this.user.excused === 0
+        };
+    },
+
+    methods: {
+        confirm: function confirm() {
+            var _this = this;
+
+            this.$http.get(this.routes.confirm + '/' + this.user.id).then(function (response) {
+                _this.isExcused = false;
+                _this.isUnexcused = false;
+                _this.isConfirmed = true;
+            }, function (response) {});
+        },
+        excuse: function excuse() {
+            var _this2 = this;
+
+            this.$http.get(this.routes.excused + '/' + this.user.id).then(function (response) {
+                _this2.isExcused = true;
+                _this2.isUnexcused = false;
+                _this2.isConfirmed = false;
+            }, function (response) {});
+        },
+        unexcuse: function unexcuse() {
+            var _this3 = this;
+
+            this.$http.get(this.routes.unexcused + '/' + this.user.id).then(function (response) {
+                _this3.isExcused = false;
+                _this3.isUnexcused = true;
+                _this3.isConfirmed = false;
+            }, function (response) {});
+        }
+    }
+});
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "btn-group attendance-buttons",
+      attrs: { role: "group", "aria-label": _vm.$t("Accept or decline") }
+    },
+    [
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-success": _vm.isConfirmed,
+            "btn-default": !_vm.isConfirmed
+          },
+          attrs: { "data-toggle": "tooltip", title: _vm.$t("Present") },
+          on: { click: _vm.confirm }
+        },
+        [_c("span", { staticClass: "oi oi-check" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-warning": _vm.isExcused,
+            "btn-default": !_vm.isExcused
+          },
+          attrs: { "data-toggle": "tooltip", title: _vm.$t("Excused") },
+          on: { click: _vm.excuse }
+        },
+        [_c("span", { staticClass: "oi oi-medical-cross" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-danger": _vm.isUnexcused,
+            "btn-default": !_vm.isUnexcused
+          },
+          attrs: { "data-toggle": "tooltip", title: _vm.$t("Unexcused") },
+          on: { click: _vm.unexcuse }
+        },
+        [_c("span", { staticClass: "oi oi-x" })]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-667f93e0", module.exports)
+  }
+}
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

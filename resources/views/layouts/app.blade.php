@@ -15,138 +15,143 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url('/dashboard') }}">{{ config('app.name', 'Chorganizer') }}</a>
+<div id="app">
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{{ url('/dashboard') }}">{{ config('app.name', 'Chorganizer') }}</a>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Left Side Of Navbar -->
-                <div class="mr-auto">&nbsp;</div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left Side Of Navbar -->
+            <div class="mr-auto">&nbsp;</div>
 
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
-                    @guest
-                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                    @else
-                        <li class="nav-item dropdown">
-                            @if (Auth::user()->avatar)
+            <!-- Right Side Of Navbar -->
+            <ul class="nav navbar-nav navbar-right">
+                <!-- Authentication Links -->
+                @guest
+                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                @else
+                    <li class="nav-item dropdown">
+                        @if (Auth::user()->avatar)
                             <div class="avatar">
                                 <img src="{{ asset('/storage/avatars/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->firstname . ' ' . Auth::user()->surname }}">
                             </div>
-                            @endif
+                        @endif
 
-                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                {{ Auth::user()->firstname }} {{ Auth::user()->surname }} <span class="caret"></span>
-                            </a>
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown"
+                           role="button" aria-expanded="false" aria-haspopup="true">
+                            {{ Auth::user()->firstname }} {{ Auth::user()->surname }} <span class="caret"></span>
+                        </a>
 
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li class="dropdown-item">
-                                    <a href="{{ route('profile.edit', Auth::user()->id) }}">
-                                        {{ __('My Profile') }}
-                                    </a>
-                                </li>
-                                <li class="dropdown-item">
-                                    <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li class="dropdown-item">
+                                <a href="{{ route('profile.edit', Auth::user()->id) }}">
+                                    {{ __('My Profile') }}
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @endguest
-                </ul>
-            </div>
-        </nav>
-
-        @include('layouts.modals')
-
-        <div class="wrapper">
-            <nav id="sidebar">
-                <ul class="navbar-nav">
-                    @guest
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">
-                                <span class="oi oi-dashboard"></span>&nbsp;
-                                {{ __('Dashboard') }}
-                            </a>
-                        </li>
-                        @if (Auth::user()->can('manageSemesters'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/semesters') }}">
-                                    <span class="oi oi-calendar"></span>&nbsp;
-                                    {{ __('Semesters') }}
+                                    {{ __('Logout') }}
                                 </a>
-                            </li>
-                        @endif
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('projects') }}">
-                                <span class="oi oi-project"></span>&nbsp;
-                                {{ __('Projects') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('concerts') }}">
-                                <span class="oi oi-musical-note"></span>&nbsp;
-                                {{ __('Concerts') }}
-                            </a>
-                        </li>
-                        @if (Auth::user()->can('manageUsers'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/users') }}">
-                                    <span class="oi oi-people"></span>&nbsp;
-                                    {{ __('Users') }}
-                                </a>
-                            </li>
-                        @endif
-                        @if (Auth::user()->can('manageVoices'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/voices') }}">
-                                    <span class="oi oi-pulse"></span>&nbsp;
-                                    {{ __('Voices') }}
-                                </a>
-                            </li>
-                        @endif
-                    @endguest
-                </ul>
-            </nav>
-            <section id="content" class="container">
-                <div class="flash-message">
-                    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                        @if(Session::has('alert-' . $msg))
-                            <p class="alert alert-{{ $msg }}">
-                                {{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            </p>
-                        @endif
-                    @endforeach
-                </div> <!-- .flash-message -->
 
-                @if (isset($errors) && count($errors) > 0)
-                    <p class="alert alert-danger">
-                        {{ __('There were errors with your input. Check the form.') }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    </p>
-                @endif
-
-                @if (isset($breadcrumbs))
-                    {!! $breadcrumbs->render() !!}
-                @endif
-
-                @yield('content')
-            </section>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endguest
+            </ul>
         </div>
-    </div>
+    </nav>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    @include('layouts.modals')
+
+    <div class="wrapper">
+        <nav id="sidebar">
+            <ul class="navbar-nav">
+                @guest
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">
+                            <span class="oi oi-dashboard"></span>&nbsp;
+                            {{ __('Dashboard') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/semesters') }}">
+                            <span class="oi oi-calendar"></span>&nbsp;
+                            {{ __('Semesters') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('projects') }}">
+                            <span class="oi oi-project"></span>&nbsp;
+                            {{ __('Projects') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('concerts') }}">
+                            <span class="oi oi-musical-note"></span>&nbsp;
+                            {{ __('Concerts') }}
+                        </a>
+                    </li>
+                    @if (Auth::user()->can('manageUsers'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/admin/users') }}">
+                                <span class="oi oi-people"></span>&nbsp;
+                                {{ __('Users') }}
+                            </a>
+                        </li>
+                    @endif
+                    @if (Auth::user()->can('manageVoices'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/admin/voices') }}">
+                                <span class="oi oi-pulse"></span>&nbsp;
+                                {{ __('Voices') }}
+                            </a>
+                        </li>
+                    @endif
+                @endguest
+            </ul>
+        </nav>
+        <section id="content" class="container">
+            <div class="flash-message">
+                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                    @if(Session::has('alert-' . $msg))
+                        <p class="alert alert-{{ $msg }}">
+                            {{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert"
+                                                                   aria-label="close">&times;</a>
+                        </p>
+                    @endif
+                @endforeach
+            </div> <!-- .flash-message -->
+
+            @if (isset($errors) && count($errors) > 0)
+                <p class="alert alert-danger">
+                    {{ __('There were errors with your input. Check the form.') }} <a href="#" class="close"
+                                                                                      data-dismiss="alert"
+                                                                                      aria-label="close">&times;</a>
+                </p>
+            @endif
+
+            @if (isset($breadcrumbs))
+                {!! $breadcrumbs->render() !!}
+            @endif
+
+            @yield('content')
+        </section>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

@@ -31,9 +31,11 @@
                 @else
                     <small class="text-muted">{{ __('No projects this semester.') }}</small>
                 @endif
+                @permission('manageProjects')
                 <div class="margin-top">
                     <a class="btn btn-default btn-sm" href="{{ route('project.create', ['semester' => $semester]) }}">{{ __('Add a project') }}</a>
                 </div>
+                @endpermission
             </div>
         </div>
     </div>
