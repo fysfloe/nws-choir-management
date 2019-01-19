@@ -73430,16 +73430,9 @@ var render = function() {
                         [
                           _c("accept-decline", {
                             attrs: {
-                              "accept-route":
-                                "/semester/accept/" +
-                                semester.id +
-                                "/" +
-                                _vm.user.id,
+                                "accept-route": "/semester/accept/" + semester.id,
                               "decline-route":
-                                "/semester/decline/" +
-                                semester.id +
-                                "/" +
-                                _vm.user.id,
+                                  "/semester/decline/" + semester.id,
                               accepted: _vm.hasAccepted(semester),
                               declined: _vm.hasDeclined(semester)
                             }
