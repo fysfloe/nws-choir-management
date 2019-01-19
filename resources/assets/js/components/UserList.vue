@@ -57,16 +57,17 @@
             </header>
 
             <ul class="users">
-                <li class="row align-items-center" v-for="user in _users" :key="user.id">
+                <li class="row align-items-center" v-for="user in _users" :key="user.id"
+                    @click="openUserProfile(user.id)">
                     <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline ? '8' : '11')">
                         <div class="flex align-items-center">
                             <input type="checkbox" @click="toggleUser($event, user.id)" :value="user.id" :checked="selectedUsers.indexOf(user.id) !== -1">&nbsp;
-                            <div class="avatar" v-if="user.avatar">
-                                <img :src="'/storage/avatars/' + user.avatar" :alt="user.firstname + ' ' + user.surname">
-                            </div>
-                            <div class="avatar avatar-default" v-else>
-                                <span class="oi oi-person"></span>
-                            </div>
+                            <avatar
+                                    :src="`/storage/avatars/${user.avatar}`"
+                                    :img="user.avatar"
+                                    icon="oi-person"
+                                    :alt="user.firstname + ' ' + user.surname"
+                            ></avatar>
                             <div class="name">
                                 {{ user.firstname }} {{ user.surname }}
                                 <div>
@@ -131,6 +132,13 @@
             </ul>
         </div>
         <div v-else class="no-results">{{ $t('No users found.') }}</div>
+
+        <user-profile
+                v-if="Object.keys(currentUser).length !== 0"
+                :user="currentUser"
+                :set-voice-route="setVoiceRoute"
+                :close="closeUserProfile"
+        ></user-profile>
     </div>
 </template>
 
@@ -205,7 +213,8 @@ export default {
                 sort: 'surname',
                 dir: 'ASC',
                 accepted: '1'
-            }
+            },
+            currentUser: {}
         }
     },
     computed: {
@@ -303,6 +312,15 @@ export default {
         },
         hasAction: function (name) {
             return this.actions.indexOf(name) !== -1
+        },
+        openUserProfile: function (id) {
+            this.$http.get(`/admin/users/${id}`).then(response => {
+                this.currentUser = response.body;
+            }, response => {
+            });
+        },
+        closeUserProfile: function () {
+            this.currentUser = {};
         }
     }
 }

@@ -28,6 +28,7 @@ $enable-flex: true !default;
 @import "avatar";
 @import "modals";
 @import "comments";
+@import "user-profile";
 
 .navbar-dark .navbar-brand {
     font-family: "Pacifico", cursive;
@@ -84,6 +85,7 @@ a {
 .wrapper {
     display: flex;
     align-items: stretch;
+    position: relative;
 
     #sidebar {
         min-width: 200px;

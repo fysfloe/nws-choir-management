@@ -10179,6 +10179,64 @@ input.date {
   color: #149EB5;
 }
 
+ul.rehearsals,
+ul.concerts,
+ul.projects {
+  padding: 0;
+}
+
+ul.rehearsals a,
+ul.concerts a,
+ul.projects a {
+  color: inherit;
+}
+
+ul.rehearsals a:hover,
+ul.concerts a:hover,
+ul.projects a:hover {
+  text-decoration: none;
+}
+
+ul.rehearsals a:hover li,
+ul.concerts a:hover li,
+ul.projects a:hover li {
+  background: #d3e0e9;
+  border-left: 0.25em solid #149EB5;
+}
+
+ul.rehearsals a li,
+ul.concerts a li,
+ul.projects a li {
+  font-size: 0.85em;
+  padding: 0.5em 1em;
+  border-left: 0.25em solid transparent;
+  border-bottom: 0.1em solid #e4ecf2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+ul.rehearsals a li span,
+ul.rehearsals a li div,
+ul.concerts a li span,
+ul.concerts a li div,
+ul.projects a li span,
+ul.projects a li div {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+ul.rehearsals a li .accept-decline,
+ul.concerts a li .accept-decline,
+ul.projects a li .accept-decline {
+  margin: 0 !important;
+  text-align: right;
+}
+
 .filters {
   position: relative;
   padding: 0.5em;
@@ -10300,51 +10358,6 @@ header.page-header h2 {
 header.page-header a.btn-link {
   padding: 0 0.5rem;
   color: #149EB5;
-}
-
-.side-box ul.rehearsals a,
-.side-box ul.concerts a {
-  color: inherit;
-}
-
-.side-box ul.rehearsals a:hover,
-.side-box ul.concerts a:hover {
-  text-decoration: none;
-}
-
-.side-box ul.rehearsals a:hover li,
-.side-box ul.concerts a:hover li {
-  background: #d3e0e9;
-  border-left: 0.25em solid #149EB5;
-}
-
-.side-box ul.rehearsals a li,
-.side-box ul.concerts a li {
-  font-size: 0.85em;
-  padding: 0.5em 1em;
-  border-left: 0.25em solid transparent;
-  border-bottom: 0.1em solid #e4ecf2;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.side-box ul.rehearsals a li span,
-.side-box ul.rehearsals a li div,
-.side-box ul.concerts a li span,
-.side-box ul.concerts a li div {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
-}
-
-.side-box ul.rehearsals a li .accept-decline,
-.side-box ul.concerts a li .accept-decline {
-  margin: 0 !important;
-  text-align: right;
 }
 
 .accept-decline .btn,
@@ -10553,6 +10566,100 @@ ul.semesters .avatar {
   line-height: 1;
 }
 
+.user-profile .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0.3;
+}
+
+.user-profile .profile {
+  position: absolute;
+  top: 0;
+  background: white;
+  height: 100%;
+  right: 0;
+  border-radius: 1em 0 0 1em;
+  -webkit-box-shadow: 0 2em 2em #2c2e33;
+          box-shadow: 0 2em 2em #2c2e33;
+  min-width: 20rem;
+}
+
+.user-profile .profile header {
+  background: #f5f8fa;
+  border-radius: 1rem 0 0 0;
+  height: 6rem;
+  margin-bottom: 2.5rem;
+}
+
+.user-profile .profile header .close {
+  padding: 1em;
+  color: #2c2e33;
+  position: absolute;
+  font-size: 1em;
+}
+
+.user-profile .profile header .avatar {
+  width: 7rem;
+  height: 7rem;
+  margin: 0 auto 1rem;
+  position: relative;
+  top: 1rem;
+  -webkit-box-shadow: 0 0 0 0.5em white;
+          box-shadow: 0 0 0 0.5em white;
+}
+
+.user-profile .profile header .avatar.avatar-default span {
+  font-size: 6rem;
+  letter-spacing: 0;
+}
+
+.user-profile .profile section {
+  padding: 2rem 3rem;
+}
+
+.user-profile .profile section .name {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.user-profile .profile section .name h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.user-profile .profile section h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5em;
+}
+
+.user-profile .profile section ul a li {
+  padding: 0.2em 0.5em;
+}
+
+.user-profile .profile section .numbers {
+  margin-top: 2rem;
+  color: #2c2e33;
+}
+
+.user-profile .profile section .numbers .col {
+  text-align: center;
+  font-weight: bold;
+  font-size: small;
+  background: #f5f8fa;
+  margin: 0 1em;
+  padding: 1em 0.5em;
+  border-radius: 0.5em;
+}
+
+.user-profile .profile section .numbers .col .big-number {
+  font-size: 1.5rem;
+}
+
 .navbar-dark .navbar-brand {
   font-family: "Pacifico", cursive;
   font-size: 1.25rem;
@@ -10616,6 +10723,7 @@ a:hover {
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
+  position: relative;
 }
 
 .wrapper #sidebar {

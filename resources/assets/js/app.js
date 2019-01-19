@@ -31,6 +31,8 @@ Vue.component('filters', require('./components/Filters.vue'));
 Vue.component('picture-input', require('vue-picture-input'));
 Vue.component('accept-decline', require('./components/AcceptDecline.vue'));
 Vue.component('attendance', require('./components/Attendance.vue'));
+Vue.component('avatar', require('./components/Avatar.vue'));
+Vue.component('user-profile', require('./components/UserProfile.vue'));
 Vue.mixin(mixins.global);
 
 const lang = document.documentElement.lang.substr(0, 2); 

@@ -2,10 +2,10 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
@@ -42,7 +42,7 @@ class User extends Authenticatable
      */
     public function concerts()
     {
-        return $this->belongsToMany('App\Concert');
+        return $this->belongsToMany('App\Concert', 'user_concert');
     }
 
     /**
@@ -50,7 +50,7 @@ class User extends Authenticatable
      */
     public function projects()
     {
-        return $this->belongsToMany('App\Project');
+        return $this->belongsToMany('App\Project', 'user_project')->groupBy(['semester_id']);
     }
 
     /**
