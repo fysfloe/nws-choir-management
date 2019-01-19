@@ -147,7 +147,7 @@ ul.projects {
             display: flex;
             align-items: center;
 
-            span, div {
+            span, div:not('.avatar') {
                 flex-grow: 1;
             }
 

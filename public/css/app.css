@@ -10220,11 +10220,11 @@ ul.projects a li {
 }
 
 ul.rehearsals a li span,
-ul.rehearsals a li div,
+ul.rehearsals a li div:not('.avatar'),
 ul.concerts a li span,
-ul.concerts a li div,
+ul.concerts a li div:not('.avatar'),
 ul.projects a li span,
-ul.projects a li div {
+ul.projects a li div:not('.avatar') {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
