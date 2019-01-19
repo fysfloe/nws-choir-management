@@ -218,5 +218,7 @@
     "Answer": "Antwort",
     "Accepted": "Zugesagt",
     "Declined": "Abgesagt",
-    "Not answered": "Nicht geantwortet"
+    "Not answered": "Nicht geantwortet",
+    "This user is not a singer.": "Diese/r BenutzerIn ist kein/e SängerIn.",
+    "This user will not appear in the lists for rehearsals, concerts and projects.": "Diese/r BenutzerIn wird nicht in den Projekt-/Konzert- und Probenlisten aufscheinen."
 }

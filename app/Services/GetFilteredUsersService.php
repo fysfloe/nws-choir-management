@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\User;
 use App\Rehearsal;
 use App\Semester;
+use App\User;
 
 class GetFilteredUsersService {
     public function __construct()
@@ -76,6 +76,7 @@ class GetFilteredUsersService {
             LEFT OUTER JOIN voices ON voices.id = user_concert.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL
+        AND users.non_singing = 0
         AND user_concert.concert_id = $concert->id
         AND user_concert.accepted = 1
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
@@ -117,6 +118,7 @@ class GetFilteredUsersService {
             LEFT OUTER JOIN voices ON voices.id = user_project.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL
+        AND users.non_singing = 0
         AND (user_project.project_id = $project->id OR user_project.project_id IS NULL) 
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
@@ -173,6 +175,7 @@ class GetFilteredUsersService {
         $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL
+        AND users.non_singing = 0
         AND user_rehearsal.rehearsal_id = $rehearsal->id
         AND user_rehearsal.accepted = 1
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";

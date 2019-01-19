@@ -77,6 +77,21 @@
             </div>
 
             @permission('manageUsers')
+            <div class="form-group {{ $errors->has('non_singing') ? ' has-error' : '' }}">
+                <label class="control-label">
+                    {{ Form::checkbox('non_singing', 1, old('non_singing') ? old('non_singing') : $user->non_singing) }}
+                    &nbsp;
+                    {{ __('This user is not a singer.') }}<br>
+                    <small class="form-text text-muted">{{ __('This user will not appear in the lists for rehearsals, concerts and projects.') }}</small>
+                </label>
+
+                @if ($errors->has('non_singing'))
+                    <span class="help-block text-danger">
+                        <strong>{{ $errors->first('non_singing') }}</strong>
+                    </span>
+                @endif
+            </div>
+
             <div class="form-group {{ $errors->has('voice_id') ? ' has-error' : '' }}">
                 {{ Form::label('voice_id', __('Voice'), ['class' => 'control-label']) }}
                 {{ Form::select('voice_id', $voices, old('voice_id') ? old('voice_id') : ($user->voice ? $user->voice->id : null), ['class' => 'form-control']) }}
