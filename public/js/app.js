@@ -73873,8 +73873,8 @@ var render = function() {
                   _vm._l(_vm.concerts, function(concert, key) {
                     return _c(
                       "option",
-                      { key: key, domProps: { value: concert.id } },
-                      [_vm._v(_vm._s(concert.title) + "\n                    ")]
+                      { key: key, domProps: { value: key } },
+                      [_vm._v(_vm._s(concert) + "\n                    ")]
                     )
                   })
                 )

@@ -10695,7 +10695,7 @@ header.page-header {
 header.page-header h2 {
   display: inline;
   margin-right: 1rem;
-    margin-bottom: 0;
+  margin-bottom: 0;
   color: #149EB5;
   font-weight: bold;
 }
@@ -10715,7 +10715,7 @@ header.page-header .btn-group {
 }
 
 header.page-header .main-actions {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .form-inline {

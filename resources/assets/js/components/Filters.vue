@@ -17,7 +17,7 @@
                 <div class="form-group" v-if="filters.hasOwnProperty('concerts')">
                     <label for="concerts" class="control-label">{{ $t('Concerts') }}</label>
                     <select name="concerts[]" id="concerts" class="form-control" multiple="multiple" v-model="filters.concerts">
-                        <option v-for="(concert, key) in concerts" :key="key" :value="concert.id">{{ concert.title }}
+                        <option v-for="(concert, key) in concerts" :key="key" :value="key">{{ concert }}
                         </option>
                     </select>
                 </div>

@@ -5,12 +5,14 @@
     <header class="page-header">
         <h2>{{ __('Users') }}</h2>
         @permission('manageUsers')
+        <div class="main-actions">
             <a class="btn btn-default btn-sm" href="{{ route('users.create') }}">
                 {{ __('New User') }}
             </a>
             <a class="btn btn-default btn-sm" href="{{ route('users.export', app('request')->all()) }}">
                 <span class="oi oi-account-login"></span> {{ __('Export') }}
             </a>
+        </div>
         @endpermission
     </header>
 
