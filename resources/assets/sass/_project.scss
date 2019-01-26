@@ -95,8 +95,22 @@ header {
   table {
     border: 0.1rem solid darken($lightgrey, 10);
 
-    td {
+    td, th {
       border: 0.1rem solid darken($lightgrey, 10);
+    }
+
+    th:first-child {
+      background: $brand-primary;
+      color: white;
+    }
+
+    td:first-child {
+      background: white;
+    }
+
+    th:first-child, td:first-child {
+      position: sticky;
+      left: 0;
     }
 
     thead {
