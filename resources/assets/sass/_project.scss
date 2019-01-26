@@ -97,6 +97,7 @@ header {
 
     td, th {
       border: 0.1rem solid darken($lightgrey, 10);
+      white-space: nowrap;
     }
 
     th:first-child {
