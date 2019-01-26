@@ -42,6 +42,17 @@
     @endif
 </div>
 
+<div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+    {{ Form::label('description', __('Description'), ['class' => 'control-label']) }}
+    {{ Form::textarea('description', old('description'), ['class' => 'form-control']) }}
+
+    @if ($errors->has('description'))
+        <span class="help-block text-danger">
+            <strong>{{ $errors->first('description') }}</strong>
+        </span>
+    @endif
+</div><!-- .form-group -->
+
 <div class="form-group{{ $errors->has('semester_id') ? ' has-error' : '' }}">
     {{ Form::label('semester_id', __('Semester'), ['class' => 'control-label']) }}
     {{ Form::select('semester_id', $semesters, old('semester_id') ? old('semester_id') : (isset($rehearsal) ? $rehearsal->semester_id : ($app->request->get('semester') ? $app->request->get('semester') : null)), ['class' => 'form-control']) }}

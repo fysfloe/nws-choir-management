@@ -2,10 +2,10 @@
 
 namespace App;
 
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
-use Auth;
 
 class Rehearsal extends Model
 {
@@ -17,7 +17,7 @@ class Rehearsal extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'project_id'
+        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'project_id', 'description'
     ];
 
     /**

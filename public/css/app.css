@@ -10283,7 +10283,8 @@ input.date {
 }
 
 .description,
-#voices {
+#voices,
+.details {
   padding-top: 1em;
 }
 
