@@ -10399,6 +10399,7 @@ header.page-header a.btn-link {
 .project-grid table td,
 .project-grid table th {
   border: 0.1rem solid #d3e0e9;
+    white-space: nowrap;
 }
 
 .project-grid table th:first-child {
