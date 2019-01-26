@@ -1,12 +1,12 @@
 <template>
     <div>
         <filters
-        :voices="voices"
-        :concerts="concerts"
-        :fetch-items="fetchUsers"
-        :filters="filters"
-        :active-filters="activeFilters"
-        :remove-filter="removeFilter"
+                :voices="voices"
+                :concerts="concerts"
+                :fetch-items="fetchUsers"
+                :filters="filters"
+                :active-filters="activeFilters"
+                :remove-filter="removeFilter"
         ></filters>
 
         <div class="loader" v-if="loading"></div>
@@ -87,19 +87,19 @@
                         </div>
                     </div>
                     <div class="col-md-3" v-if="withAttendanceConfirmation">
-                        <attendance 
-                            :routes="attendanceRoutes"
-                            :user="user"
+                        <attendance
+                                :routes="attendanceRoutes"
+                                :user="user"
                         ></attendance>
                     </div>
                     <div class="col-md-3" v-if="withAcceptDecline">
-                                <accept-decline
-                                    :accept-route="acceptDeclineRoutes['accept'] + '/' + user.id"
-                                    :decline-route="acceptDeclineRoutes['decline'] + '/' + user.id"
-                                    :accepted="hasAccepted(user.id)"
-                                    :declined="hasDeclined(user.id)"
-                                >
-                                </accept-decline>
+                        <accept-decline
+                                :accept-route="acceptDeclineRoutes['accept'] + '/' + user.id"
+                                :decline-route="acceptDeclineRoutes['decline'] + '/' + user.id"
+                                :accepted="hasAccepted(user.id)"
+                                :declined="hasDeclined(user.id)"
+                        >
+                        </accept-decline>
                     </div>
                     <div class="col-md-1 user-actions">
                         <a class="dropdown-toggle no-caret" href="#" :id="`singleUserActions${user.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -135,175 +135,183 @@
 </template>
 
 <script>
-export default {
-    props: {
-        'concerts': {
-            type: [Array, Object]
-        }, 
-        'users': {
-            type: Array
-        }, 
-        'canManageUsers': {
-            type: [Boolean, Number]
-        }, 
-        'showRoles': {
-            type: Boolean
-        }, 
-        'fetchUsersAction': {
-            type: String
-        }, 
-        'voices': {
-            type: Object 
-        }, 
-        'sortOptions': {
-            type: Object 
-        }, 
-        'setVoiceRoute': {
-            type: String
-        }, 
-        'withAttendanceConfirmation': {
-            type: Boolean
-        }, 
-        'attendanceRoutes': {
-            type: Object 
-        }, 
-        'withAcceptDecline': {
-            type: Boolean
-        }, 
-        'acceptDeclineRoutes': {
-            type: Object
-        }, 
-        'removeUserRoute': {
-            type: String
-        },
-        'removeParticipantsRoute': {
-            type: String
-        },
-        'promises': {
-            type: Array
-        }, 
-        'denials': {
-            type: Array
-        },
-        'actions': {
-            type: Array
-        }
-    },
-    data() {
-        return {
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            loading: false,
-            _users: [],
-            activeFilters: {},
-            selectedUsers: [],
-            filters: {
-                search: '',
-                voices: [],
-                concerts: [],
-                ageFrom: '',
-                ageTo: '',
-                sort: 'surname',
-                dir: 'ASC',
-                accepted: '1'
-            }
-        }
-    },
-    computed: {
-        checkedAll: {
-            get () {
-                return this.selectedUsers.length === this._users.length;
-            }
-        }
-    },
-    created() {
-        this._users = this.users;
-    },
-    mounted() {
-        console.log(this.$refs.checkAll);
-    },
-    methods: {
-        toggleUser: function (event, id) {
-            if (event.target.checked) {
-                this.selectedUsers.push(id);
-            } else {
-                this.selectedUsers.splice(this.selectedUsers.indexOf(id), 1);
-            }
-        },
-        postUserAction: function (event, confirm, confirmMessage) {
-            if (confirm) {
-                this.$dialog.confirm(confirmMessage)
-                    .then(dialog => {
-                        let route = event.target.getAttribute('href');
-
-                        this.$http.post(route, {users: this.selectedUsers, _token: this.csrf})
-                            .then(response => {
-                                this.fetchUsers();
-                            }, response => {
-                                console.log(response);
-                            });
-                    });
-            }
-        },
-        checkAll: function (event) {
-            if (event.target.checked) {
-                this.selectedUsers = this._users.map(user => user.id);
-            } else {
-                this.selectedUsers = [];
-            }
-        },
-        changeSortDir: function () {
-            if (this.filters.dir === 'ASC') {
-                this.filters.dir = 'DESC';
-            } else {
-                this.filters.dir = 'ASC';
-            }
-
-            this.fetchUsers();
-        },
-        changeSort: function(sort) {
-            this.filters.sort = sort;
-
-            this.fetchUsers();
-        },
-        fetchUsers: function () {
-            this.loading = true;
-
-            for (let key in this.filters) {
-                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
-                    this.activeFilters[key] = this.filters[key].join(', ');
-                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
-                    this.activeFilters[key] = this.filters[key];
+    export default {
+        props: {
+            'concerts': {
+                type: [Array, Object]
+            },
+            'rehearsals': {
+                type: [Array, Object]
+            },
+            'users': {
+                type: Array
+            },
+            'canManageUsers': {
+                type: [Boolean, Number]
+            },
+            'showRoles': {
+                type: Boolean
+            },
+            'fetchUsersAction': {
+                type: String
+            },
+            'voices': {
+                type: Object
+            },
+            'sortOptions': {
+                type: Object
+            },
+            'setVoiceRoute': {
+                type: String
+            },
+            'withAttendanceConfirmation': {
+                type: Boolean
+            },
+            'attendanceRoutes': {
+                type: Object
+            },
+            'withAcceptDecline': {
+                type: Boolean
+            },
+            'acceptDeclineRoutes': {
+                type: Object
+            },
+            'removeUserRoute': {
+                type: String
+            },
+            'removeParticipantsRoute': {
+                type: String
+            },
+            'promises': {
+                type: Array
+            },
+            'denials': {
+                type: Array
+            },
+            'actions': {
+                type: Array
+            },
+            'filters': {
+                type: Object,
+                default: () => {
+                    return {
+                        search: '',
+                        voices: [],
+                        concerts: [],
+                        ageFrom: '',
+                        ageTo: '',
+                        sort: 'surname',
+                        dir: 'ASC',
+                        accepted: '1'
+                    }
                 }
             }
-
-            this.$http.get(this.fetchUsersAction, {params: this.filters}).then(response => {
-                this.loading = false;
-                this._users = response.body;
-            }, response => {})
         },
-        removeFilter: function (key) {
-            delete this.activeFilters[key];
-            if (typeof this.filters[key] === 'string') {
-                this.filters[key] = '';
-            } else if (this.filters[key].constructor === Array) {
-                this.filters[key] = [];
+        data() {
+            return {
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                loading: false,
+                _users: [],
+                activeFilters: {},
+                selectedUsers: []
             }
+        },
+        computed: {
+            checkedAll: {
+                get() {
+                    return this.selectedUsers.length === this._users.length;
+                }
+            }
+        },
+        created() {
+            this._users = this.users;
+        },
+        mounted() {
+        },
+        methods: {
+            toggleUser: function (event, id) {
+                if (event.target.checked) {
+                    this.selectedUsers.push(id);
+                } else {
+                    this.selectedUsers.splice(this.selectedUsers.indexOf(id), 1);
+                }
+            },
+            postUserAction: function (event, confirm, confirmMessage) {
+                if (confirm) {
+                    this.$dialog.confirm(confirmMessage)
+                        .then(dialog => {
+                            let route = event.target.getAttribute('href');
 
-            this.fetchUsers();
-        },
-        hasAccepted: function (id) {
-            return this.promises.filter(user => {
-                return user.id === id;
-            }).length > 0;
-        },
-        hasDeclined: function (id) {
-            return this.denials.filter(user => {
-                return user.id === id;
-            }).length > 0;
-        },
-        hasAction: function (name) {
-            return this.actions.indexOf(name) !== -1
+                            this.$http.post(route, {users: this.selectedUsers, _token: this.csrf})
+                                .then(response => {
+                                    this.fetchUsers();
+                                }, response => {
+                                    console.log(response);
+                                });
+                        });
+                }
+            },
+            checkAll: function (event) {
+                if (event.target.checked) {
+                    this.selectedUsers = this._users.map(user => user.id);
+                } else {
+                    this.selectedUsers = [];
+                }
+            },
+            changeSortDir: function () {
+                if (this.filters.dir === 'ASC') {
+                    this.filters.dir = 'DESC';
+                } else {
+                    this.filters.dir = 'ASC';
+                }
+
+                this.fetchUsers();
+            },
+            changeSort: function (sort) {
+                this.filters.sort = sort;
+
+                this.fetchUsers();
+            },
+            fetchUsers: function () {
+                this.loading = true;
+
+                for (let key in this.filters) {
+                    if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
+                        this.activeFilters[key] = this.filters[key].join(', ');
+                    } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
+                        this.activeFilters[key] = this.filters[key];
+                    }
+                }
+
+                this.$http.get(this.fetchUsersAction, {params: this.filters}).then(response => {
+                    this.loading = false;
+                    this._users = response.body;
+                }, response => {
+                })
+            },
+            removeFilter: function (key) {
+                delete this.activeFilters[key];
+                if (typeof this.filters[key] === 'string') {
+                    this.filters[key] = '';
+                } else if (this.filters[key].constructor === Array) {
+                    this.filters[key] = [];
+                }
+
+                this.fetchUsers();
+            },
+            hasAccepted: function (id) {
+                return this.promises.filter(user => {
+                    return user.id === id;
+                }).length > 0;
+            },
+            hasDeclined: function (id) {
+                return this.denials.filter(user => {
+                    return user.id === id;
+                }).length > 0;
+            },
+            hasAction: function (name) {
+                return this.actions.indexOf(name) !== -1
+            }
         }
     }
-}
 </script>

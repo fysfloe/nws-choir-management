@@ -67,7 +67,7 @@
                                     <span class="oi oi-pencil"></span> {{ $t('Edit') }}
                                 </a>
                                 <form method="POST" class="form-inline"
-                                      :action="`/admin/semesters/delete/${semester.id}`" v-if="hasAction('remove')">
+                                      :action="`/admin/semesters/${semester.id}`" v-if="hasAction('remove')">
                                     <input name="_method" type="hidden" value="DELETE">
                                     <button type="submit" v-confirm="$t('Do you really want to remove this semester?')"
                                             class="btn btn-link dropdown-item">

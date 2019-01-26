@@ -90,3 +90,18 @@ header {
             cursor: pointer;
         }
 }
+
+.project-grid {
+  table {
+    border: 0.1rem solid darken($lightgrey, 10);
+
+    td {
+      border: 0.1rem solid darken($lightgrey, 10);
+    }
+
+    thead {
+      background: $brand-primary;
+      color: white;
+    }
+  }
+}

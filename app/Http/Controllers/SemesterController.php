@@ -246,7 +246,23 @@ class SemesterController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $semester = Semester::find($id);
+
+        foreach ($semester->projects as $project) {
+            $project->delete();
+        }
+
+        foreach ($semester->rehearsals as $rehearsal) {
+            $rehearsal->delete();
+        }
+
+        foreach ($semester->concerts as $concert) {
+            $concert->delete();
+        }
+
+        $semester->delete();
+
+        return redirect()->route('semesters');
     }
 
     public function showAddUser(Request $request, Semester $semester)

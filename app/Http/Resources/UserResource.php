@@ -26,7 +26,9 @@ class UserResource extends Resource
             'surname' => $this->surname,
             'voice' => $voice,
             'roles' => RoleResource::collection($this->roles),
-            'avatar' => $this->avatar
+            'avatar' => $this->avatar,
+            'concerts' => $this->concerts,
+            'rehearsals' => $this->rehearsals
         ];
 
         if ($this->resource->confirmed !== null) {

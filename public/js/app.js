@@ -17139,6 +17139,8 @@ Vue.component('filters', __webpack_require__(180));
 Vue.component('picture-input', __webpack_require__(183));
 Vue.component('accept-decline', __webpack_require__(191));
 Vue.component('attendance', __webpack_require__(194));
+Vue.component('project-grid', __webpack_require__(215));
+Vue.component('project-participants', __webpack_require__(218));
 Vue.mixin(__WEBPACK_IMPORTED_MODULE_4__mixins__["a" /* default */].global);
 
 var lang = document.documentElement.lang.substr(0, 2);
@@ -70426,6 +70428,7 @@ VueI18n.version = '8.3.2';
         "My Profile": "Mein Profil",
         "Logout": "Logout",
         "Rehearsals": "Proben",
+        "Rehearsal": "Probe",
         "Users": "Benutzer",
         "Semesters": "Semester",
         "There were errors with your input. Check the form.": "Es gab Fehler beim Ausfüllen des Formulars.",
@@ -70575,6 +70578,14 @@ VueI18n.version = '8.3.2';
         "Accepted": "Zugesagt",
         "Declined": "Abgesagt",
         "Not answered": "Nicht geantwortet",
+        "This user is not a singer.": "Diese\/r BenutzerIn ist kein\/e SängerIn.",
+        "This user will not appear in the lists for rehearsals, concerts and projects.": "Diese\/r BenutzerIn wird nicht in den Projekt-\/Konzert- und Probenlisten aufscheinen.",
+        "Export": "Exportieren",
+        "Table view": "Tabellenansicht",
+        "List view": "Listenansicht",
+        "Created at": "Erstellungsdatum",
+        "Total": "Gesamt",
+        "Do you really want to remove this user?": "Diesen Benutzer wirklich entfernen?",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",
@@ -70976,6 +70987,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'concerts': {
             type: [Array, Object]
         },
+        'rehearsals': {
+            type: [Array, Object]
+        },
         'users': {
             type: Array
         },
@@ -71023,6 +71037,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         'actions': {
             type: Array
+        },
+        'filters': {
+            type: Object,
+            default: function _default() {
+                return {
+                    search: '',
+                    voices: [],
+                    concerts: [],
+                    ageFrom: '',
+                    ageTo: '',
+                    sort: 'surname',
+                    dir: 'ASC',
+                    accepted: '1'
+                };
+            }
         }
     },
     data: function data() {
@@ -71031,17 +71060,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             loading: false,
             _users: [],
             activeFilters: {},
-            selectedUsers: [],
-            filters: {
-                search: '',
-                voices: [],
-                concerts: [],
-                ageFrom: '',
-                ageTo: '',
-                sort: 'surname',
-                dir: 'ASC',
-                accepted: '1'
-            }
+            selectedUsers: []
         };
     },
 
@@ -71055,9 +71074,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         this._users = this.users;
     },
-    mounted: function mounted() {
-        console.log(this.$refs.checkAll);
-    },
+    mounted: function mounted() {},
 
     methods: {
         toggleUser: function toggleUser(event, id) {
@@ -73430,9 +73447,9 @@ var render = function() {
                         [
                           _c("accept-decline", {
                             attrs: {
-                                "accept-route": "/semester/accept/" + semester.id,
+                              "accept-route": "/semester/accept/" + semester.id,
                               "decline-route":
-                                  "/semester/decline/" + semester.id,
+                                "/semester/decline/" + semester.id,
                               accepted: _vm.hasAccepted(semester),
                               declined: _vm.hasDeclined(semester)
                             }
@@ -73501,8 +73518,7 @@ var render = function() {
                                         attrs: {
                                           method: "POST",
                                           action:
-                                            "/admin/semesters/delete/" +
-                                            semester.id
+                                            "/admin/semesters/" + semester.id
                                         }
                                       },
                                       [
@@ -73633,6 +73649,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -73870,8 +73887,8 @@ var render = function() {
                   _vm._l(_vm.concerts, function(concert, key) {
                     return _c(
                       "option",
-                      { key: key, domProps: { value: key } },
-                      [_vm._v(_vm._s(concert))]
+                      { key: key, domProps: { value: concert.id } },
+                      [_vm._v(_vm._s(concert.title) + "\n                    ")]
                     )
                   })
                 )
@@ -75695,6 +75712,568 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(216)
+/* template */
+var __vue_template__ = __webpack_require__(217)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ProjectGrid.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-efd11bd0", Component.options)
+  } else {
+    hotAPI.reload("data-v-efd11bd0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 216 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'rehearsals': {
+            type: Array,
+            required: true
+        },
+        'concerts': {
+            type: Array,
+            required: true
+        },
+        'users': {
+            type: Array,
+            required: true
+        }
+    },
+    computed: {
+        dates: {
+            get: function get() {
+                this.rehearsals.map(function (rehearsal) {
+                    rehearsal.date = rehearsal.date.date;
+                    rehearsal.type = 'rehearsal';
+                });
+
+                this.concerts.map(function (concert) {
+                    concert.type = 'concert';
+                });
+
+                return this.rehearsals.concat(this.concerts).sort(function (a, b) {
+                    return new Date(a.date) - new Date(b.date);
+                });
+            }
+        }
+    },
+    methods: {
+        hasAccepted: function hasAccepted(user, date) {
+            if (date.type === 'rehearsal') {
+                return user.rehearsals.filter(function (rehearsal) {
+                    return rehearsal.id === date.id && rehearsal.pivot.accepted && rehearsal.pivot.confirmed;
+                }).length > 0;
+            }
+
+            if (date.type === 'concert') {
+                return user.concerts.filter(function (concert) {
+                    return concert.id === date.id && concert.pivot.accepted;
+                }).length > 0;
+            }
+        },
+        hasDeclined: function hasDeclined(user, date) {
+            if (date.type === 'rehearsal') {
+                return user.rehearsals.filter(function (rehearsal) {
+                    return rehearsal.id === date.id && (!rehearsal.pivot.accepted || !rehearsal.pivot.confirmed);
+                }).length > 0;
+            }
+
+            if (date.type === 'concert') {
+                return user.concerts.filter(function (concert) {
+                    return concert.id === date.id && !concert.pivot.accepted;
+                }).length > 0;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "project-grid" }, [
+    _c("div", { staticClass: "table-responsive" }, [
+      _c("table", { staticClass: "table table-hover table-bordered" }, [
+        _c("thead", [
+          _c(
+            "tr",
+            [
+              _c("th", { attrs: { scope: "col" } }, [
+                _vm._v(_vm._s(_vm.$t("User")))
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.dates, function(date) {
+                return _c(
+                  "th",
+                  { staticClass: "text-center", attrs: { scope: "col" } },
+                  [
+                    _c(
+                      "small",
+                      {
+                        attrs: {
+                          title:
+                            date.type === "rehearsal"
+                              ? _vm.$t("Rehearsal")
+                              : _vm.$t("Concert"),
+                          "data-toggle": "tooltip"
+                        }
+                      },
+                      [
+                        _c("span", {
+                          class: {
+                            oi: true,
+                            "oi-audio": date.type === "rehearsal",
+                            "oi-musical-note": date.type === "concert"
+                          }
+                        }),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(new Date(date.date).toLocaleDateString()) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+                  ]
+                )
+              })
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.users, function(user) {
+            return _c(
+              "tr",
+              [
+                _c("td", { attrs: { scope: "row" } }, [
+                  _vm._v(_vm._s(user.firstname) + " " + _vm._s(user.surname))
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.dates, function(date) {
+                  return _c(
+                    "td",
+                    {
+                      class: {
+                        "text-center": true,
+                        "table-danger": _vm.hasDeclined(user, date),
+                        "table-success": _vm.hasAccepted(user, date)
+                      }
+                    },
+                    [
+                      !_vm.hasAccepted(user, date) &&
+                      !_vm.hasDeclined(user, date)
+                        ? _c("span", {
+                            staticClass: "oi oi-question-mark muted"
+                          })
+                        : _vm._e()
+                    ]
+                  )
+                })
+              ],
+              2
+            )
+          })
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-efd11bd0", module.exports)
+  }
+}
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(219)
+/* template */
+var __vue_template__ = __webpack_require__(220)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ProjectParticipants.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-388f4772", Component.options)
+  } else {
+    hotAPI.reload("data-v-388f4772", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 219 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'projectId': {
+            type: Number
+        },
+        'concerts': {
+            type: [Array, Object]
+        },
+        'rehearsals': {
+            type: [Array, Object]
+        },
+        'users': {
+            type: Array
+        },
+        'canManageUsers': {
+            type: [Boolean, Number]
+        },
+        'canManageProjects': {
+            type: [Boolean, Number]
+        },
+        'fetchUsersAction': {
+            type: String
+        },
+        'voices': {
+            type: Object
+        },
+        'setVoiceRoute': {
+            type: String
+        },
+        'removeParticipantsRoute': {
+            type: String
+        }
+    },
+    data: function data() {
+        return {
+            view: 'list'
+        };
+    },
+
+    methods: {
+        changeView: function changeView() {
+            if (this.view === 'list') {
+                this.view = 'table';
+            } else {
+                this.view = 'list';
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "row clearfix my-3" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary btn-sm",
+              attrs: { type: "button" },
+              on: { click: _vm.changeView }
+            },
+            [
+              _c("span", {
+                class: {
+                  oi: true,
+                  "oi-list": _vm.view === "table",
+                  "oi-grid-three-up": _vm.view === "list"
+                }
+              }),
+              _vm._v(" "),
+              _vm.view === "table"
+                ? _c("span", [_vm._v(_vm._s(_vm.$t("List view")))])
+                : _vm.view === "list"
+                  ? _c("span", [_vm._v(_vm._s(_vm.$t("Table view")))])
+                  : _vm._e()
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _vm.canManageProjects
+          ? _c("div", { staticClass: "col text-right" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-default btn-sm",
+                  attrs: {
+                    href: "/admin/project/" + _vm.projectId + "/addUser",
+                    "data-toggle": "modal",
+                    "data-target": "#mainModal"
+                  }
+                },
+                [
+                  _c("span", { staticClass: "oi oi-plus" }),
+                  _vm._v(
+                    " " + _vm._s(_vm.$t("Add a participant")) + "\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-default btn-sm",
+                  attrs: {
+                    href: "/admin/project/export-participants/" + _vm.projectId
+                  }
+                },
+                [
+                  _c("span", { staticClass: "oi oi-account-login" }),
+                  _vm._v(" " + _vm._s(_vm.$t("Export")) + "\n            ")
+                ]
+              )
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("user-list", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.view === "list",
+            expression: "view === 'list'"
+          }
+        ],
+        attrs: {
+          users: _vm.users,
+          "can-manage-users": _vm.canManageUsers,
+          "show-roles": false,
+          voices: _vm.voices,
+          "fetch-users-action": _vm.fetchUsersAction,
+          "sort-options": {
+            firstname: _vm.$t("First Name"),
+            surname: _vm.$t("Surname"),
+            voice: _vm.$t("Voice"),
+            id: _vm.$t("Created at")
+          },
+          "set-voice-route": _vm.setVoiceRoute,
+          "remove-participants-route": _vm.removeParticipantsRoute,
+          actions: ["removeParticipant", "setVoice", "editProfile"],
+          rehearsals: _vm.rehearsals,
+          concerts: _vm.concerts
+        }
+      }),
+      _vm._v(" "),
+      _c("project-grid", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.view === "table",
+            expression: "view === 'table'"
+          }
+        ],
+        attrs: {
+          rehearsals: _vm.rehearsals,
+          concerts: _vm.concerts,
+          users: _vm.users
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-388f4772", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

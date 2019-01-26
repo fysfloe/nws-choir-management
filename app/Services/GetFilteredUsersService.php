@@ -110,7 +110,6 @@ class GetFilteredUsersService {
         if (!$sort) $sort = 'surname';
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
-        $projects = isset($filters['projects']) ? $filters['projects'] : null;
 
         $query = "SELECT users.*, voices.name as voiceName "
             . "FROM users
