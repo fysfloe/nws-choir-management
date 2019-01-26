@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\User;
-use App\Role;
-use App\Voice;
 use App\Concert;
-
-use App\Services\GetFilteredUsersService;
-
-use Auth;
-
-use Maatwebsite\Excel\Facades\Excel;
-
 use App\Http\Requests\StoreUser;
 use App\Http\Resources\UserResource;
+use App\Role;
+use App\Services\GetFilteredUsersService;
+use App\User;
+use App\Voice;
+use Auth;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -119,7 +114,8 @@ class UserController extends Controller
         $this->breadcrumbs->addCrumb(__('New User'), 'create');
 
         return view('user.create')->with([
-            'breadcrumbs' => $this->breadcrumbs
+            'breadcrumbs' => $this->breadcrumbs,
+            'voices' => Voice::getListForSelect()
         ]);
     }
 
@@ -139,7 +135,8 @@ class UserController extends Controller
             'email' => $data['email'],
             'gender' => $data['gender'],
             'password' => bcrypt($data['password']),
-            'username' => $data['firstname'] . ' ' . $data['surname']
+            'username' => $data['firstname'] . ' ' . $data['surname'],
+            'voice_id' => $data['voice_id']
         ]);
 
         $memberRole = Role::where('name', '=', 'member')->first();

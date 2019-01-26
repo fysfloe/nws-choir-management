@@ -54,6 +54,17 @@
         @endif
     </div>
 
+    <div class="form-group{{ $errors->has('voice_id') ? ' has-error' : '' }}">
+        {{ Form::label('voice_id', __('Voice'), ['class' => 'control-label']) }}
+        {{ Form::select('voice_id', $voices, old('voice_id'), ['class' => 'form-control']) }}
+
+        @if ($errors->has('voice_id'))
+            <span class="help-block text-danger">
+                <strong>{{ $errors->first('voice_id') }}</strong>
+            </span>
+        @endif
+    </div>
+
     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
         {{ Form::label('password', __('Password'), ['class' => 'control-label']) }}
         {{ Form::password('password', ['class' => 'form-control']) }}
