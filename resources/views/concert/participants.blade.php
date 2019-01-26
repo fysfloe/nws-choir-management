@@ -27,6 +27,12 @@
                 'voice' => __('Voice'),
                 'id' => __('Created at')
             ]) }}"
+            :with-attendance-confirmation="true"
+            :attendance-routes="{{ json_encode([
+                'confirm' => route('concert.confirm', ['concert' => $concert]),
+                'excused' => route('concert.excuse', ['concert' => $concert]),
+                'unexcused' => route('concert.setUnexcused', ['concert' => $concert])
+            ]) }}"
             set-voice-route="{{ route('concert.setUserVoice', $concert) }}"
             :actions="{{ json_encode(['editProfile', 'setVoice', 'removeParticipant']) }}"
             remove-participant-route="{{ route('concert.removeParticipant', $concert) }}"

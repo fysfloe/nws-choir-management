@@ -42,7 +42,7 @@ class User extends Authenticatable
      */
     public function concerts()
     {
-        return $this->belongsToMany('App\Concert', 'user_concert')->withPivot(['accepted']);
+        return $this->belongsToMany('App\Concert', 'user_concert')->withPivot(['accepted', 'confirmed', 'excused']);
     }
 
     /**

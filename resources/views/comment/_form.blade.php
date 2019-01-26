@@ -11,7 +11,7 @@
 
 <div class="form-group{{ $errors->has('private') ? ' has-error' : '' }}">
     <label class="control-label">
-        {{ Form::checkbox('private', 1, old('private')) }}
+        {{ Form::checkbox('private', 1, old('private') ? old('private') : 1) }}
         {{ __('Private (only admins will see your comment)') }}
     </label>
 </div>

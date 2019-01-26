@@ -520,4 +520,25 @@ class ConcertController extends Controller
             'message' => __('Participants successfully removed from the concert.')
         ]);
     }
+
+    public function confirm(Request $request, Concert $concert, User $user)
+    {
+        $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
+
+        return response('', 200);
+    }
+
+    public function excuse(Request $request, Concert $concert, User $user)
+    {
+        $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
+
+        return response('', 200);
+    }
+
+    public function setUnexcused(Request $request, Concert $concert, User $user)
+    {
+        $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
+
+        return redirect()->back();
+    }
 }

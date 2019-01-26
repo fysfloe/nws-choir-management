@@ -70,16 +70,16 @@
                 }
 
                 if (date.type === 'concert') {
-                    return user.concerts.filter(concert => concert.id === date.id && concert.pivot.accepted).length > 0;
+                    return user.concerts.filter(concert => concert.id === date.id && concert.pivot.accepted && concert.pivot.confirmed).length > 0;
                 }
             },
             hasDeclined(user, date) {
                 if (date.type === 'rehearsal') {
-                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && (!rehearsal.pivot.accepted || !rehearsal.pivot.confirmed)).length > 0;
+                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && (!rehearsal.pivot.accepted || rehearsal.pivot.confirmed === 0)).length > 0;
                 }
 
                 if (date.type === 'concert') {
-                    return user.concerts.filter(concert => concert.id === date.id && !concert.pivot.accepted).length > 0;
+                    return user.concerts.filter(concert => concert.id === date.id && (!concert.pivot.accepted || concert.pivot.confirmed === 0)).length > 0;
                 }
             }
         }

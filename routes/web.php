@@ -90,6 +90,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/concert/load-participants/{concert}', 'ConcertController@loadParticipants')->name('concert.loadParticipants');
         Route::post('/concert/{concert}/removeParticipants', 'ConcertController@removeParticipants')->name('concert.removeParticipants');
         Route::delete('/concert/{concert}/removeParticipant', 'ConcertController@removeParticipant')->name('concert.removeParticipant');
+        Route::get('/concert/{concert}/confirm/{user?}', 'ConcertController@confirm')->name('concert.confirm');
+        Route::get('/concert/{concert}/excuse/{user?}', 'ConcertController@excuse')->name('concert.excuse');
+        Route::get('/concert/{concert}/setUnexcused/{user?}', 'ConcertController@setUnexcused')->name('concert.setUnexcused');
         // Projects
         Route::get('/project/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
         Route::get('/projects/create', 'ProjectController@create')->name('project.create');

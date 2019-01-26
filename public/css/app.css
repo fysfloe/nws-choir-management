@@ -10399,23 +10399,24 @@ header.page-header a.btn-link {
 .project-grid table td,
 .project-grid table th {
   border: 0.1rem solid #d3e0e9;
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .project-grid table th:first-child {
-    background: #149EB5;
-    color: white;
+  background: #149EB5;
+  color: white;
 }
 
 .project-grid table td:first-child {
-    background: white;
+  background: white;
 }
 
 .project-grid table th:first-child,
 .project-grid table td:first-child {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 100;
 }
 
 .project-grid table thead {

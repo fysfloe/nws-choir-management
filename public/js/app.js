@@ -72914,8 +72914,8 @@ var render = function() {
                                 rehearsal.id +
                                 "/" +
                                 _vm.user.id,
-                                accepted: rehearsal.hasAccepted,
-                                declined: rehearsal.hasDeclined
+                              accepted: rehearsal.hasAccepted,
+                              declined: rehearsal.hasDeclined
                             }
                           })
                         ],
@@ -75845,20 +75845,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (date.type === 'concert') {
                 return user.concerts.filter(function (concert) {
-                    return concert.id === date.id && concert.pivot.accepted;
+                    return concert.id === date.id && concert.pivot.accepted && concert.pivot.confirmed;
                 }).length > 0;
             }
         },
         hasDeclined: function hasDeclined(user, date) {
             if (date.type === 'rehearsal') {
                 return user.rehearsals.filter(function (rehearsal) {
-                    return rehearsal.id === date.id && (!rehearsal.pivot.accepted || !rehearsal.pivot.confirmed);
+                    return rehearsal.id === date.id && (!rehearsal.pivot.accepted || rehearsal.pivot.confirmed === 0);
                 }).length > 0;
             }
 
             if (date.type === 'concert') {
                 return user.concerts.filter(function (concert) {
-                    return concert.id === date.id && !concert.pivot.accepted;
+                    return concert.id === date.id && (!concert.pivot.accepted || concert.pivot.confirmed === 0);
                 }).length > 0;
             }
         }
