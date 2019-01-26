@@ -124,13 +124,13 @@ header {
         h2 {
             display: inline;
             margin-right: 1rem;
+            margin-bottom: 0;
             color: $brand-primary;
             font-weight: bold;
         }
 
         .btn-sm {
             position: relative;
-            bottom: 0.4rem;
             font-size: 0.75rem;
         }
 
@@ -140,6 +140,10 @@ header {
 
         .btn-group {
             vertical-align: inherit;
+        }
+
+        .main-actions {
+            margin-left: auto;
         }
     }
 }

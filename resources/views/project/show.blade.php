@@ -28,19 +28,12 @@
                                 <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}&nbsp;
                                 <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}&nbsp;
                             </div>
-                            @if ($concert->date > (new \DateTime())->format('Y-m-d'))
+                            @if ($concert->getDateTime() > new \DateTime())
                                 <accept-decline
                                     accept-route="{{ route('concert.accept', $concert) }}"
                                     decline-route="{{ route('concert.decline', $concert) }}"
                                     :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
                                     :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
-                                    :texts="{{ json_encode([
-                                        'acceptOrDecline' => __('Accept or decline'),
-                                        'attending' => __('You are attending!'),
-                                        'accept' => __('Accept'),
-                                        'notAttending' => __('You are not attending.'),
-                                        'decline' => __('Decline')
-                                    ]) }}"
                                 >
                                 </accept-decline>
                             @else 

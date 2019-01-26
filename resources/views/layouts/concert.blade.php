@@ -3,31 +3,32 @@
 @section('content')
 
     <header class="page-header">
-            <div>
-                <h2>
-                    {{ $concert->title }}
-                    @permission('manageConcerts')
-                        <a class="btn btn-link" href="{{ route('concert.edit', $concert) }}">
-                            <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
-                        </a>
-                    @endpermission
-                </h2>
-            </div>
-        
+        <h2>
+            {{ $concert->title }}
+        </h2>
+
+        @if ($concert->getDateTime() > new \DateTime())
             <accept-decline
-                accept-route="{{ route('concert.accept', $concert) }}"
-                decline-route="{{ route('concert.decline', $concert) }}"
-                :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
-                :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
-                :texts="{{ json_encode([
-                    'acceptOrDecline' => __('Accept or decline'),
-                    'attending' => __('You are attending!'),
-                    'accept' => __('Accept'),
-                    'notAttending' => __('You are not attending.'),
-                    'decline' => __('Decline')
-                ]) }}"
+                    accept-route="{{ route('concert.accept', $concert) }}"
+                    decline-route="{{ route('concert.decline', $concert) }}"
+                    :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
+                    :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
             >
             </accept-decline>
+        @endif
+
+        @permission('manageConcerts')
+        <div class="main-actions">
+            <a class="btn btn-primary btn-sm" href="{{ route('concert.edit', $concert) }}">
+                <span class="oi oi-pencil"></span> {{ __('Edit') }}
+            </a>
+            {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this concert?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['concert.delete', $concert->id]]) !!}
+            <button type="submit" class="btn btn-danger btn-sm">
+                <span class="oi oi-trash"></span> {{ __('Delete') }}
+            </button>
+            {!! Form::close() !!}
+        </div>
+        @endpermission
     </header>
 
     <ul class="nav nav-tabs" role="tablist">

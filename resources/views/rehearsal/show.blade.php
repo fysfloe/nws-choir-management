@@ -36,7 +36,38 @@
             </div>
             <div class="col-4 side-box">
                 <h3>{{ __('Project') }}</h3>
-                <a href="{{ route('project.show', $rehearsal->project) }}">{{ $rehearsal->project->title }}</span></a>
+                <a href="{{ route('project.show', $rehearsal->project) }}">{{ $rehearsal->project->title }}</a>
+
+                @if (count($rehearsal->project->concerts) > 1)
+                    <h3 class="mt-4">{{ __('Concerts') }}</h3>
+
+                    <ul class="concerts">
+                        @foreach ($rehearsal->project->concerts as $concert)
+                            <a href="{{ route('concert.show', $concert) }}">
+                                <li>
+                                    <div>
+                                        <strong>{{ $concert->title }}</strong><br>
+                                        <span class="oi oi-calendar text-muted"></span>&nbsp;{{ date_format(date_create($concert->date), 'd.m.Y') }}
+                                        &nbsp;
+                                        <span class="oi oi-clock text-muted"></span>&nbsp;{{ date_format(date_create($concert->start_time), 'H:i') }}
+                                        &nbsp;
+                                    </div>
+                                    @if ($concert->getDateTime() > new \DateTime())
+                                        <accept-decline
+                                                accept-route="{{ route('concert.accept', $concert) }}"
+                                                decline-route="{{ route('concert.decline', $concert) }}"
+                                                :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
+                                                :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
+                                        >
+                                        </accept-decline>
+                                    @else
+                                        <span class="accept-decline oi oi-media-record {{ $concert->promises->contains(Auth::user()) ? 'text-success' : ($concert->denials->contains(Auth::user()) ? 'text-danger' : 'text-muted') }}"></span>
+                                    @endif
+                                </li>
+                            </a>
+                        @endforeach
+                    </ul>
+                @endif
 
                 @if (count($rehearsal->project->rehearsals) > 1)
                     <h3 class="mt-4">{{ __('Other rehearsals in this project') }}</h3>
@@ -46,19 +77,12 @@
                                 <a href="{{ route('rehearsal.show', $otherRehearsal) }}">
                                     <li>
                                         <span>{!! $otherRehearsal->twoLineString() !!}</span>
-                                        @if ($otherRehearsal->date > new \DateTime())
+                                        @if ($otherRehearsal->getDateTime() > new \DateTime())
                                             <accept-decline
                                                     accept-route="{{ route('rehearsal.accept', $otherRehearsal) }}"
                                                     decline-route="{{ route('rehearsal.decline', $otherRehearsal) }}"
                                                     :accepted="{{ json_encode($otherRehearsal->promises->contains(Auth::user())) }}"
                                                     :declined="{{ json_encode($otherRehearsal->denials->contains(Auth::user())) }}"
-                                                    :texts="{{ json_encode([
-                                        'acceptOrDecline' => __('Accept or decline'),
-                                        'attending' => __('You are attending!'),
-                                        'accept' => __('Accept'),
-                                        'notAttending' => __('You are not attending.'),
-                                        'decline' => __('Decline')
-                                    ]) }}"
                                             >
                                             </accept-decline>
                                         @endif

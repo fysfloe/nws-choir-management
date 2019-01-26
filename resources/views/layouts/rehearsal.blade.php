@@ -3,38 +3,32 @@
 @section('content')
 
     <header class="page-header">
-        <div>
-            <h2>
-                {{ __('Rehearsal') }}: {{ $rehearsal->date->format('d.m.Y') }}
-                @permission('manageRehearsals')
-                    <a class="btn btn-link" href="{{ route('rehearsal.edit', $rehearsal) }}">
-                        <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
-                    </a>
-                    {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this rehearsal?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['rehearsal.delete', $rehearsal->id]]) !!}
-                        <button type="submit" class="btn btn-link text-danger">
-                            <span class="oi oi-trash" data-toggle="tooltip" title="{{ __('Delete') }}" aria-hidden="true"></span>
-                        </button>
-			        {!! Form::close() !!}
-                @endpermission
-            </h2>
-        </div>
-        
+        <h2>
+            {{ __('Rehearsal') }}: {{ $rehearsal->date->format('d.m.Y') }}
+        </h2>
+
         @if ($rehearsal->getDateTime() > new \DateTime())
-        <accept-decline
-            accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
-            decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
-            :accepted="{{ json_encode($rehearsal->promises->contains(Auth::user())) }}"
-            :declined="{{ json_encode($rehearsal->denials->contains(Auth::user())) }}"
-            :texts="{{ json_encode([
-                'acceptOrDecline' => __('Accept or decline'),
-                'attending' => __('You are attending!'),
-                'accept' => __('Accept'),
-                'notAttending' => __('You are not attending.'),
-                'decline' => __('Decline')
-            ]) }}"
-        >
-        </accept-decline>
+            <accept-decline
+                    accept-route="{{ route('rehearsal.accept', $rehearsal) }}"
+                    decline-route="{{ route('rehearsal.decline', $rehearsal) }}"
+                    :accepted="{{ json_encode($rehearsal->promises->contains(Auth::user())) }}"
+                    :declined="{{ json_encode($rehearsal->denials->contains(Auth::user())) }}"
+            >
+            </accept-decline>
         @endif
+
+        @permission('manageRehearsals')
+        <div class="main-actions">
+            <a class="btn btn-primary btn-sm" href="{{ route('rehearsal.edit', $rehearsal) }}">
+                <span class="oi oi-pencil"></span> {{ __('Edit') }}
+            </a>
+            {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this rehearsal?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['rehearsal.delete', $rehearsal->id]]) !!}
+            <button type="submit" class="btn btn-danger btn-sm">
+                <span class="oi oi-trash"></span> {{ __('Delete') }}
+            </button>
+            {!! Form::close() !!}
+        </div>
+        @endpermission
     </header>
 
     <ul class="nav nav-tabs" role="tablist">

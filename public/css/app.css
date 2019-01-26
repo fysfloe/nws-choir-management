@@ -10695,6 +10695,7 @@ header.page-header {
 header.page-header h2 {
   display: inline;
   margin-right: 1rem;
+    margin-bottom: 0;
   color: #149EB5;
   font-weight: bold;
 }
@@ -10702,7 +10703,6 @@ header.page-header h2 {
 header.page-header .btn-sm,
 header.page-header .btn-group-sm > .btn {
   position: relative;
-  bottom: 0.4rem;
   font-size: 0.75rem;
 }
 
@@ -10712,6 +10712,10 @@ header.page-header .light {
 
 header.page-header .btn-group {
   vertical-align: inherit;
+}
+
+header.page-header .main-actions {
+    margin-left: auto;
 }
 
 .form-inline {

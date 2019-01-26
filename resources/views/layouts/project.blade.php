@@ -3,34 +3,30 @@
 @section('content')
 
     <header class="page-header">
-        <div>
-            <h2>
-                {{ $project->title }}
-                @permission('manageProjects')
-                    <a class="btn btn-link" href="{{ route('project.edit', $project) }}">
-                        <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
-                    </a>
-                @endpermission
-            </h2>
-        </div>
+        <h2>
+            {{ $project->title }}
+        </h2>
 
         <accept-decline
-            accept-route="{{ route('project.accept', $project) }}"
-            decline-route="{{ route('project.decline', $project) }}"
-            :accepted="{{ json_encode($project->promises->contains(Auth::user())) }}"
-            :declined="{{ json_encode($project->denials->contains(Auth::user())) }}"
-            :texts="{{ json_encode([
-                'acceptOrDecline' => __('Accept or decline'),
-                'attending' => __('You are attending!'),
-                'accept' => __('Accept'),
-                'notAttending' => __('You are not attending.'),
-                'decline' => __('Decline'),
-                'commentLabel' => __('Comment'),
-                'send' => __('Send'),
-                'commentSaved' => __('Comment saved!')
-            ]) }}"
+                accept-route="{{ route('project.accept', $project) }}"
+                decline-route="{{ route('project.decline', $project) }}"
+                :accepted="{{ json_encode($project->promises->contains(Auth::user())) }}"
+                :declined="{{ json_encode($project->denials->contains(Auth::user())) }}"
         >
         </accept-decline>
+
+        @permission('manageProjects')
+        <div class="main-actions">
+            <a class="btn btn-primary btn-sm" href="{{ route('project.edit', $project) }}">
+                <span class="oi oi-pencil"></span> {{ __('Edit') }}
+            </a>
+            {!! Form::open(['onsubmit' => 'return confirm("' . __('Do you really want to delete this project?') . '")', 'class' => 'form-inline', 'method' => 'DELETE', 'route' => ['project.delete', $project->id]]) !!}
+            <button type="submit" class="btn btn-danger btn-sm">
+                <span class="oi oi-trash"></span> {{ __('Delete') }}
+            </button>
+            {!! Form::close() !!}
+        </div>
+        @endpermission
     </header>
 
     <ul class="nav nav-tabs" role="tablist">
