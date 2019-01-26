@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
+use App\Http\Requests\StoreComment;
+use App\Http\Requests\StoreRehearsal;
+use App\Http\Resources\RehearsalResource;
+use App\Http\Resources\UserResource;
+use App\Project;
 use App\Rehearsal;
 use App\Semester;
+use App\Services\GetFilteredUsersService;
 use App\User;
 use App\Voice;
-use App\Concert;
-use App\Project;
-
-use App\Services\GetFilteredUsersService;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\RehearsalResource;
-
-use App\Http\Requests\StoreRehearsal;
-use App\Http\Requests\StoreComment;
 use Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class RehearsalController extends Controller
 {
@@ -60,7 +57,7 @@ class RehearsalController extends Controller
             ->orderBy($request->get('sort'), $request->get('dir'))
             ->get();
 
-        return json_encode(RehearsalResource::collection($rehearsals));
+        return new JsonResponse(RehearsalResource::collection($rehearsals));
     }
 
     /**
