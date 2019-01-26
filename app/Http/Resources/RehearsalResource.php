@@ -24,8 +24,8 @@ class RehearsalResource extends Resource
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'place' => $this->place,
-            'promises' => UserResource::collection($this->promises),
-            'denials' => UserResource::collection($this->denials)
+            //'promises' => UserResource::collection($this->promises),
+            //'denials' => UserResource::collection($this->denials)
         ];
 
         if ($this->resource->accepted !== null) {
