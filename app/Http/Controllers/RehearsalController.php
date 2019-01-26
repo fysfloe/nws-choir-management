@@ -107,7 +107,7 @@ class RehearsalController extends Controller
     public function show(Rehearsal $rehearsal)
     {
         if ($rehearsal->project) {
-            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
+            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->id);
         }
 
         $this->breadcrumbs->addCrumb($rehearsal->title(), $rehearsal);

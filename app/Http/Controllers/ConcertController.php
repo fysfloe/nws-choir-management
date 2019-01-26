@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Concert;
+use App\Http\Requests\StoreComment;
+use App\Http\Requests\StoreConcert;
+use App\Http\Resources\UserResource;
+use App\Project;
+use App\Semester;
+use App\Services\GetFilteredUsersService;
 use App\User;
 use App\Voice;
-use App\Semester;
-use App\Project;
-
-use App\Http\Requests\StoreConcert;
-use App\Http\Requests\StoreComment;
-use App\Http\Resources\UserResource;
-
-use App\Services\GetFilteredUsersService;
-
-use Maatwebsite\Excel\Facades\Excel;
-
 use Auth;
 use DB;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ConcertController extends Controller
 {
@@ -138,7 +133,7 @@ class ConcertController extends Controller
     public function show(Concert $concert)
     {
         if ($concert->project) {
-            $this->breadcrumbs->addCrumb($concert->project->title, 'project/' . $concert->project->slug);
+            $this->breadcrumbs->addCrumb($concert->project->title, 'project/' . $concert->project->id);
         }
         
         $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
