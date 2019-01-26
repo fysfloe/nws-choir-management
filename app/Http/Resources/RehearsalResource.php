@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Auth;
 
 class RehearsalResource extends Resource
 {
@@ -24,8 +25,8 @@ class RehearsalResource extends Resource
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'place' => $this->place,
-            //'promises' => UserResource::collection($this->promises),
-            //'denials' => UserResource::collection($this->denials)
+            'hasAccepted' => $this->promises->find(Auth::user()) !== null,
+            'hasDeclined' => $this->denials->find(Auth::user()) !== null
         ];
 
         if ($this->resource->accepted !== null) {

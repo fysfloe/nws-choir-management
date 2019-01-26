@@ -72750,20 +72750,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         hasAction: function hasAction(name) {
             return this.actions.indexOf(name) !== -1;
-        },
-        hasAccepted: function hasAccepted(rehearsal) {
-            var _this2 = this;
-
-            return rehearsal.promises.filter(function (user) {
-                return user.id === _this2.user.id;
-            }).length > 0;
-        },
-        hasDeclined: function hasDeclined(rehearsal) {
-            var _this3 = this;
-
-            return rehearsal.denials.filter(function (user) {
-                return user.id === _this3.user.id;
-            }).length > 0;
         }
     }
 });
@@ -72928,8 +72914,8 @@ var render = function() {
                                 rehearsal.id +
                                 "/" +
                                 _vm.user.id,
-                              accepted: _vm.hasAccepted(rehearsal),
-                              declined: _vm.hasDeclined(rehearsal)
+                                accepted: rehearsal.hasAccepted,
+                                declined: rehearsal.hasDeclined
                             }
                           })
                         ],

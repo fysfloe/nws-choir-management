@@ -47,8 +47,8 @@
                             <accept-decline
                                     :accept-route="`/rehearsal/accept/${rehearsal.id}/${user.id}`"
                                     :decline-route="`/rehearsal/decline/${rehearsal.id}/${user.id}`"
-                                    :accepted="hasAccepted(rehearsal)"
-                                    :declined="hasDeclined(rehearsal)"
+                                    :accepted="rehearsal.hasAccepted"
+                                    :declined="rehearsal.hasDeclined"
                             >
                             </accept-decline>
                         </div>
@@ -146,16 +146,6 @@
             },
             hasAction: function (name) {
                 return this.actions.indexOf(name) !== -1
-            },
-            hasAccepted: function (rehearsal) {
-                return rehearsal.promises.filter(user => {
-                    return user.id === this.user.id;
-                }).length > 0;
-            },
-            hasDeclined: function (rehearsal) {
-                return rehearsal.denials.filter(user => {
-                    return user.id === this.user.id;
-                }).length > 0;
             }
         }
     }
