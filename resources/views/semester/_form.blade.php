@@ -31,6 +31,18 @@
     @endif
 </div><!-- .form-group -->
 
+<div class="form-group{{ $errors->has('deadline') ? ' has-error' : '' }}">
+    {{ Form::label('deadline', __('Deadline'), ['class' => 'control-label']) }}
+    <input type="datetime-local" class="form-control" name="deadline" id="deadline"
+           value="{{ old('deadline') ? old('deadline') : (isset($semester) && $semester->deadline ? (new \DateTime($semester->deadline))->format('Y-m-d\TH:i') : '') }}">
+
+    @if ($errors->has('deadline'))
+        <span class="help-block text-danger">
+            <strong>{{ $errors->first('deadline') }}</strong>
+        </span>
+    @endif
+</div><!-- .form-group -->
+
 <div class="form-group">
     {{ Form::button(__('Save Semester'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
 </div>

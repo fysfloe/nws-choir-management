@@ -17,7 +17,7 @@ class Rehearsal extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'project_id', 'description'
+        'date', 'start_time', 'end_time', 'place', 'created_by', 'semester_id', 'project_id', 'description', 'deadline'
     ];
 
     /**

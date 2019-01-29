@@ -229,6 +229,9 @@ export default {
         "Created at": "Erstellungsdatum",
         "Total": "Gesamt",
         "Do you really want to remove this user?": "Diesen Benutzer wirklich entfernen?",
+        "Attending": "Zugesagt",
+        "Not attending": "Abgesagt",
+        "The deadline is over. Please contact christoph@neuewienerstimmen.at if you forgot to answer.": "Die Anmeldefrist ist vorbei. Bitte wende dich an christoph@neuewienerstimmen.at.",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",

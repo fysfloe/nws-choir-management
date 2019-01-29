@@ -46,6 +46,18 @@
                 @endif
             </div>
         </div><!-- .form-group -->
+
+        <div class="form-group{{ $errors->has('deadline') ? ' has-error' : '' }}">
+            {{ Form::label('deadline', __('Deadline'), ['class' => 'control-label']) }}
+            <input type="datetime-local" class="form-control" name="deadline" id="deadline"
+                   value="{{ old('deadline') ? old('deadline') : (isset($project) && $project->deadline ? (new \DateTime($project->deadline))->format('Y-m-d\TH:i') : '') }}">
+
+            @if ($errors->has('deadline'))
+                <span class="help-block text-danger">
+            <strong>{{ $errors->first('deadline') }}</strong>
+        </span>
+            @endif
+        </div><!-- .form-group -->
     </div><!-- .col -->
 
     <div class="col side-box">

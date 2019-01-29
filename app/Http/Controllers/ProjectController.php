@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-
-use App\User;
-
-use App\Voice;
-use App\Project;
-use App\Semester;
 use App\Comment;
-use Illuminate\Http\Request;
-
-use Illuminate\Http\Response;
+use App\Events\ProjectAnsweredEvent;
 use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreProject;
-
-use App\Events\ProjectAnsweredEvent;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\ProjectResource;
-use App\Services\GetFilteredUsersService;
+use App\Http\Resources\UserResource;
+use App\Project;
+use App\Semester;
 use App\Services\GetFilteredProjectsService;
+use App\Services\GetFilteredUsersService;
+use App\User;
+use App\Voice;
+use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
@@ -134,7 +131,7 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Project $project
      * @return \Illuminate\Http\Response
      */
     public function show(Project $project)
@@ -144,6 +141,8 @@ class ProjectController extends Controller
         return view('project.show')->with([
             'tab' => 'show',
             'project' => $project,
+            'projectJson' => json_encode(new ProjectResource($project)),
+            'user' => json_encode(new AuthUserResource(Auth::user())),
             'breadcrumbs' => $this->breadcrumbs
         ]);
     }

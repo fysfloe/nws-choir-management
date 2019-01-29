@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Auth;
 
 class Concert extends Model
 {
@@ -23,18 +23,8 @@ class Concert extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'slug', 'date', 'start_time', 'end_time', 'created_by', 'semester_id', 'project_id', 'place'
+        'title', 'description', 'slug', 'date', 'start_time', 'end_time', 'created_by', 'semester_id', 'project_id', 'place', 'deadline'
     ];
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
 
     /**
      * Get the users for the concert.

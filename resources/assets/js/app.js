@@ -18,10 +18,13 @@ import VuejsDialog from "vuejs-dialog"
 import VueInternationalization from 'vue-i18n';
 import Locale from './vue-i18n-locales.generated';
 import mixins from './mixins';
+import BootstrapVue from 'bootstrap-vue'
 
 Vue.use(VueResource);
 Vue.use(VuejsDialog);
 Vue.use(VueInternationalization);
+Vue.use(BootstrapVue);
+Vue.use(require('vue-moment'));
 
 Vue.component('user-list', require('./components/UserList.vue'));
 Vue.component('project-list', require('./components/ProjectList.vue'));
@@ -33,6 +36,11 @@ Vue.component('accept-decline', require('./components/AcceptDecline.vue'));
 Vue.component('attendance', require('./components/Attendance.vue'));
 Vue.component('project-grid', require('./components/ProjectGrid.vue'));
 Vue.component('project-participants', require('./components/ProjectParticipants.vue'));
+Vue.component('rehearsal-side-list', require('./components/RehearsalSideList.vue'));
+Vue.component('concert-side-list', require('./components/ConcertSideList.vue'));
+Vue.component('concert-details', require('./components/ConcertDetails.vue'));
+Vue.component('project-details', require('./components/ProjectDetails.vue'));
+Vue.component('rehearsal-details', require('./components/RehearsalDetails.vue'));
 Vue.mixin(mixins.global);
 
 const lang = document.documentElement.lang.substr(0, 2); 

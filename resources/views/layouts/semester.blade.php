@@ -3,31 +3,25 @@
 @section('content')
 
     <header class="page-header">
-        <div>
-            <h2>
-                {{ $semester->__toString() }}
-                @permission('manageSemesters')
-                    <a class="btn btn-link" href="{{ route('semesters.edit', $semester) }}">
-                        <span class="oi oi-pencil" data-toggle="tooltip" title="{{ __('Edit') }}"></span>
-                    </a>
-                @endpermission
-            </h2>
-        </div>
+        <h2>
+            {{ $semester->__toString() }}
+        </h2>
 
         <accept-decline
-            accept-route="{{ route('semester.accept', $semester) }}"
-            decline-route="{{ route('semester.decline', $semester) }}"
-            :accepted="{{ json_encode($semester->promises->contains(Auth::user())) }}"
-            :declined="{{ json_encode($semester->denials->contains(Auth::user())) }}"
-            :texts="{{ json_encode([
-                'acceptOrDecline' => __('Accept or decline'),
-                'attending' => __('You are attending!'),
-                'accept' => __('Accept'),
-                'notAttending' => __('You are not attending.'),
-                'decline' => __('Decline')
-            ]) }}"
+                accept-route="{{ route('semester.accept', $semester) }}"
+                decline-route="{{ route('semester.decline', $semester) }}"
+                :accepted="{{ json_encode($semester->promises->contains(Auth::user())) }}"
+                :declined="{{ json_encode($semester->denials->contains(Auth::user())) }}"
         >
         </accept-decline>
+
+        @permission('manageSemesters')
+        <div class="main-actions">
+            <a class="btn btn-primary btn-sm" href="{{ route('semesters.edit', $semester) }}">
+                <span class="oi oi-pencil"></span> {{ __('Edit') }}
+            </a>
+        </div>
+        @endpermission
     </header>
 
     <ul class="nav nav-tabs" role="tablist">

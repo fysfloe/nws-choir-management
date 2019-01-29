@@ -7,15 +7,14 @@
             {{ $concert->title }}
         </h2>
 
-        @if ($concert->getDateTime() > new \DateTime())
-            <accept-decline
-                    accept-route="{{ route('concert.accept', $concert) }}"
-                    decline-route="{{ route('concert.decline', $concert) }}"
-                    :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
-                    :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
-            >
-            </accept-decline>
-        @endif
+        <accept-decline
+                deadline="{{ $concert->deadline }}"
+                accept-route="{{ route('concert.accept', $concert) }}"
+                decline-route="{{ route('concert.decline', $concert) }}"
+                :accepted="{{ json_encode($concert->promises->contains(Auth::user())) }}"
+                :declined="{{ json_encode($concert->denials->contains(Auth::user())) }}"
+        >
+        </accept-decline>
 
         @permission('manageConcerts')
         <div class="main-actions">

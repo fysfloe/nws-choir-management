@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreRehearsal;
+use App\Http\Resources\AuthUserResource;
+use App\Http\Resources\RehearsalDetailResource;
 use App\Http\Resources\RehearsalResource;
 use App\Http\Resources\UserResource;
 use App\Project;
@@ -115,6 +117,8 @@ class RehearsalController extends Controller
         return view('rehearsal.show')->with([
             'tab' => 'show',
             'rehearsal' => $rehearsal,
+            'rehearsalJson' => json_encode(new RehearsalDetailResource($rehearsal)),
+            'user' => json_encode(new AuthUserResource(Auth::user())),
             'breadcrumbs' => $this->breadcrumbs
         ]);
     }
@@ -255,15 +259,9 @@ class RehearsalController extends Controller
             $user = Auth::user();
         }
 
-        $date = new \DateTime();
+        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
-        if ($rehearsal->date >= $date || $user_id !== null) {
-            $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
-
-            return new Response(__('Successfully accepted the rehearsal.'), 200);
-        } else {
-            return new Response(__('Cannot accept or decline a rehearsal in the past.'), 400);
-        }
+        return new Response(__('Successfully accepted the rehearsal.'), 200);
     }
 
     public function decline(Request $request, Rehearsal $rehearsal, $user_id = null)
@@ -274,15 +272,9 @@ class RehearsalController extends Controller
             $user = Auth::user();
         }
 
-        $date = new \DateTime();
+        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
 
-        if ($rehearsal->date >= $date || $user_id !== null) {
-            $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
-            
-            return new Response(__('Successfully accepted the rehearsal.'), 200);
-        } else {
-            return new Response(__('Cannot accept or decline a rehearsal in the past.'), 400);
-        }
+        return new Response(__('Successfully accepted the rehearsal.'), 200);
     }
 
     public function ajaxConfirm(Request $request, Rehearsal $rehearsal, User $user)

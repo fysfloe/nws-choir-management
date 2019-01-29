@@ -62,7 +62,7 @@
 
                             <div class="dropdown-menu dropdown-menu-right"
                                  :aria-labelledby="`singleActions${semester.id}`">
-                                <a class="dropdown-item" :href="`admin/semester/edit/${semester.id}`"
+                                <a class="dropdown-item" :href="`/admin/semesters/${semester.id}/edit`"
                                    v-if="hasAction('edit')">
                                     <span class="oi oi-pencil"></span> {{ $t('Edit') }}
                                 </a>

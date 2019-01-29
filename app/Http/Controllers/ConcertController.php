@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Concert;
 use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreConcert;
+use App\Http\Resources\AuthUserResource;
+use App\Http\Resources\ConcertResource;
 use App\Http\Resources\UserResource;
 use App\Project;
 use App\Semester;
@@ -141,6 +143,8 @@ class ConcertController extends Controller
         return view('concert.show')->with([
             'tab' => 'show',
             'concert' => $concert,
+            'concertJson' => json_encode(new ConcertResource($concert)),
+            'user' => json_encode(new AuthUserResource(Auth::user())),
             'breadcrumbs' => $this->breadcrumbs
         ]);
     }

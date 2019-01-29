@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Rehearsal;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
 
-class RehearsalResource extends Resource
+class RehearsalDetailResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -23,17 +24,23 @@ class RehearsalResource extends Resource
                 'day' => $this->date->format('d'),
                 'month' => $this->date->format('m')
             ],
+            'project' => (object)[
+                'id' => $this->project->id,
+                'title' => $this->project->title
+            ],
+            'semester' => (object)[
+                'id' => $this->semester->id
+            ],
             'start_time' => (new \DateTime($this->start_time))->format('H:i'),
             'end_time' => (new \DateTime($this->end_time))->format('H:i'),
             'place' => $this->place,
             'has_accepted' => $this->promises->find(Auth::user()) !== null,
             'has_declined' => $this->denials->find(Auth::user()) !== null,
             'deadline' => $this->deadline,
+            'other_rehearsals' => RehearsalResource::collection($this->project->rehearsals->filter(function (Rehearsal $rehearsal) {
+                return $rehearsal->id !== $this->id;
+            })->values())
         ];
-
-        if ($this->resource->accepted !== null) {
-            $rehearsal['accepted'] = $this->resource->accepted;
-        }
 
         return $rehearsal;
     }

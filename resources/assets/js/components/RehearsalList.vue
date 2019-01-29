@@ -47,8 +47,8 @@
                             <accept-decline
                                     :accept-route="`/rehearsal/accept/${rehearsal.id}/${user.id}`"
                                     :decline-route="`/rehearsal/decline/${rehearsal.id}/${user.id}`"
-                                    :accepted="rehearsal.hasAccepted"
-                                    :declined="rehearsal.hasDeclined"
+                                    :accepted="rehearsal.has_accepted"
+                                    :declined="rehearsal.has_declined"
                             >
                             </accept-decline>
                         </div>
@@ -58,7 +58,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="`singleActions${rehearsal.id}`">
-                                <a class="dropdown-item" :href="`admin/rehearsal/edit/${rehearsal.id}`" v-if="hasAction('edit')">
+                                <a class="dropdown-item" :href="`/admin/rehearsal/edit/${rehearsal.id}`"
+                                   v-if="hasAction('edit')">
                                     <span class="oi oi-pencil"></span> {{ $t('Edit') }}
                                 </a>
                                 <form method="POST" class="form-inline" :action="`/admin/rehearsals/delete/${rehearsal.id}`" v-if="hasAction('remove')">

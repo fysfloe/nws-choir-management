@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Auth;
 
 class Project extends Model
 {
@@ -23,7 +23,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'description', 'slug', 'created_by', 'semester_id', 'is_main'
+        'title', 'description', 'slug', 'created_by', 'semester_id', 'is_main', 'deadline'
     ];
 
     /**

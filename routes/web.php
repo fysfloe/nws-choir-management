@@ -71,8 +71,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/load-users', 'UserController@loadUsers')->name('users.load');
         // Concerts
         Route::get('/concert/export-participants/{concert}', 'ConcertController@exportParticipants')->name('concert.exportParticipants');
-        Route::get('/concerts/create', 'ConcertController@create')->name('concert.create');
-        Route::post('/concerts/store', 'ConcertController@store')->name('concert.store');
+        Route::get('/concert/create', 'ConcertController@create')->name('concert.create');
+        Route::post('/concert/store', 'ConcertController@store')->name('concert.store');
         Route::get('/concert/edit/{concert}', 'ConcertController@edit')->name('concert.edit');
         Route::put('/concert/update/{concert}', 'ConcertController@update')->name('concert.update');
         Route::delete('/concert/delete/{concert}', 'ConcertController@destroy')->name('concert.delete');
@@ -113,8 +113,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/project/{project}/removeParticipants', 'ProjectController@removeParticipants')->name('project.removeParticipants');
         Route::delete('/project/{project}/removeParticipant', 'ProjectController@removeParticipant')->name('project.removeParticipant');
         // Rehearsals
-        Route::get('/rehearsals/create', 'RehearsalController@create')->name('rehearsal.create');
-        Route::post('/rehearsals/store', 'RehearsalController@store')->name('rehearsal.store');
+        Route::get('/rehearsal/create', 'RehearsalController@create')->name('rehearsal.create');
+        Route::post('/rehearsal/store', 'RehearsalController@store')->name('rehearsal.store');
         Route::get('/rehearsal/edit/{rehearsal}', 'RehearsalController@edit')->name('rehearsal.edit');
         Route::post('/rehearsal/update/{rehearsal}', 'RehearsalController@update')->name('rehearsal.update');
         Route::delete('/rehearsal/delete/{rehearsal}', 'RehearsalController@destroy')->name('rehearsal.delete');
