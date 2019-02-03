@@ -51132,10 +51132,9 @@ return exports;
             buttonText: function(options, select) {
                 if (options.length === 0) {
                     return this.nonSelectedText;
-                }
-                else if (this.allSelectedText
-                            && options.length === $('option', $(select)).length
-                            && $('option', $(select)).length !== 1
+                } else if (this.allSelectedText
+                    && options.length === $('option', $(select)).length
+                    && $('option', $(select)).length !== 1
                             && this.multiple) {
 
                     if (this.selectAllNumber) {
@@ -52069,7 +52068,7 @@ return exports;
         deselectAll: function (justVisible) {
             var justVisible = typeof justVisible === 'undefined' ? true : justVisible;
 
-            if(justVisible) {
+            if (justVisible) {
                 var visibleCheckboxes = $("li input[type='checkbox']:not(:disabled)", this.$ul).filter(":visible");
                 visibleCheckboxes.prop('checked', false);
 
@@ -72692,6 +72691,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -75419,6 +75419,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
             props: {
@@ -76869,7 +76875,6 @@ if (false) {
             }
             return s
         }
-
 //# sourceMappingURL=lib.esm.js.map
 
 
@@ -78613,6 +78618,7 @@ if (false) {
             }
             return obj;
         }
+
 
 
 // Blank image with fill template
@@ -80855,6 +80861,14 @@ if (false) {
         var __WEBPACK_IMPORTED_MODULE_7__utils_warn__ = __webpack_require__(227);
         /* harmony import */
         var __WEBPACK_IMPORTED_MODULE_8__utils_dom__ = __webpack_require__(225);
+
+
+
+
+
+
+
+
 
 
 // Return an Array of visible items
@@ -84471,6 +84485,9 @@ if (false) {
         var __WEBPACK_IMPORTED_MODULE_3__mixins_id__ = __webpack_require__(226);
 
 
+
+
+
 // Slide directional classes
         var DIRECTION = {
             next: {
@@ -85378,6 +85395,7 @@ if (false) {
         var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(225);
 
 
+
 // Events we emit on $root
         var EVENT_STATE = 'bv::collapse::state';
         var EVENT_ACCORDION = 'bv::collapse::accordion';
@@ -85576,6 +85594,7 @@ if (false) {
         var __WEBPACK_IMPORTED_MODULE_0__utils_target__ = __webpack_require__(264);
         /* harmony import */
         var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(225);
+
 
 
 // Are we client side?
@@ -86195,6 +86214,13 @@ if (false) {
         var __WEBPACK_IMPORTED_MODULE_6__form_form_invalid_feedback__ = __webpack_require__(268);
         /* harmony import */
         var __WEBPACK_IMPORTED_MODULE_7__form_form_valid_feedback__ = __webpack_require__(269);
+
+
+
+
+
+
+
 
 
 // Selector for finding firt input in the form-group
@@ -86851,6 +86877,10 @@ if (false) {
         var __WEBPACK_IMPORTED_MODULE_5__form_input_css__ = __webpack_require__(333);
         /* harmony import */
         var __WEBPACK_IMPORTED_MODULE_5__form_input_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__form_input_css__);
+
+
+
+
 
 
 // Import styles
@@ -88382,6 +88412,16 @@ if (false) {
         }
 
 
+
+
+
+
+
+
+
+
+
+
 // Selectors for padding/margin adjustments
         var Selector = {
             FIXED_CONTENT: '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top',
@@ -89826,6 +89866,9 @@ if (false) {
         };
 
 
+
+
+
 // Props needed for router links
         var routerProps = Object(__WEBPACK_IMPORTED_MODULE_2__link_link__["b" /* pickLinkProps */])('activeClass', 'exactActiveClass', 'append', 'exact', 'replace', 'target', 'rel');
 
@@ -90186,6 +90229,16 @@ if (false) {
         } : function (obj) {
             return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
         };
+
+
+
+
+
+
+
+
+
+
 
 
 // Import styles
@@ -92795,6 +92848,9 @@ if (false) {
             }
             return obj;
         }
+
+
+
 
 
 // Helper component
@@ -100318,5 +100374,6 @@ if (false) {
             }
         }
 
-        /***/ })
+        /***/
+    })
 /******/ ]);
