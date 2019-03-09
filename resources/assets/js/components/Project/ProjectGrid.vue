@@ -18,9 +18,9 @@
                 <tr v-for="user in users">
                     <td scope="row">{{ user.firstname }} {{ user.surname }}</td>
                     <td v-for="date in dates"
-                        :class="{'text-center': true, 'table-danger': hasDeclined(user, date), 'table-success': hasAccepted(user, date)}">
+                        :class="{'text-center': true, 'table-danger': hasDeclined(user, date), 'table-success': hasAccepted(user, date), 'table-warning': isExcused(user, date)}">
                         <span class="oi oi-question-mark muted"
-                              v-if="!hasAccepted(user, date) && !hasDeclined(user, date)"></span>
+                              v-if="!hasAccepted(user, date) && !hasDeclined(user, date) && !isExcused(user, date)"></span>
                     </td>
                 </tr>
                 </tbody>
@@ -75,11 +75,20 @@
             },
             hasDeclined(user, date) {
                 if (date.type === 'rehearsal') {
-                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && (!rehearsal.pivot.accepted || rehearsal.pivot.confirmed === 0)).length > 0;
+                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && (!rehearsal.pivot.accepted || (rehearsal.pivot.confirmed === 0 && !rehearsal.pivot.excused))).length > 0;
                 }
 
                 if (date.type === 'concert') {
-                    return user.concerts.filter(concert => concert.id === date.id && (!concert.pivot.accepted || concert.pivot.confirmed === 0)).length > 0;
+                    return user.concerts.filter(concert => concert.id === date.id && (!concert.pivot.accepted || (concert.pivot.confirmed === 0 && !concert.pivot.excused))).length > 0;
+                }
+            },
+            isExcused(user, date) {
+                if (date.type === 'rehearsal') {
+                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && (rehearsal.pivot.accepted && !rehearsal.pivot.confirmed && rehearsal.pivot.excused)).length > 0;
+                }
+
+                if (date.type === 'concert') {
+                    return user.concerts.filter(concert => concert.id === date.id && (concert.pivot.accepted && !concert.pivot.confirmed && concert.pivot.excused)).length > 0;
                 }
             }
         }
