@@ -31,20 +31,23 @@ class RehearsalController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function index()
+    public function index(Request $request)
     {
-        $date = new \DateTime();
+        $where = [['deleted_at', '=', null]];
 
-        $rehearsals = Rehearsal::where([['deleted_at', '=', null], ['date', '>=', date_format($date, 'Y-m-d')]])
-            ->orderBy('date')
+        if ($request->get('project_id')) {
+            $where[] = ['project_id', '=', $request->get('project_id')];
+        }
+
+        $rehearsals = Rehearsal::where($where)
+            ->orderBy($request->get('sort'), $request->get('dir'))
             ->get();
 
-        return view('rehearsal.index')->with([
-            'rehearsals' => $rehearsals,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(RehearsalResource::collection($rehearsals));
     }
 
     public function loadItems(Request $request)
@@ -366,7 +369,7 @@ class RehearsalController extends Controller
     public function removeParticipant(Rehearsal $rehearsal, Request $request)
     {
         $user = User::find($request->get('user_id'));
-        
+
         if ($user !== null) {
             $rehearsal->participants()->detach($user);
 

@@ -13,17 +13,17 @@
                 <concert-side-list
                         class="mb-4"
                         :concerts="project.concerts"
-                        :add-concert-route="`/admin/concert/create?project=${project.id}&semester=${project.semester.id}`"
-                        :can-manage-concerts="user.canManageConcerts"
-                        :user="user"
+                        :add-concert-route="`/admin/concert/create?project=${project.id}&semester=${project.semester_id}`"
+                        :can-manage-concerts="currentUser.canManageConcerts"
+                        :user="currentUser"
                 ></concert-side-list>
 
                 <rehearsal-side-list
                         class="mb-4"
                         :rehearsals="project.rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsal/create?project=${project.id}&semester=${project.semester.id}`"
-                        :can-manage-rehearsals="user.canManageRehearsals"
-                        :user="user"
+                        :add-rehearsal-route="`/admin/rehearsal/create?project=${project.id}&semester=${project.semester_id}`"
+                        :can-manage-rehearsals="currentUser.canManageRehearsals"
+                        :user="currentUser"
                 ></rehearsal-side-list>
             </div>
         </div>
@@ -31,15 +31,16 @@
 </template>
 
 <script>
+    import ConcertSideList from "../Concert/ConcertSideList";
+    import RehearsalSideList from "../Rehearsal/RehearsalSideList";
     export default {
-        props: {
-            project: {
-                type: Object,
-                required: true
+        components: {RehearsalSideList, ConcertSideList},
+        computed: {
+            project () {
+                return this.$store.state.projects.project;
             },
-            user: {
-                type: Object,
-                required: true
+            currentUser() {
+                return this.$store.state.users.current;
             }
         }
     }

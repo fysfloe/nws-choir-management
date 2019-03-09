@@ -1,91 +1,78 @@
 <template>
     <div>
-        <div class="row clearfix my-3">
-            <div class="col">
-                <button type="button" class="btn btn-primary btn-sm" @click="changeView">
-                    <span :class="{'oi': true, 'oi-list': view === 'table', 'oi-grid-three-up': view === 'list'}"></span>
-                    <span v-if="view === 'table'">{{ $t('List view') }}</span>
-                    <span v-else-if="view === 'list'">{{ $t('Table view') }}</span>
-                </button>
+        <div class="loader" v-if="loading"></div>
+
+        <div v-else>
+            <div class="row clearfix my-3">
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-sm" @click="changeView">
+                        <span :class="{'oi': true, 'oi-list': view === 'table', 'oi-grid-three-up': view === 'list'}"></span>
+                        <span v-if="view === 'table'">{{ $t('List view') }}</span>
+                        <span v-else-if="view === 'list'">{{ $t('Table view') }}</span>
+                    </button>
+                </div>
+
+                <div class="col text-right" v-if="currentUser.canManageProjects">
+                    <a class="btn btn-default btn-sm" :href="`/admin/project/${project.id}/addUser`" data-toggle="modal"
+                       data-target="#mainModal">
+                        <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
+                    </a>
+                    <a class="btn btn-default btn-sm" :href="`/admin/project/export-participants/${project.id}`">
+                        <span class="oi oi-account-login"></span> {{ $t('Export') }}
+                    </a>
+                </div>
             </div>
 
-            <div class="col text-right" v-if="canManageProjects">
-                <a class="btn btn-default btn-sm" :href="`/admin/project/${projectId}/addUser`" data-toggle="modal"
-                   data-target="#mainModal">
-                    <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
-                </a>
-                <a class="btn btn-default btn-sm" :href="`/admin/project/export-participants/${projectId}`">
-                    <span class="oi oi-account-login"></span> {{ $t('Export') }}
-                </a>
-            </div>
-        </div>
-
-        <user-list
-                v-show="view === 'list'"
-                :users="users"
-                :can-manage-users="canManageUsers"
-                :show-roles="false"
-                :voices="voices"
-                :fetch-users-action="fetchUsersAction"
-                :sort-options="{
+            <user-list
+                    v-show="view === 'list'"
+                    :users="participants"
+                    :can-manage-users="currentUser.canManageUsers"
+                    :show-roles="false"
+                    :voices="{}"
+                    :fetch-users-action="`/projects/load_participants/${project.id}`"
+                    :sort-options="{
                     firstname: $t('First Name'),
                     surname: $t('Surname'),
                     voice: $t('Voice'),
                     id: $t('Created at')
                 }"
-                :set-voice-route="setVoiceRoute"
-                :remove-participants-route="removeParticipantsRoute"
-                :actions="['removeParticipant', 'setVoice', 'editProfile']"
-                :rehearsals="rehearsals"
-                :concerts="concerts"
-        ></user-list>
+                    :set-voice-route="`/projects/set_voice/${project.id}`"
+                    :remove-participants-route="`/projects/${project.id}`"
+                    :actions="['removeParticipant', 'setVoice', 'editProfile']"
+                    :rehearsals="[]"
+                    :concerts="[]"
+            ></user-list>
 
-        <project-grid
-                v-show="view === 'table'"
-                :rehearsals="rehearsals"
-                :concerts="concerts"
-                :users="users"
-        ></project-grid>
+            <project-grid
+                    v-show="view === 'table'"
+                    :rehearsals="[]"
+                    :concerts="[]"
+                    :users="participants"
+            ></project-grid>
+        </div>
     </div>
 </template>
 
 <script>
+    import UserList from "../UserList";
+    import ProjectGrid from "./ProjectGrid";
     export default {
-        props: {
-            'projectId': {
-                type: Number
+        components: {ProjectGrid, UserList},
+        computed: {
+            project () {
+                return this.$store.state.projects.project;
             },
-            'concerts': {
-                type: [Array, Object]
+            currentUser () {
+                return this.$store.state.users.current;
             },
-            'rehearsals': {
-                type: [Array, Object]
-            },
-            'users': {
-                type: Array
-            },
-            'canManageUsers': {
-                type: [Boolean, Number]
-            },
-            'canManageProjects': {
-                type: [Boolean, Number]
-            },
-            'fetchUsersAction': {
-                type: String
-            },
-            'voices': {
-                type: Object
-            },
-            'setVoiceRoute': {
-                type: String
-            },
-            'removeParticipantsRoute': {
-                type: String
+            participants () {
+                return this.project.participants;
             }
         },
         data() {
             return {
-                view: 'list'
+                view: 'list',
+                loading: true
             }
         },
         methods: {
@@ -96,6 +83,11 @@
                     this.view = 'list';
                 }
             }
+        },
+        mounted () {
+            this.$store.dispatch('projects/participants', this.project.id).then(() => {
+                this.loading = false;
+            });
         }
     }
 </script>

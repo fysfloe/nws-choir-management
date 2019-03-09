@@ -1,9 +1,17 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import {routes} from "./routes";
+import VueResource from 'vue-resource';
+import VuejsDialog from "vuejs-dialog"
+import VueInternationalization from 'vue-i18n';
+import Locale from './vue-i18n-locales.generated';
+import mixins from './mixins';
+import BootstrapVue from 'bootstrap-vue'
+import VueRouter from 'vue-router';
+import store from './vuex/store.js';
 
 window.Popper = require('popper.js').default;
 require('./bootstrap');
@@ -13,34 +21,13 @@ require('tempusdominus-bootstrap-4');
 
 window.Vue = require('vue');
 
-import VueResource from 'vue-resource';
-import VuejsDialog from "vuejs-dialog"
-import VueInternationalization from 'vue-i18n';
-import Locale from './vue-i18n-locales.generated';
-import mixins from './mixins';
-import BootstrapVue from 'bootstrap-vue'
-
+Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VuejsDialog);
 Vue.use(VueInternationalization);
 Vue.use(BootstrapVue);
 Vue.use(require('vue-moment'));
 
-Vue.component('user-list', require('./components/UserList.vue'));
-Vue.component('project-list', require('./components/Project/ProjectList.vue'));
-Vue.component('rehearsal-list', require('./components/Rehearsal/RehearsalList.vue'));
-Vue.component('semester-list', require('./components/Semester/SemesterList.vue'));
-Vue.component('filters', require('./components/Filters.vue'));
-Vue.component('picture-input', require('vue-picture-input'));
-Vue.component('accept-decline', require('./components/AcceptDecline.vue'));
-Vue.component('attendance', require('./components/Attendance.vue'));
-Vue.component('project-grid', require('./components/Project/ProjectGrid.vue'));
-Vue.component('project-participants', require('./components/Project/ProjectParticipants.vue'));
-Vue.component('rehearsal-side-list', require('./components/Rehearsal/RehearsalSideList.vue'));
-Vue.component('concert-side-list', require('./components/Concert/ConcertSideList.vue'));
-Vue.component('concert-details', require('./components/Concert/ConcertDetails.vue'));
-Vue.component('project-details', require('./components/Project/ProjectDetails.vue'));
-Vue.component('rehearsal-details', require('./components/Rehearsal/RehearsalDetails.vue'));
 Vue.mixin(mixins.global);
 
 const lang = document.documentElement.lang.substr(0, 2); 
@@ -50,10 +37,21 @@ const i18n = new VueInternationalization({
     messages: Locale
 });
 
+const router = new VueRouter({
+    mode: 'history',
+    routes
+});
+
 const app = new Vue({
     el: '#app',
     i18n,
-    mixins
+    router,
+    mixins,
+    store,
+    mounted () {
+        this.$store.dispatch('users/getCurrent');
+        this.$store.dispatch('semesters/options');
+    }
 });
 
 $(function () {

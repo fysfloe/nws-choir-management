@@ -19,6 +19,7 @@ class AuthUserResource extends Resource
             'canManageRehearsals' => $this->can('manageRehearsals'),
             'canManageProjects' => $this->can('manageProjects'),
             'canManageConcerts' => $this->can('manageConcerts'),
+            'canManageSemesters' => $this->can('manageSemesters'),
             'canManageUsers' => $this->can('manageUsers'),
         ];
     }

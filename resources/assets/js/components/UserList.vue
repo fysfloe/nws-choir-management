@@ -135,63 +135,78 @@
 </template>
 
 <script>
+    import Attendance from "./Attendance";
+    import AcceptDecline from "./AcceptDecline";
+    import Filters from "./Filters";
     export default {
+        components: {Filters, AcceptDecline, Attendance},
         props: {
-            'concerts': {
+            concerts: {
                 type: [Array, Object]
             },
-            'rehearsals': {
+            rehearsals: {
                 type: [Array, Object]
             },
-            'users': {
+            users: {
                 type: Array
             },
-            'canManageUsers': {
+            canManageUsers: {
                 type: [Boolean, Number]
             },
-            'showRoles': {
+            showRoles: {
                 type: Boolean
             },
-            'fetchUsersAction': {
+            fetchUsersAction: {
                 type: String
             },
-            'voices': {
+            voices: {
                 type: Object
             },
-            'sortOptions': {
-                type: Object
+            sortOptions: {
+                type: Object,
+                default () {
+                    return {
+                        firstname: this.$t('Firstname'),
+                        surname: this.$t('Surname'),
+                        voice: this.$t('Voice'),
+                        id: this.$t('Created at')
+                    };
+                }
             },
-            'setVoiceRoute': {
+            setVoiceRoute: {
                 type: String
             },
-            'withAttendanceConfirmation': {
+            withAttendanceConfirmation: {
                 type: Boolean
             },
-            'attendanceRoutes': {
+            attendanceRoutes: {
                 type: Object
             },
-            'withAcceptDecline': {
+            withAcceptDecline: {
                 type: Boolean
             },
-            'acceptDeclineRoutes': {
+            acceptDeclineRoutes: {
                 type: Object
             },
-            'removeUserRoute': {
+            removeUserRoute: {
                 type: String
             },
-            'removeParticipantsRoute': {
+            removeParticipantsRoute: {
                 type: String
             },
-            'promises': {
+            promises: {
                 type: Array
             },
-            'denials': {
+            denials: {
                 type: Array
             },
-            'actions': {
-                type: Array
+            actions: {
+                type: Array,
+                default () {
+                    return ['setVoice', 'editProfile', 'setRole', 'archive']
+                }
             },
-            'filters': {
+            filters: {
                 type: Object,
                 default: () => {
                     return {
@@ -211,7 +226,6 @@
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 loading: false,
-                _users: [],
                 activeFilters: {},
                 selectedUsers: []
             }
@@ -221,12 +235,15 @@
                 get() {
                     return this.selectedUsers.length === this._users.length;
                 }
+            },
+            _users () {
+                return this.users ? this.users : this.$store.state.users.items;
             }
         },
-        created() {
-            this._users = this.users;
-        },
         mounted() {
+            if (!this.users) {
+                this.$store.dispatch('users/fetch');
+            }
         },
         methods: {
             toggleUser: function (event, id) {

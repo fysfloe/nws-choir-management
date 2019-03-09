@@ -1,5 +1,15 @@
 <template>
     <div>
+        <header class="page-header">
+            <h2>{{ $t('Semesters') }}</h2>
+
+            <div class="main-actions" v-if="currentUser.canManageSemesters">
+                <router-link class="btn btn-primary btn-sm" to="/admin/semesters/create">
+                    {{ $t('New Semester') }}
+                </router-link>
+            </div>
+        </header>
+
         <div class="loader" v-if="loading"></div>
 
         <div class="list-table" v-else-if="items.length > 0">
@@ -27,7 +37,7 @@
             </header>
 
             <ul class="semesters">
-                <a :href="`/semester/${semester.id}`" v-for="semester in items" :key="semester.id">
+                <router-link :to="`/semesters/${semester.id}`" v-for="semester in items" :key="semester.id">
                     <li class="row align-items-center">
                         <div class="col-md-8">
                             <div class="flex align-items-center">
@@ -47,14 +57,14 @@
                         </div>
                         <div class="col-md-3">
                             <accept-decline
-                                    :accept-route="`/semester/accept/${semester.id}`"
-                                    :decline-route="`/semester/decline/${semester.id}`"
-                                    :accepted="hasAccepted(semester)"
-                                    :declined="hasDeclined(semester)"
+                                    :accept-route="`/semesters/accept/${semester.id}`"
+                                    :decline-route="`/semesters/decline/${semester.id}`"
+                                    :accepted="semester.accepted"
+                                    :declined="semester.declined"
                             >
                             </accept-decline>
                         </div>
-                        <div class="col-md-1 actions" v-if="canManageSemesters">
+                        <div class="col-md-1 actions" v-if="currentUser.canManageSemesters">
                             <a class="dropdown-toggle no-caret" href="#" :id="`singleActions${semester.id}`"
                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="oi oi-ellipses"></span>
@@ -78,7 +88,7 @@
                             </div>
                         </div>
                     </li>
-                </a>
+                </router-link>
             </ul>
         </div>
         <div v-else class="no-results">{{ $t('No results found.') }}</div>
@@ -86,30 +96,37 @@
 </template>
 
 <script>
+    import AcceptDecline from "../AcceptDecline";
     export default {
+        components: {AcceptDecline},
         props: {
-            'user': {
+            sortOptions: {
                 type: Object,
-                required: true
+                default () {
+                    return {
+                        'start_date': this.$t('Start Date')
+                    };
+                }
             },
-            'canManageSemesters': {
-                type: [Boolean, Number]
+            actions: {
+                type: Array,
+                default () {
+                    return ['remove', 'edit']
+                }
+            }
+        },
+        computed: {
+            currentUser () {
+                return this.$store.state.users.current;
             },
-            'fetchAction': {
-                type: String
-            },
-            'sortOptions': {
-                type: Object
-            },
-            'actions': {
-                type: Array
+            items () {
+                return this.$store.state.semesters.items;
             }
         },
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 loading: false,
-                items: [],
                 activeFilters: {},
                 filters: {
                     sort: 'start_date',
@@ -138,32 +155,13 @@
             fetchItems: function () {
                 this.loading = true;
 
-                for (let key in this.filters) {
-                    if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
-                        this.activeFilters[key] = this.filters[key].join(', ');
-                    } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
-                        this.activeFilters[key] = this.filters[key];
-                    }
-                }
-
-                this.$http.get(this.fetchAction, {params: this.filters}).then(response => {
-                    this.loading = false;
-                    this.items = response.body;
-                }, response => {
-                })
+                this.$store.dispatch('semesters/fetch', this.filters)
+                    .then(() => {
+                        this.loading = false;
+                    });
             },
             hasAction: function (name) {
                 return this.actions.indexOf(name) !== -1
-            },
-            hasAccepted: function (semester) {
-                return semester.promises.filter(user => {
-                    return user.id === this.user.id;
-                }).length > 0;
-            },
-            hasDeclined: function (semester) {
-                return semester.denials.filter(user => {
-                    return user.id === this.user.id;
-                }).length > 0;
             }
         }
     }

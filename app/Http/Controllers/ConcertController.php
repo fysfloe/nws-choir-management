@@ -46,12 +46,6 @@ class ConcertController extends Controller
 
         $query .= "WHERE concerts.deleted_at IS NULL AND concerts.title LIKE '%$search%' ";
 
-        if ($request->get('show') === 'old') {
-            $query .= "AND concerts.date < NOW() ";
-        } else if ($request->get('show') === 'new' || !$request->get('show')) {
-            $query .= "AND concerts.date >= NOW() ";
-        }
-
         $query .= "GROUP BY concerts.id ORDER BY $sort $dir";
 
         $concerts = Concert::fromQuery($query);
@@ -61,11 +55,7 @@ class ConcertController extends Controller
             if ($val) $activeFilters[$key] = $val;
         }
 
-        return view('concert.index')->with([
-            'concerts' => $concerts,
-            'activeFilters' => $activeFilters,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(ConcertResource::collection($concerts));
     }
 
     /**
@@ -140,13 +130,7 @@ class ConcertController extends Controller
         
         $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
 
-        return view('concert.show')->with([
-            'tab' => 'show',
-            'concert' => $concert,
-            'concertJson' => json_encode(new ConcertResource($concert)),
-            'user' => json_encode(new AuthUserResource(Auth::user())),
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(new ConcertResource($concert));
     }
 
     public function participants(Request $request, Concert $concert)

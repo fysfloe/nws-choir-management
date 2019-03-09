@@ -45,14 +45,14 @@
                         </div>
                         <div class="col-md-3">
                             <accept-decline
-                                    :accept-route="`/rehearsal/accept/${rehearsal.id}/${user.id}`"
-                                    :decline-route="`/rehearsal/decline/${rehearsal.id}/${user.id}`"
-                                    :accepted="rehearsal.has_accepted"
-                                    :declined="rehearsal.has_declined"
+                                    :accept-route="`/rehearsal/accept/${rehearsal.id}/${currentUser.id}`"
+                                    :decline-route="`/rehearsal/decline/${rehearsal.id}/${currentUser.id}`"
+                                    :accepted="rehearsal.accepted"
+                                    :declined="rehearsal.declined"
                             >
                             </accept-decline>
                         </div>
-                        <div class="col-md-1 actions" v-if="canManageRehearsals">
+                        <div class="col-md-1 actions" v-if="currentUser.canManageRehearsals">
                             <a class="dropdown-toggle no-caret" href="#" :id="`singleActions${rehearsal.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="oi oi-ellipses"></span>
                             </a>
@@ -80,35 +80,45 @@
 </template>
 
 <script>
+    import AcceptDecline from "../AcceptDecline";
     export default {
+        components: {AcceptDecline},
         props: {
-            'user': {
+            sortOptions: {
                 type: Object,
-                required: true
+                default () {
+                    return {
+                        'date': this.$t('Date')
+                    };
+                }
             },
-            'canManageRehearsals': {
-                type: [Boolean, Number]
-            },
-            'fetchAction': {
-                type: String
-            },
-            'sortOptions': {
-                type: Object
-            },
-            'actions': {
+            actions: {
                 type: Array
+            },
+            actionParameters: {
+                type: Object,
+                default () {
+                    return {};
+                }
             }
         },
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 loading: false,
-                items: [],
                 activeFilters: {},
                 filters: {
                     sort: 'date',
                     dir: 'ASC'
                 }
+            }
+        },
+        computed: {
+            items () {
+                return this.$store.state.rehearsals.items;
+            },
+            currentUser () {
+                return this.$store.state.users.current;
             }
         },
         mounted() {
@@ -132,18 +142,9 @@
             fetchItems: function () {
                 this.loading = true;
 
-                for (let key in this.filters) {
-                    if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
-                        this.activeFilters[key] = this.filters[key].join(', ');
-                    } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
-                        this.activeFilters[key] = this.filters[key];
-                    }
-                }
-
-                this.$http.get(this.fetchAction, {params: this.filters}).then(response => {
+                this.$store.dispatch('rehearsals/fetch', Object.assign(this.filters, this.actionParameters)).then(() => {
                     this.loading = false;
-                    this.items = response.body;
-                }, response => {})
+                });
             },
             hasAction: function (name) {
                 return this.actions.indexOf(name) !== -1

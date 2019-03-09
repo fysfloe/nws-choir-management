@@ -16,46 +16,54 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function() {
+//    Route::get('/{vue_capture?}', function () {
+//        return view('index');
+//    })->where('vue_capture', '[\/\w\.-]*');
+
+    Route::group(['prefix' => 'api'], function () {
+        Route::resource('projects', 'ProjectController');
+        Route::get('/projects/load_participants/{project}', 'ProjectController@loadParticipants');
+
+        Route::resource('rehearsals', 'RehearsalController');
+
+        Route::resource('comments', 'CommentController');
+
+        Route::get('/semesters/load_options', 'SemesterController@loadOptions');
+        Route::resource('semesters', 'SemesterController');
+        Route::get('/semesters/load_participants/{semester}', 'SemesterController@loadParticipants');
+
+        Route::resource('concerts', 'ConcertController');
+        Route::get('/concerts/load_participants/{concert}', 'ConcertController@loadParticipants');
+
+        Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
+    });
+
     Route::get('/', 'HomeController@index')->name('dashboard');
+    Route::get('/current_user', 'UserController@getCurrent');
     Route::get('/dashboard', 'HomeController@index');
 
     Route::get('/concerts', 'ConcertController@index')->name('concerts');
-    Route::get('/concert/{concert}', 'ConcertController@show')->name('concert.show');
-    Route::get('/concert/{concert}/participants', 'ConcertController@participants')->name('concert.participants');
-    Route::get('/concert/{concert}/voices', 'ConcertController@voices')->name('concert.voices');
-    Route::get('/concert/accept/{concert}', 'ConcertController@accept')->name('concert.accept');
-    Route::get('/concert/decline/{concert}', 'ConcertController@decline')->name('concert.decline');
-    Route::get('/concert/comments/{concert}', 'ConcertController@comments')->name('concert.comments');
-    Route::post('concert/{concert}/createComment', 'ConcertController@createComment')->name('concert.createComment');
+    Route::get('/concerts/{concert}/voices', 'ConcertController@voices')->name('concert.voices');
+    Route::get('/concerts/accept/{concert}', 'ConcertController@accept')->name('concert.accept');
+    Route::get('/concerts/decline/{concert}', 'ConcertController@decline')->name('concert.decline');
+    Route::post('concerts/{concert}/createComment', 'ConcertController@createComment')->name('concert.createComment');
 
-    Route::get('/projects', 'ProjectController@index')->name('projects');
+    //Route::get('/projects', 'ProjectController@index')->name('projects');
     Route::get('/projects/loadItems', 'ProjectController@loadItems')->name('project.loadItems');
     Route::get('/project/{project}', 'ProjectController@show')->name('project.show');
-    Route::get('/project/comments/{project}', 'ProjectController@comments')->name('project.comments');
-    Route::post('/project/{project}/createComment', 'ProjectController@createComment')->name('project.createComment');
     Route::post('/project/{project}/removeComment/{comment}', 'ProjectController@removeComment')->name('project.removeComment');
-    Route::get('/project/{project}/participants', 'ProjectController@participants')->name('project.participants');
-    Route::get('/project/{project}/rehearsals', 'ProjectController@rehearsals')->name('project.rehearsals');
-    Route::get('/project/{project}/voices', 'ProjectController@voices')->name('project.voices');
-    Route::get('/project/accept/{project}', 'ProjectController@accept')->name('project.accept');
-    Route::get('/project/decline/{project}', 'ProjectController@decline')->name('project.decline');
+    Route::get('/projects/accept/{project}', 'ProjectController@accept')->name('project.accept');
+    Route::get('/projects/decline/{project}', 'ProjectController@decline')->name('project.decline');
 
     Route::get('/rehearsals', 'RehearsalController@index')->name('rehearsals');
-    Route::get('/rehearsal/loadItems', 'RehearsalController@loadItems')->name('rehearsal.loadItems');
-    Route::get('/rehearsal/{rehearsal}', 'RehearsalController@show')->name('rehearsal.show');
-    Route::get('/rehearsal/accept/{rehearsal}/{user_id?}', 'RehearsalController@accept')->name('rehearsal.accept');
-    Route::get('/rehearsal/decline/{rehearsal}/{user_id?}', 'RehearsalController@decline')->name('rehearsal.decline');
-    Route::get('/rehearsal/comments/{rehearsal}', 'RehearsalController@comments')->name('rehearsal.comments');
+    Route::get('/rehearsals/accept/{rehearsal}/{user_id?}', 'RehearsalController@accept')->name('rehearsal.accept');
+    Route::get('/rehearsals/decline/{rehearsal}/{user_id?}', 'RehearsalController@decline')->name('rehearsal.decline');
     Route::post('rehearsal/{rehearsal}/createComment', 'RehearsalController@createComment')->name('rehearsal.createComment');
-
-    Route::get('/semesters', 'SemesterController@index')->name('semesters');
-    Route::get('/semester/loadItems', 'SemesterController@loadItems')->name('semester.loadItems');
-    Route::get('/semester/{semester}', 'SemesterController@show')->name('semester.show');
 
     Route::get('/voice/showSet/{user?}', 'VoiceController@showSet')->name('voice.showSet');
     Route::post('/voice/set/{user?}', 'VoiceController@set')->name('voice.set');
-    Route::get('/semester/accept/{semester}', 'SemesterController@accept')->name('semester.accept');
-    Route::get('/semester/decline/{semester}', 'SemesterController@decline')->name('semester.decline');
+    Route::get('/semesters/accept/{semester}', 'SemesterController@accept')->name('semester.accept');
+    Route::get('/semesters/decline/{semester}', 'SemesterController@decline')->name('semester.decline');
 
     Route::get('/profile/edit/{user?}', 'ProfileController@edit')->name('profile.edit');
     Route::post('/profile/update/{user}', 'ProfileController@update')->name('profile.update');
@@ -109,7 +117,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/project/{project}/setVoice', 'ProjectController@setUserVoices')->name('project.setUserVoices');
         Route::get('/project/{project}/addUser', 'ProjectController@showAddUser')->name('project.showAddUser');
         Route::post('/project/{project}/addUser', 'ProjectController@addUser')->name('project.addUser');
-        Route::get('/project/load-participants/{project}', 'ProjectController@loadParticipants')->name('project.loadParticipants');
         Route::post('/project/{project}/removeParticipants', 'ProjectController@removeParticipants')->name('project.removeParticipants');
         Route::delete('/project/{project}/removeParticipant', 'ProjectController@removeParticipant')->name('project.removeParticipant');
         // Rehearsals

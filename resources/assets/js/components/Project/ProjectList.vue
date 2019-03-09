@@ -1,5 +1,15 @@
 <template>
     <div>
+        <header class="page-header">
+            <h2>{{ $t('Projects') }}</h2>
+
+            <div class="main-actions" v-if="currentUser.canManageProjects">
+                <router-link class="btn btn-primary btn-sm" to="admin/projects/create">
+                    <span class="oi oi-plus"></span> {{ $t('New Project') }}
+                </router-link>
+            </div>
+        </header>
+
         <filters
         :fetch-items="fetchItems"
         :filters="filters"
@@ -11,8 +21,8 @@
 
         <div class="list-table" v-else-if="items.length > 0">
             <header class="row">
-                <div :class="{'col-md-10': true, 'has-checkbox': canManageProjects}">
-                    <input v-if="canManageProjects" type="checkbox" @click="checkAll" class="check-all" :checked="checkedAll">&nbsp;
+                <div :class="{'col-md-10': true, 'has-checkbox': currentUser.canManageProjects}">
+                    <input v-if="currentUser.canManageProjects" type="checkbox" @click="checkAll" class="check-all" :checked="checkedAll">&nbsp;
 
                     <div class="dropdown list-actions" v-if="selectedItems.length > 0">
                         <a class="dropdown-toggle no-caret" href="#" role="button" id="actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,25 +56,25 @@
             </header>
 
             <ul class="projects">
-                <a :href="`/project/${project.id}`" v-for="project in items" :key="project.id">
+                <router-link :to="`/projects/${project.id}`" v-for="project in items" :key="project.id">
                 <li class="row align-items-center">
                         <div class="col-md-11">
                             <div class="flex align-items-center">
-                                <input v-if="canManageProjects" type="checkbox" @click="toggleItem($event, project.id)" :value="project.id" :checked="selectedItems.indexOf(project.id) !== -1">&nbsp;
+                                <input v-if="currentUser.canManageProjects" type="checkbox" @click="toggleItem($event, project.id)" :value="project.id" :checked="selectedItems.indexOf(project.id) !== -1">&nbsp;
                                 <div class="avatar avatar-default">
                                     <span class="oi oi-musical-note"></span>
                                 </div>
                                 <div class="name">
                                     {{ project.title }}
                                     <small>
-                                        <span class="text-danger oi oi-x" :title="$t('You are attending!')" v-if="project.accepted === 0"></span>
-                                        <span class="text-success oi oi-check" :title="$t('You are not attending.')" v-else-if="project.accepted === 1"></span>
+                                        <span class="text-success oi oi-check" :title="$t('You are attending!')" v-if="project.accepted === true"></span>
+                                        <span class="text-danger oi oi-x" :title="$t('You are not attending.')" v-else-if="project.declined === true"></span>
                                         <span class="text-muted oi oi-question-mark" :title="$t('You did not answer yet.')" v-else></span>
                                     </small>
                                     <div>
                                         <small class="text-muted">
                                             <span class="oi oi-plus"></span> {{ project.created_at }}
-                                            <span class="ml-2" v-if="canManageProjects">
+                                            <span class="ml-2" v-if="currentUser.canManageProjects">
                                                 <span class="oi oi-person"></span> {{ project.creator }}
                                             </span>
                                         </small>
@@ -72,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-1 actions" v-if="canManageProjects">
+                        <div class="col-md-1 actions" v-if="currentUser.canManageProjects">
                             <a class="dropdown-toggle no-caret" href="#" :id="`singleActions${project.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="oi oi-ellipses"></span>
                             </a>
@@ -91,7 +101,7 @@
                             </div>
                         </div>
                 </li>
-                </a>
+                </router-link>
             </ul>
         </div>
         <div v-else class="no-results">{{ $t('No results found.') }}</div>
@@ -99,19 +109,26 @@
 </template>
 
 <script>
+import Filters from "../Filters";
 export default {
+    components: {Filters},
     props: {
-        'canManageProjects': {
-            type: [Boolean, Number]
-        }, 
-        'fetchAction': {
+        fetchAction: {
             type: String
         }, 
-        'sortOptions': {
-            type: Object 
+        sortOptions: {
+            type: Object,
+            default () {
+                return {
+                    'title': this.$t('Title')
+                };
+            }
         },
-        'actions': {
-            type: Array
+        actions: {
+            type: Array,
+            default () {
+                return ['remove', 'edit']
+            }
         }
     },
     data() {
@@ -119,7 +136,6 @@ export default {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             loading: false,
             activeFilters: {},
-            items: [],
             selectedItems: [],
             filters: {
                 search: '',
@@ -133,6 +149,12 @@ export default {
             get () {
                 return this.selectedItems.length === this.items.length;
             }
+        },
+        items () {
+            return this.$store.state.projects.items;
+        },
+        currentUser () {
+            return this.$store.state.users.current;
         }
     },
     mounted() {
@@ -183,20 +205,10 @@ export default {
             this.fetchItems();
         },
         fetchItems: function () {
-            this.loading = true;
-
-            for (let key in this.filters) {
-                if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
-                    this.activeFilters[key] = this.filters[key].join(', ');
-                } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
-                    this.activeFilters[key] = this.filters[key];
-                }
-            }
-
-            this.$http.get(this.fetchAction, {params: this.filters}).then(response => {
-                this.loading = false;
-                this.items = response.body;
-            }, response => {})
+            this.$store.dispatch('projects/fetch', this.filters)
+                .then(() => {
+                    this.loading = false;
+                });
         },
         removeFilter: function (key) {
             delete this.activeFilters[key];

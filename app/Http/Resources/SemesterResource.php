@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Auth;
 
 class SemesterResource extends Resource
 {
@@ -19,8 +20,9 @@ class SemesterResource extends Resource
             'name' => $this->name,
             'start_date' => (new \DateTime($this->start_date))->format('d.m.Y'),
             'end_date' => (new \DateTime($this->end_date))->format('d.m.Y'),
-            'promises' => UserResource::collection($this->promises),
-            'denials' => UserResource::collection($this->denials)
+            'projects' => ProjectResource::collection($this->projects),
+            'accepted' => $this->promises->contains(Auth::user()),
+            'declined' => $this->denials->contains(Auth::user()),
         ];
 
         if ($this->resource->accepted !== null) {

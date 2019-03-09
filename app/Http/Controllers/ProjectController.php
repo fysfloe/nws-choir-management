@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Events\ProjectAnsweredEvent;
-use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreProject;
-use App\Http\Resources\AuthUserResource;
+use App\Http\Resources\ProjectListResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\UserResource;
 use App\Project;
@@ -15,9 +14,9 @@ use App\Services\GetFilteredProjectsService;
 use App\Services\GetFilteredUsersService;
 use App\User;
 use App\Voice;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -56,11 +55,7 @@ class ProjectController extends Controller
             if ($val) $activeFilters[$key] = $val;
         }
 
-        return view('project.index')->with([
-            'projects' => $projects,
-            'activeFilters' => $activeFilters,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(ProjectListResource::collection($projects));
     }
 
     public function loadItems(Request $request)
@@ -102,30 +97,12 @@ class ProjectController extends Controller
     public function store(StoreProject $request)
     {
         $project = $request->all();
-        $voices = $project['voices'];
-        $voiceNumbers = $project['voiceNumbers'];
-
         $project['slug'] = str_slug($project['title'], '-');
         $input['is_main'] = $request->has('is_main');
 
         $project = Auth::user()->projectsCreated()->create($project);
 
-        foreach ($voices as $key => $voice) {
-            if ($voice !== null && $voiceNumbers[$key] !== null) {
-                $project->voices()->syncWithoutDetaching([$voice => ['number' => $voiceNumbers[$key]]]);
-            }
-        }
-
-        $semester = Semester::find($project->semester_id);
-
-        if ($semester) {
-            foreach ($semester->participants as $user) {
-                $project->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $user->voice ? $user->voice->id : null, 'accepted' => $user->pivot->accepted]]);
-                event(new ProjectAnsweredEvent($project, $user));
-            }
-        }
-
-        return redirect('projects');
+        return response()->json(new ProjectResource($project));
     }
 
     /**
@@ -138,33 +115,7 @@ class ProjectController extends Controller
     {
         $this->breadcrumbs->addCrumb($project->title, $project->slug);
 
-        return view('project.show')->with([
-            'tab' => 'show',
-            'project' => $project,
-            'projectJson' => json_encode(new ProjectResource($project)),
-            'user' => json_encode(new AuthUserResource(Auth::user())),
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
-    public function comments(Project $project)
-    {
-        $this->breadcrumbs->addCrumb($project->title, $project->slug);
-
-        return view('project.comments')->with([
-            'tab' => 'comments',
-            'project' => $project,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
-    public function createComment(StoreComment $request, Project $project)
-    {
-        $input = $request->all();
-        $input['user_id'] = Auth::user()->id;
-        $comment = $project->comments()->create($input);
-
-        return redirect()->back();
+        return response()->json(new ProjectResource($project));
     }
 
     public function removeComment(Project $project, Comment $comment, Request $request)
@@ -229,7 +180,7 @@ class ProjectController extends Controller
             }
         }
 
-        return redirect('projects');
+        return response()->json();
     }
 
     /**
@@ -244,7 +195,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->back();
+        return response()->json();
     }
 
     public function participants(Request $request, Project $project)
@@ -329,7 +280,7 @@ class ProjectController extends Controller
 
         event(new ProjectAnsweredEvent($project, $user, true));
 
-        return redirect()->back();
+        return response()->json();
     }
 
     public function decline(Project $project)
@@ -340,7 +291,7 @@ class ProjectController extends Controller
 
         event(new ProjectAnsweredEvent($project, $user, false));
 
-        return redirect()->back();
+        return response()->json();
     }
 
     public function addVoices(Request $request, Project $project)

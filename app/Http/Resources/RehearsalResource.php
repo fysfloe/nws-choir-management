@@ -26,8 +26,8 @@ class RehearsalResource extends Resource
             'start_time' => (new \DateTime($this->start_time))->format('H:i'),
             'end_time' => (new \DateTime($this->end_time))->format('H:i'),
             'place' => $this->place,
-            'has_accepted' => $this->promises->find(Auth::user()) !== null,
-            'has_declined' => $this->denials->find(Auth::user()) !== null,
+            'accepted' => $this->promises->find(Auth::user()) !== null,
+            'declined' => $this->denials->find(Auth::user()) !== null,
             'deadline' => $this->deadline,
         ];
 

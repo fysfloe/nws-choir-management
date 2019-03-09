@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Concert;
 use App\Http\Requests\StoreUser;
+use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\UserResource;
 use App\Role;
 use App\Services\GetFilteredUsersService;
 use App\User;
 use App\Voice;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -20,6 +21,11 @@ class UserController extends Controller
         parent::__construct();
 
         $this->breadcrumbs->addCrumb(__('Users'), 'users');
+    }
+
+    public function getCurrent()
+    {
+        return response()->json(new AuthUserResource(Auth::user()));
     }
 
     /**
@@ -34,42 +40,7 @@ class UserController extends Controller
         $users = (new GetFilteredUsersService())
             ->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else if ($key === 'concerts') {
-                    $concerts = [];
-                    foreach ($val as $concert_id) {
-                        $concerts[] = Concert::find($concert_id)->title;
-                    }
-
-                    $activeFilters['concerts'] = implode(', ', $concerts);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
-        }
-
-        $voices = Voice::getListForSelect();
-        $concerts = Concert::getListForSelect();
-        $roles = Role::getListForSelect();
-
-        return view('user.index')->with([
-            'users' => UserResource::collection($users),
-            'activeFilters' => $activeFilters,
-            'voices' => $voices,
-            'roles' => $roles,
-            'concerts' => $concerts,
-            'route' => 'users.index',
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(UserResource::collection($users));
     }
 
     public function loadUsers(Request $request)

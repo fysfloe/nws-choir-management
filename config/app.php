@@ -171,7 +171,6 @@ return [
          * Package Service Providers...
          */
         Creitive\Breadcrumbs\BreadcrumbsServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectResource extends Resource
 {
@@ -22,12 +23,12 @@ class ProjectResource extends Resource
             'created_at' => $this->created_at->format('d.m.Y'),
             'concerts' => ConcertResource::collection($this->concerts),
             'rehearsals' => RehearsalResource::collection($this->rehearsals),
-            'semester' => new SemesterResource($this->semester)
+            'comments' => CommentResource::collection($this->comments),
+            'accepted' => $this->promises->contains(Auth::user()),
+            'declined' => $this->denials->contains(Auth::user()),
+            'deadline' => (new \DateTime($this->deadline))->format('Y-m-d\TH:i'),
+            'semester_id' => $this->semester->id
         ];
-
-        if ($this->resource->accepted !== null) {
-            $project['accepted'] = $this->resource->accepted;
-        }
 
         return $project;
     }

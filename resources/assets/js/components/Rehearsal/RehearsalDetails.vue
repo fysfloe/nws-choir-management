@@ -31,7 +31,7 @@
             <div class="col-4 side-box">
                 <div v-if="rehearsal.project" class="mb-4">
                     <h3>{{ $t('Project') }}</h3>
-                    <a :href="`/project/${rehearsal.project.id}`">{{ rehearsal.project.title }}</a>
+                    <router-link :to="`/projects/${rehearsal.project.id}`">{{ rehearsal.project.title }}</router-link>
                 </div>
 
                 <rehearsal-side-list
@@ -48,7 +48,9 @@
 </template>
 
 <script>
+    import RehearsalSideList from "./RehearsalSideList";
     export default {
+        components: {RehearsalSideList},
         props: {
             rehearsal: {
                 type: Object,

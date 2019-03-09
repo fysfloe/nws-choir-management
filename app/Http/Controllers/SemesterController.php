@@ -32,10 +32,7 @@ class SemesterController extends Controller
     {
         $semesters = Semester::all();
 
-        return view('semester.index')->with([
-            'semesters' => $semesters,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(SemesterResource::collection($semesters));
     }
 
     public function loadItems(Request $request)
@@ -45,6 +42,21 @@ class SemesterController extends Controller
             ->get();
 
         return json_encode(SemesterResource::collection($semesters));
+    }
+
+    public function loadOptions()
+    {
+        $semesters = Semester::where('deleted_at', '=', null)
+            ->orderBy('start_date')
+            ->get();
+
+        $semesterOptions = [];
+
+        foreach ($semesters as $semester) {
+            $semesterOptions[$semester->id] = $semester->name;
+        }
+
+        return response()->json($semesterOptions);
     }
 
     /**
@@ -77,28 +89,22 @@ class SemesterController extends Controller
                 ->withErrors(['end_date' => __('The end date must be greater than the start date.')]);
         }
 
-        Auth::user()->semestersCreated()->create($semester);
+        $semester = Auth::user()->semestersCreated()->create($semester);
 
-        $request->session()->flash('alert-success', __('Semester successfully created!'));
-
-        return redirect()->route('semesters.index');
+        return response()->json(new SemesterResource($semester));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Semester $semester
      * @return \Illuminate\Http\Response
      */
     public function show(Semester $semester)
     {
         $this->breadcrumbs->addCrumb($semester->__toString(), URL::action('SemesterController@edit', ['semester' => $semester]));
 
-        return view('semester.show')->with([
-            'semester' => $semester,
-            'tab' => 'show',
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(new SemesterResource($semester));
     }
 
     public function participants(Request $request, Semester $semester)
@@ -269,7 +275,7 @@ class SemesterController extends Controller
 
         event(new SemesterAnsweredEvent($semester, $user, true));
         
-        return redirect()->back();
+        return response()->json();
     }
 
     public function decline(Semester $semester)
@@ -284,7 +290,7 @@ class SemesterController extends Controller
             }
         }
 
-        return redirect()->back();
+        return response()->json();
     }
 
     public function removeParticipant(Semester $semester, Request $request)

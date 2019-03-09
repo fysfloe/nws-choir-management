@@ -86,29 +86,29 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/semesters') }}">
+                        <router-link to="/semesters" class="nav-link">
                             <span class="oi oi-calendar"></span>&nbsp;
                             {{ __('Semesters') }}
-                        </a>
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('projects') }}">
+                        <router-link to="/projects" class="nav-link">
                             <span class="oi oi-project"></span>&nbsp;
                             {{ __('Projects') }}
-                        </a>
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('concerts') }}">
+                        <router-link to="/concerts" class="nav-link">
                             <span class="oi oi-musical-note"></span>&nbsp;
                             {{ __('Concerts') }}
-                        </a>
+                        </router-link>
                     </li>
                     @if (Auth::user()->can('manageUsers'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/admin/users') }}">
+                            <router-link class="nav-link" to="/admin/users">
                                 <span class="oi oi-people"></span>&nbsp;
                                 {{ __('Users') }}
-                            </a>
+                            </router-link>
                         </li>
                     @endif
                     @if (Auth::user()->can('manageVoices'))
@@ -146,6 +146,7 @@
                 {!! $breadcrumbs->render() !!}
             @endif
 
+            <router-view></router-view>
             @yield('content')
         </section>
     </div>

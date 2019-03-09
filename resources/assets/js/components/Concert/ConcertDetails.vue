@@ -12,7 +12,7 @@
             <div class="col-4 side-box">
                 <div v-if="concert.project" class="mb-4">
                     <h3>{{ $t('Project') }}</h3>
-                    <a :href="`/project/${concert.project.id}`">{{ concert.project.title }}</a>
+                    <router-link :to="`/projects/${concert.project.id}`">{{ concert.project.title }}</router-link>
                 </div>
 
                 <h3>{{ $t('Date') }}</h3>
@@ -24,9 +24,9 @@
                 <rehearsal-side-list
                         class="mb-4"
                         :rehearsals="concert.rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsal/create?project=${concert.project.id}&semester=${concert.semester.id}`"
-                        :can-manage-rehearsals="user.canManageRehearsals"
-                        :user="user"
+                        :add-rehearsal-route="`/admin/rehearsal/create?project=${concert.project.id}&semester=${concert.semester_id}`"
+                        :can-manage-rehearsals="currentUser.canManageRehearsals"
+                        :user="currentUser"
                 ></rehearsal-side-list>
 
                 <div v-if="concert.place">
@@ -41,15 +41,15 @@
 </template>
 
 <script>
+    import RehearsalSideList from "../Rehearsal/RehearsalSideList";
     export default {
-        props: {
-            concert: {
-                type: Object,
-                required: true
+        components: {RehearsalSideList},
+        computed: {
+            concert () {
+                return this.$store.state.concerts.concert;
             },
-            user: {
-                type: Object,
-                required: true
+            currentUser() {
+                return this.$store.state.users.current;
             }
         }
     }

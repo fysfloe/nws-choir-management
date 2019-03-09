@@ -209,10 +209,45 @@ h4 {
         margin-bottom: 0.5em;
     }
 
-    ul.dates, ul.voices, ul.rehearsals, ul.concerts {
+    ul.dates, ul.voices, ul.rehearsals, ul.concerts, ul.projects {
         margin: 0 -1em;
         padding: 0;
         list-style: none;
+    }
+
+    ul.rehearsals,
+    ul.concerts,
+    ul.projects {
+        a {
+            color: inherit;
+
+            &:hover {
+                text-decoration: none;
+
+                li {
+                    background: darken($lightgrey, 10);
+                    border-left: 0.25em solid $brand-primary;
+                }
+            }
+
+            li {
+                font-size: 0.85em;
+                padding: 0.5em 1em;
+                border-left: 0.25em solid transparent;
+                border-bottom: 0.1em solid darken($lightgrey, 5);
+                display: flex;
+                align-items: center;
+
+                span, div {
+                    flex-grow: 1;
+                }
+
+                .accept-decline {
+                    margin: 0 !important;
+                    text-align: right;
+                }
+            }
+        }
     }
 }
 

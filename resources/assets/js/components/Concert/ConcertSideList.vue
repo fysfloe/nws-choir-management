@@ -2,7 +2,7 @@
     <div>
         <h3>{{ $t('Concerts') }}</h3>
         <ul class="concerts" v-if="concerts.length > 0">
-            <a :href="`/concert/${concert.id}`" v-for="concert in concerts">
+            <router-link :to="`/concerts/${concert.id}`" v-for="concert in concerts" :key="concert.id">
                 <li>
                     <span>
                         <span class="oi oi-calendar text-muted"></span> {{ concert.title }} <br>
@@ -19,7 +19,7 @@
                     >
                     </accept-decline>
                 </li>
-            </a>
+            </router-link>
         </ul>
 
         <small v-else class="text-muted">{{ $t('No concerts found that belong to the project.') }}</small>
@@ -31,7 +31,9 @@
 </template>
 
 <script>
+    import AcceptDecline from "../AcceptDecline";
     export default {
+        components: {AcceptDecline},
         props: {
             concerts: {
                 type: Array,

@@ -23,6 +23,7 @@
 
 <script>
 export default {
+    name: 'accept-decline',
     props: {
         acceptRoute: {
             type: String
