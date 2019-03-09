@@ -7,6 +7,7 @@ use App\Events\ProjectAnsweredEvent;
 use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreProject;
 use App\Http\Resources\AuthUserResource;
+use App\Http\Resources\ProjectListResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\UserResource;
 use App\Project;
@@ -68,7 +69,7 @@ class ProjectController extends Controller
         $projects = (new GetFilteredProjectsService())
             ->handle(Auth::user(), $request->get('search'), $request->get('sort'), $request->get('dir'));
 
-        return json_encode(ProjectResource::collection($projects));
+        return json_encode(ProjectListResource::collection($projects));
     }
 
     /**

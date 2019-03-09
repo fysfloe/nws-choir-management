@@ -57,8 +57,8 @@
                                 <div class="name">
                                     {{ project.title }}
                                     <small>
-                                        <span class="text-danger oi oi-x" :title="$t('You are attending!')" v-if="project.accepted === 0"></span>
-                                        <span class="text-success oi oi-check" :title="$t('You are not attending.')" v-else-if="project.accepted === 1"></span>
+                                        <span class="text-danger oi oi-x" :title="$t('You are attending!')" v-if="project.declined === true"></span>
+                                        <span class="text-success oi oi-check" :title="$t('You are not attending.')" v-else-if="project.accepted === true"></span>
                                         <span class="text-muted oi oi-question-mark" :title="$t('You did not answer yet.')" v-else></span>
                                     </small>
                                     <div>
