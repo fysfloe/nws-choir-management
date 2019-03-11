@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Events\ProjectAnsweredEvent;
+use App\Exports\ProjectUsersExport;
 use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreProject;
 use App\Http\Resources\AuthUserResource;
@@ -486,6 +487,8 @@ class ProjectController extends Controller
 
     public function exportParticipants(Request $request, Project $project)
     {
+        return (new ProjectUsersExport($project))->download('project_participants.xlsx');
+
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
