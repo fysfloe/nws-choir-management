@@ -246,7 +246,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->back();
+        return redirect()->to('projects');
     }
 
     public function participants(Request $request, Project $project)
