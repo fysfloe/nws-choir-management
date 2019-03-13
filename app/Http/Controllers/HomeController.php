@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Resources\DashboardResource;
 
 use App\Semester;
 
@@ -27,8 +27,10 @@ class HomeController extends Controller
     {
         $currentSemester = Semester::current();
 
-        return view('dashboard')->with([
-            'currentSemester' => $currentSemester
-        ]);
+        if ($currentSemester) {
+            return response()->json(new DashboardResource($currentSemester));
+        } else {
+            return response()->json([]);
+        }
     }
 }

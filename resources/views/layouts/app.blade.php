@@ -49,9 +49,9 @@
 
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li class="dropdown-item">
-                                <a href="{{ route('profile.edit', Auth::user()->id) }}">
+                                <router-link to="/profile/edit">
                                     {{ __('My Profile') }}
-                                </a>
+                                </router-link>
                             </li>
                             <li class="dropdown-item">
                                 <a href="{{ route('logout') }}"
@@ -80,10 +80,10 @@
                 @guest
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">
+                        <router-link class="nav-link" to="/">
                             <span class="oi oi-dashboard"></span>&nbsp;
                             {{ __('Dashboard') }}
-                        </a>
+                        </router-link>
                     </li>
                     <li class="nav-item">
                         <router-link to="/semesters" class="nav-link">
@@ -113,10 +113,10 @@
                     @endif
                     @if (Auth::user()->can('manageVoices'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/admin/voices') }}">
+                            <router-link class="nav-link" to="/admin/voices">
                                 <span class="oi oi-pulse"></span>&nbsp;
                                 {{ __('Voices') }}
-                            </a>
+                            </router-link>
                         </li>
                     @endif
                 @endguest

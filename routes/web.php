@@ -11,34 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
+
+Route::get('/{vue_capture?}', function () {
+    return view('index');
+})->where('vue_capture', '[\/\w\.-]*');
 
 Route::group(['middleware' => 'auth'], function() {
-//    Route::get('/{vue_capture?}', function () {
-//        return view('index');
-//    })->where('vue_capture', '[\/\w\.-]*');
-
-    Route::group(['prefix' => 'api'], function () {
-        Route::resource('projects', 'ProjectController');
-        Route::get('/projects/load_participants/{project}', 'ProjectController@loadParticipants');
-
-        Route::resource('rehearsals', 'RehearsalController');
-
-        Route::resource('comments', 'CommentController');
-
-        Route::get('/semesters/load_options', 'SemesterController@loadOptions');
-        Route::resource('semesters', 'SemesterController');
-        Route::get('/semesters/load_participants/{semester}', 'SemesterController@loadParticipants');
-
-        Route::resource('concerts', 'ConcertController');
-        Route::get('/concerts/load_participants/{concert}', 'ConcertController@loadParticipants');
-
-        Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
-    });
-
-    Route::get('/', 'HomeController@index')->name('dashboard');
+ /*   Route::get('/', 'HomeController@index')->name('dashboard');
     Route::get('/current_user', 'UserController@getCurrent');
     Route::get('/dashboard', 'HomeController@index');
 
@@ -152,7 +132,5 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('/semesters/{semester}/removeParticipant', 'SemesterController@removeParticipant')->name('semester.removeParticipant');
         Route::get('/semesters/{semester}/participants', 'SemesterController@participants')->name('semester.participants');
         Route::get('/semesters/load-participants/{semester}', 'SemesterController@loadParticipants')->name('semester.loadParticipants');
-    });
+    });*/
 });
-
-Auth::routes();

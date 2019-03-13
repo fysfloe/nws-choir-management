@@ -9,6 +9,7 @@ import rehearsals from './modules/rehearsals/store';
 import comments from './modules/comments/store';
 import semesters from './modules/semesters/store';
 import concerts from './modules/concerts/store';
+import dashboard from './modules/dashboard/store';
 
 export default new Vuex.Store({
     modules: {
@@ -17,6 +18,7 @@ export default new Vuex.Store({
         rehearsals: rehearsals,
         comments: comments,
         semesters: semesters,
-        concerts: concerts
+        concerts: concerts,
+        dashboard: dashboard
     }
 })

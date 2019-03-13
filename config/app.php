@@ -166,6 +166,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         MartinLindhe\VueInternationalizationGenerator\GeneratorProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Package Service Providers...

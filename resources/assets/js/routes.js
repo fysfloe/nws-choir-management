@@ -9,8 +9,11 @@ import ConcertList from "./components/Concert/ConcertList";
 import Concert from "./components/Concert/Concert";
 import UserList from "./components/UserList";
 import SemesterForm from "./components/Semester/SemesterForm";
+import Dashboard from "./components/Dashboard/Dashboard";
+import UserProfileForm from "./components/User/UserProfileForm";
 
 export const routes = [
+    { path: '/', component: Dashboard, name: 'Dashboard' },
     { path: '/projects', component: ProjectList, name: 'ProjectList' },
     { path: '/admin/projects/edit/:id', component: ProjectForm, name: 'EditProject' },
     { path: '/admin/projects/create', component: ProjectForm, name: 'CreateProject' },
@@ -42,5 +45,6 @@ export const routes = [
         component: Concert,
         props: true
     },
-    { path: '/admin/users', component: UserList, name: 'UserList' }
+    { path: '/admin/users', component: UserList, name: 'UserList' },
+    { path: '/profile/edit', component: UserProfileForm, name: 'UserProfileForm' }
 ];
