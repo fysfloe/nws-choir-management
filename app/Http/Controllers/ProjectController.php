@@ -123,7 +123,7 @@ class ProjectController extends Controller
         if ($semester) {
             foreach ($semester->participants as $user) {
                 $project->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $user->voice ? $user->voice->id : null, 'accepted' => $user->pivot->accepted]]);
-                event(new ProjectAnsweredEvent($project, $user));
+                event(new ProjectAnsweredEvent($project, $user, true));
             }
         }
 
