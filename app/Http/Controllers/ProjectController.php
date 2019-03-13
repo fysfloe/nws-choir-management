@@ -531,4 +531,15 @@ class ProjectController extends Controller
             'message' => __('Participants successfully removed from the project.')
         ]);
     }
+
+    public function multiDelete(Request $request)
+    {
+        $projects = Project::find($request->get('projects'));
+
+        foreach ($projects as $project) {
+            $project->delete();
+        }
+
+        return redirect()->to('projects');
+    }
 }

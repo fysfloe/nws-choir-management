@@ -20,7 +20,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="actions">
-                            <a v-if="hasAction('remove')" class="dropdown-item" href="/admin/projects/multiRemove" @click.prevent="postAction($event, true, $t('Do you really want to remove these projects?'))">
+                            <a v-if="hasAction('remove')" class="dropdown-item" href="/admin/projects/multiDelete" @click.prevent="postAction($event, true, $t('Do you really want to remove these projects?'))">
                                 <span class="oi oi-box"></span> {{ $t('Remove') }}
                             </a>
                         </div>
@@ -159,7 +159,7 @@ export default {
                     .then(dialog => {
                         let route = event.target.getAttribute('href');
 
-                        this.$http.post(route, {users: this.selectedItems, _token: this.csrf})
+                        this.$http.post(route, {projects: this.selectedItems, _token: this.csrf})
                             .then(response => {
                                 this.fetchItems();
                             }, response => {

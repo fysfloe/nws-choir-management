@@ -100,6 +100,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/project/edit/{project}', 'ProjectController@edit')->name('project.edit');
         Route::put('/project/update/{project}', 'ProjectController@update')->name('project.update');
         Route::delete('/project/delete/{project}', 'ProjectController@destroy')->name('project.delete');
+        Route::post('projects/multiDelete', 'ProjectController@multiDelete')->name('project.multiDelete');
         Route::post('/project/{project}/saveVoices', 'ProjectController@saveVoices')->name('project.saveVoices');
         Route::get('/project/{project}/editVoices', 'ProjectController@editVoices')->name('project.editVoices');
         Route::get('/project/{project}/removeVoice/{voice}', 'ProjectController@removeVoice')->name('project.removeVoice');
