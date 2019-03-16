@@ -8,7 +8,7 @@ export default {
     LOAD_PARTICIPANTS(state, users) {
         state.semester.participants = users;
     },
-    LOAD_OPTIONS(state, options) {
+    OPTIONS(state, options) {
         state.options = options;
     }
 }

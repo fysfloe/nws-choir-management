@@ -1,116 +1,93 @@
 <template>
-    <div>
-        <div v-if="loading" class="loader"></div>
-        <div v-else>
-            <header class="page-header">
-                <div v-if="isEdit">
-                    <h2><span class="light">{{ $t('Edit') }}:</span> {{ project.title }}</h2>
-                </div>
-                <div v-else>
-                    <h2>{{ $t('Create Project') }}</h2>
-                </div>
-            </header>
-            <form>
-                <div class="row">
-                    <div class="col">
-                        <form-group
-                                :label="$t('Project title')"
-                                v-model="project.title"
-                                name="title"
-                                type="text"
-                        ></form-group>
+    <resource-form
+            namespace="projects"
+            resource-key="project"
+            :resource="project"
+    >
+        <template v-slot:editTitle>
+            <span class="light">{{ $t('Edit') }}:</span> {{ title }}
+        </template>
 
-                        <form-group
-                                :label="$t('Description')"
-                                v-model="project.description"
-                                name="description"
-                                type="textarea"
-                        ></form-group>
+        <template v-slot:createTitle>
+            {{ $t('Create Project') }}
+        </template>
 
-                        <form-group
-                                :label="$t('Semester')"
-                                v-model="project.semester_id"
-                                name="semester_id"
-                                type="select"
-                                :options="semesters"
-                        ></form-group>
+        <template v-slot:form>
+            <div class="row">
+                <div class="col">
+                    <form-group
+                            :label="$t('Project title')"
+                            v-model="title"
+                            name="title"
+                            type="text"
+                    ></form-group>
 
-                        <form-group
-                                :label="$t('This is a main project in the semester.')"
-                                v-model="project.is_main"
-                                name="is_main"
-                                type="checkbox"
-                                :info="$t('People that attend the semester will automatically participate in this project as well.')"
-                        ></form-group>
+                    <form-group
+                            :label="$t('Description')"
+                            v-model="description"
+                            name="description"
+                            type="textarea"
+                    ></form-group>
 
-                        <form-group
-                                :label="$t('Deadline')"
-                                v-model="project.deadline"
-                                name="deadline"
-                                type="datetime-local"
-                        ></form-group>
-                    </div><!-- .col -->
-                </div><!-- .row -->
+                    <form-group
+                            :label="$t('Semester')"
+                            v-model="semester_id"
+                            name="semester_id"
+                            type="select"
+                            :options="semesters"
+                    ></form-group>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary" @click.prevent="submit">
-                        {{ $t('Save Project') }}
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div v-else></div>
-    </div>
+                    <form-group
+                            :label="$t('This is a main project in the semester.')"
+                            v-model="is_main"
+                            name="is_main"
+                            type="checkbox"
+                            :info="$t('People that attend the semester will automatically participate in this project as well.')"
+                    ></form-group>
+
+                    <form-group
+                            :label="$t('Deadline')"
+                            v-model="deadline"
+                            name="deadline"
+                            type="datetime"
+                    ></form-group>
+                </div><!-- .col -->
+            </div><!-- .row -->
+        </template>
+        <template v-slot:submitButton>
+            {{ $t('Save Project') }}
+        </template>
+    </resource-form>
 </template>
 
 <script>
-    import FormGroup from "../FormGroup";
+    import FormGroup from '../FormGroup';
+    import { mapState } from 'vuex';
+    import { mapFields } from 'vuex-map-fields';
+    import ResourceForm from '../ResourceForm';
+
     export default {
         name: 'project-form',
-        components: {FormGroup},
-        data () {
-            return {
-                loading: true
-            }
-        },
+        components: {ResourceForm, FormGroup},
         computed: {
-            project () {
-                return this.$store.state.projects.project;
-            },
-            isEdit() {
-                return !!this.$route.params.id;
-            },
-            semesters () {
-                return this.$store.state.semesters.options;
-            }
+            ...mapState({
+                semesters: state => state.semesters.options,
+                project: state => state.projects.project
+            }),
+            ...mapFields('projects', {
+                title: 'project.title',
+                description: 'project.description',
+                is_main: 'project.is_main',
+                semester_id: 'project.semester_id',
+                deadline: 'project.deadline'
+            })
         },
         mounted () {
-            if (this.isEdit) {
-                this.$store.dispatch('projects/show', this.$route.params.id).then(() => {
-                    this.loading = false;
-                });
-            } else {
-                this.$store.state.projects.project = {
-                    title: '',
-                    semester_id: null,
-                    is_main: false,
-                    deadline: ''
-                };
-                this.loading = false;
-            }
-        },
-        methods: {
-            submit () {
-                if (this.isEdit) {
-                    this.$store.dispatch('projects/edit', this.project)
-                        .then(() => {
-                            this.$router.push(`/projects/${this.$route.params.id}`);
-                        });
-                } else {
-                    this.$store.dispatch('projects/add', this.project)
-                        .then(() => {
-                            this.$router.push(`/projects/${this.$store.state.projects.project.id}`);
-                        });
+            this.$store.dispatch('semesters/options');
+
+            if (!this.$route.params.id) {
+                for (let property in this.$route.query) {
+                    this.project[property] = this.$route.query[property];
                 }
             }
         }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../axios';
 import paths from '../../../api';
 
 export default {
@@ -14,5 +14,14 @@ export default {
     },
     logout({ commit }) {
         axios.post('/logout').then(() => window.location.reload, (response) => {});
+    },
+    show({ commit }, id) {
+        return axios.get(`${paths.users}/${id}`)
+            .then(response => commit('SHOW', response.data))
+            .catch();
+    },
+    edit({}, user) {
+        axios.put(`${paths.users}/${user.id}`, user)
+            .then(() => this.dispatch('users/fetch'));
     }
 }

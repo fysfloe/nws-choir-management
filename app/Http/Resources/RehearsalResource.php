@@ -19,6 +19,7 @@ class RehearsalResource extends Resource
         $rehearsal = [
             'id' => $this->id,
             'title' => $this->date->format('d.m.Y'),
+            'description' => $this->description,
             'date' => [
                 'day' => $this->date->format('d'),
                 'month' => $this->date->format('m')
@@ -28,7 +29,7 @@ class RehearsalResource extends Resource
             'place' => $this->place,
             'accepted' => $this->promises->find(Auth::user()) !== null,
             'declined' => $this->denials->find(Auth::user()) !== null,
-            'deadline' => $this->deadline,
+            'deadline' => $this->deadline
         ];
 
         if ($this->resource->accepted !== null) {

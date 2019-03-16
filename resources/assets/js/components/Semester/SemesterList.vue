@@ -57,8 +57,8 @@
                         </div>
                         <div class="col-md-3">
                             <accept-decline
-                                    :accept-route="`/semesters/accept/${semester.id}`"
-                                    :decline-route="`/semesters/decline/${semester.id}`"
+                                    namespace="semesters"
+                                    :id="semester.id"
                                     :accepted="semester.accepted"
                                     :declined="semester.declined"
                             >

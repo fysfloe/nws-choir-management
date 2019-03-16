@@ -9,10 +9,10 @@
                     </span>
                     <accept-decline
                             class="text-right"
-                            :accept-route="`/projects/accept/${project.id}`"
-                            :decline-route="`/projects/decline/${project.id}`"
-                            :accepted="project.has_accepted"
-                            :declined="project.has_declined"
+                            namespace="projects"
+                            :id="project.id"
+                            :accepted="project.accepted"
+                            :declined="project.declined"
                             :deadline="project.deadline"
                             :show-dot="true"
                     >
@@ -23,14 +23,16 @@
 
         <small v-else class="text-muted">{{ $t('No projects found that belong to the semester.') }}</small>
 
-        <a v-if="canManageProjects" class="btn btn-primary btn-sm mt-2" :href="addProjectRoute">
+        <router-link v-if="user.canManageProjects" class="btn btn-primary btn-sm mt-2" :to="addProjectRoute">
             {{ $t('Add a project') }}
-        </a>
+        </router-link>
     </div>
 </template>
 
 <script>
     import AcceptDecline from "../AcceptDecline";
+    import { mapState } from 'vuex';
+
     export default {
         name: 'project-side-list',
         components: {AcceptDecline},
@@ -39,16 +41,14 @@
                 type: Array,
                 required: true
             },
-            canManageProjects: {
-                type: [Boolean, Number],
-                default: false
-            },
             addProjectRoute: {
                 type: String
-            },
-            user: {
-                type: Object
             }
+        },
+        computed: {
+            ...mapState({
+                user: state => state.users.current
+            })
         }
     }
 </script>

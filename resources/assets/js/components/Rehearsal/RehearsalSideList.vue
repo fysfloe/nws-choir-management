@@ -10,10 +10,10 @@
                     </span>
                     <accept-decline
                             class="text-right"
-                            :accept-route="`/rehearsal/accept/${rehearsal.id}`"
-                            :decline-route="`/rehearsal/decline/${rehearsal.id}`"
-                            :accepted="rehearsal.has_accepted"
-                            :declined="rehearsal.has_declined"
+                            namespace="rehearsals"
+                            :id="rehearsal.id"
+                            :accepted="rehearsal.accepted"
+                            :declined="rehearsal.declined"
                             :deadline="rehearsal.deadline"
                             :show-dot="true"
                     >
@@ -24,14 +24,16 @@
 
         <small v-else class="text-muted">{{ $t('No rehearsals found that belong to the projects concert.') }}</small>
 
-        <a v-if="canManageRehearsals" class="btn btn-primary btn-sm mt-2" :href="addRehearsalRoute">
+        <router-link v-if="user.canManageRehearsals" class="btn btn-primary btn-sm mt-2" :to="addRehearsalRoute">
             {{ $t('Add a rehearsal') }}
-        </a>
+        </router-link>
     </div>
 </template>
 
 <script>
     import AcceptDecline from "../AcceptDecline";
+    import { mapState } from 'vuex';
+
     export default {
         components: {AcceptDecline},
         props: {
@@ -39,16 +41,14 @@
                 type: Array,
                 required: true
             },
-            canManageRehearsals: {
-                type: [Boolean, Number],
-                default: false
-            },
             addRehearsalRoute: {
                 type: String
-            },
-            user: {
-                type: Object
             }
+        },
+        computed: {
+            ...mapState({
+                user: state => state.users.current
+            })
         }
     }
 </script>

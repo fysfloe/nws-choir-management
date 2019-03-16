@@ -28,6 +28,8 @@ $enable-flex: true !default;
 @import "avatar";
 @import "modals";
 @import "comments";
+@import "flash";
+@import "datepicker";
 
 .navbar-dark .navbar-brand {
     font-family: "Pacifico", cursive;

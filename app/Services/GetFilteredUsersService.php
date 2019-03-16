@@ -105,7 +105,7 @@ class GetFilteredUsersService {
         return $users;
     }
 
-    public function projectParticipants($project, $filters, $search, $sort = 'surname', $dir = 'ASC')
+    public function projectParticipants($project, $filters, $search = '', $sort = 'surname', $dir = 'ASC')
     {
         if (!$sort) $sort = 'surname';
 
@@ -131,7 +131,6 @@ class GetFilteredUsersService {
             $query .= "AND user_project.accepted = 1 ";
         }
         
-
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
         if ($ageFrom) {
             $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');

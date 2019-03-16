@@ -10,8 +10,9 @@ class ProjectResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
+     * @throws \Exception
      */
     public function toArray($request)
     {
@@ -27,7 +28,8 @@ class ProjectResource extends Resource
             'accepted' => $this->promises->contains(Auth::user()),
             'declined' => $this->denials->contains(Auth::user()),
             'deadline' => (new \DateTime($this->deadline))->format('Y-m-d\TH:i'),
-            'semester_id' => $this->semester->id
+            'semester_id' => $this->semester->id,
+            'is_main' => $this->is_main
         ];
 
         return $project;

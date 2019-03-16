@@ -38,7 +38,7 @@
                                 :label="$t('Deadline')"
                                 v-model="semester.deadline"
                                 name="deadline"
-                                type="datetime-local"
+                                type="datetime"
                         ></form-group>
                     </div><!-- .col -->
                 </div><!-- .row -->

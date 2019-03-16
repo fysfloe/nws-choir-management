@@ -1,5 +1,7 @@
 <template>
-    <form action="/profile/update" method="POST">
+    <div class="loader" v-if="loading"></div>
+
+    <form v-else>
         <header class="page-header">
             <div v-if="currentUser.id === user.id">
                 <h2>{{ $t('Edit Profile') }}</h2>
@@ -17,7 +19,7 @@
                 <div class="row">
                     <form-group
                             class="col"
-                            :value="user.firstname"
+                            v-model="firstname"
                             name="firstname"
                             type="text"
                             :label="$t('First Name')"
@@ -25,7 +27,7 @@
 
                     <form-group
                             class="col"
-                            :value="user.surname"
+                            v-model="surname"
                             name="surname"
                             type="text"
                             :label="$t('Surname')"
@@ -33,22 +35,22 @@
                 </div>
 
                 <form-group
-                        :value="user.username"
+                        v-model="username"
                         name="username"
                         type="text"
                         :label="$t('Username')"
                 ></form-group>
 
                 <form-group
-                        :value="user.birthdate"
+                        v-model="birthdate"
                         name="birthdate"
                         type="date"
                         :label="$t('Birthdate')"
                 ></form-group>
 
                 <form-group
-                        :value="user.citizenship"
-                        name="citizenship"
+                        v-model="country_id"
+                        name="country_id"
                         type="select"
                         :label="$t('Citizenship')"
                         :options="countries"
@@ -56,7 +58,7 @@
 
                 <form-group
                         v-if="currentUser.canManageUsers"
-                        :value="user.non_singing"
+                        v-model="non_singing"
                         name="non_singing"
                         type="checkbox"
                         :label="$t('This user is not a singer.')"
@@ -65,7 +67,7 @@
 
                 <form-group
                         v-if="currentUser.canManageUsers"
-                        :value="user.voice_id"
+                        v-model="voice_id"
                         name="voice_id"
                         type="select"
                         :label="$t('Voice')"
@@ -94,14 +96,14 @@
                 <h3>{{ $t('Contact Data') }}</h3>
 
                 <form-group
-                        :value="user.email"
+                        v-model="email"
                         name="email"
                         type="email"
                         :label="$t('E-Mail Address')"
                 ></form-group>
 
                 <form-group
-                        :value="user.phone"
+                        v-model="phone"
                         name="phone"
                         type="text"
                         :label="$t('Phone')"
@@ -110,7 +112,7 @@
                 <h3>{{ $t('Address') }}</h3>
 
                 <form-group
-                        :value="user.street"
+                        v-model="street"
                         name="street"
                         type="text"
                         :label="$t('Street')"
@@ -119,7 +121,7 @@
                 <div class="row">
                     <form-group
                             class="col-4"
-                            :value="user.zip"
+                            v-model="zip"
                             name="zip"
                             type="number"
                             :label="$t('ZIP')"
@@ -127,7 +129,7 @@
 
                     <form-group
                             class="col-8"
-                            :value="user.city"
+                            v-model="city"
                             name="city"
                             type="text"
                             :label="$t('City')"
@@ -135,7 +137,7 @@
                 </div>
 
                 <form-group
-                        :value="user.country_id"
+                        v-model="address_country_id"
                         name="country_id"
                         type="select"
                         :label="$t('Country')"
@@ -145,7 +147,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">{{ $t('Save Profile') }}</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="submit">{{ $t('Save Profile') }}</button>
         </div>
     </form>
 </template>
@@ -153,23 +155,79 @@
 <script>
     import FormGroup from "../FormGroup";
     import { mapState } from 'vuex';
-    import PictureInput from 'vue-picture-input';
+    import PictureInput from 'vue-picture-input'
+    import { mapFields } from 'vuex-map-fields';
+    import VueFlashMessage from 'vue-flash-message';
 
     export default {
         name: 'user-profile-form',
-        components: {FormGroup},
+        components: {FormGroup, PictureInput, VueFlashMessage},
         computed: {
             ...mapState({
                 currentUser: state => state.users.current,
+                user: state => state.users.user,
+                countries: state => state.countries.options,
+                voices: state => state.voices.options
             }),
-            user () {
-                return this.$store.state.users.current;
-            }
+            ...mapFields('users', {
+                firstname: 'user.firstname',
+                surname: 'user.surname',
+                username: 'user.username',
+                birthdate: 'user.birthdate',
+                country_id: 'user.country_id',
+                non_singing: 'user.non_singing',
+                voice_id: 'user.voice_id',
+                email: 'user.email',
+                phone: 'user.phone',
+                street: 'user.address.street',
+                zip: 'user.address.zip',
+                city: 'user.address.city',
+                address_country_id: 'user.address.country_id'
+            }),
+            /*street () {
+                return this.$store.state.users.user.address ?
+                    this.$store.state.users.user.address.street :
+                    null;
+            },
+            zip () {
+                return this.$store.state.users.user.address ?
+                    this.$store.state.users.user.address.zip :
+                    null;
+            },
+            city () {
+                return this.$store.state.users.user.address ?
+                    this.$store.state.users.user.address.city :
+                    null;
+            },
+            address_country_id () {
+                return this.$store.state.users.user.address ?
+                    this.$store.state.users.user.address.country_id :
+                    null;
+            }*/
         },
         data () {
             return {
-                countries: {},
-                voices: {}
+                loading: true
+            }
+        },
+        mounted () {
+            this.$store.dispatch('users/show', this.$route.params.id)
+                .then(() => this.loading = false);
+
+            if (Object.entries(this.countries).length === 0) {
+                this.$store.dispatch('countries/options');
+            }
+
+            if (Object.entries(this.voices).length === 0) {
+                this.$store.dispatch('voices/options');
+            }
+        },
+        methods: {
+            submit () {
+                this.$store.dispatch('users/edit', this.user)
+                    .then(() => {
+                        this.flashSuccess(this.$t('Profile successfully saved.'));
+                    });
             }
         }
     }

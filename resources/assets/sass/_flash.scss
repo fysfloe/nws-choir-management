@@ -1,0 +1,35 @@
+.flash__message {
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 0.2rem;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1000;
+  background: $brand-primary;
+  box-shadow: 0.2rem 0.2rem 0 0.1rem darken($brand-primary, 20);
+
+  .flash__message-content {
+    &::before {
+      font-family: 'Icons';
+      font-size: 0.75em;
+      margin-right: 0.4rem;
+    }
+  }
+
+  &.success {
+    .flash__message-content {
+      &::before {
+        content: '\e033';
+      }
+    }
+  }
+
+  &.info {
+    .flash__message-content {
+      &::before {
+        content: '\e07c';
+      }
+    }
+  }
+}

@@ -5,5 +5,7 @@ export default {
     currentUser: '/api/user',
     comments: '/api/comments',
     semesters: '/api/semesters',
-    concerts: '/api/concerts'
+    concerts: '/api/concerts',
+    countries: '/api/countries',
+    voices: '/api/voices'
 }

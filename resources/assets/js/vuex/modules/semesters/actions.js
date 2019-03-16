@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../axios';
 import paths from '../../../api';
 
 const namespace = 'semesters';
@@ -19,13 +19,19 @@ export default {
             .then(() => this.dispatch(`${namespace}/fetch`))
             .catch();
     },
-    edit({}, semester) {
-        axios.put(`${paths.semesters}/${semester.id}`, semester)
-            .then(() => this.dispatch(`${namespace}/fetch`));
+    edit({ commit }, semester) {
+        return axios.put(`${paths.semesters}/${semester.id}`, semester)
+            .then(response => {
+                commit('SHOW', response.data);
+                this.dispatch(`${namespace}/fetch`)
+            });
     },
-    add({}, semester) {
-        axios.post(`${paths.semesters}`, semester)
-            .then(() => this.dispatch(`${namespace}/fetch`));
+    add({ commit }, semester) {
+        return axios.post(`${paths.semesters}`, semester)
+            .then(response => {
+                commit('SHOW', response.data);
+                this.dispatch(`${namespace}/fetch`);
+            });
     },
     participants({ commit }, id) {
         return axios.get(`${paths.semesters}/load_participants/${id}`)
@@ -33,8 +39,30 @@ export default {
             .catch();
     },
     options({ commit }) {
-        return axios.get(`${paths.semesters}/load_options`)
-            .then(response => commit('LOAD_OPTIONS', response.data))
+        return axios.get(`${paths.semesters}/options`)
+            .then(response => commit('OPTIONS', response.data))
+            .catch();
+    },
+    accept({ commit }, { id, userId }) {
+        let path = `${paths.semesters}/accept/${id}`;
+
+        if (userId) {
+            path += `/${userId}`;
+        }
+
+        return axios.post(path)
+            .then(response => commit('SHOW', response.data))
+            .catch();
+    },
+    decline({ commit }, { id, userId }) {
+        let path = `${paths.semesters}/decline/${id}`;
+
+        if (userId) {
+            path += `/${userId}`;
+        }
+
+        return axios.post(path)
+            .then(response => commit('SHOW', response.data))
             .catch();
     }
 }

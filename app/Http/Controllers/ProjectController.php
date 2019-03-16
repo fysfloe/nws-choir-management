@@ -200,60 +200,11 @@ class ProjectController extends Controller
 
     public function participants(Request $request, Project $project)
     {
-        $this->breadcrumbs->addCrumb($project->title, $project->slug);
-
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
-        }
-
-        $voices = Voice::getListForSelect();
-
-        return view('project.participants')->with([
-            'tab' => 'participants',
-            'project' => $project,
-            'participants' => UserResource::collection($users),
-            'activeFilters' => $activeFilters,
-            'voices' => $voices,
-            'route' => ['project.participants', $project],
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
-    public function rehearsals(Request $request, Project $project)
-    {
-        $this->breadcrumbs->addCrumb($project->title, $project->slug);
- 
-        return view('project.rehearsals')->with([
-            'tab' => 'rehearsals',
-            'project' => $project,
-            'route' => ['project.rehearsals', $project],
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
-    public function loadParticipants(Request $request, Project $project)
-    {
-        $filters = $request->all();
-
-        $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
-
-        return json_encode(UserResource::collection($users));
+        return response()->json(UserResource::collection($users));
     }
 
     public function voices(Request $request, Project $project)
@@ -267,12 +218,10 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function accept(Request $request, Project $project)
+    public function accept(Project $project)
     {
         $user = Auth::user();
         if (!$user->voice) {
-            $request->session()->flash('alert-danger', __('You need to set your primary voice before you can participate in a project!'));
-
             return new Response(__('You need to set your primary voice before you can participate in a project!'), 400);
         }
 
@@ -280,7 +229,7 @@ class ProjectController extends Controller
 
         event(new ProjectAnsweredEvent($project, $user, true));
 
-        return response()->json();
+        return response()->json(new ProjectResource($project));
     }
 
     public function decline(Project $project)
@@ -291,7 +240,7 @@ class ProjectController extends Controller
 
         event(new ProjectAnsweredEvent($project, $user, false));
 
-        return response()->json();
+        return response()->json(new ProjectResource($project));
     }
 
     public function addVoices(Request $request, Project $project)
@@ -477,5 +426,20 @@ class ProjectController extends Controller
         return response()->json([
             'message' => __('Participants successfully removed from the project.')
         ]);
+    }
+
+    public function options()
+    {
+        $projects = Project::where('deleted_at', '=', null)
+            ->orderBy('title')
+            ->get();
+
+        $projectOptions = [];
+
+        foreach ($projects as $project) {
+            $projectOptions[$project->id] = $project->title;
+        }
+
+        return response()->json($projectOptions);
     }
 }

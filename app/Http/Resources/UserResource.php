@@ -24,11 +24,23 @@ class UserResource extends Resource
             'id' => $this->id,
             'firstname' => $this->firstname,
             'surname' => $this->surname,
+            'username' => $this->username,
             'voice' => $voice,
             'roles' => RoleResource::collection($this->roles),
             'avatar' => $this->avatar,
-            'concerts' => $this->concerts,
-            'rehearsals' => $this->rehearsals
+            'birthdate' => $this->birthdate,
+            'gender' => $this->gender,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'country_id' => $this->country_id,
+            'address' => $this->address ? new AddressResource($this->address) : [
+                'street' => null,
+                'zip' => null,
+                'city' => null,
+                'country_id' => null
+            ],
+            'non_singing' => $this->non_singing,
+            'voice_id' => $this->voice_id
         ];
 
         if ($this->resource->confirmed !== null) {

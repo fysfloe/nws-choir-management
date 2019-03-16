@@ -7,12 +7,12 @@
                     <ul class="margin-top no-list-style">
                         <li>
                             <span class="oi oi-calendar" data-toggle="tooltip" :title="$t('Date')"></span>&nbsp;
-                            {{ rehearsal.title }}
+                            {{ rehearsal.date|moment('DD.MM.YYYY') }}
                         </li>
                         <li>
                             <span class="oi oi-clock" data-toggle="tooltip" :title="$t('Time')"></span>&nbsp;
-                            {{ rehearsal.start_time }}
-                            –{{ rehearsal.end_time }}
+                            {{ startTime }}
+                            –{{ endTime }}
                         </li>
                         <li>
                             <span class="oi oi-map-marker" data-toggle="tooltip" :title="$t('Place')"></span>&nbsp;
@@ -49,16 +49,20 @@
 
 <script>
     import RehearsalSideList from "./RehearsalSideList";
+    import { mapState } from 'vuex';
+
     export default {
         components: {RehearsalSideList},
-        props: {
-            rehearsal: {
-                type: Object,
-                required: true
+        computed: {
+            ...mapState({
+                user: state => state.users.current,
+                rehearsal: state => state.rehearsals.rehearsal
+            }),
+            startTime () {
+                return moment(this.rehearsal.start_time, 'HH:mm:ss').format('HH:mm');
             },
-            user: {
-                type: Object,
-                required: true
+            endTime () {
+                return moment(this.rehearsal.end_time, 'HH:mm:ss').format('HH:mm');
             }
         }
     }

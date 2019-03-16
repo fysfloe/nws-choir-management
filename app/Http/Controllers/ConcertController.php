@@ -92,19 +92,9 @@ class ConcertController extends Controller
     public function store(StoreConcert $request)
     {
         $concert = $request->all();
-        $voices = $concert['voices'];
-        $voiceNumbers = $concert['voiceNumbers'];
-
         $concert['slug'] = str_slug($concert['title'], '-');
 
         $concert = Auth::user()->concertsCreated()->create($concert);
-
-        foreach ($voices as $key => $voice) {
-            if ($voice !== null && $voiceNumbers[$key] !== null) {
-                $concert->voices()->syncWithoutDetaching([$voice => ['number' => $voiceNumbers[$key]]]);
-            }
-        }
-
         $semester = Semester::find($concert->semester_id);
 
         if ($semester) {
@@ -113,7 +103,7 @@ class ConcertController extends Controller
             }
         }
 
-        return redirect('concerts');
+        return response()->json(new ConcertResource($concert));
     }
 
     /**
@@ -236,28 +226,20 @@ class ConcertController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreConcert $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(StoreConcert $request, $id)
     {
         $concert = Concert::find($id);
-        $input = $request->all();
-        $voices = $concert['voices'];
-        $voiceNumbers = $concert['voiceNumbers'];
+        $input = $request->except(['semester_id']);
 
         $input['slug'] = str_slug($input['title'], '-');
 
-        $concert = $concert->update($input);
+        $concert->update($input);
 
-        foreach ($voices as $key => $voice) {
-            if ($voice !== null && $voiceNumbers[$key] !== null) {
-                $concert->voices()->syncWithoutDetaching([$voice => ['number' => $voiceNumbers[$key]]]);
-            }
-        }
-
-        return redirect('concerts');
+        return response()->json(new ConcertResource($concert));
     }
 
     /**
@@ -275,17 +257,16 @@ class ConcertController extends Controller
         return redirect()->back();
     }
 
-    public function accept(Request $request, Concert $concert)
+    public function accept(Concert $concert)
     {
         $user = Auth::user();
         if (!$user->voice) {
-            $request->session()->flash('alert-danger', __('You need to set your primary voice before you can participate in a concert!'));
             return redirect()->route('dashboard');
         }
 
         $concert->participants()->syncWithoutDetaching([$user->id => ['accepted' => true, 'voice_id' => $user->voice->id]]);
 
-        return redirect()->back();
+        return response()->json(new ConcertResource($concert));
     }
 
     public function decline(Concert $concert)
@@ -294,7 +275,7 @@ class ConcertController extends Controller
 
         $concert->participants()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
 
-        return redirect()->back();
+        return response()->json(new ConcertResource($concert));
     }
 
     public function addVoices(Request $request, Concert $concert)

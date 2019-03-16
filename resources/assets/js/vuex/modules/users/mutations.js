@@ -4,5 +4,8 @@ export default {
     },
     CURRENT_USER(state, user) {
         state.current = user;
+    },
+    SHOW(state, user) {
+        state.user = user;
     }
 }

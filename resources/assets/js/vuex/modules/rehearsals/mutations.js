@@ -1,11 +1,11 @@
 export default {
-    FETCH(state, projects) {
-        state.items = projects;
+    FETCH(state, rehearsals) {
+        state.items = rehearsals;
     },
-    SHOW(state, project) {
-        state.project = project;
+    SHOW(state, rehearsal) {
+        state.rehearsal = rehearsal;
     },
     LOAD_PARTICIPANTS(state, users) {
-        state.project.participants = users;
+        state.rehearsal.participants = users;
     }
 }

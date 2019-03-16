@@ -12,6 +12,9 @@ import mixins from './mixins';
 import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router';
 import store from './vuex/store.js';
+import VueFlashMessage from 'vue-flash-message';
+import Datetime from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css'
 
 window.Popper = require('popper.js').default;
 require('./bootstrap');
@@ -27,6 +30,13 @@ Vue.use(VuejsDialog);
 Vue.use(VueInternationalization);
 Vue.use(BootstrapVue);
 Vue.use(require('vue-moment'));
+Vue.use(VueFlashMessage, {
+    messageOptions: {
+        timeout: 5000,
+        important: true
+    }
+});
+Vue.use(Datetime);
 
 Vue.mixin(mixins.global);
 
@@ -49,8 +59,9 @@ const app = new Vue({
     mixins,
     store,
     mounted () {
-        this.$store.dispatch('users/getCurrent');
-        this.$store.dispatch('semesters/options');
+        if (this.$route.path !== '/login') {
+            this.$store.dispatch('users/getCurrent');
+        }
     }
 });
 
@@ -100,9 +111,5 @@ $(function () {
             $numberField.val('');
             $helpText.hide();
         }
-    });
-
-    $('body').on('input', '#firstname, #surname', function (event) {
-        $('#username').val($('#firstname').val() + ' ' + $('#surname').val());
     });
 });

@@ -10,6 +10,8 @@ import comments from './modules/comments/store';
 import semesters from './modules/semesters/store';
 import concerts from './modules/concerts/store';
 import dashboard from './modules/dashboard/store';
+import countries from './modules/countries/store';
+import voices from './modules/voices/store';
 
 export default new Vuex.Store({
     modules: {
@@ -19,6 +21,8 @@ export default new Vuex.Store({
         comments: comments,
         semesters: semesters,
         concerts: concerts,
-        dashboard: dashboard
+        dashboard: dashboard,
+        countries: countries,
+        voices: voices
     }
 })

@@ -9,10 +9,11 @@
                 </h2>
 
                 <accept-decline
-                        :accept-route="`/concerts/accept/${concert.id}`"
-                        :decline-route="`/concerts/decline/${concert.id}`"
+                        namespace="concerts"
+                        :id="concert.id"
                         :accepted="concert.accepted"
                         :declined="concert.declined"
+                        :deadline="concert.deadline"
                 >
                 </accept-decline>
 
@@ -91,6 +92,7 @@
                         this.$store.dispatch('concerts/delete', this.concert.id)
                             .then(() => {
                                 this.$router.push(`/concerts`);
+                                this.flashInfo(this.$t('Concert deleted.'));
                             });
                     })
                     .catch(function () {

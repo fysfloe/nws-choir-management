@@ -9,10 +9,11 @@
                 </h2>
 
                 <accept-decline
-                        :accept-route="`/projects/accept/${project.id}`"
-                        :decline-route="`/projects/decline/${project.id}`"
+                        namespace="projects"
+                        :id="project.id"
                         :accepted="project.accepted"
                         :declined="project.declined"
+                        :deadline="project.deadline"
                 >
                 </accept-decline>
 

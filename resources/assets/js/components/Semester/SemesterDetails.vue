@@ -13,6 +13,7 @@
                 <project-side-list
                         class="mb-4"
                         :projects="semester.projects"
+                        :add-project-route="`/admin/projects/create?semester_id=${semester.id}`"
                 ></project-side-list>
             </div>
         </div>

@@ -30,7 +30,7 @@ class HomeController extends Controller
         if ($currentSemester) {
             return response()->json(new DashboardResource($currentSemester));
         } else {
-            return response()->json([]);
+            return response()->json();
         }
     }
 }

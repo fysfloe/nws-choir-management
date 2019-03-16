@@ -22,7 +22,7 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{{ url('/dashboard') }}">{{ config('app.name', 'Chorganizer') }}</a>
+        <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Chorganizer') }}</a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
@@ -49,7 +49,7 @@
 
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li class="dropdown-item">
-                                <router-link to="/profile/edit">
+                                <router-link to="/profile/edit/{{ Auth::user()->id }}">
                                     {{ __('My Profile') }}
                                 </router-link>
                             </li>
@@ -133,6 +133,8 @@
                     @endif
                 @endforeach
             </div> <!-- .flash-message -->
+
+            <flash-message></flash-message>
 
             @if (isset($errors) && count($errors) > 0)
                 <p class="alert alert-danger">

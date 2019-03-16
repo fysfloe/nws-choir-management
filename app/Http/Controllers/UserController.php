@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Address;
 use App\Concert;
 use App\Http\Requests\StoreUser;
 use App\Http\Resources\AuthUserResource;
@@ -125,7 +126,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(new UserResource(User::find($id)));
     }
 
     /**
@@ -148,7 +149,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+
+        $updateArray = $request->all();
+
+        $user->update($updateArray);
+
+        if (!$user->address) {
+            $address = $request->get('address');
+            $address['user_id'] = $user->id;
+            Address::create($address);
+        } else {
+            $user->address->update($request->get('address'));
+        }
+
+        return response()->json(new UserResource($user));
     }
 
     /**

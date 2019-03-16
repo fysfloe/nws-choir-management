@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../axios';
 import paths from '../../../api';
 
 const namespace = 'rehearsals';
@@ -19,17 +19,43 @@ export default {
             .then(() => this.dispatch(`${namespace}/fetch`))
             .catch();
     },
-    edit({}, rehearsal) {
-        axios.put(`${paths.rehearsals}/${rehearsal.id}`, rehearsal)
-            .then(() => this.dispatch(`${namespace}/fetch`));
+    edit({ commit }, rehearsal) {
+        return axios.put(`${paths.rehearsals}/${rehearsal.id}`, rehearsal)
+            .then(response => {
+                commit('SHOW', response.data);
+            });
     },
-    add({}, rehearsal) {
-        axios.post(`${paths.rehearsals}`, rehearsal)
-            .then(() => this.dispatch(`${namespace}/fetch`));
+    add({ commit }, rehearsal) {
+        return axios.post(`${paths.rehearsals}`, rehearsal)
+            .then(response => {
+                commit('SHOW', response.data);
+            });
     },
     participants({ commit }, id) {
         return axios.get(`${paths.rehearsals}/load_participants/${id}`)
             .then(response => commit('LOAD_PARTICIPANTS', response.data))
+            .catch();
+    },
+    accept({ commit }, { id, userId }) {
+        let path = `${paths.rehearsals}/accept/${id}`;
+
+        if (userId) {
+            path += `/${userId}`;
+        }
+
+        return axios.post(path)
+            .then(response => commit('SHOW', response.data))
+            .catch();
+    },
+    decline({ commit }, { id, userId }) {
+        let path = `${paths.rehearsals}/decline/${id}`;
+
+        if (userId) {
+            path += `/${userId}`;
+        }
+
+        return axios.post(path)
+            .then(response => commit('SHOW', response.data))
             .catch();
     }
 }

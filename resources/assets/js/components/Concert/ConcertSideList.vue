@@ -10,10 +10,10 @@
                     </span>
                     <accept-decline
                             class="text-right"
-                            :accept-route="`/concert/accept/${concert.id}`"
-                            :decline-route="`/concert/decline/${concert.id}`"
-                            :accepted="concert.has_accepted"
-                            :declined="concert.has_declined"
+                            namespace="concerts"
+                            :id="concert.id"
+                            :accepted="concert.accepted"
+                            :declined="concert.declined"
                             :deadline="concert.deadline"
                             :show-dot="true"
                     >
@@ -24,14 +24,16 @@
 
         <small v-else class="text-muted">{{ $t('No concerts found that belong to the project.') }}</small>
 
-        <a v-if="canManageConcerts" class="btn btn-primary btn-sm mt-2" :href="addConcertRoute">
+        <router-link v-if="user.canManageConcerts" class="btn btn-primary btn-sm mt-2" :to="addConcertRoute">
             {{ $t('Add a concert') }}
-        </a>
+        </router-link>
     </div>
 </template>
 
 <script>
     import AcceptDecline from "../AcceptDecline";
+    import { mapState } from 'vuex';
+
     export default {
         components: {AcceptDecline},
         props: {
@@ -39,16 +41,14 @@
                 type: Array,
                 required: true
             },
-            canManageConcerts: {
-                type: [Boolean, Number],
-                default: false
-            },
             addConcertRoute: {
                 type: String
-            },
-            user: {
-                type: Object
             }
+        },
+        computed: {
+            ...mapState({
+                user: state => state.users.current
+            })
         }
     }
 </script>

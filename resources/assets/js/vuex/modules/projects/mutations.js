@@ -5,7 +5,10 @@ export default {
     SHOW(state, project) {
         state.project = project;
     },
-    LOAD_PARTICIPANTS(state, users) {
+    PARTICIPANTS(state, users) {
         state.project.participants = users;
+    },
+    OPTIONS(state, options) {
+        state.options = options;
     }
 }

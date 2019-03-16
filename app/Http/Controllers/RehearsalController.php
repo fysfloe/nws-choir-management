@@ -44,7 +44,7 @@ class RehearsalController extends Controller
         }
 
         $rehearsals = Rehearsal::where($where)
-            ->orderBy($request->get('sort'), $request->get('dir'))
+            ->orderBy($request->get('sort', 'id'), $request->get('dir', 'ASC'))
             ->get();
 
         return response()->json(RehearsalResource::collection($rehearsals));
@@ -91,16 +91,20 @@ class RehearsalController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreRehearsal $request
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function store(StoreRehearsal $request)
     {
         $rehearsal = $request->all();
 
+        $rehearsal['start_time'] = (new \DateTime($rehearsal['start_time']))->format('H:i');
+        $rehearsal['end_time'] = (new \DateTime($rehearsal['end_time']))->format('H:i');
+
         $rehearsal = Auth::user()->rehearsalsCreated()->create($rehearsal);
 
-        return redirect()->route('project.show', $rehearsal->project);
+        return response()->json(new RehearsalResource($rehearsal));
     }
 
     /**
@@ -111,19 +115,7 @@ class RehearsalController extends Controller
      */
     public function show(Rehearsal $rehearsal)
     {
-        if ($rehearsal->project) {
-            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->id);
-        }
-
-        $this->breadcrumbs->addCrumb($rehearsal->title(), $rehearsal);
-
-        return view('rehearsal.show')->with([
-            'tab' => 'show',
-            'rehearsal' => $rehearsal,
-            'rehearsalJson' => json_encode(new RehearsalDetailResource($rehearsal)),
-            'user' => json_encode(new AuthUserResource(Auth::user())),
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(new RehearsalDetailResource($rehearsal));
     }
 
     public function loadParticipants(Request $request, Rehearsal $rehearsal)
@@ -225,17 +217,20 @@ class RehearsalController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param Rehearsal $rehearsal
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Rehearsal $rehearsal)
     {
         $rehearsalInput = $request->all();
 
+        $rehearsalInput['start_time'] = (new \DateTime($rehearsalInput['start_time']))->format('H:i');
+        $rehearsalInput['end_time'] = (new \DateTime($rehearsalInput['end_time']))->format('H:i');
+
         $rehearsal->update($rehearsalInput);
 
-        return redirect()->route('rehearsal.show', $rehearsal);
+        return response()->json(new RehearsalResource($rehearsal));
     }
 
     /**
@@ -244,17 +239,15 @@ class RehearsalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $rehearsal = Rehearsal::find($id);
-        $project = $rehearsal->project;
-
         $rehearsal->delete();
 
-        return redirect()->route('project.show', $project);
+        return response()->json();
     }
 
-    public function accept(Request $request, Rehearsal $rehearsal, $user_id = null)
+    public function accept(Rehearsal $rehearsal, $user_id = null)
     {
         if ($user_id) {
             $user = User::find($user_id);
@@ -264,10 +257,10 @@ class RehearsalController extends Controller
 
         $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
-        return new Response(__('Successfully accepted the rehearsal.'), 200);
+        return response()->json(new RehearsalResource($rehearsal));
     }
 
-    public function decline(Request $request, Rehearsal $rehearsal, $user_id = null)
+    public function decline(Rehearsal $rehearsal, $user_id = null)
     {
         if ($user_id) {
             $user = User::find($user_id);
@@ -277,7 +270,7 @@ class RehearsalController extends Controller
 
         $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
 
-        return new Response(__('Successfully accepted the rehearsal.'), 200);
+        return response()->json(new RehearsalResource($rehearsal));
     }
 
     public function ajaxConfirm(Request $request, Rehearsal $rehearsal, User $user)

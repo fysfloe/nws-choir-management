@@ -13,11 +13,8 @@
 
 Auth::routes();
 
-Route::get('/{vue_capture?}', function () {
-    return view('index');
-})->where('vue_capture', '[\/\w\.-]*');
-
 Route::group(['middleware' => 'auth'], function() {
+
  /*   Route::get('/', 'HomeController@index')->name('dashboard');
     Route::get('/current_user', 'UserController@getCurrent');
     Route::get('/dashboard', 'HomeController@index');
@@ -36,8 +33,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/projects/decline/{project}', 'ProjectController@decline')->name('project.decline');
 
     Route::get('/rehearsals', 'RehearsalController@index')->name('rehearsals');
-    Route::get('/rehearsals/accept/{rehearsal}/{user_id?}', 'RehearsalController@accept')->name('rehearsal.accept');
-    Route::get('/rehearsals/decline/{rehearsal}/{user_id?}', 'RehearsalController@decline')->name('rehearsal.decline');
+
     Route::post('rehearsal/{rehearsal}/createComment', 'RehearsalController@createComment')->name('rehearsal.createComment');
 
     Route::get('/voice/showSet/{user?}', 'VoiceController@showSet')->name('voice.showSet');
@@ -134,3 +130,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/semesters/load-participants/{semester}', 'SemesterController@loadParticipants')->name('semester.loadParticipants');
     });*/
 });
+
+Route::get('/{vue_capture?}', function () {
+    return view('index');
+})->where('vue_capture', '[\/\w\.-]*');

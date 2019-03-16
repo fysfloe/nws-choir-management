@@ -149,4 +149,12 @@ class VoiceController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function options()
+    {
+        return response()->json(Voice::getListForSelect());
+    }
 }

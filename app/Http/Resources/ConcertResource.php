@@ -20,15 +20,17 @@ class ConcertResource extends Resource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'date' => (new \DateTime($this->date))->format('d.m.Y'),
+            'date' => (new \DateTime($this->date))->format('Y-m-d'),
             'start_time' => (new \DateTime($this->start_time))->format('H:i'),
             'end_time' => (new \DateTime($this->end_time))->format('H:i'),
             'rehearsals' => RehearsalResource::collection($this->project->rehearsals),
             'project' => new ProjectListResource($this->project),
+            'project_id' => $this->project->id,
             'semester_id' => $this->project->semester->id,
             'accepted' => $this->promises->contains(Auth::user()),
             'declined' => $this->denials->contains(Auth::user()),
-            'deadline' => $this->deadline
+            'deadline' => (new \DateTime($this->deadline))->format('Y-m-d\TH:i'),
+            'place' => $this->place
         ];
     }
 }

@@ -44,7 +44,7 @@ class SemesterController extends Controller
         return json_encode(SemesterResource::collection($semesters));
     }
 
-    public function loadOptions()
+    public function options()
     {
         $semesters = Semester::where('deleted_at', '=', null)
             ->orderBy('start_date')
@@ -267,7 +267,7 @@ class SemesterController extends Controller
         return redirect()->route('semester.participants', $semester);
     }
 
-    public function accept(Request $request, Semester $semester)
+    public function accept(Semester $semester)
     {
         $user = Auth::user();
 
@@ -275,7 +275,7 @@ class SemesterController extends Controller
 
         event(new SemesterAnsweredEvent($semester, $user, true));
         
-        return response()->json();
+        return response()->json(new SemesterResource($semester));
     }
 
     public function decline(Semester $semester)
@@ -290,7 +290,7 @@ class SemesterController extends Controller
             }
         }
 
-        return response()->json();
+        return response()->json(new SemesterResource($semester));
     }
 
     public function removeParticipant(Semester $semester, Request $request)

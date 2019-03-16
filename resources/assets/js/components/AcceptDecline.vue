@@ -22,9 +22,19 @@
 </template>
 
 <script>
+    import axios from '../axios';
+
 export default {
     name: 'accept-decline',
     props: {
+        namespace: {
+            type: String,
+            required: true
+        },
+        id: {
+            type: Number,
+            required: true
+        },
         acceptRoute: {
             type: String
         },
@@ -58,8 +68,6 @@ export default {
         isActive: {
             get() {
                 return this.deadline && (new Date()).getTime() <= (new Date(this.deadline)).getTime();
-            },
-            set() {
             }
         }
     },
@@ -71,15 +79,12 @@ export default {
                 this.showCommentField = true;
                 this.loading.accept = true;
 
-                this.$http.get(this.acceptRoute).then(response => {
-                    this.loading.accept = false;
-                    this.hasAccepted = true;
-                    this.hasDeclined = false;
-                }, response => {
-                    this.loading.accept = false;
-
-                    this.$emit('alert', response);
-                });
+                this.$store.dispatch(`${this.namespace}/accept`, {id: this.id, userId: null})
+                    .then(() => {
+                        this.loading.accept = false;
+                        this.hasAccepted = true;
+                        this.hasDeclined = false;
+                    });
             }
         },
         decline: function (event) {
@@ -89,13 +94,12 @@ export default {
                 this.showCommentField = true;
                 this.loading.decline = true;
 
-                this.$http.get(this.declineRoute).then(response => {
-                    this.loading.decline = false;
-                    this.hasDeclined = true;
-                    this.hasAccepted = false;
-                }, response => {
-                    this.loading.decline = false;
-                });
+                this.$store.dispatch(`${this.namespace}/decline`, {id: this.id, userId: null})
+                    .then(() => {
+                        this.loading.decline = false;
+                        this.hasAccepted = false;
+                        this.hasDeclined = true;
+                    });
             }
         }
     }
