@@ -5,7 +5,7 @@
 
             <div class="main-actions" v-if="currentUser.canManageConcerts">
                 <router-link class="btn btn-primary btn-sm" to="/admin/concerts/create">
-                    {{ $t('New Concert') }}
+                    <span class="oi oi-plus"></span> {{ $t('New Concert') }}
                 </router-link>
             </div>
         </header>
@@ -56,8 +56,8 @@
                         </div>
                         <div class="col-md-3">
                             <accept-decline
-                                    :accept-route="`/concerts/accept/${concert.id}`"
-                                    :decline-route="`/concerts/decline/${concert.id}`"
+                                    namespace="concerts"
+                                    :id="concert.id"
                                     :accepted="concert.accepted"
                                     :declined="concert.declined"
                                     :deadline="concert.deadline"

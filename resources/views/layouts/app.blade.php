@@ -72,8 +72,6 @@
         </div>
     </nav>
 
-    @include('layouts.modals')
-
     <div class="wrapper">
         <nav id="sidebar">
             <ul class="navbar-nav">

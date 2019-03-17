@@ -7,5 +7,8 @@ export default {
     },
     SHOW(state, user) {
         state.user = user;
+    },
+    SELECT(state, users) {
+        state.selected = users;
     }
 }

@@ -1,155 +1,169 @@
 <template>
-    <div class="loader" v-if="loading"></div>
-
-    <form v-else>
-        <header class="page-header">
-            <div v-if="currentUser.id === user.id">
-                <h2>{{ $t('Edit Profile') }}</h2>
+    <resource-form
+            namespace="users"
+            resource-key="user"
+            :resource="user"
+            :is-edit="!isCreate"
+    >
+        <template v-slot:editTitle>
+            <span v-if="currentUser.id === user.id">
+                {{ $t('Edit Profile') }}
                 <router-link class="btn btn-default btn-sm" to="/profile/changePassword">
                     {{ $t('Change Password') }}
                 </router-link>
-            </div>
+            </span>
             <h2 v-else>{{ $t('Edit Profile') }}: <span class="text-muted">{{ user.firstname }} {{ user.surname }}</span></h2>
-        </header>
+        </template>
 
-        <div class="row">
-            <div class="col">
-                <h3>{{ $t('Personal Data') }}</h3>
+        <template v-slot:createTitle>
+            {{ $t('Create User') }}
+        </template>
 
-                <div class="row">
+        <template v-slot:form>
+            <div class="row">
+                <div class="col">
+                    <h3>{{ $t('Personal Data') }}</h3>
+
+                    <div class="row">
+                        <form-group
+                                class="col"
+                                v-model="firstname"
+                                name="firstname"
+                                type="text"
+                                :label="$t('First Name')"
+                                validate="required"
+                        ></form-group>
+
+                        <form-group
+                                class="col"
+                                v-model="surname"
+                                name="surname"
+                                type="text"
+                                :label="$t('Surname')"
+                                validate="required"
+                        ></form-group>
+                    </div>
+
                     <form-group
-                            class="col"
-                            v-model="firstname"
-                            name="firstname"
+                            v-model="username"
+                            name="username"
                             type="text"
-                            :label="$t('First Name')"
+                            :label="$t('Username')"
+                            validate="required"
                     ></form-group>
 
                     <form-group
-                            class="col"
-                            v-model="surname"
-                            name="surname"
-                            type="text"
-                            :label="$t('Surname')"
+                            v-model="birthdate"
+                            name="birthdate"
+                            type="date"
+                            :label="$t('Birthdate')"
                     ></form-group>
+
+                    <form-group
+                            v-model="country_id"
+                            name="country_id"
+                            type="select"
+                            :label="$t('Citizenship')"
+                            :options="countries"
+                    ></form-group>
+
+                    <form-group
+                            v-if="currentUser.canManageUsers"
+                            v-model="non_singing"
+                            name="non_singing"
+                            type="checkbox"
+                            :label="$t('This user is not a singer.')"
+                            :info="$t('This user will not appear in the lists for rehearsals, concerts and projects.')"
+                    ></form-group>
+
+                    <form-group
+                            v-if="currentUser.canManageUsers"
+                            v-model="voice_id"
+                            name="voice_id"
+                            type="select"
+                            :label="$t('Voice')"
+                            :info="$t('This is your primary voice.')"
+                            :options="voices"
+                            validate="required"
+                    ></form-group>
+
+                    <div class="form-group">
+                        <picture-input
+                                ref="avatar"
+                                name="avatar"
+                                id="avatar"
+                                radius="50"
+                                width="150"
+                                height="150"
+                                accept="image/jpeg,image/png,image/jpg"
+                                size="10"
+                                button-class="btn-sm btn-primary"
+                                :prefill="user.avatar ? `/storage/avatars/${user.avatar}` : ''"
+                        >
+                        </picture-input>
+                    </div>
                 </div>
 
-                <form-group
-                        v-model="username"
-                        name="username"
-                        type="text"
-                        :label="$t('Username')"
-                ></form-group>
+                <div class="col">
+                    <h3>{{ $t('Contact Data') }}</h3>
 
-                <form-group
-                        v-model="birthdate"
-                        name="birthdate"
-                        type="date"
-                        :label="$t('Birthdate')"
-                ></form-group>
+                    <form-group
+                            v-model="email"
+                            name="email"
+                            type="email"
+                            :label="$t('E-Mail Address')"
+                            validate="required|email"
+                    ></form-group>
 
-                <form-group
-                        v-model="country_id"
-                        name="country_id"
-                        type="select"
-                        :label="$t('Citizenship')"
-                        :options="countries"
-                ></form-group>
+                    <form-group
+                            v-model="phone"
+                            name="phone"
+                            type="text"
+                            :label="$t('Phone')"
+                    ></form-group>
 
-                <form-group
-                        v-if="currentUser.canManageUsers"
-                        v-model="non_singing"
-                        name="non_singing"
-                        type="checkbox"
-                        :label="$t('This user is not a singer.')"
-                        :info="$t('This user will not appear in the lists for rehearsals, concerts and projects.')"
-                ></form-group>
+                    <h3>{{ $t('Address') }}</h3>
 
-                <form-group
-                        v-if="currentUser.canManageUsers"
-                        v-model="voice_id"
-                        name="voice_id"
-                        type="select"
-                        :label="$t('Voice')"
-                        :info="$t('This is your primary voice.')"
-                        :options="voices"
-                ></form-group>
+                    <form-group
+                            v-model="street"
+                            name="street"
+                            type="text"
+                            :label="$t('Street')"
+                    ></form-group>
 
-                <div class="form-group">
-                    <picture-input
-                            ref="avatar"
-                            name="avatar"
-                            id="avatar"
-                            radius="50"
-                            width="150"
-                            height="150"
-                            accept="image/jpeg,image/png,image/jpg"
-                            size="10"
-                            button-class="btn-sm btn-primary"
-                            :prefill="user.avatar ? `/storage/avatars/${user.avatar}` : ''"
-                    >
-                    </picture-input>
+                    <div class="row">
+                        <form-group
+                                class="col-4"
+                                v-model="zip"
+                                name="zip"
+                                type="number"
+                                :label="$t('ZIP')"
+                        ></form-group>
+
+                        <form-group
+                                class="col-8"
+                                v-model="city"
+                                name="city"
+                                type="text"
+                                :label="$t('City')"
+                        ></form-group>
+                    </div>
+
+                    <form-group
+                            v-model="address_country_id"
+                            name="country_id"
+                            type="select"
+                            :label="$t('Country')"
+                            :options="countries"
+                    ></form-group>
                 </div>
             </div>
+        </template>
 
-            <div class="col">
-                <h3>{{ $t('Contact Data') }}</h3>
-
-                <form-group
-                        v-model="email"
-                        name="email"
-                        type="email"
-                        :label="$t('E-Mail Address')"
-                ></form-group>
-
-                <form-group
-                        v-model="phone"
-                        name="phone"
-                        type="text"
-                        :label="$t('Phone')"
-                ></form-group>
-
-                <h3>{{ $t('Address') }}</h3>
-
-                <form-group
-                        v-model="street"
-                        name="street"
-                        type="text"
-                        :label="$t('Street')"
-                ></form-group>
-
-                <div class="row">
-                    <form-group
-                            class="col-4"
-                            v-model="zip"
-                            name="zip"
-                            type="number"
-                            :label="$t('ZIP')"
-                    ></form-group>
-
-                    <form-group
-                            class="col-8"
-                            v-model="city"
-                            name="city"
-                            type="text"
-                            :label="$t('City')"
-                    ></form-group>
-                </div>
-
-                <form-group
-                        v-model="address_country_id"
-                        name="country_id"
-                        type="select"
-                        :label="$t('Country')"
-                        :options="countries"
-                ></form-group>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" @click.prevent="submit">{{ $t('Save Profile') }}</button>
-        </div>
-    </form>
+        <template v-slot:submitButton>
+            {{ $t('Save User') }}
+        </template>
+    </resource-form>
 </template>
 
 <script>
@@ -157,11 +171,17 @@
     import { mapState } from 'vuex';
     import PictureInput from 'vue-picture-input'
     import { mapFields } from 'vuex-map-fields';
-    import VueFlashMessage from 'vue-flash-message';
+    import ResourceForm from '../ResourceForm';
 
     export default {
         name: 'user-profile-form',
-        components: {FormGroup, PictureInput, VueFlashMessage},
+        components: {FormGroup, PictureInput, ResourceForm},
+        props: {
+            isCreate: {
+                type: Boolean,
+                default: false
+            }
+        },
         computed: {
             ...mapState({
                 currentUser: state => state.users.current,
@@ -183,27 +203,7 @@
                 zip: 'user.address.zip',
                 city: 'user.address.city',
                 address_country_id: 'user.address.country_id'
-            }),
-            /*street () {
-                return this.$store.state.users.user.address ?
-                    this.$store.state.users.user.address.street :
-                    null;
-            },
-            zip () {
-                return this.$store.state.users.user.address ?
-                    this.$store.state.users.user.address.zip :
-                    null;
-            },
-            city () {
-                return this.$store.state.users.user.address ?
-                    this.$store.state.users.user.address.city :
-                    null;
-            },
-            address_country_id () {
-                return this.$store.state.users.user.address ?
-                    this.$store.state.users.user.address.country_id :
-                    null;
-            }*/
+            })
         },
         data () {
             return {
@@ -211,8 +211,12 @@
             }
         },
         mounted () {
-            this.$store.dispatch('users/show', this.$route.params.id)
-                .then(() => this.loading = false);
+            if (this.$route.params.id) {
+                this.$store.dispatch('users/show', this.$route.params.id)
+                    .then(() => this.loading = false);
+            } else {
+                this.loading = false;
+            }
 
             if (Object.entries(this.countries).length === 0) {
                 this.$store.dispatch('countries/options');
@@ -224,10 +228,17 @@
         },
         methods: {
             submit () {
-                this.$store.dispatch('users/edit', this.user)
-                    .then(() => {
-                        this.flashSuccess(this.$t('Profile successfully saved.'));
-                    });
+                if (this.isCreate) {
+                    this.$store.dispatch('users/add', this.user)
+                        .then(() => {
+                            this.flashSuccess(this.$t('User successfully created.'));
+                        });
+                } else {
+                    this.$store.dispatch('users/edit', this.user)
+                        .then(() => {
+                            this.flashSuccess(this.$t('Profile successfully saved.'));
+                        });
+                }
             }
         }
     }

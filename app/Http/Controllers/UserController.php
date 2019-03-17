@@ -101,21 +101,13 @@ class UserController extends Controller
     {
         $data = $request->all();
 
-        $user  = User::create([
-            'firstname' => $data['firstname'],
-            'surname' => $data['surname'],
-            'email' => $data['email'],
-            'gender' => $data['gender'],
-            'password' => bcrypt($data['password']),
-            'username' => $data['firstname'] . ' ' . $data['surname'],
-            'voice_id' => $data['voice_id']
-        ]);
+        $user  = User::create($data);
 
         $memberRole = Role::where('name', '=', 'member')->first();
 
-        $user->roles()->attach($memberRole->id);;
+        $user->roles()->attach($memberRole->id);
 
-        return redirect('/admin/users');
+        return response()->json(new UserResource($user));
     }
 
     /**
@@ -132,12 +124,17 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, User $user)
     {
-        //
+        $data = $request->all();
+
+        $user->update($data);
+
+        return response()->json(new UserResource($user));
     }
 
     /**

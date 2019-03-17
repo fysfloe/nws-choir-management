@@ -1,5 +1,8 @@
 <template>
     <div>
+        <set-voice-modal></set-voice-modal>
+        <multi-set-voice-modal></multi-set-voice-modal>
+
         <filters
                 :voices="voices"
                 :concerts="concerts"
@@ -25,7 +28,7 @@
                             <a v-if="hasAction('archive')" class="dropdown-item" href="/admin/users/multiArchive" @click.prevent="postUserAction($event, true, $t('Do you really want to archive these users?'))">
                                 <span class="oi oi-box"></span> {{ $t('Archive') }}
                             </a>
-                            <a v-if="hasAction('setVoice')" class="dropdown-item" data-href="/admin/voice/set" :href="`/admin/voice/set?${urlEncodeArray(selectedUsers, 'users')}`" data-toggle="modal" data-target="#mainModal">
+                            <a v-b-modal.multiSetVoiceModal v-if="hasAction('setVoice')" class="dropdown-item">
                                 <span class="oi oi-pulse"></span> {{ $t('Set voice') }}
                             </a>
                             <a v-if="showRoles && hasAction('setRole')" class="dropdown-item" data-href="/admin/role/set" :href="`/admin/role/set?${urlEncodeArray(selectedUsers, 'users')}`" data-toggle="modal" data-target="#mainModal">
@@ -70,7 +73,7 @@
                             <div class="name">
                                 {{ user.firstname }} {{ user.surname }}
                                 <div>
-                                    <a :href="setVoiceRoute + '/' + user.id" data-toggle="modal" data-target="#mainModal">
+                                    <a href="#" @click="$store.dispatch('users/show', user.id)" v-b-modal.setVoiceModal>
                                         <span class="badge badge-secondary badge-pill" v-if="user.voice">
                                             {{ user.voice.name }}
                                         </span>
@@ -139,9 +142,11 @@
     import AcceptDecline from "./AcceptDecline";
     import Filters from "./Filters";
     import { mapState } from 'vuex';
+    import SetVoiceModal from "./User/SetVoiceModal";
+    import MultiSetVoiceModal from "./User/MultiSetVoiceModal";
 
     export default {
-        components: {Filters, AcceptDecline, Attendance},
+        components: {MultiSetVoiceModal, SetVoiceModal, Filters, AcceptDecline, Attendance},
         props: {
             rehearsals: {
                 type: [Array, Object]
@@ -205,7 +210,7 @@
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 loading: false,
                 activeFilters: {},
-                selectedUsers: []
+                showSetVoiceModal: false
             }
         },
         computed: {
@@ -234,7 +239,8 @@
 
                     return optionsArray;
                 },
-                filters: state => state.users.filters
+                filters: state => state.users.filters,
+                selectedUsers: state => state.users.selected
             }),
             checkedAll: {
                 get() {
@@ -257,8 +263,10 @@
             toggleUser: function (event, id) {
                 if (event.target.checked) {
                     this.selectedUsers.push(id);
+                    this.$store.dispatch('users/select', this.selectedUsers);
                 } else {
                     this.selectedUsers.splice(this.selectedUsers.indexOf(id), 1);
+                    this.$store.dispatch('users/select', this.selectedUsers);
                 }
             },
             postUserAction: function (event, confirm, confirmMessage) {
@@ -278,9 +286,9 @@
             },
             checkAll: function (event) {
                 if (event.target.checked) {
-                    this.selectedUsers = this._users.map(user => user.id);
+                    this.$store.dispatch('users/select', this._users.map(user => user.id));
                 } else {
-                    this.selectedUsers = [];
+                    this.$store.dispatch('users/select', []);
                 }
             },
             changeSortDir: function () {

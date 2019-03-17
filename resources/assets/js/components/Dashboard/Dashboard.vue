@@ -36,10 +36,6 @@
                                     </li>
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No projects this semester.') }}</small>
-
-                                <div v-if="user.canManageProjects" class="margin-top">
-                                    <router-link class="btn btn-default btn-sm" :to="`/admin/projects/create?semester_id=${semester.id}`">{{ $t('Add a project') }}</router-link>
-                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -58,14 +54,10 @@
                                             <span class="oi oi-calendar text-muted"></span>&nbsp;{{ concert.date }}&nbsp;
                                             <span class="oi oi-clock text-muted"></span>&nbsp;{{ concert.start_time }}&nbsp;
                                         </small><br>
-                                        <small v-if="concert.project"><strong class="text-muted">{{ concert.project }}</strong></small><br/>
+                                        <small v-if="concert.project"><strong class="text-muted">{{ concert.project.title }}</strong></small><br/>
                                     </li>
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No concerts this semester.') }}</small>
-
-                                <div v-if="user.canManageConcerts" class="margin-top">
-                                    <router-link class="btn btn-default btn-sm" :to="`/admin/concerts/create?semester_id=${semester.id}`">{{ $t('Add a concert') }}</router-link>
-                                </div>
                             </div>
                             <div class="col">
                                 <h4 class="margin-top">
@@ -85,17 +77,7 @@
                                     </li>
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No (more) rehearsals this semester.') }}</small>
-
-                                <div v-if="user.canManageRehearsals" class="margin-top">
-                                    <router-link class="btn btn-default btn-sm" :to="`/admin/rehearsals/create?semester_id=${semester.id}`">{{ $t('Add a rehearsal') }}</router-link>
-                                </div>
                             </div>
-                        </div>
-
-                        <div v-if="user.canManageSemesters" class="margin-top">
-                            <router-link class="btn btn-default btn-sm" to="/admin/semesters/create">
-                                {{ $t('New Semester') }}
-                            </router-link>
                         </div>
                     </div>
                 </div>

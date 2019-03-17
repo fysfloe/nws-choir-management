@@ -18,6 +18,7 @@ Route::group(['api', 'middleware' => 'auth:api'], function () {
     Route::post('/projects/decline/{project}/{user_id?}', 'ProjectController@decline');
     Route::get('/projects/options', 'ProjectController@options');
     Route::get('/projects/participants/{project}', 'ProjectController@participants');
+    Route::post('/projects/remove_multi', 'ProjectController@removeMulti');
     Route::resource('projects', 'ProjectController');
 
     Route::post('/rehearsals/accept/{rehearsal}/{user_id?}', 'RehearsalController@accept');
@@ -44,5 +45,7 @@ Route::group(['api', 'middleware' => 'auth:api'], function () {
     Route::get('dashboard', 'HomeController@index');
 
     Route::get('/countries/options', 'CountryController@options');
+
     Route::get('/voices/options', 'VoiceController@options');
+    Route::post('/voices/set_multi', 'VoiceController@setMulti');
 });

@@ -5,7 +5,7 @@
 
             <div class="main-actions" v-if="currentUser.canManageSemesters">
                 <router-link class="btn btn-primary btn-sm" to="/admin/semesters/create">
-                    {{ $t('New Semester') }}
+                    <span class="oi oi-plus"></span> {{ $t('New Semester') }}
                 </router-link>
             </div>
         </header>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 use App\Voice;
@@ -135,8 +136,8 @@ class VoiceController extends Controller
 
     public function setMulti(Request $request)
     {
-        $users = json_decode($request->get('users'));
-        $voice_id = $request->get('voice');
+        $users = $request->get('users');
+        $voice_id = $request->get('voice_id');
 
         $users = User::find($users);
 
@@ -145,9 +146,7 @@ class VoiceController extends Controller
             $user->save();
         }
 
-        $request->session()->flash('alert-success', __('Voice successfully set.'));
-
-        return redirect()->back();
+        return response()->json();
     }
 
     /**

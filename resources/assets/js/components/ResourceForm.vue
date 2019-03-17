@@ -41,6 +41,10 @@
             resource: {
                 type: Object,
                 default: {}
+            },
+            edit: {
+                type: Boolean,
+                default: false
             }
         },
         data () {
@@ -50,7 +54,7 @@
         },
         computed: {
             isEdit() {
-                return !!this.$route.params.id;
+                return this.edit || !!this.$route.params.id;
             }
         },
         mounted () {

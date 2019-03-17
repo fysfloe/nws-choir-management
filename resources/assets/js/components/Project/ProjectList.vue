@@ -11,10 +11,10 @@
         </header>
 
         <filters
-        :fetch-items="fetchItems"
-        :filters="filters"
-        :active-filters="activeFilters"
-        :remove-filter="removeFilter"
+                :fetch-items="fetchItems"
+                :filters="filters"
+                :active-filters="activeFilters"
+                :remove-filter="removeFilter"
         ></filters>
 
         <div class="loader" v-if="loading"></div>
@@ -57,10 +57,10 @@
 
             <ul class="projects">
                 <router-link :to="`/projects/${project.id}`" v-for="project in items" :key="project.id">
-                <li class="row align-items-center">
+                    <li class="row align-items-center">
                         <div class="col-md-11">
                             <div class="flex align-items-center">
-                                <input v-if="currentUser.canManageProjects" type="checkbox" @click="toggleItem($event, project.id)" :value="project.id" :checked="selectedItems.indexOf(project.id) !== -1">&nbsp;
+                                <input v-if="currentUser.canManageProjects" type="checkbox" @click.stop="toggleItem($event, project.id)" :value="project.id" :checked="selectedItems.indexOf(project.id) !== -1">&nbsp;
                                 <div class="avatar avatar-default">
                                     <span class="oi oi-musical-note"></span>
                                 </div>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col-md-1 actions" v-if="currentUser.canManageProjects">
-                            <a class="dropdown-toggle no-caret" href="#" :id="`singleActions${project.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="dropdown-toggle no-caret" @click.stop href="#" :id="`singleActions${project.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="oi oi-ellipses"></span>
                             </a>
 
@@ -100,7 +100,7 @@
                                 </form>
                             </div>
                         </div>
-                </li>
+                    </li>
                 </router-link>
             </ul>
         </div>
@@ -109,120 +109,120 @@
 </template>
 
 <script>
-import Filters from "../Filters";
-export default {
-    components: {Filters},
-    props: {
-        fetchAction: {
-            type: String
-        }, 
-        sortOptions: {
-            type: Object,
-            default () {
-                return {
-                    'title': this.$t('Title')
-                };
+    import Filters from "../Filters";
+    export default {
+        components: {Filters},
+        props: {
+            fetchAction: {
+                type: String
+            },
+            sortOptions: {
+                type: Object,
+                default () {
+                    return {
+                        'title': this.$t('Title')
+                    };
+                }
+            },
+            actions: {
+                type: Array,
+                default () {
+                    return ['remove', 'edit']
+                }
             }
         },
-        actions: {
-            type: Array,
-            default () {
-                return ['remove', 'edit']
-            }
-        }
-    },
-    data() {
-        return {
-            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            loading: false,
-            activeFilters: {},
-            selectedItems: [],
-            filters: {
-                search: '',
-                sort: 'title',
-                dir: 'ASC'
-            }
-        }
-    },
-    computed: {
-        checkedAll: {
-            get () {
-                return this.selectedItems.length === this.items.length;
+        data() {
+            return {
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                loading: false,
+                activeFilters: {},
+                selectedItems: [],
+                filters: {
+                    search: '',
+                    sort: 'title',
+                    dir: 'ASC'
+                }
             }
         },
-        items () {
-            return this.$store.state.projects.items;
-        },
-        currentUser () {
-            return this.$store.state.users.current;
-        }
-    },
-    mounted() {
-        this.fetchItems();
-    },
-    methods: {
-        toggleItem: function (event, id) {
-            if (event.target.checked) {
-                this.selectedItems.push(id);
-            } else {
-                this.selectedItems.splice(this.selectedItems.indexOf(id), 1);
+        computed: {
+            checkedAll: {
+                get () {
+                    return this.selectedItems.length === this.items.length;
+                }
+            },
+            items () {
+                return this.$store.state.projects.items;
+            },
+            currentUser () {
+                return this.$store.state.users.current;
             }
         },
-        checkAll: function (event) {
-            if (event.target.checked) {
-                this.selectedItems = this.items.map(item => item.id);
-            } else {
-                this.selectedItems = [];
-            }
+        mounted() {
+            this.fetchItems();
         },
-        postAction: function (event, confirm, confirmMessage) {
-            if (confirm) {
-                this.$dialog.confirm(confirmMessage)
-                    .then(dialog => {
-                        let route = event.target.getAttribute('href');
+        methods: {
+            toggleItem: function (event, id) {
+                if (event.target.checked) {
+                    this.selectedItems.push(id);
+                } else {
+                    this.selectedItems.splice(this.selectedItems.indexOf(id), 1);
+                }
+            },
+            checkAll: function (event) {
+                if (event.target.checked) {
+                    this.selectedItems = this.items.map(item => item.id);
+                } else {
+                    this.selectedItems = [];
+                }
+            },
+            postAction: function (event, confirm, confirmMessage) {
+                if (confirm) {
+                    this.$dialog.confirm(confirmMessage)
+                        .then(dialog => {
+                            let route = event.target.getAttribute('href');
 
-                        this.$http.post(route, {users: this.selectedItems, _token: this.csrf})
-                            .then(response => {
-                                this.fetchItems();
-                            }, response => {
-                                console.log(response);
-                            });
+                            this.$http.post(route, {users: this.selectedItems, _token: this.csrf})
+                                .then(response => {
+                                    this.fetchItems();
+                                }, response => {
+                                    console.log(response);
+                                });
+                        });
+                }
+            },
+            changeSortDir: function () {
+                if (this.filters.dir === 'ASC') {
+                    this.filters.dir = 'DESC';
+                } else {
+                    this.filters.dir = 'ASC';
+                }
+
+                this.fetchItems();
+            },
+            changeSort: function(sort) {
+                this.filters.sort = sort;
+
+                this.fetchItems();
+            },
+            fetchItems: function () {
+                this.$store.dispatch('projects/fetch', this.filters)
+                    .then(() => {
+                        this.loading = false;
                     });
-            }
-        },
-        changeSortDir: function () {
-            if (this.filters.dir === 'ASC') {
-                this.filters.dir = 'DESC';
-            } else {
-                this.filters.dir = 'ASC';
-            }
+            },
+            removeFilter: function (key) {
+                delete this.activeFilters[key];
+                if (typeof this.filters[key] === 'string') {
+                    this.filters[key] = '';
+                } else if (this.filters[key].constructor === Array) {
+                    this.filters[key] = [];
+                }
 
-            this.fetchItems();
-        },
-        changeSort: function(sort) {
-            this.filters.sort = sort;
-
-            this.fetchItems();
-        },
-        fetchItems: function () {
-            this.$store.dispatch('projects/fetch', this.filters)
-                .then(() => {
-                    this.loading = false;
-                });
-        },
-        removeFilter: function (key) {
-            delete this.activeFilters[key];
-            if (typeof this.filters[key] === 'string') {
-                this.filters[key] = '';
-            } else if (this.filters[key].constructor === Array) {
-                this.filters[key] = [];
+                this.fetchItems();
+            },
+            hasAction: function (name) {
+                return this.actions.indexOf(name) !== -1
             }
-
-            this.fetchItems();
-        },
-        hasAction: function (name) {
-            return this.actions.indexOf(name) !== -1
         }
     }
-}
 </script>

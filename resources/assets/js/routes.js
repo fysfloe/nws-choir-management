@@ -14,6 +14,7 @@ import UserProfileForm from "./components/User/UserProfileForm";
 import ConcertForm from "./components/Concert/ConcertForm";
 import RehearsalForm from "./components/Rehearsal/RehearsalForm";
 import Rehearsal from "./components/Rehearsal/Rehearsal";
+import Users from "./components/User/Users";
 
 export const routes = [
     { path: '/', component: Dashboard, name: 'Dashboard' },
@@ -42,7 +43,8 @@ export const routes = [
     { path: '/concerts/:id', component: Concert, props: true},
     { path: '/admin/concerts/edit/:id', component: ConcertForm, name: 'EditConcert' },
     { path: '/admin/concerts/create', component: ConcertForm, name: 'CreateConcert' },
-    { path: '/admin/users', component: UserList, name: 'UserList' },
+    { path: '/admin/users', component: Users, name: 'Users' },
+    { path: '/admin/users/create', component: UserProfileForm, name: 'CreateUser', props: {isCreate: true} },
     { path: '/profile/edit/:id?', component: UserProfileForm, name: 'UserProfileForm' },
     { path: '/admin/rehearsals/edit/:id', component: RehearsalForm, name: 'EditRehearsal' },
     { path: '/admin/rehearsals/create', component: RehearsalForm, name: 'CreateRehearsal' },

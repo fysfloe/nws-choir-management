@@ -7,6 +7,13 @@ export default {
             .then(response => commit('FETCH', response.data))
             .catch();
     },
+    add({ commit }, user) {
+        return axios.post(`${paths.users}`, user)
+            .then(response => {
+                commit('SHOW', response.data);
+                this.dispatch('users/fetch');
+            });
+    },
     getCurrent({ commit }) {
         return axios.get(paths.currentUser)
             .then(response => commit('CURRENT_USER', response.data), error => {})
@@ -22,6 +29,13 @@ export default {
     },
     edit({}, user) {
         axios.put(`${paths.users}/${user.id}`, user)
+            .then(() => this.dispatch('users/fetch'));
+    },
+    select({ commit }, users) {
+        commit('SELECT', users);
+    },
+    setVoice({ commit }, params) {
+        axios.post(`${paths.voices}/set_multi`, params)
             .then(() => this.dispatch('users/fetch'));
     }
 }

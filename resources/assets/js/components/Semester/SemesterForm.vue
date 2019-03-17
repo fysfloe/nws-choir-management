@@ -1,110 +1,85 @@
 <template>
-    <div>
-        <div v-if="loading" class="loader"></div>
-        <div v-else>
-            <header class="page-header">
-                <div v-if="isEdit">
-                    <h2><span class="light">{{ $t('Edit') }}:</span> {{ semester.title }}</h2>
-                </div>
-                <div v-else>
-                    <h2>{{ $t('Create Semester') }}</h2>
-                </div>
-            </header>
-            <form>
-                <div class="row">
-                    <div class="col">
-                        <form-group
-                                :label="$t('Name')"
-                                v-model="semester.name"
-                                name="title"
-                                type="text"
-                                validate="required"
-                        ></form-group>
+    <resource-form
+            namespace="semesters"
+            resource-key="semester"
+            :resource="semester"
+    >
+        <template v-slot:editTitle>
+            <span class="light">{{ $t('Edit') }}:</span> {{ title }}
+        </template>
 
-                        <form-group
-                                :label="$t('Start date')"
-                                v-model="semester.start_date"
-                                name="start_date"
-                                type="date"
-                                validate="required"
-                        ></form-group>
+        <template v-slot:createTitle>
+            {{ $t('Create Semester') }}
+        </template>
 
-                        <form-group
-                                :label="$t('End date')"
-                                v-model="semester.end_date"
-                                name="end_date"
-                                type="date"
-                                validate="required"
-                        ></form-group>
+        <template v-slot:form>
+            <div class="row">
+                <div class="col">
+                    <form-group
+                            :label="$t('Name')"
+                            v-model="semester.name"
+                            name="title"
+                            type="text"
+                            validate="required"
+                    ></form-group>
 
-                        <form-group
-                                :label="$t('Deadline')"
-                                v-model="semester.deadline"
-                                name="deadline"
-                                type="datetime"
-                                validate="required"
-                        ></form-group>
-                    </div><!-- .col -->
-                </div><!-- .row -->
+                    <form-group
+                            :label="$t('Start date')"
+                            v-model="semester.start_date"
+                            name="start_date"
+                            type="date"
+                            validate="required"
+                    ></form-group>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary" @click.prevent="submit">
-                        {{ $t('Save Semester') }}
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div v-else></div>
-    </div>
+                    <form-group
+                            :label="$t('End date')"
+                            v-model="semester.end_date"
+                            name="end_date"
+                            type="date"
+                            validate="required"
+                    ></form-group>
+
+                    <form-group
+                            :label="$t('Deadline')"
+                            v-model="semester.deadline"
+                            name="deadline"
+                            type="datetime"
+                            validate="required"
+                    ></form-group>
+                </div><!-- .col -->
+            </div><!-- .row -->
+        </template>
+        <template v-slot:submitButton>
+            {{ $t('Save Semester') }}
+        </template>
+    </resource-form>
 </template>
 
 <script>
     import FormGroup from "../FormGroup";
+    import { mapState } from 'vuex';
+    import { mapFields } from 'vuex-map-fields';
+    import ResourceForm from '../ResourceForm';
+
     export default {
         name: 'semester-form',
-        components: {FormGroup},
+        components: {FormGroup, ResourceForm},
         data () {
             return {
                 loading: true
             }
         },
         computed: {
-            semester () {
-                return this.$store.state.semesters.semester;
-            },
-            isEdit() {
-                return !!this.$route.params.id;
-            }
-        },
-        mounted () {
-            if (this.isEdit) {
-                this.$store.dispatch('semesters/show', this.$route.params.id).then(() => {
-                    this.loading = false;
-                });
-            } else {
-                this.$store.state.semesters.semester = {
-                    name: '',
-                    start_date: null,
-                    end_date: null,
-                    deadline: ''
-                };
-                this.loading = false;
-            }
-        },
-        methods: {
-            submit () {
-                if (this.isEdit) {
-                    this.$store.dispatch('semesters/edit', this.semester)
-                        .then(() => {
-                            this.$router.push(`/semesters/${this.$route.params.id}`);
-                        });
-                } else {
-                    this.$store.dispatch('semesters/add', this.semester)
-                        .then(() => {
-                            this.$router.push(`/semesters/${this.$store.state.semesters.semester.id}`);
-                        });
-                }
-            }
+            ...mapState({
+                semester: state => state.semesters.semester
+            }),
+            ...mapFields('semesters', {
+                title: 'semester.title',
+                description: 'semester.description',
+                start_date: 'semester.start_date',
+                end_date: 'semester.end_date',
+                deadline: 'semester.deadline'
+            })
         }
     }
 </script>

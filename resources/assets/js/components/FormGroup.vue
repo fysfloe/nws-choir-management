@@ -13,7 +13,7 @@
         </label>
         <textarea v-on="inputListeners" v-if="type === 'textarea'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control"></textarea>
         <select v-on="inputListeners" v-else-if="type === 'select'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control">
-            <option v-for="(option, key) in options" :value="key" :key="key">{{ option }}</option>
+            <option v-for="(option, key) in options" :value="key" :key="key" :selected="value === key">{{ option }}</option>
         </select>
         <datetime v-else-if="isDatetime" value-zone="UTC+1" :type="type" input-class="form-control" v-model="val" :name="name" :id="name"></datetime>
         <input v-on="inputListeners" v-else v-validate="validate" :type="type" :name="name" :id="name" v-model="val" class="form-control">

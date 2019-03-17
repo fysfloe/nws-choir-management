@@ -7,7 +7,9 @@ export default {
     state: {
         current: {},
         items: [],
-        user: {},
+        user: {
+            address: {}
+        },
         filters: {
             search: '',
             voices: [],
@@ -16,7 +18,8 @@ export default {
             ageTo: '',
             sort: 'surname',
             dir: 'ASC'
-        }
+        },
+        selected: []
     },
     mutations: {
         ...mutations,
