@@ -24,7 +24,7 @@
                 <rehearsal-side-list
                         class="mb-4"
                         :rehearsals="concert.rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsal/create?project=${concert.project.id}&semester=${concert.semester.id}`"
+                        :add-rehearsal-route="`/admin/rehearsal/create?project=${concert.project.id}&semester=${concert.semester_id}`"
                         :can-manage-rehearsals="user.canManageRehearsals"
                         :user="user"
                 ></rehearsal-side-list>
