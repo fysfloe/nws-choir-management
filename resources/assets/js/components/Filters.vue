@@ -9,17 +9,12 @@
 
                 <div class="form-group" v-if="filters.hasOwnProperty('voices')">
                     <label for="voices" class="control-label">{{ $t('Voices') }}</label>
-                    <select @change="addValue(event, filters.voices)" name="voices[]" id="voices" class="form-control" multiple="multiple" v-model="filters.voices">
-                        <option v-for="(voice, key) in voices" :key="key" :value="key">{{ voice }}</option>
-                    </select>
+                    <multiselect :options="voices" name="voices[]" id="voices" label="label" track-by="value" multiple="multiple" v-model="filters.voices"></multiselect>
                 </div>
 
                 <div class="form-group" v-if="filters.hasOwnProperty('concerts')">
                     <label for="concerts" class="control-label">{{ $t('Concerts') }}</label>
-                    <select name="concerts[]" id="concerts" class="form-control" multiple="multiple" v-model="filters.concerts">
-                        <option v-for="(concert, key) in concerts" :key="key" :value="key">{{ concert }}
-                        </option>
-                    </select>
+                    <multiselect :options="concerts" name="concerts[]" id="concerts" multiple="multiple" v-model="filters.concerts"></multiselect>
                 </div>
 
                 <div class="form-group age-filter" v-if="filters.hasOwnProperty('ageFrom') || filters.hasOwnProperty('ageTo')">
@@ -59,17 +54,17 @@
 </template>
 
 <script>
-export default {
-    props: ['voices', 'concerts', 'fetchItems', 'filters', 'activeFilters', 'removeFilter'],
-    methods: {
-        filter: function () {
-            this.filters.voices = $('select[name="voices[]"]').val();
-            this.filters.concerts = $('select[name="concerts[]"]').val();
-            this.fetchItems();
+    export default {
+        props: ['voices', 'concerts', 'fetchItems', 'filters', 'activeFilters', 'removeFilter'],
+        methods: {
+            filter: function () {
+                this.filters.voices = $('select[name="voices[]"]').val();
+                this.filters.concerts = $('select[name="concerts[]"]').val();
+                this.fetchItems();
+            },
+            _removeFilter: function (key) {
+                this.removeFilter(key);
+            }
         },
-        _removeFilter: function (key) {
-            this.removeFilter(key);
-        }
-    },
-}
+    }
 </script>

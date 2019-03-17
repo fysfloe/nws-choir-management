@@ -138,29 +138,22 @@
     import Attendance from "./Attendance";
     import AcceptDecline from "./AcceptDecline";
     import Filters from "./Filters";
+    import { mapState } from 'vuex';
+
     export default {
         components: {Filters, AcceptDecline, Attendance},
         props: {
-            concerts: {
-                type: [Array, Object]
-            },
             rehearsals: {
                 type: [Array, Object]
             },
             users: {
                 type: Array
             },
-            canManageUsers: {
-                type: [Boolean, Number]
-            },
             showRoles: {
                 type: Boolean
             },
             fetchUsersAction: {
                 type: String
-            },
-            voices: {
-                type: Object
             },
             sortOptions: {
                 type: Object,
@@ -231,6 +224,32 @@
             }
         },
         computed: {
+            ...mapState({
+                concerts: state => {
+                    let optionsArray = [];
+
+                    for (let option in state.concerts.options) {
+                        optionsArray.push({
+                            label: state.concerts.options[option],
+                            value: option
+                        });
+                    }
+
+                    return optionsArray;
+                },
+                voices: state => {
+                    let optionsArray = [];
+
+                    for (let option in state.voices.options) {
+                        optionsArray.push({
+                            label: state.voices.options[option],
+                            value: option
+                        });
+                    }
+
+                    return optionsArray;
+                }
+            }),
             checkedAll: {
                 get() {
                     return this.selectedUsers.length === this._users.length;
@@ -244,6 +263,9 @@
             if (!this.users) {
                 this.$store.dispatch('users/fetch');
             }
+
+            this.$store.dispatch('voices/options');
+            this.$store.dispatch('concerts/options');
         },
         methods: {
             toggleUser: function (event, id) {

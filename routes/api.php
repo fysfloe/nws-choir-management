@@ -34,8 +34,9 @@ Route::group(['api', 'middleware' => 'auth:api'], function () {
 
     Route::post('/concerts/accept/{concert}/{user_id?}', 'ConcertController@accept');
     Route::post('/concerts/decline/{concert}/{user_id?}', 'ConcertController@decline');
+    Route::get('/concerts/options', 'ConcertController@options');
     Route::resource('concerts', 'ConcertController');
-    Route::get('/concerts/load_participants/{concert}', 'ConcertController@loadParticipants');
+    Route::get('/concerts/participants/{concert}', 'ConcertController@participants');
 
     Route::resource('users', 'UserController', ['middleware' => ['permission:manageUsers'], 'uses' => 'UserController']);
     Route::get('/user', 'UserController@getCurrent');

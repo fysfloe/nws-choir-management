@@ -15,6 +15,8 @@ import store from './vuex/store.js';
 import VueFlashMessage from 'vue-flash-message';
 import Datetime from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css'
+import Multiselect from 'vue-multiselect';
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 window.Popper = require('popper.js').default;
 require('./bootstrap');
@@ -37,6 +39,8 @@ Vue.use(VueFlashMessage, {
     }
 });
 Vue.use(Datetime);
+Vue.use(Multiselect);
+Vue.component('multiselect', Multiselect);
 
 Vue.mixin(mixins.global);
 
@@ -67,7 +71,6 @@ const app = new Vue({
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
-    $('select[multiple]').multiselect();
 
     $('body').on('click', '.add-date', function (e) {
         e.preventDefault();

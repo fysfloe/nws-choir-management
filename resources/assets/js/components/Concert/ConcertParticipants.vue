@@ -20,7 +20,7 @@
                     :can-manage-users="currentUser.canManageUsers"
                     :show-roles="false"
                     :voices="{}"
-                    :fetch-users-action="`/concerts/load_participants/${concert.id}`"
+                    :fetch-users-action="`/concerts/participants/${concert.id}`"
                     :sort-options="{
                     firstname: $t('First Name'),
                     surname: $t('Surname'),

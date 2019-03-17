@@ -109,7 +109,7 @@ class ConcertController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Concert $concert
      * @return \Illuminate\Http\Response
      */
     public function show(Concert $concert)
@@ -125,8 +125,6 @@ class ConcertController extends Controller
 
     public function participants(Request $request, Concert $concert)
     {
-        $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
-
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
@@ -147,42 +145,25 @@ class ConcertController extends Controller
             }
         }
 
-        $voices = Voice::getListForSelect();
-
-        return view('concert.participants')->with([
-            'tab' => 'participants',
-            'concert' => $concert,
-            'participants' => UserResource::collection($users),
-            'activeFilters' => $activeFilters,
-            'voices' => $voices,
-            'route' => ['concert.participants', $concert],
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(UserResource::collection($users));
     }
 
-    public function loadParticipants(Request $request, Concert $concert)
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function options()
     {
-        $filters = $request->all();
+        $concerts = Concert::where('deleted_at', '=', null)
+            ->orderBy('title')
+            ->get();
 
-        $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+        $concertOptions = [];
 
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
+        foreach ($concerts as $concert) {
+            $concertOptions[$concert->id] = $concert->name;
         }
 
-        return json_encode(UserResource::collection($users));
+        return response()->json($concertOptions);
     }
 
     public function voices(Request $request, Concert $concert)

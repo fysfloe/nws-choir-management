@@ -34,13 +34,13 @@ export default {
             });
     },
     participants({ commit }, id) {
-        return axios.get(`${paths.concerts}/load_participants/${id}`)
-            .then(response => commit('LOAD_PARTICIPANTS', response.data))
+        return axios.get(`${paths.concerts}/participants/${id}`)
+            .then(response => commit('PARTICIPANTS', response.data))
             .catch();
     },
     options({ commit }) {
-        return axios.get(`${paths.concerts}/load_options`)
-            .then(response => commit('LOAD_OPTIONS', response.data))
+        return axios.get(`${paths.concerts}/options`)
+            .then(response => commit('OPTIONS', response.data))
             .catch();
     },
     accept({ commit }, { id, userId }) {
