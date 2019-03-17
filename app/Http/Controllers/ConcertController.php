@@ -160,7 +160,7 @@ class ConcertController extends Controller
         $concertOptions = [];
 
         foreach ($concerts as $concert) {
-            $concertOptions[$concert->id] = $concert->name;
+            $concertOptions[$concert->id] = $concert->title;
         }
 
         return response()->json($concertOptions);

@@ -198,21 +198,6 @@
                 default () {
                     return ['setVoice', 'editProfile', 'setRole', 'archive']
                 }
-            },
-            filters: {
-                type: Object,
-                default: () => {
-                    return {
-                        search: '',
-                        voices: [],
-                        concerts: [],
-                        ageFrom: '',
-                        ageTo: '',
-                        sort: 'surname',
-                        dir: 'ASC',
-                        accepted: '1'
-                    }
-                }
             }
         },
         data() {
@@ -248,7 +233,8 @@
                     }
 
                     return optionsArray;
-                }
+                },
+                filters: state => state.users.filters
             }),
             checkedAll: {
                 get() {
@@ -314,19 +300,13 @@
             fetchUsers: function () {
                 this.loading = true;
 
-                for (let key in this.filters) {
-                    if (this.filters[key].constructor === Array && this.filters[key].length > 0) {
-                        this.activeFilters[key] = this.filters[key].join(', ');
-                    } else if (typeof this.filters[key] === 'string' && this.filters[key].length > 0) {
-                        this.activeFilters[key] = this.filters[key];
-                    }
-                }
+                let filters = JSON.parse(JSON.stringify(this.filters));
 
-                this.$http.get(this.fetchUsersAction, {params: this.filters}).then(response => {
-                    this.loading = false;
-                    this._users = response.body;
-                }, response => {
-                })
+                filters.voices = filters.voices.map(option => option.value);
+                filters.concerts = filters.concerts.map(option => option.value);
+
+                this.$store.dispatch('users/fetch', filters)
+                    .then(() => this.loading = false);
             },
             removeFilter: function (key) {
                 delete this.activeFilters[key];

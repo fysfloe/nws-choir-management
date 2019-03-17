@@ -20,6 +20,7 @@
                             v-model="title"
                             name="title"
                             type="text"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -35,6 +36,7 @@
                             name="semester_id"
                             type="select"
                             :options="semesters"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -50,6 +52,7 @@
                             v-model="deadline"
                             name="deadline"
                             type="datetime"
+                            validate="required"
                     ></form-group>
                 </div><!-- .col -->
             </div><!-- .row -->

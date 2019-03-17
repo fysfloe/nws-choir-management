@@ -18,6 +18,7 @@
                                 v-model="semester.name"
                                 name="title"
                                 type="text"
+                                validate="required"
                         ></form-group>
 
                         <form-group
@@ -25,6 +26,7 @@
                                 v-model="semester.start_date"
                                 name="start_date"
                                 type="date"
+                                validate="required"
                         ></form-group>
 
                         <form-group
@@ -32,6 +34,7 @@
                                 v-model="semester.end_date"
                                 name="end_date"
                                 type="date"
+                                validate="required"
                         ></form-group>
 
                         <form-group
@@ -39,6 +42,7 @@
                                 v-model="semester.deadline"
                                 name="deadline"
                                 type="datetime"
+                                validate="required"
                         ></form-group>
                     </div><!-- .col -->
                 </div><!-- .row -->

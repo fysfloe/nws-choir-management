@@ -9,12 +9,12 @@
 
                 <div class="form-group" v-if="filters.hasOwnProperty('voices')">
                     <label for="voices" class="control-label">{{ $t('Voices') }}</label>
-                    <multiselect :options="voices" name="voices[]" id="voices" label="label" track-by="value" multiple="multiple" v-model="filters.voices"></multiselect>
+                    <multiselect selectLabel="" deselectLabel="" :options="voices" name="voices[]" id="voices" label="label" track-by="value" multiple="multiple" v-model="filters.voices"></multiselect>
                 </div>
 
                 <div class="form-group" v-if="filters.hasOwnProperty('concerts')">
                     <label for="concerts" class="control-label">{{ $t('Concerts') }}</label>
-                    <multiselect :options="concerts" name="concerts[]" id="concerts" multiple="multiple" v-model="filters.concerts"></multiselect>
+                    <multiselect selectLabel="" deselectLabel="" :options="concerts" name="concerts[]" id="concerts" label="label" track-by="value" multiple="multiple" v-model="filters.concerts"></multiselect>
                 </div>
 
                 <div class="form-group age-filter" v-if="filters.hasOwnProperty('ageFrom') || filters.hasOwnProperty('ageTo')">
@@ -58,8 +58,6 @@
         props: ['voices', 'concerts', 'fetchItems', 'filters', 'activeFilters', 'removeFilter'],
         methods: {
             filter: function () {
-                this.filters.voices = $('select[name="voices[]"]').val();
-                this.filters.concerts = $('select[name="concerts[]"]').val();
                 this.fetchItems();
             },
             _removeFilter: function (key) {

@@ -7,7 +7,16 @@ export default {
     state: {
         current: {},
         items: [],
-        user: {}
+        user: {},
+        filters: {
+            search: '',
+            voices: [],
+            concerts: [],
+            ageFrom: '',
+            ageTo: '',
+            sort: 'surname',
+            dir: 'ASC'
+        }
     },
     mutations: {
         ...mutations,

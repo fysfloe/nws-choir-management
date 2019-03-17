@@ -12000,7 +12000,6 @@ input.date {
 }
 
 .description,
-#voices,
 .details {
   padding-top: 1em;
 }
@@ -12296,6 +12295,44 @@ ul.concerts .avatar {
 #content .vdatetime-time-picker__item--selected,
 #content .vdatetime-year-picker__item--selected {
   color: #149EB5;
+}
+
+#content .multiselect__option--highlight,
+#content .multiselect__option--highlight:after,
+#content .multiselect__tag {
+  background: #149EB5;
+}
+
+#content .multiselect__tag-icon:focus,
+#content .multiselect__tag-icon:hover {
+  background: #0f7687;
+}
+
+#content .multiselect__tags {
+  height: 2rem;
+  min-height: 2rem;
+  border: 1px solid #ced4da;
+  font-size: 1em;
+  padding: 0.375rem 2rem 0.375rem 0.75rem;
+  line-height: 1.6;
+}
+
+#content .multiselect__tags input {
+  height: auto;
+}
+
+#content .multiselect__placeholder {
+  padding-top: 0;
+}
+
+#content .multiselect__select {
+  height: 2rem;
+  width: 2rem;
+}
+
+#content .multiselect__input,
+#content .multiselect__single {
+  padding: 0;
 }
 
 .navbar-dark .navbar-brand {

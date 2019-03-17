@@ -1,6 +1,6 @@
 <template>
     <div v-if="type === 'checkbox'" class="form-check">
-        <input v-on="inputListeners" class="form-check-input" type="checkbox" v-model="val" :id="name" :name="name">
+        <input v-on="inputListeners" v-validate="validate" class="form-check-input" type="checkbox" v-model="val" :id="name" :name="name">
         <label :for="name" class="form-check-label">
             {{ label }}
             <span v-if="info" class="oi oi-info" v-b-tooltip.hover :title="info"></span>
@@ -11,12 +11,16 @@
             {{ label }}
             <span v-if="info" class="oi oi-info" v-b-tooltip.hover :title="info"></span>
         </label>
-        <textarea v-on="inputListeners" v-if="type === 'textarea'" :name="name" :id="name" v-model="val" class="form-control"></textarea>
-        <select v-on="inputListeners" v-else-if="type === 'select'" :name="name" :id="name" v-model="val" class="form-control">
+        <textarea v-on="inputListeners" v-if="type === 'textarea'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control"></textarea>
+        <select v-on="inputListeners" v-else-if="type === 'select'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control">
             <option v-for="(option, key) in options" :value="key" :key="key">{{ option }}</option>
         </select>
         <datetime v-else-if="isDatetime" value-zone="UTC+1" :type="type" input-class="form-control" v-model="val" :name="name" :id="name"></datetime>
-        <input v-on="inputListeners" v-else :type="type" :name="name" :id="name" v-model="val" class="form-control">
+        <input v-on="inputListeners" v-else v-validate="validate" :type="type" :name="name" :id="name" v-model="val" class="form-control">
+
+        <span class="help-block text-danger">
+             <strong>{{ errors.first(name) }}</strong>
+        </span>
     </div>
 </template>
 
@@ -51,8 +55,12 @@
             },
             info: {
                 type: String
+            },
+            validate: {
+                type: String
             }
         },
+        inject: ['$validator'],
         computed: {
             inputListeners () {
                 let vm = this;

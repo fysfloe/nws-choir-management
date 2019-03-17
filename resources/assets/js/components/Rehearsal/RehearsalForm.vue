@@ -20,6 +20,7 @@
                             v-model="date"
                             name="date"
                             type="date"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -27,6 +28,7 @@
                             v-model="start_time"
                             name="start_time"
                             type="time"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -34,6 +36,7 @@
                             v-model="end_time"
                             name="end_time"
                             type="time"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -48,6 +51,7 @@
                             v-model="place"
                             name="place"
                             type="text"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -55,6 +59,7 @@
                             v-model="deadline"
                             name="deadline"
                             type="datetime"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -63,6 +68,7 @@
                             name="project_id"
                             type="select"
                             :options="projects"
+                            validate="required"
                     ></form-group>
 
                     <form-group
@@ -71,6 +77,7 @@
                             name="semester_id"
                             type="select"
                             :options="semesters"
+                            validate="required"
                     ></form-group>
                 </div><!-- .col -->
             </div><!-- .row -->

@@ -64,17 +64,22 @@
         },
         methods: {
             submit () {
-                if (this.isEdit) {
-                    this.$store.dispatch(`${this.namespace}/edit`, this.resource)
-                        .then(() => {
-                            this.$router.push(`/${this.namespace}/${this.$route.params.id}`);
-                        });
-                } else {
-                    this.$store.dispatch(`${this.namespace}/add`, this.resource)
-                        .then(() => {
-                            this.$router.push(`/${this.namespace}/${this.resource.id}`);
-                        });
-                }
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        console.log(result);
+                        if (this.isEdit) {
+                            this.$store.dispatch(`${this.namespace}/edit`, this.resource)
+                                .then(() => {
+                                    this.$router.push(`/${this.namespace}/${this.$route.params.id}`);
+                                });
+                        } else {
+                            this.$store.dispatch(`${this.namespace}/add`, this.resource)
+                                .then(() => {
+                                    this.$router.push(`/${this.namespace}/${this.resource.id}`);
+                                });
+                        }
+                    }
+                });
             }
         }
     }

@@ -1,0 +1,38 @@
+#content {
+  .multiselect__option--highlight,
+  .multiselect__option--highlight:after,
+  .multiselect__tag {
+    background: $brand-primary;
+  }
+
+  .multiselect__tag-icon:focus,
+  .multiselect__tag-icon:hover {
+    background: darken($brand-primary, 10);
+  }
+
+  .multiselect__tags {
+    height: 2rem;
+    min-height: 2rem;
+    border: 1px solid #ced4da;
+    font-size: 1em;
+    padding: 0.375rem 2rem 0.375rem 0.75rem;
+    line-height: 1.6;
+
+    input {
+      height: auto;
+    }
+  }
+
+  .multiselect__placeholder {
+    padding-top: 0;
+  }
+
+  .multiselect__select {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .multiselect__input, .multiselect__single {
+    padding: 0;
+  }
+}

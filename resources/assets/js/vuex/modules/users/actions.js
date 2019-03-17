@@ -2,9 +2,9 @@ import axios from '../../../axios';
 import paths from '../../../api';
 
 export default {
-    fetch({ commit }) {
-        return axios.get(paths.users)
-            .then(response => commit('FETCH', response.data), error => {})
+    fetch({ commit }, filters) {
+        return axios.get(paths.users, {params: filters})
+            .then(response => commit('FETCH', response.data))
             .catch();
     },
     getCurrent({ commit }) {

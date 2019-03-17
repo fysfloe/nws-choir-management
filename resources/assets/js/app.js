@@ -17,6 +17,7 @@ import Datetime from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css'
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css'
+import VeeValidate from 'vee-validate';
 
 window.Popper = require('popper.js').default;
 require('./bootstrap');
@@ -40,6 +41,7 @@ Vue.use(VueFlashMessage, {
 });
 Vue.use(Datetime);
 Vue.use(Multiselect);
+Vue.use(VeeValidate);
 Vue.component('multiselect', Multiselect);
 
 Vue.mixin(mixins.global);
