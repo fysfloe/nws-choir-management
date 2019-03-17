@@ -13,7 +13,7 @@
                 <concert-side-list
                         class="mb-4"
                         :concerts="project.concerts"
-                        :add-concert-route="`/admin/concert/create?project=${project.id}&semester=${project.semester.id}`"
+                        :add-concert-route="`/admin/concert/create?project=${project.id}&semester=${project.semester_id}`"
                         :can-manage-concerts="user.canManageConcerts"
                         :user="user"
                 ></concert-side-list>
@@ -21,7 +21,7 @@
                 <rehearsal-side-list
                         class="mb-4"
                         :rehearsals="project.rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsal/create?project=${project.id}&semester=${project.semester.id}`"
+                        :add-rehearsal-route="`/admin/rehearsal/create?project=${project.id}&semester=${project.semester_id}`"
                         :can-manage-rehearsals="user.canManageRehearsals"
                         :user="user"
                 ></rehearsal-side-list>

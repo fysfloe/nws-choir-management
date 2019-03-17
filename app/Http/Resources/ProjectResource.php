@@ -22,7 +22,7 @@ class ProjectResource extends Resource
             'created_at' => $this->created_at->format('d.m.Y'),
             'concerts' => ConcertResource::collection($this->concerts),
             'rehearsals' => RehearsalResource::collection($this->rehearsals),
-            'semester' => new SemesterResource($this->semester)
+            'semester_id' => $this->semester_id
         ];
 
         if ($this->resource->accepted !== null) {

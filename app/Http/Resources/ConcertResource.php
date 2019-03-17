@@ -28,7 +28,7 @@ class ConcertResource extends Resource
             'start_time' => (new \DateTime($this->start_time))->format('H:i'),
             'end_time' => (new \DateTime($this->end_time))->format('H:i'),
             'rehearsals' => RehearsalResource::collection($this->project->rehearsals),
-            'semester' => new SemesterResource($this->project->semester),
+            'semester_id' => $this->project->semester_id,
             'has_accepted' => $this->promises->find(Auth::user()) !== null,
             'has_declined' => $this->denials->find(Auth::user()) !== null,
             'deadline' => $this->deadline
