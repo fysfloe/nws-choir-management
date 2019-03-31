@@ -20,9 +20,9 @@ class DashboardResource extends Resource
             'name' => $this->name,
             'start_date' => (new \DateTime($this->start_date))->format('d.m.Y'),
             'end_date' => (new \DateTime($this->end_date))->format('d.m.Y'),
-            'projects' => ProjectListResource::collection($this->projects),
-            'concerts' => ConcertListResource::collection($this->concerts),
-            'rehearsals' => RehearsalListResource::collection($this->rehearsals),
+            'projects' => ProjectListResource::collection($this->projects->take(10)),
+            'concerts' => ConcertListResource::collection($this->concerts->take(10)),
+            'rehearsals' => RehearsalListResource::collection($this->rehearsals->take(10)),
             'accepted' => $this->promises->contains(Auth::user()),
             'declined' => $this->denials->contains(Auth::user()),
         ];
