@@ -12477,23 +12477,16 @@ h4 a {
   text-transform: none;
 }
 
-.side-box {
-  padding: 1rem;
-  background: #f5f8fa;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
-  border-top: 0.25rem solid #149EB5;
-}
-
-.side-box h3 {
-  margin-bottom: 0.5em;
-}
-
 .side-box ul.dates,
 .side-box ul.voices,
 .side-box ul.rehearsals,
 .side-box ul.concerts,
-.side-box ul.projects {
+.side-box ul.projects,
+.dashboard ul.dates,
+.dashboard ul.voices,
+.dashboard ul.rehearsals,
+.dashboard ul.concerts,
+.dashboard ul.projects {
   margin: 0 -1em;
   padding: 0;
   list-style: none;
@@ -12501,26 +12494,38 @@ h4 a {
 
 .side-box ul.rehearsals a,
 .side-box ul.concerts a,
-.side-box ul.projects a {
+.side-box ul.projects a,
+.dashboard ul.rehearsals a,
+.dashboard ul.concerts a,
+.dashboard ul.projects a {
   color: inherit;
 }
 
 .side-box ul.rehearsals a:hover,
 .side-box ul.concerts a:hover,
-.side-box ul.projects a:hover {
+.side-box ul.projects a:hover,
+.dashboard ul.rehearsals a:hover,
+.dashboard ul.concerts a:hover,
+.dashboard ul.projects a:hover {
   text-decoration: none;
 }
 
 .side-box ul.rehearsals a:hover li,
 .side-box ul.concerts a:hover li,
-.side-box ul.projects a:hover li {
+.side-box ul.projects a:hover li,
+.dashboard ul.rehearsals a:hover li,
+.dashboard ul.concerts a:hover li,
+.dashboard ul.projects a:hover li {
   background: #d3e0e9;
   border-left: 0.25em solid #149EB5;
 }
 
 .side-box ul.rehearsals a li,
 .side-box ul.concerts a li,
-.side-box ul.projects a li {
+.side-box ul.projects a li,
+.dashboard ul.rehearsals a li,
+.dashboard ul.concerts a li,
+.dashboard ul.projects a li {
   font-size: 0.85em;
   padding: 0.5em 1em;
   border-left: 0.25em solid transparent;
@@ -12538,7 +12543,13 @@ h4 a {
 .side-box ul.concerts a li span,
 .side-box ul.concerts a li div,
 .side-box ul.projects a li span,
-.side-box ul.projects a li div {
+.side-box ul.projects a li div,
+.dashboard ul.rehearsals a li span,
+.dashboard ul.rehearsals a li div,
+.dashboard ul.concerts a li span,
+.dashboard ul.concerts a li div,
+.dashboard ul.projects a li span,
+.dashboard ul.projects a li div {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -12546,9 +12557,24 @@ h4 a {
 
 .side-box ul.rehearsals a li .accept-decline,
 .side-box ul.concerts a li .accept-decline,
-.side-box ul.projects a li .accept-decline {
+.side-box ul.projects a li .accept-decline,
+.dashboard ul.rehearsals a li .accept-decline,
+.dashboard ul.concerts a li .accept-decline,
+.dashboard ul.projects a li .accept-decline {
   margin: 0 !important;
   text-align: right;
+}
+
+.side-box {
+  padding: 1rem;
+  background: #f5f8fa;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  border-top: 0.25rem solid #149EB5;
+}
+
+.side-box h3 {
+  margin-bottom: 0.5em;
 }
 
 ul.breadcrumbs {

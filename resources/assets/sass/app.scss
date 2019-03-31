@@ -198,16 +198,7 @@ h4 {
     }
 }
 
-.side-box {
-    padding: 1rem;
-    background: $lightgrey;
-    align-self: flex-start;
-    border-top: 0.25rem solid $brand-primary;
-
-    h3 {
-        margin-bottom: 0.5em;
-    }
-
+.side-box, .dashboard {
     ul.dates, ul.voices, ul.rehearsals, ul.concerts, ul.projects {
         margin: 0 -1em;
         padding: 0;
@@ -247,6 +238,17 @@ h4 {
                 }
             }
         }
+    }
+}
+
+.side-box {
+    padding: 1rem;
+    background: $lightgrey;
+    align-self: flex-start;
+    border-top: 0.25rem solid $brand-primary;
+
+    h3 {
+        margin-bottom: 0.5em;
     }
 }
 

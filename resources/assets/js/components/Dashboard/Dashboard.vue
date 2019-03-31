@@ -18,63 +18,67 @@
                             <span v-else>{{ $t('You are not attending.') }}</span>
                         </div>
                         <div class="row">
-                            <div class="col">
-                                <h4 class="margin-top">
-                                    <span class="oi oi-project"></span>&nbsp;
+                            <div class="col dashboard-box">
+                                <h4>
                                     {{ $t('Projects') }}
                                     <small>(<router-link to="/projects">{{ $t('Show all') }}</router-link>)</small>
                                 </h4>
                                 <ul v-if="semester.projects.length > 0" class="concerts">
-                                    <li v-for="project in semester.projects">
-                                        <div class="row">
-                                            <div class="col">
-                                                <span :class="{'accepted-sign oi oi-media-record text-muted': true, 'text-success': userAcceptedProject(project), 'text-danger': userDeniedProject(project)}"
-                                                ></span>&nbsp;
-                                                <router-link :to="`/projects/${project.id}`">{{ project.title }}</router-link>
+                                    <router-link v-for="project in semester.projects" :to="`/projects/${project.id}`" :key="project.id">
+                                        <li>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <span :class="{'accepted-sign oi oi-media-record': true, 'text-success': project.accepted, 'text-danger': project.declined, 'text-muted': !project.accepted && !project.declined}"></span>&nbsp;
+                                                    {{ project.title }}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    </router-link>
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No projects this semester.') }}</small>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col">
-                                <h4 class="margin-top">
-                                    <span class="oi oi-musical-note"></span>&nbsp;
+                            <div class="col dashboard-box">
+                                <h4>
                                     {{ $t('Concerts') }}
                                     <small>(<router-link to="/concerts">{{ $t('Show all') }}</router-link>)</small>
                                 </h4>
                                 <ul v-if="semester.concerts.length > 0" class="concerts">
-                                    <li v-for="concert in semester.concerts">
-                                            <span :class="{'accepted-sign oi oi-media-record text-muted': true, 'text-success': userAcceptedConcert(concert), 'text-danger': userDeniedConcert(concert)}"
-                                            ></span>&nbsp;
-                                        <router-link :to="`/concerts/${concert.id}`">{{ concert.title }}</router-link><br>
-                                        <small>
-                                            <span class="oi oi-calendar text-muted"></span>&nbsp;{{ concert.date }}&nbsp;
-                                            <span class="oi oi-clock text-muted"></span>&nbsp;{{ concert.start_time }}&nbsp;
-                                        </small><br>
-                                        <small v-if="concert.project"><strong class="text-muted">{{ concert.project.title }}</strong></small><br/>
-                                    </li>
+                                    <router-link v-for="concert in semester.concerts" :to="`/concerts/${concert.id}`" :key="concert.id">
+                                        <li>
+                                            <div>
+                                                <span :class="{'accepted-sign oi oi-media-record': true, 'text-success': concert.accepted, 'text-danger': concert.declined, 'text-muted': !concert.accepted && !concert.declined}"
+                                                ></span>&nbsp;
+                                                {{ concert.title }}
+                                                <small v-if="concert.project"><strong class="text-muted">{{ concert.project }}</strong></small>
+                                                <br>
+                                                <small>
+                                                    <span class="oi oi-calendar text-muted"></span>&nbsp;{{ concert.date|moment('DD.MM.YYYY') }}&nbsp;
+                                                    <span class="oi oi-clock text-muted"></span>&nbsp;{{ concert.start_time }}&nbsp;
+                                                </small>
+                                            </div>
+                                        </li>
+                                    </router-link>
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No concerts this semester.') }}</small>
                             </div>
-                            <div class="col">
-                                <h4 class="margin-top">
-                                    <span class="oi oi-infinity"></span>&nbsp;
-                                    {{ $t('Rehearsals') }}
-                                    <small>(<router-link to="/rehearsals">{{ $t('Show all') }}</router-link>)</small>
-                                </h4>
+                            <div class="col dashboard-box">
+                                <h4>{{ $t('Rehearsals') }}</h4>
                                 <ul v-if="semester.rehearsals.length > 0" class="rehearsals">
-                                    <li v-for="rehearsal in semester.rehearsals">
-                                                <span :class="{'accepted-sign oi oi-media-record text-muted': true, 'text-success': userAcceptedRehearsal(rehearsal), 'text-danger': userDeniedRehearsal(rehearsal)}"
-                                                ></span>&nbsp;
-                                        <small>{{ rehearsal.title }}</small>
-                                        <router-link :to="`/rehearsals/${rehearsal.id}`">
-                                            <span class="oi oi-eye"></span>
-                                        </router-link><br>
-                                        <small v-if="rehearsal.project"><strong class="text-muted">{{ rehearsal.project }}</strong></small><br/>
-                                    </li>
+                                    <router-link v-for="rehearsal in semester.rehearsals" :to="`/rehearsals/${rehearsal.id}`" :key="rehearsal.id">
+                                        <li>
+                                            <div>
+                                                <span :class="{'accepted-sign oi oi-media-record': true, 'text-success': rehearsal.accepted, 'text-danger': rehearsal.declined, 'text-muted': !rehearsal.accepted && !rehearsal.declined}"></span>&nbsp;
+                                                {{ rehearsal.title }}
+                                                <small v-if="rehearsal.project"><strong class="text-muted">{{ rehearsal.project }}</strong></small>
+                                                <br>
+                                                <small>
+                                                    <span class="oi oi-clock text-muted"></span>&nbsp;{{ rehearsal.start_time }} – {{ rehearsal.end_time }}
+                                                </small>
+                                            </div>
+                                        </li>
+                                    </router-link><br>
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No (more) rehearsals this semester.') }}</small>
                             </div>
@@ -130,30 +134,17 @@
             hasTodos () {
                 return false;
             },
-        },
-        methods: {
-            userAcceptedProject (project) {
-                return false;
-            },
-            userDeniedProject (project) {
-                return false;
-            },
-            userAcceptedConcert (concert) {
-                return false;
-            },
-            userDeniedConcert (concert) {
-                return false;
-            },
-            userAcceptedRehearsal (rehearsal) {
-                return false;
-            },
-            userDeniedRehearsal (rehearsal) {
-                return false;
-            },
         }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    @import "../../../sass/variables";
 
+    .dashboard-box {
+        background: $lightgrey;
+        margin: 1em;
+        padding: 1em;
+        border-top: 0.1rem solid #149EB5;
+    }
 </style>

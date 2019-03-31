@@ -29,7 +29,8 @@ class RehearsalListResource extends Resource
             'place' => $this->place,
             'accepted' => $this->promises->find(Auth::user()) !== null,
             'declined' => $this->denials->find(Auth::user()) !== null,
-            'deadline' => $this->deadline
+            'deadline' => $this->deadline,
+            'project' => $this->project ? $this->project->title : null
         ];
 
         if ($this->resource->accepted !== null) {
