@@ -25,7 +25,7 @@ class SemesterController extends Controller
             ->orderBy($request->get('sort', 'start_date'), $request->get('dir', 'ASC'))
             ->get();
 
-        dump($semesters);
+        var_dump($semesters);
         die();
 
         return response()->json(SemesterResource::collection($semesters));
