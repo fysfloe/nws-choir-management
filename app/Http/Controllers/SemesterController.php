@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\SemesterAnsweredEvent;
 use App\Http\Requests\StoreSemester;
+use App\Http\Resources\SemesterListResource;
 use App\Http\Resources\SemesterResource;
 use App\Http\Resources\UserResource;
 use App\Semester;
@@ -25,10 +26,7 @@ class SemesterController extends Controller
             ->orderBy($request->get('sort', 'start_date'), $request->get('dir', 'ASC'))
             ->get();
 
-        var_dump($semesters);
-        die();
-
-        return response()->json(SemesterResource::collection($semesters));
+        return response()->json(SemesterListResource::collection($semesters));
     }
 
     /**
