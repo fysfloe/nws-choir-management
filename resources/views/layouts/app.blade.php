@@ -109,14 +109,6 @@
                             </router-link>
                         </li>
                     @endif
-                    @if (Auth::user()->can('manageVoices'))
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/admin/voices" active-class="active">
-                                <span class="oi oi-pulse"></span>&nbsp;
-                                {{ __('Voices') }}
-                            </router-link>
-                        </li>
-                    @endif
                 @endguest
             </ul>
         </nav>
