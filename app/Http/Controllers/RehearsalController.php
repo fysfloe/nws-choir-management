@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRehearsal;
-use App\Http\Resources\RehearsalDetailResource;
+use App\Http\Resources\RehearsalListResource;
 use App\Http\Resources\RehearsalResource;
 use App\Http\Resources\UserResource;
 use App\Rehearsal;
@@ -33,7 +33,7 @@ class RehearsalController extends Controller
             ->orderBy($request->get('sort', 'id'), $request->get('dir', 'ASC'))
             ->get();
 
-        return response()->json(RehearsalResource::collection($rehearsals));
+        return response()->json(RehearsalListResource::collection($rehearsals));
     }
 
     /**
@@ -59,7 +59,7 @@ class RehearsalController extends Controller
      */
     public function show(Rehearsal $rehearsal)
     {
-        return response()->json(new RehearsalDetailResource($rehearsal));
+        return response()->json(new RehearsalResource($rehearsal));
     }
 
     /**

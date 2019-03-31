@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Concert;
 use App\Http\Requests\StoreConcert;
+use App\Http\Resources\ConcertListResource;
 use App\Http\Resources\ConcertResource;
 use App\Http\Resources\UserResource;
 use App\Semester;
@@ -44,7 +45,7 @@ class ConcertController extends Controller
             if ($val) $activeFilters[$key] = $val;
         }
 
-        return response()->json(ConcertResource::collection($concerts));
+        return response()->json(ConcertListResource::collection($concerts));
     }
 
     /**

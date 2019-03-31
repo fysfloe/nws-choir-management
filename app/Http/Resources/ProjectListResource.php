@@ -18,7 +18,6 @@ class ProjectListResource extends Resource
         $project = [
             'id' => $this->id,
             'title' => $this->title,
-            'description' => $this->description,
             'creator' => $this->creator->firstname . ' ' . $this->creator->surname,
             'created_at' => $this->created_at->format('d.m.Y'),
             'accepted' => $this->promises->contains(Auth::user()),
