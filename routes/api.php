@@ -40,8 +40,11 @@ Route::group(['api', 'middleware' => 'auth:api'], function () {
     Route::post('/semesters/accept/{semester}/{user_id?}', 'SemesterController@accept');
     Route::post('/semesters/decline/{semester}/{user_id?}', 'SemesterController@decline');
     Route::get('/semesters/options', 'SemesterController@options');
+    Route::get('/semesters/{semester}/participants', 'SemesterController@participants');
+    Route::get('/semesters/{semester}/other_users', 'SemesterController@otherUsers');
+    Route::post('/semesters/{semester}/add_participants', 'SemesterController@addParticipants');
+    Route::delete('/semesters/{semester}/remove_participants', 'SemesterController@removeParticipants');
     Route::resource('semesters', 'SemesterController');
-    Route::get('/semesters/load_participants/{semester}', 'SemesterController@loadParticipants');
 
     Route::post('/concerts/accept/{concert}/{user_id?}', 'ConcertController@accept');
     Route::post('/concerts/decline/{concert}/{user_id?}', 'ConcertController@decline');

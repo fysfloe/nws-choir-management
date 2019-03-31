@@ -65,42 +65,34 @@
                             </accept-decline>
                         </div>
                         <div class="col-md-1 actions" v-if="currentUser.canManageConcerts">
-                            <a class="dropdown-toggle no-caret" href="#" :id="`singleActions${concert.id}`"
-                               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="oi oi-ellipses"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right"
-                                 :aria-labelledby="`singleActions${concert.id}`">
-                                <a class="dropdown-item" :href="`/admin/concerts/${concert.id}/edit`"
-                                   v-if="hasAction('edit')">
+                            <b-dropdown variant="link" no-caret>
+                                <template slot="button-content">
+                                    <span class="oi oi-ellipses"></span>
+                                </template>
+                                <router-link class="dropdown-item" @click.stop :to="`/admin/concerts/edit/${concert.id}`"
+                                             v-if="hasAction('edit')">
                                     <span class="oi oi-pencil"></span> {{ $t('Edit') }}
-                                </a>
-                                <form method="POST" class="form-inline"
-                                      :action="`/admin/concerts/${concert.id}`" v-if="hasAction('remove')">
-                                    <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" v-confirm="$t('Do you really want to remove this concert?')"
-                                            class="btn btn-link dropdown-item">
-                                        <span class="oi oi-box"></span> {{ $t('Remove') }}
-                                    </button>
-                                    <input type="hidden" name="_token" :value="csrf">
-                                </form>
-                            </div>
+                                </router-link>
+                                <button @click.stop.prevent="remove(concert.id)" class="btn btn-link dropdown-item">
+                                    <span class="oi oi-box"></span> {{ $t('Remove') }}
+                                </button>
+                            </b-dropdown>
                         </div>
                     </li>
                 </router-link>
             </ul>
         </div>
-        <div v-else class="no-results">{{ $t('No results found.') }}</div>
+        <no-results v-else :action="currentUser.canManageConcerts ? '/admin/concerts/create' : ''" :button-text="$t('New Concert')"></no-results>
     </div>
 </template>
 
 <script>
     import AcceptDecline from "../AcceptDecline";
     import Loader from "../Loader";
+    import NoResults from "../NoResults";
 
     export default {
-        components: {Loader, AcceptDecline},
+        components: {Loader, AcceptDecline, NoResults},
         props: {
             sortOptions: {
                 type: Object,
@@ -164,6 +156,12 @@
             },
             hasAction: function (name) {
                 return this.actions.indexOf(name) !== -1
+            },
+            remove (id) {
+                this.$dialog.confirm(this.$t('Do you really want to remove this concert?'))
+                    .then(() => {
+                        this.$store.dispatch(`concerts/delete`, id);
+                    })
             }
         }
     }

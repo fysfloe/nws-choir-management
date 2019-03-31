@@ -18,11 +18,12 @@ class SemesterResource extends Resource
         $semester = [
             'id' => $this->id,
             'name' => $this->name,
-            'start_date' => (new \DateTime($this->start_date))->format('d.m.Y'),
-            'end_date' => (new \DateTime($this->end_date))->format('d.m.Y'),
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
             'projects' => ProjectResource::collection($this->projects),
             'accepted' => $this->promises->contains(Auth::user()),
             'declined' => $this->denials->contains(Auth::user()),
+            'deadline' => $this->deadline
         ];
 
         if ($this->resource->accepted !== null) {

@@ -20,6 +20,8 @@ import RehearsalDetails from "./components/Rehearsal/RehearsalDetails";
 import RehearsalParticipants from "./components/Rehearsal/RehearsalParticipants";
 import ConcertDetails from "./components/Concert/ConcertDetails";
 import ConcertParticipants from "./components/Concert/ConcertParticipants";
+import SemesterDetails from "./components/Semester/SemesterDetails";
+import SemesterParticipants from "./components/Semester/SemesterParticipants";
 
 export const routes = [
     { path: '/', component: Dashboard, name: 'Dashboard' },
@@ -52,7 +54,18 @@ export const routes = [
     },
     { path: '/semesters', component: SemesterList, name: 'SemesterList' },
     { path: '/admin/semesters/create', component: SemesterForm, name: 'CreateSemester' },
-    { path: '/semesters/:id', component: Semester, props: true},
+    { path: '/admin/semesters/edit/:id', component: SemesterForm, name: 'EditSemester' },
+    { path: '/semesters/:id', component: Semester, children: [
+            {
+                path: '',
+                component: SemesterDetails
+            },
+            {
+                path: 'participants',
+                component: SemesterParticipants
+            }
+        ]
+    },
     { path: '/concerts', component: ConcertList, name: 'ConcertList' },
     {
         path: '/concerts/:id', component: Concert, props: true, children: [

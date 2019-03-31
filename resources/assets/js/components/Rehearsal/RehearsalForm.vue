@@ -120,6 +120,18 @@
             this.$store.dispatch('semesters/options');
 
             if (!this.$route.params.id) {
+                this.$store.commit('rehearsals/SHOW', {
+                    title: '',
+                    description: '',
+                    project_id: null,
+                    semester_id: null,
+                    place: '',
+                    deadline: null,
+                    date: null,
+                    start_time: null,
+                    end_time: null
+                });
+
                 for (let property in this.$route.query) {
                     this.rehearsal[property] = this.$route.query[property];
                 }

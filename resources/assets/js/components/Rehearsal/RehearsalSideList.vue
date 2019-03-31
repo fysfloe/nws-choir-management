@@ -22,7 +22,7 @@
             </router-link>
         </ul>
 
-        <small v-else class="text-muted">{{ $t('No rehearsals found that belong to the projects concert.') }}</small>
+        <small v-else class="text-muted">{{ $t('No rehearsals found that belong to the project.') }}</small>
 
         <router-link v-if="user.canManageRehearsals" class="btn btn-primary btn-sm mt-2" :to="addRehearsalRoute">
             {{ $t('Add a rehearsal') }}

@@ -76,16 +76,17 @@
                 </a>
             </ul>
         </div>
-        <div v-else class="no-results">{{ $t('No results found.') }}</div>
+        <no-results v-else :action="currentUser.canManageRehearsals ? '/admin/rehearsals/create' : ''" :button-text="$t('New Rehearsal')"></no-results>
     </div>
 </template>
 
 <script>
     import AcceptDecline from "../AcceptDecline";
     import Loader from "../Loader";
+    import NoResults from "../NoResults";
 
     export default {
-        components: {Loader, AcceptDecline},
+        components: {Loader, AcceptDecline, NoResults},
         props: {
             sortOptions: {
                 type: Object,

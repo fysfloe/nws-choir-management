@@ -24,7 +24,7 @@
                     :users="participants"
                     :show-roles="false"
                     :actions="['removeParticipant', 'setVoice', 'editProfile']"
-                    :with-attendance-confirmation="true"
+                    with-attendance-confirmation
             ></user-list>
         </div>
     </div>

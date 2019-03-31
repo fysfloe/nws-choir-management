@@ -27,17 +27,16 @@
                 </div>
             </header>
 
-            <b-tabs>
-                <b-tab :title="$t('Info')">
-                    <semester-details></semester-details>
-                </b-tab>
-                <b-tab :title="$t('Participants')">
-                    <semester-participants
-                            :show-roles="false"
-                    ></semester-participants>
-                </b-tab>
-            </b-tabs>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/semesters/${semester.id}`">{{ $t('Info') }}</router-link>
+                </li>
+                <li class="nav-item" v-if="currentUser.canManageSemesters">
+                    <router-link class="nav-link" :to="`/semesters/${semester.id}/participants`">{{ $t('Participants') }}</router-link>
+                </li>
+            </ul>
 
+            <router-view></router-view>
         </div>
     </div>
 </template>

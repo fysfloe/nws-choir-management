@@ -84,37 +84,34 @@
                             </div>
                         </div>
                         <div class="col-md-1 actions" v-if="currentUser.canManageProjects">
-                            <a class="dropdown-toggle no-caret" @click.stop href="#" :id="`singleActions${project.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="oi oi-ellipses"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="`singleActions${project.id}`">
-                                <a class="dropdown-item" :href="`admin/project/edit/${project.id}`" v-if="hasAction('edit')">
+                            <b-dropdown variant="link" no-caret>
+                                <template slot="button-content">
+                                    <span class="oi oi-ellipses"></span>
+                                </template>
+                                <router-link class="dropdown-item" @click.stop :to="`/admin/projects/edit/${project.id}`"
+                                             v-if="hasAction('edit')">
                                     <span class="oi oi-pencil"></span> {{ $t('Edit') }}
-                                </a>
-                                <form method="POST" class="form-inline" :action="`/admin/projects/delete/${project.id}`" v-if="hasAction('remove')">
-                                    <input name="_method" type="hidden" value="DELETE">
-                                    <button type="submit" v-confirm="$t('Do you really want to remove this project?')" class="btn btn-link dropdown-item">
-                                        <span class="oi oi-box"></span> {{ $t('Remove') }}
-                                    </button>
-                                    <input type="hidden" name="_token" :value="csrf">
-                                </form>
-                            </div>
+                                </router-link>
+                                <button @click.stop.prevent="remove(project.id)" class="btn btn-link dropdown-item">
+                                    <span class="oi oi-box"></span> {{ $t('Remove') }}
+                                </button>
+                            </b-dropdown>
                         </div>
                     </li>
                 </router-link>
             </ul>
         </div>
-        <div v-else class="no-results">{{ $t('No results found.') }}</div>
+        <no-results v-else :action="currentUser.canManageProjects ? '/admin/projects/create' : ''" :button-text="$t('New Project')"></no-results>
     </div>
 </template>
 
 <script>
     import Filters from "../Filters";
     import Loader from "../Loader";
+    import NoResults from "../NoResults";
 
     export default {
-        components: {Loader, Filters},
+        components: {Loader, Filters, NoResults},
         props: {
             fetchAction: {
                 type: String
@@ -225,6 +222,12 @@
             },
             hasAction: function (name) {
                 return this.actions.indexOf(name) !== -1
+            },
+            remove (id) {
+                this.$dialog.confirm(this.$t('Do you really want to remove this project?'))
+                    .then(() => {
+                        this.$store.dispatch(`projects/delete`, id);
+                    })
             }
         }
     }

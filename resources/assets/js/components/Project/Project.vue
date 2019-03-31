@@ -39,10 +39,8 @@
                     <router-link class="nav-link" :to="`/projects/${project.id}/comments`">{{ $t('Comments') }}
                     </router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" :to="`/projects/${project.id}/participants`">{{ $t('Participants')
-                        }}
-                    </router-link>
+                <li class="nav-item" v-if="currentUser.canManageProjects">
+                    <router-link class="nav-link" :to="`/projects/${project.id}/participants`">{{ $t('Participants') }}</router-link>
                 </li>
             </ul>
 

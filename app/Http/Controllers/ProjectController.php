@@ -185,8 +185,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -199,6 +197,11 @@ class ProjectController extends Controller
         return response()->json();
     }
 
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function participants(Request $request, Project $project)
     {
         $filters = $request->all();

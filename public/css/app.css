@@ -11844,12 +11844,6 @@ input.date {
   display: inline;
 }
 
-.no-results {
-  padding: 0.5em 1em;
-  margin-top: 1em;
-  border: 0.1em dotted #d3e0e9;
-}
-
 .user-actions,
 .actions {
   text-align: right;
@@ -12664,7 +12658,8 @@ a.dropdown-toggle {
   color: inherit;
 }
 
-a.dropdown-toggle.no-caret::after {
+.no-caret::after,
+.dropdown-toggle-no-caret::after {
   display: none;
 }
 

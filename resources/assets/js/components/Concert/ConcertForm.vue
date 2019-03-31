@@ -122,6 +122,17 @@
             this.$store.dispatch('projects/options');
 
             if (!this.$route.params.id) {
+                this.$store.commit('concerts/SHOW', {
+                    title: '',
+                    description: '',
+                    project_id: null,
+                    place: '',
+                    deadline: null,
+                    date: null,
+                    start_time: null,
+                    end_time: null
+                });
+
                 for (let property in this.$route.query) {
                     this.concert[property] = this.$route.query[property];
                 }

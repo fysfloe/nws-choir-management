@@ -1,14 +1,17 @@
 export default {
     FETCH(state, semesters) {
-        state.items = semesters;
+        Vue.set(state, 'items', semesters);
     },
     SHOW(state, semester) {
-        state.semester = semester;
+        Vue.set(state, 'semester', semester);
     },
-    LOAD_PARTICIPANTS(state, users) {
-        state.semester.participants = users;
+    PARTICIPANTS(state, users) {
+        Vue.set(state.semester, 'participants', users);
     },
     OPTIONS(state, options) {
-        state.options = options;
+        Vue.set(state, 'options', options);
+    },
+    OTHER_USERS(state, users) {
+        Vue.set(state.semester, 'other_users', users);
     }
 }

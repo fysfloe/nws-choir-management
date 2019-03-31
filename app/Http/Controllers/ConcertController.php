@@ -147,13 +147,15 @@ class ConcertController extends Controller
      * @param StoreConcert $request
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function update(StoreConcert $request, $id)
     {
         $concert = Concert::find($id);
         $input = $request->except(['semester_id']);
 
-        $input['slug'] = str_slug($input['title'], '-');
+        $input['start_time'] = (new \DateTime($input['start_time']))->format('H:i');
+        $input['end_time'] = (new \DateTime($input['end_time']))->format('H:i');
 
         $concert->update($input);
 
@@ -170,7 +172,7 @@ class ConcertController extends Controller
 
         $concert->delete();
 
-        return redirect()->back();
+        return response()->json();
     }
 
     /**

@@ -66,7 +66,7 @@
 
             <ul class="users">
                 <li class="row align-items-center" v-for="user in _users" :key="user.id">
-                    <div :class="'col-md-' + (withAttendanceConfirmation || withAcceptDecline ? '8' : '11')">
+                    <div :class="'col-md-' + (withAttendanceConfirmation ? '8' : '11')">
                         <div class="flex align-items-center">
                             <input type="checkbox" @click="toggleUser($event, user.id)" :value="user.id" :checked="selectedUsers.indexOf(user.id) !== -1">&nbsp;
                             <div class="avatar" v-if="user.avatar">
@@ -101,14 +101,7 @@
                                 :type="type"
                         ></attendance>
                     </div>
-                    <div class="col-md-3" v-if="withAcceptDecline">
-                        <accept-decline
-                                :accepted="hasAccepted(user.id)"
-                                :declined="hasDeclined(user.id)"
-                        >
-                        </accept-decline>
-                    </div>
-                    <div class="col-md-1 user-actions">
+                    <div class="col-md-1 user-actions" v-if="permission">
                         <a class="dropdown-toggle no-caret" href="#" :id="`singleUserActions${user.id}`" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="oi oi-ellipses"></span>
                         </a>
@@ -134,21 +127,21 @@
                 </li>
             </ul>
         </div>
-        <div v-else class="no-results">{{ $t('No users found.') }}</div>
+        <no-results v-else></no-results>
     </div>
 </template>
 
 <script>
     import Attendance from "./Attendance";
-    import AcceptDecline from "./AcceptDecline";
     import Filters from "./Filters";
     import {mapState} from 'vuex';
     import SetVoiceModal from "./User/SetVoiceModal";
     import MultiSetVoiceModal from "./User/MultiSetVoiceModal";
     import Loader from "./Loader";
+    import NoResults from "./NoResults";
 
     export default {
-        components: {Loader, MultiSetVoiceModal, SetVoiceModal, Filters, AcceptDecline, Attendance},
+        components: {Loader, MultiSetVoiceModal, SetVoiceModal, Filters, Attendance, NoResults},
         props: {
             type: {
                 type: String,
@@ -172,9 +165,6 @@
                 }
             },
             withAttendanceConfirmation: {
-                type: Boolean
-            },
-            withAcceptDecline: {
                 type: Boolean
             },
             removeUserRoute: {
@@ -228,7 +218,8 @@
                     return optionsArray;
                 },
                 filters: state => state.users.filters,
-                selectedUsers: state => state.users.selected
+                selectedUsers: state => state.users.selected,
+                currentUser: state => state.users.current
             }),
             checkedAll: {
                 get() {
@@ -240,6 +231,15 @@
             },
             resource() {
                 return this.$store.state[`${this.type}s`][this.type];
+            },
+            permission () {
+                if (this.type) {
+                    let permission = 'canManage' + this.type.charAt(0).toUpperCase() + this.type.slice(1);
+
+                    return this.currentUser[permission];
+                } else {
+                    return this.currentUser.canManageUsers;
+                }
             }
         },
         mounted() {

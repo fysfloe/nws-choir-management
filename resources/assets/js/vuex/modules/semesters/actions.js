@@ -2,49 +2,69 @@ import axios from '../../../axios';
 import paths from '../../../api';
 
 const namespace = 'semesters';
+const path = paths.semesters;
 
 export default {
     fetch({ commit }, filters) {
-        return axios.get(paths.semesters, {params: filters})
+        return axios.get(path, {params: filters})
             .then(response => commit('FETCH', response.data))
             .catch();
     },
     show({ commit }, id) {
-        return axios.get(`${paths.semesters}/${id}`)
+        return axios.get(`${path}/${id}`)
             .then(response => commit('SHOW', response.data))
             .catch();
     },
     delete({}, id) {
-        axios.delete(`${paths.semesters}/${id}`)
+        axios.delete(`${path}/${id}`)
             .then(() => this.dispatch(`${namespace}/fetch`))
             .catch();
     },
     edit({ commit }, semester) {
-        return axios.put(`${paths.semesters}/${semester.id}`, semester)
+        return axios.put(`${path}/${semester.id}`, semester)
             .then(response => {
                 commit('SHOW', response.data);
                 this.dispatch(`${namespace}/fetch`)
             });
     },
     add({ commit }, semester) {
-        return axios.post(`${paths.semesters}`, semester)
+        return axios.post(`${path}`, semester)
             .then(response => {
                 commit('SHOW', response.data);
                 this.dispatch(`${namespace}/fetch`);
             });
     },
-    participants({ commit }, id) {
-        return axios.get(`${paths.semesters}/load_participants/${id}`)
-            .then(response => commit('LOAD_PARTICIPANTS', response.data))
+    participants({ commit }, { id, filters }) {
+        return axios.get(`${path}/${id}/participants`, {params: filters})
+            .then(response => commit('PARTICIPANTS', response.data))
             .catch();
     },
+    otherUsers({commit}, id) {
+        return axios.get(`${path}/${id}/other_users`)
+            .then(response => commit('OTHER_USERS', response.data))
+            .catch();
+    },
+    addParticipants({}, {id, userIds}) {
+        return axios.post(`${path}/${id}/add_participants`, {users: userIds})
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                this.dispatch(`${namespace}/otherUsers`, id);
+            })
+    },
+    removeParticipants({}, {id, userIds}) {
+        return axios.delete(`${path}/${id}/remove_participants`, {data: {users: userIds}})
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                this.dispatch(`${namespace}/otherUsers`, id);
+            })
+    },
     options({ commit }) {
-        return axios.get(`${paths.semesters}/options`)
+        return axios.get(`${path}/options`)
             .then(response => commit('OPTIONS', response.data))
             .catch();
     },
     accept({ commit }, { id, userId }) {
-        let path = `${paths.semesters}/accept/${id}`;
+        let path = `${path}/accept/${id}`;
 
         if (userId) {
             path += `/${userId}`;
@@ -55,7 +75,7 @@ export default {
             .catch();
     },
     decline({ commit }, { id, userId }) {
-        let path = `${paths.semesters}/decline/${id}`;
+        let path = `${path}/decline/${id}`;
 
         if (userId) {
             path += `/${userId}`;

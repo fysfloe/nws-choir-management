@@ -351,11 +351,11 @@ ul.breadcrumbs {
 a.dropdown-toggle {
     text-decoration: none;
     color: inherit;
+}
 
-    &.no-caret {
-        &::after {
-            display: none;
-        }
+.no-caret, .dropdown-toggle-no-caret {
+    &::after {
+        display: none;
     }
 }
 

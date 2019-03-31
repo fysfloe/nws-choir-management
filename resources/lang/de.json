@@ -162,8 +162,8 @@
   "Do you really want to archive this user?": "Diesen Benutzer wirklich archivieren?",
   "User successfully archived.": "Benutzer erfolgreich archiviert.",
   "Users successfully archived.": "Benutzer erfolgreich archiviert.",
-  "Start Time": "Startzeit",
-  "End Time": "Endzeit",
+  "Start time": "Startzeit",
+  "End time": "Endzeit",
   "Place": "Ort",
   "Time": "Zeit",
   "Cannot accept or decline a rehearsal in the past.": "Diese Probe ist bereits vorbei. Du kannst daher nicht zu- oder absagen.",
@@ -230,5 +230,10 @@
   "Do you really want to remove this user?": "Diesen Benutzer wirklich entfernen?",
   "Attending": "Zugesagt",
   "Not attending": "Abgesagt",
-  "The deadline is over. Please contact christoph@neuewienerstimmen.at if you forgot to answer.": "Die Anmeldefrist ist vorbei. Bitte wende dich an christoph@neuewienerstimmen.at."
+  "The deadline is over. Please contact christoph@neuewienerstimmen.at if you forgot to answer.": "Die Anmeldefrist ist vorbei. Bitte wende dich an christoph@neuewienerstimmen.at.",
+  "Nothing to see here.": "Hier gibt's nichts zu sehen.",
+  "No concerts found that belong to the project.": "Keine Konzerte zu diesem Projekt gefunden.",
+  "No rehearsals found that belong to the project.": "Keine Proben zu diesem Projekt gefunden.",
+  "Create Concert": "Konzert erstellen",
+  "Create Project": "Projekt erstellen"
 }

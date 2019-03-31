@@ -20,7 +20,7 @@ class ConcertResource extends Resource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'date' => (new \DateTime($this->date))->format('Y-m-d'),
+            'date' => $this->date,
             'start_time' => (new \DateTime($this->start_time))->format('H:i'),
             'end_time' => (new \DateTime($this->end_time))->format('H:i'),
             'rehearsals' => RehearsalResource::collection($this->project->rehearsals),

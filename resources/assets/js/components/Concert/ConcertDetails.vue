@@ -17,7 +17,7 @@
 
                 <h3>{{ $t('Date') }}</h3>
                 <div class="mb-4">
-                    <span class="oi oi-calendar text-muted"></span> {{ concert.date }}&nbsp;
+                    <span class="oi oi-calendar text-muted"></span> {{ concert.date|moment('DD.MM.YYYY') }}&nbsp;
                     <span class="oi oi-clock text-muted"></span> {{ concert.start_time }} – {{ concert.end_time }}
                 </div>
 

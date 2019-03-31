@@ -236,7 +236,7 @@ class GetFilteredUsersService {
         }
         if ($voices !== null && count($voices) > 0) {
             $voices = implode(',', $voices);
-            $query .= "AND users.voice IN ($voices) ";
+            $query .= "AND users.voice_id IN ($voices) ";
         }
 
         $query .= "GROUP BY users.id ORDER BY $sort $dir";

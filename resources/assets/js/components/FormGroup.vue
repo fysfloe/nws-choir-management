@@ -20,7 +20,7 @@
         <multiselect v-else-if="type === 'multiselect'" v-validate="validate" selectLabel="" deselectLabel=""
                      :options="options" :name="`${name}[]`" :id="name" label="label" track-by="value"
                      multiple="multiple" v-model="val"></multiselect>
-        <datetime v-else-if="isDatetime" value-zone="UTC+1" :type="type" input-class="form-control" v-model="val" :name="name" :id="name"></datetime>
+        <datetime v-else-if="isDatetime" value-zone="UTC+2" :type="type" input-class="form-control" v-model="val" :name="name" :id="name"></datetime>
         <input v-on="inputListeners" v-else v-validate="validate" :type="type" :name="name" :id="name" v-model="val" class="form-control">
 
         <span class="help-block text-danger">

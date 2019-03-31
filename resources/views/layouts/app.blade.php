@@ -84,26 +84,26 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/semesters" class="nav-link">
+                        <router-link to="/semesters" class="nav-link" active-class="active">
                             <span class="oi oi-calendar"></span>&nbsp;
                             {{ __('Semesters') }}
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/projects" class="nav-link">
+                        <router-link to="/projects" class="nav-link" active-class="active">
                             <span class="oi oi-project"></span>&nbsp;
                             {{ __('Projects') }}
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/concerts" class="nav-link">
+                        <router-link to="/concerts" class="nav-link" active-class="active">
                             <span class="oi oi-musical-note"></span>&nbsp;
                             {{ __('Concerts') }}
                         </router-link>
                     </li>
                     @if (Auth::user()->can('manageUsers'))
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/admin/users">
+                            <router-link class="nav-link" to="/admin/users" active-class="active">
                                 <span class="oi oi-people"></span>&nbsp;
                                 {{ __('Users') }}
                             </router-link>
@@ -111,7 +111,7 @@
                     @endif
                     @if (Auth::user()->can('manageVoices'))
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/admin/voices">
+                            <router-link class="nav-link" to="/admin/voices" active-class="active">
                                 <span class="oi oi-pulse"></span>&nbsp;
                                 {{ __('Voices') }}
                             </router-link>
