@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div v-else>
             <header class="page-header">
@@ -27,19 +27,35 @@
                 </div>
             </header>
 
-            <rehearsal-details></rehearsal-details>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/rehearsals/${rehearsal.id}`">{{ $t('Info') }}</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/rehearsals/${rehearsal.id}/comments`">{{ $t('Comments') }}
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/rehearsals/${rehearsal.id}/participants`">{{ $t('Participants')
+                        }}
+                    </router-link>
+                </li>
+            </ul>
+
+            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
     import RehearsalDetails from "./RehearsalDetails";
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
     import AcceptDecline from "../AcceptDecline";
+    import Loader from "../Loader";
 
     export default {
         name: 'rehearsal',
-        components: {RehearsalDetails, AcceptDecline},
+        components: {Loader, RehearsalDetails, AcceptDecline},
         computed: {
             ...mapState({
                 rehearsal: state => state.rehearsals.rehearsal,

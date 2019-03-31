@@ -22,86 +22,78 @@
 </template>
 
 <script>
-    import axios from '../axios';
-
-export default {
-    name: 'accept-decline',
-    props: {
-        namespace: {
-            type: String,
-            required: true
-        },
-        id: {
-            type: Number,
-            required: true
-        },
-        acceptRoute: {
-            type: String
-        },
-        declineRoute: {
-            type: String
-        },
-        accepted: {
-            type: Boolean
-        },
-        declined: {
-            type: Boolean
-        },
-        deadline: {
-            type: String
-        },
-        showDot: {
-            type: Boolean
-        }
-    },
-    data() {
-        return {
-            hasAccepted: this.accepted,
-            hasDeclined: this.declined,
-            loading: {
-                accept: false,
-                decline: false
-            }
-        }
-    },
-    computed: {
-        isActive: {
-            get() {
-                return this.deadline && (new Date()).getTime() <= (new Date(this.deadline)).getTime();
-            }
-        }
-    },
-    methods: {
-        accept: function (event) {
-            event.preventDefault();
-
-            if (!this.hasAccepted) {
-                this.showCommentField = true;
-                this.loading.accept = true;
-
-                this.$store.dispatch(`${this.namespace}/accept`, {id: this.id, userId: null})
-                    .then(() => {
-                        this.loading.accept = false;
-                        this.hasAccepted = true;
-                        this.hasDeclined = false;
-                    });
+    export default {
+        name: 'accept-decline',
+        props: {
+            namespace: {
+                type: String,
+                required: true
+            },
+            id: {
+                type: Number,
+                required: true
+            },
+            accepted: {
+                type: Boolean
+            },
+            declined: {
+                type: Boolean
+            },
+            deadline: {
+                type: String
+            },
+            showDot: {
+                type: Boolean
             }
         },
-        decline: function (event) {
-            event.preventDefault();
+        data() {
+            return {
+                hasAccepted: this.accepted,
+                hasDeclined: this.declined,
+                loading: {
+                    accept: false,
+                    decline: false
+                }
+            }
+        },
+        computed: {
+            isActive: {
+                get() {
+                    return this.deadline && (new Date()).getTime() <= (new Date(this.deadline)).getTime();
+                }
+            }
+        },
+        methods: {
+            accept: function (event) {
+                event.preventDefault();
 
-            if (!this.hasDeclined) {
-                this.showCommentField = true;
-                this.loading.decline = true;
+                if (!this.hasAccepted) {
+                    this.showCommentField = true;
+                    this.loading.accept = true;
 
-                this.$store.dispatch(`${this.namespace}/decline`, {id: this.id, userId: null})
-                    .then(() => {
-                        this.loading.decline = false;
-                        this.hasAccepted = false;
-                        this.hasDeclined = true;
-                    });
+                    this.$store.dispatch(`${this.namespace}/accept`, {id: this.id, userId: null})
+                        .then(() => {
+                            this.loading.accept = false;
+                            this.hasAccepted = true;
+                            this.hasDeclined = false;
+                        });
+                }
+            },
+            decline: function (event) {
+                event.preventDefault();
+
+                if (!this.hasDeclined) {
+                    this.showCommentField = true;
+                    this.loading.decline = true;
+
+                    this.$store.dispatch(`${this.namespace}/decline`, {id: this.id, userId: null})
+                        .then(() => {
+                            this.loading.decline = false;
+                            this.hasAccepted = false;
+                            this.hasDeclined = true;
+                        });
+                }
             }
         }
     }
-}
 </script>

@@ -6,7 +6,10 @@ export default {
     namespaced: true,
     state: {
         items: [],
-        project: {},
+        project: {
+            participants: [],
+            other_users: []
+        },
         options: {}
     },
     mutations: {

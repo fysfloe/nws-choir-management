@@ -1,14 +1,18 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <add-participants-modal
+                type="concert"
+        ></add-participants-modal>
+
+        <loader v-if="loading"/>
 
         <div v-else>
             <div class="row clearfix my-3">
-               <div class="col text-right" v-if="currentUser.canManageProjects">
-                    <a class="btn btn-default btn-sm" :href="`/admin/concerts/${concert.id}/addUser`" data-toggle="modal"
-                       data-target="#mainModal">
+                <div class="col text-right" v-if="currentUser.canManageConcerts">
+                    <button :disabled="concert.other_users && concert.other_users.length === 0"
+                            class="btn btn-default btn-sm" v-b-modal.addParticipantsModal>
                         <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
-                    </a>
+                    </button>
                     <a class="btn btn-default btn-sm" :href="`/admin/concerts/export-participants/${concert.id}`">
                         <span class="oi oi-account-login"></span> {{ $t('Export') }}
                     </a>
@@ -16,22 +20,11 @@
             </div>
 
             <user-list
+                    type="concert"
                     :users="participants"
-                    :can-manage-users="currentUser.canManageUsers"
                     :show-roles="false"
-                    :voices="{}"
-                    :fetch-users-action="`/concerts/participants/${concert.id}`"
-                    :sort-options="{
-                    firstname: $t('First Name'),
-                    surname: $t('Surname'),
-                    voice: $t('Voice'),
-                    id: $t('Created at')
-                }"
-                    :set-voice-route="`/concerts/set_voice/${concert.id}`"
-                    :remove-participants-route="`/concerts/${concert.id}`"
                     :actions="['removeParticipant', 'setVoice', 'editProfile']"
-                    :rehearsals="[]"
-                    :concerts="[]"
+                    :with-attendance-confirmation="true"
             ></user-list>
         </div>
     </div>
@@ -39,8 +32,11 @@
 
 <script>
     import UserList from "../UserList";
+    import Loader from "../Loader";
+    import AddParticipantsModal from "../AddParticipantsModal";
+
     export default {
-        components: {UserList},
+        components: {Loader, UserList, AddParticipantsModal},
         computed: {
             concert () {
                 return this.$store.state.concerts.concert;
@@ -58,7 +54,7 @@
             }
         },
         mounted () {
-            this.$store.dispatch('concerts/participants', this.concert.id).then(() => {
+            this.$store.dispatch('concerts/participants', {id: this.concert.id}).then(() => {
                 this.loading = false;
             });
         }

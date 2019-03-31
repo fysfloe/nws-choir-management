@@ -5,7 +5,8 @@
                 <div v-if="items.length > 0">
                     <div class="comment row" v-for="comment in items" :key="comment.id">
                         <div class="col-md-3 flex comment-info">
-                            <button type="submit" class="btn" v-if="currentUser.id === comment.user.id" @click="remove(comment.id)">
+                            <button type="submit" class="btn" v-if="currentUser.id === comment.user.id"
+                                    @click="remove(comment)">
                                 <span class="oi oi-x" data-toggle="tooltip" :title="$t('Remove comment')"></span>
                             </button>
                             <div class="avatar">
@@ -54,10 +55,6 @@
             type: {
                 type: String,
                 default: 'project'
-            },
-            actionParameters: {
-                type: Object,
-                default: {}
             }
         },
         data () {
@@ -74,13 +71,16 @@
             }
         },
         mounted () {
-            this.$store.dispatch('comments/fetch', this.actionParameters).then(() => {
+            this.$store.dispatch('comments/fetch', {
+                commentable_id: this.$route.params.id,
+                type: this.type
+            }).then(() => {
                 this.loading = false;
             });
         },
         methods: {
-            remove (id) {
-                this.$store.dispatch('comments/delete', id);
+            remove(comment) {
+                this.$store.dispatch('comments/delete', comment);
             }
         }
     }

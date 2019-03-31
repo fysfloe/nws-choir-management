@@ -60,7 +60,8 @@ class User extends Authenticatable
      */
     public function rehearsals()
     {
-        return $this->belongsToMany('App\Rehearsal', 'user_rehearsal')->withPivot(['accepted', 'confirmed', 'excused'])->withTimestamps();
+        return $this->belongsToMany('App\Rehearsal', 'user_rehearsal')
+            ->withPivot(['accepted', 'confirmed', 'excused'])->withTimestamps();
     }
 
     /**

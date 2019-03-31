@@ -70,7 +70,6 @@
             submit () {
                 this.$validator.validateAll().then(result => {
                     if (result) {
-                        console.log(result);
                         if (this.isEdit) {
                             this.$store.dispatch(`${this.namespace}/edit`, this.resource)
                                 .then(() => {

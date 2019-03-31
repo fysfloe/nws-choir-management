@@ -6,43 +6,50 @@
         <button @click="excuse" :class="{ 'btn': true, 'btn-warning': isExcused, 'btn-default': !isExcused }" data-toggle="tooltip" :title="$t('Excused')">
             <span class="oi oi-medical-cross"></span>
         </button>
-        <button @click="unexcuse" :class="{ 'btn': true, 'btn-danger': isUnexcused, 'btn-default': !isUnexcused }" data-toggle="tooltip" :title="$t('Unexcused')">
+        <button @click="setUnexcused" :class="{ 'btn': true, 'btn-danger': isUnexcused, 'btn-default': !isUnexcused }"
+                data-toggle="tooltip" :title="$t('Unexcused')">
             <span class="oi oi-x"></span>
         </button>
     </div>
 </template>
 <script>
-export default {
-    props: ['routes', 'user'],
-    data() {
-        return {
-            isConfirmed: this.user.confirmed === 1,
-            isExcused: this.user.excused === 1,
-            isUnexcused: this.user.confirmed === 0 && this.user.excused === 0
-        }
-    },
-    methods: {
-        confirm: function () {
-            this.$http.get(this.routes.confirm + '/' + this.user.id).then(response => {
-                this.isExcused = false;
-                this.isUnexcused = false;
-                this.isConfirmed = true;
-            }, response => {})
+
+    export default {
+        props: {
+            userId: {
+                type: Number,
+                required: true
+            },
+            type: {
+                type: String,
+                required: true
+            }
         },
-        excuse: function () {
-            this.$http.get(this.routes.excused + '/' + this.user.id).then(response => {
-                this.isExcused = true;
-                this.isUnexcused = false;
-                this.isConfirmed = false;
-            }, response => {})
+        computed: {
+            user() {
+                //return this.$store.state.rehearsals.rehearsal.participants[0];
+                return this.$store.getters[`${this.type}s/participant`](this.userId)
+            },
+            isConfirmed() {
+                return this.user.confirmed === 1;
+            },
+            isExcused() {
+                return this.user.excused === 1;
+            },
+            isUnexcused() {
+                return this.user.confirmed === 0 && this.user.excused === 0;
+            }
         },
-        unexcuse: function () {
-            this.$http.get(this.routes.unexcused + '/' + this.user.id).then(response => {
-                this.isExcused = false;
-                this.isUnexcused = true;
-                this.isConfirmed = false;
-            }, response => {})
+        methods: {
+            confirm() {
+                this.$store.dispatch(`${this.type}s/confirm`, {id: this.$route.params.id, userId: this.user.id})
+            },
+            excuse() {
+                this.$store.dispatch(`${this.type}s/excuse`, {id: this.$route.params.id, userId: this.user.id})
+            },
+            setUnexcused() {
+                this.$store.dispatch(`${this.type}s/setUnexcused`, {id: this.$route.params.id, userId: this.user.id})
+            }
         }
     }
-}
 </script>

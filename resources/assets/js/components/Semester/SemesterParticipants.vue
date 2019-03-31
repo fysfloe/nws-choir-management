@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div v-else>
             <div class="row clearfix my-3">
@@ -38,8 +38,10 @@
 
 <script>
     import UserList from "../UserList";
+    import Loader from "../Loader";
+
     export default {
-        components: {UserList},
+        components: {Loader, UserList},
         computed: {
             semester () {
                 return this.$store.state.semesters.semester;

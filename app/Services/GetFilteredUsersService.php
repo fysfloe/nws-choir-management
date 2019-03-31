@@ -68,9 +68,8 @@ class GetFilteredUsersService {
         if (!$sort) $sort = 'surname';
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
-        $concerts = isset($filters['concerts']) ? $filters['concerts'] : null;
 
-        $query = "SELECT users.*, voices.name as voiceName "
+        $query = "SELECT users.*, voices.name as voiceName, user_concert.confirmed as confirmed, user_concert.excused as excused "
             . "FROM users
             LEFT OUTER JOIN user_concert ON users.id = user_concert.user_id
             LEFT OUTER JOIN voices ON voices.id = user_concert.voice_id ";
@@ -111,7 +110,7 @@ class GetFilteredUsersService {
 
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
 
-        $query = "SELECT users.*, voices.name as voiceName "
+        $query = "SELECT users.*, voices.name as voiceName, voices.id as voiceId "
             . "FROM users
             LEFT OUTER JOIN user_project ON users.id = user_project.user_id
             LEFT OUTER JOIN voices ON voices.id = user_project.voice_id ";

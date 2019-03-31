@@ -17,7 +17,7 @@
                 :remove-filter="removeFilter"
         ></filters>
 
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div class="list-table" v-else-if="items.length > 0">
             <header class="row">
@@ -30,7 +30,8 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="actions">
-                            <a v-if="hasAction('remove')" class="dropdown-item" href="/admin/projects/multiRemove" @click.prevent="postAction($event, true, $t('Do you really want to remove these projects?'))">
+                            <a v-if="hasAction('remove')" class="dropdown-item" href="/admin/projects/remove_mutli"
+                               @click.prevent="postAction($event, true, $t('Do you really want to remove these projects?'))">
                                 <span class="oi oi-box"></span> {{ $t('Remove') }}
                             </a>
                         </div>
@@ -110,8 +111,10 @@
 
 <script>
     import Filters from "../Filters";
+    import Loader from "../Loader";
+
     export default {
-        components: {Filters},
+        components: {Loader, Filters},
         props: {
             fetchAction: {
                 type: String

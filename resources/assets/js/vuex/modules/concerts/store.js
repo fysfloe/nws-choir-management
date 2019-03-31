@@ -6,7 +6,10 @@ export default {
     namespaced: true,
     state: {
         items: [],
-        concert: {},
+        concert: {
+            participants: [],
+            other_users: []
+        },
         options: {}
     },
     mutations: {
@@ -14,6 +17,9 @@ export default {
         updateField
     },
     getters: {
+        participant: state => id => {
+            return state.concert.participants.filter(user => user.id === id)[0]
+        },
         getField
     },
     actions: actions

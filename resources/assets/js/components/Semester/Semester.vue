@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div v-else>
             <header class="page-header">
@@ -47,9 +47,10 @@
     import SemesterDetails from "./SemesterDetails";
     import SemesterParticipants from "./SemesterParticipants";
     import AcceptDecline from "../AcceptDecline";
+    import Loader from "../Loader";
 
     export default {
-        components: {AcceptDecline, Comments, SemesterDetails, SemesterParticipants},
+        components: {Loader, AcceptDecline, Comments, SemesterDetails, SemesterParticipants},
         data () {
             return {
                 loading: true

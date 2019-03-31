@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div v-else>
             <header class="page-header">
@@ -27,32 +27,26 @@
                 </div>
             </header>
 
-            <b-tabs>
-                <b-tab :title="$t('Info')">
-                    <project-details></project-details>
-                </b-tab>
-                <b-tab :title="$t('Rehearsals')">
-                    <rehearsal-list
-                        :action-parameters="{
-                            project_id: project.id
-                        }"
-                        :actions="['remove', 'edit']"
-                    ></rehearsal-list>
-                </b-tab>
-                <b-tab :title="$t('Comments')">
-                    <comments
-                        :action-parameters="{
-                            commentable_id: project.id
-                        }"
-                    ></comments>
-                </b-tab>
-                <b-tab :title="$t('Participants')">
-                    <project-participants
-                            :show-roles="false"
-                    ></project-participants>
-                </b-tab>
-            </b-tabs>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/projects/${project.id}`">{{ $t('Info') }}</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/projects/${project.id}/rehearsals`">{{ $t('Rehearsals') }}
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/projects/${project.id}/comments`">{{ $t('Comments') }}
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/projects/${project.id}/participants`">{{ $t('Participants')
+                        }}
+                    </router-link>
+                </li>
+            </ul>
 
+            <router-view></router-view>
         </div>
     </div>
 </template>
@@ -63,9 +57,10 @@
     import AcceptDecline from "../AcceptDecline";
     import RehearsalList from "../Rehearsal/RehearsalList";
     import ProjectParticipants from "./ProjectParticipants";
+    import Loader from "../Loader";
 
     export default {
-        components: {ProjectParticipants, RehearsalList, AcceptDecline, Comments, ProjectDetails},
+        components: {ProjectParticipants, RehearsalList, AcceptDecline, Comments, ProjectDetails, Loader},
         data () {
             return {
                 loading: true

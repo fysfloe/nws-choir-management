@@ -2,35 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreComment;
 use App\Http\Requests\StoreRehearsal;
-use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\RehearsalDetailResource;
 use App\Http\Resources\RehearsalResource;
 use App\Http\Resources\UserResource;
-use App\Project;
 use App\Rehearsal;
-use App\Semester;
 use App\Services\GetFilteredUsersService;
 use App\User;
 use App\Voice;
 use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class RehearsalController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        // $this->breadcrumbs->addCrumb(__('Rehearsals'), 'rehearsals');
-    }
-
     /**
-     * Display a listing of the resource.
-     *
      * @param Request $request
      * @return \Illuminate\Http\Response
      * @throws \Exception
@@ -50,47 +36,7 @@ class RehearsalController extends Controller
         return response()->json(RehearsalResource::collection($rehearsals));
     }
 
-    public function loadItems(Request $request)
-    {
-        $where = [['deleted_at', '=', null]];
-
-        if ($request->get('project_id')) {
-            $where[] = ['project_id', '=', $request->get('project_id')];
-        }
-
-        $rehearsals = Rehearsal::where($where)
-            ->orderBy($request->get('sort'), $request->get('dir'))
-            ->get();
-
-        return new JsonResponse(RehearsalResource::collection($rehearsals));
-    }
-
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $this->breadcrumbs->addCrumb(__('New Rehearsal'), 'create');
-
-        $semesters = Semester::getListForSelect();
-
-        $nullOption = [null => __('--- Please choose ---')];
-        $semesters = $nullOption + $semesters;
-
-        $projects = Project::getListForSelect();
-
-        return view('rehearsal.create')->with([
-            'breadcrumbs' => $this->breadcrumbs,
-            'projects' => $projects,
-            'semesters' => $semesters
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreRehearsal $request
      * @return \Illuminate\Http\Response
      * @throws \Exception
@@ -108,8 +54,6 @@ class RehearsalController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
      * @param  Rehearsal  $rehearsal
      * @return \Illuminate\Http\Response
      */
@@ -118,44 +62,13 @@ class RehearsalController extends Controller
         return response()->json(new RehearsalDetailResource($rehearsal));
     }
 
-    public function loadParticipants(Request $request, Rehearsal $rehearsal)
-    {
-        $filters = $request->all();
-
-        $users = (new GetFilteredUsersService())->rehearsalParticipants($rehearsal, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
-
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
-        }
-
-        return json_encode(UserResource::collection($users));
-    }
-
     /**
-     * Display the rehearsals participants.
-     *
-     * @param  Request   $request   [description]
-     * @param  Rehearsal $rehearsal [description]
-     * @return [type]               [description]
+     * @param Request $request
+     * @param Rehearsal $rehearsal
+     * @return JsonResponse
      */
     public function participants(Request $request, Rehearsal $rehearsal)
     {
-        if ($rehearsal->project) {
-            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
-        }
-
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->rehearsalParticipants($rehearsal, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
@@ -176,50 +89,26 @@ class RehearsalController extends Controller
             }
         }
 
-        $voices = Voice::getListForSelect();
-
-        return view('rehearsal.participants')->with([
-            'tab' => 'participants',
-            'rehearsal' => $rehearsal,
-            'participants' => UserResource::collection($users),
-            'activeFilters' => $activeFilters,
-            'voices' => $voices,
-            'route' => ['rehearsal.participants', $rehearsal],
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
+        return response()->json(UserResource::collection($users));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Rehearsal $rehearsal
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Rehearsal $rehearsal)
+    public function otherUsers(Rehearsal $rehearsal)
     {
-        $this->breadcrumbs->addCrumb(__('Edit Rehearsal'), null);
+        $rehearsalUsers = $rehearsal->promises()->pluck('id')->toArray();
+        $users = User::whereNotIn('id', $rehearsalUsers)->orderBy('surname')->get();
 
-        $semesters = Semester::getListForSelect();
-
-        $nullOption = [null => __('--- Please choose ---')];
-        $semesters = $nullOption + $semesters;
-
-        $projects = Project::getListForSelect();
-
-        return view('rehearsal.edit')->with([
-            'breadcrumbs' => $this->breadcrumbs,
-            'rehearsal' => $rehearsal,
-            'projects' => $projects,
-            'semesters' => $semesters
-        ]);
+        return response()->json(UserResource::collection($users));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param  \Illuminate\Http\Request $request
      * @param Rehearsal $rehearsal
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function update(Request $request, Rehearsal $rehearsal)
     {
@@ -234,8 +123,6 @@ class RehearsalController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -247,6 +134,11 @@ class RehearsalController extends Controller
         return response()->json();
     }
 
+    /**
+     * @param Rehearsal $rehearsal
+     * @param null $user_id
+     * @return JsonResponse
+     */
     public function accept(Rehearsal $rehearsal, $user_id = null)
     {
         if ($user_id) {
@@ -260,6 +152,11 @@ class RehearsalController extends Controller
         return response()->json(new RehearsalResource($rehearsal));
     }
 
+    /**
+     * @param Rehearsal $rehearsal
+     * @param null $user_id
+     * @return JsonResponse
+     */
     public function decline(Rehearsal $rehearsal, $user_id = null)
     {
         if ($user_id) {
@@ -273,108 +170,67 @@ class RehearsalController extends Controller
         return response()->json(new RehearsalResource($rehearsal));
     }
 
-    public function ajaxConfirm(Request $request, Rehearsal $rehearsal, User $user)
+    /**
+     * @param Rehearsal $rehearsal
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function confirm(Rehearsal $rehearsal, User $user)
     {
         $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
 
-        return response('', 200);
+        $user->confirmed = true;
+        $user->excused = false;
+
+        return response()->json(new UserResource($user));
     }
 
-    public function ajaxExcuse(Request $request, Rehearsal $rehearsal, User $user)
+    /**
+     * @param Rehearsal $rehearsal
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function excuse(Rehearsal $rehearsal, User $user)
     {
         $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
 
-        return response('', 200);
+        return response()->json(new UserResource($user));
     }
 
-    public function ajaxSetUnexcused(Request $request, Rehearsal $rehearsal, User $user)
+    /**
+     * @param Rehearsal $rehearsal
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function setUnexcused(Rehearsal $rehearsal, User $user)
     {
         $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
 
-        return redirect()->back();
+        return response()->json(new UserResource($user));
     }
 
-    public function showAddUser(Request $request, Rehearsal $rehearsal)
-    {
-        $rehearsalUsers = $rehearsal->promises()->pluck('id')->toArray();
-        $users = User::whereNotIn('id', $rehearsalUsers)->get();
-
-        $usersForSelect = [];
-
-        foreach ($users as $user) {
-            $usersForSelect[$user->id] = "$user->firstname $user->surname";
-        }
-
-        return view('rehearsal.addUser')->with([
-            'rehearsal' => $rehearsal,
-            'users' => $usersForSelect
-        ]);
-    }
-
-    public function addUser(Request $request, Rehearsal $rehearsal)
+    /**
+     * @param Request $request
+     * @param Rehearsal $rehearsal
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addParticipants(Request $request, Rehearsal $rehearsal)
     {
         $usersToAdd = $request->get('users');
 
         foreach ($usersToAdd as $user_id) {
-            $user = User::find($user_id);
-
             $rehearsal->participants()->syncWithoutDetaching([$user_id => ['accepted' => true]]);
         }
 
-        return redirect()->route('rehearsal.participants', $rehearsal);
+        return response()->json();
     }
 
-    public function comments(Rehearsal $rehearsal)
-    {
-        if ($rehearsal->project) {
-            $this->breadcrumbs->addCrumb($rehearsal->project->title, 'project/' . $rehearsal->project->slug);
-        }
-
-        $this->breadcrumbs->addCrumb($rehearsal->title(), $rehearsal);
-
-        return view('rehearsal.comments')->with([
-            'tab' => 'comments',
-            'rehearsal' => $rehearsal,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
-    public function createComment(StoreComment $request, Rehearsal $rehearsal)
-    {
-        $input = $request->all();
-        $input['user_id'] = Auth::user()->id;
-        $comment = $rehearsal->comments()->create($input);
-
-        return redirect()->back();
-    }
-
-    public function addProjectParticipants(Rehearsal $rehearsal)
-    {
-        $project = $rehearsal->project;
-
-        foreach ($project->participants as $participant) {
-            $rehearsal->participants()->syncWithoutDetaching([$participant->id => ['accepted' => true]]);
-        }
-
-        return redirect()->back();
-    }
-
-    public function removeParticipant(Rehearsal $rehearsal, Request $request)
-    {
-        $user = User::find($request->get('user_id'));
-
-        if ($user !== null) {
-            $rehearsal->participants()->detach($user);
-
-            $request->session()->flash('alert-success', __('Participant successfully removed from the rehearsal.'));
-        } else {
-            $request->session()->flash('alert-danger', __('Participant could not be found.'));
-        }
-
-        return redirect()->back();
-    }
-
-    public function removeParticipants(Rehearsal $rehearsal, Request $request)
+    /**
+     * @param Request $request
+     * @param Rehearsal $rehearsal
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeParticipants(Request $request, Rehearsal $rehearsal)
     {
         $users = $request->get('users');
 
@@ -384,8 +240,21 @@ class RehearsalController extends Controller
             $rehearsal->participants()->detach($user);
         }
 
-        return response()->json([
-            'message' => __('Participants successfully removed from the rehearsal.')
-        ]);
+        return response()->json();
+    }
+
+    /**
+     * @param Rehearsal $rehearsal
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addProjectParticipants(Rehearsal $rehearsal)
+    {
+        $project = $rehearsal->project;
+
+        foreach ($project->participants as $participant) {
+            $rehearsal->participants()->syncWithoutDetaching([$participant->id => ['accepted' => true]]);
+        }
+
+        return redirect()->back();
     }
 }

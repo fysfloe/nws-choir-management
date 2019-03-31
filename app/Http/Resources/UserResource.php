@@ -15,7 +15,7 @@ class UserResource extends Resource
     public function toArray($request)
     {
         if ($this->resource->voiceName) {
-            $voice = ['name' => $this->resource->voiceName];
+            $voice = ['name' => $this->resource->voiceName, 'id' => $this->resource->voiceId];
         } else {
             $voice = new VoiceResource($this->voice);
         }

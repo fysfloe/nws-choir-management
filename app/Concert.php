@@ -32,7 +32,7 @@ class Concert extends Model
     public function participants()
     {
         return $this->belongsToMany('App\User', 'user_concert')
-            ->withPivot('accepted', 'voice_id')
+            ->withPivot(['accepted', 'confirmed', 'excused', 'voice_id'])
             ->withTimestamps();
     }
 

@@ -10,7 +10,7 @@
             </div>
         </header>
 
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div class="list-table" v-else-if="items.length > 0">
             <header class="row">
@@ -97,8 +97,10 @@
 
 <script>
     import AcceptDecline from "../AcceptDecline";
+    import Loader from "../Loader";
+
     export default {
-        components: {AcceptDecline},
+        components: {Loader, AcceptDecline},
         props: {
             sortOptions: {
                 type: Object,

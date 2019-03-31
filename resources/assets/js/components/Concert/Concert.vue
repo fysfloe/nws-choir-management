@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div v-else>
             <header class="page-header">
@@ -27,32 +27,26 @@
                 </div>
             </header>
 
-            <b-tabs>
-                <b-tab :title="$t('Info')">
-                    <concert-details></concert-details>
-                </b-tab>
-                <b-tab :title="$t('Rehearsals')">
-                    <rehearsal-list
-                        :action-parameters="{
-                            concert_id: concert.id
-                        }"
-                        :actions="['remove', 'edit']"
-                    ></rehearsal-list>
-                </b-tab>
-                <b-tab :title="$t('Comments')">
-                    <comments
-                        :action-parameters="{
-                            commentable_id: concert.id
-                        }"
-                    ></comments>
-                </b-tab>
-                <b-tab :title="$t('Participants')">
-                    <concert-participants
-                            :show-roles="false"
-                    ></concert-participants>
-                </b-tab>
-            </b-tabs>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/concerts/${concert.id}`">{{ $t('Info') }}</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/concerts/${concert.id}/rehearsals`">{{ $t('Rehearsals') }}
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/concerts/${concert.id}/comments`">{{ $t('Comments') }}
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" :to="`/concerts/${concert.id}/participants`">{{ $t('Participants')
+                        }}
+                    </router-link>
+                </li>
+            </ul>
 
+            <router-view></router-view>
         </div>
     </div>
 </template>
@@ -63,9 +57,10 @@
     import ConcertParticipants from "./ConcertParticipants";
     import RehearsalList from "../Rehearsal/RehearsalList";
     import AcceptDecline from "../AcceptDecline";
+    import Loader from "../Loader";
 
     export default {
-        components: {AcceptDecline, RehearsalList, Comments, ConcertDetails, ConcertParticipants},
+        components: {Loader, AcceptDecline, RehearsalList, Comments, ConcertDetails, ConcertParticipants},
         data () {
             return {
                 loading: true

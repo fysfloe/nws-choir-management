@@ -38,7 +38,7 @@
                         v-if="rehearsal.other_rehearsals"
                         class="mb-4"
                         :rehearsals="rehearsal.other_rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsal/create?project=${rehearsal.project.id}&semester=${rehearsal.semester.id}`"
+                        :add-rehearsal-route="`/admin/rehearsal/create?project=${rehearsal.project.id}&semester=${rehearsal.semester_id}`"
                         :can-manage-rehearsals="user.canManageRehearsals"
                         :user="user"
                 ></rehearsal-side-list>
@@ -49,7 +49,7 @@
 
 <script>
     import RehearsalSideList from "./RehearsalSideList";
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
 
     export default {
         components: {RehearsalSideList},

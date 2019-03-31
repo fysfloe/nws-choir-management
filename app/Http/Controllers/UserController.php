@@ -3,35 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Address;
-use App\Concert;
 use App\Http\Requests\StoreUser;
 use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\UserResource;
 use App\Role;
 use App\Services\GetFilteredUsersService;
 use App\User;
-use App\Voice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->breadcrumbs->addCrumb(__('Users'), 'users');
-    }
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getCurrent()
     {
         return response()->json(new AuthUserResource(Auth::user()));
     }
 
     /**
-     * Display a listing of the resource.
-     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -44,57 +37,8 @@ class UserController extends Controller
         return response()->json(UserResource::collection($users));
     }
 
-    public function loadUsers(Request $request)
-    {
-        $filters = $request->all();
-
-        $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
-
-        $activeFilters = [];
-        foreach ($request->all() as $key => $val) {
-            if ($val) {
-                if ($key === 'voices') {
-                    $voices = [];
-                    foreach ($val as $voice_id) {
-                        $voices[] = Voice::find($voice_id)->name;
-                    }
-
-                    $activeFilters['voices'] = implode(', ', $voices);
-                } else if ($key === 'concerts') {
-                    $concerts = [];
-                    foreach ($val as $concert_id) {
-                        $concerts[] = Concert::find($concert_id)->title;
-                    }
-
-                    $activeFilters['concerts'] = implode(', ', $concerts);
-                } else {
-                    $activeFilters[$key] = $val;
-                }
-            }
-        }
-
-        return json_encode(UserResource::collection($users));
-    }
-
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $this->breadcrumbs->addCrumb(__('New User'), 'create');
-
-        return view('user.create')->with([
-            'breadcrumbs' => $this->breadcrumbs,
-            'voices' => Voice::getListForSelect()
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreUser $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUser $request)
@@ -111,8 +55,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -122,24 +64,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, User $user)
-    {
-        $data = $request->all();
-
-        $user->update($data);
-
-        return response()->json(new UserResource($user));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -164,18 +88,14 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(User $user)
     {
         $user->delete();
 
-        $request->session()->flash('alert-success', __('User successfully archived.'));
-
-        return redirect()->back();
+        return response()->json();
     }
 
     public function export(Request $request)

@@ -11715,42 +11715,6 @@ input.date {
   color: black;
 }
 
-.loader {
-  border: 0.33em solid #f3f3f3;
-  border-top: 0.33em solid #3498db;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  -webkit-animation: spin 1.25s linear infinite;
-  animation: spin 1.25s linear infinite;
-  display: block;
-  margin: 1rem auto;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
 .nav-tabs .nav-item {
   margin-bottom: 0;
 }
@@ -12309,11 +12273,10 @@ ul.concerts .avatar {
 }
 
 #content .multiselect__tags {
-  height: 2rem;
-  min-height: 2rem;
+  height: calc(1.6em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
   border: 1px solid #ced4da;
   font-size: 1em;
-  padding: 0.375rem 2rem 0.375rem 0.75rem;
   line-height: 1.6;
 }
 
@@ -12321,13 +12284,19 @@ ul.concerts .avatar {
   height: auto;
 }
 
-#content .multiselect__placeholder {
-  padding-top: 0;
+#content .filters .multiselect__tags {
+  height: 2rem;
+  min-height: 2rem;
+  padding: 0.375rem 2rem 0.375rem 0.75rem;
 }
 
-#content .multiselect__select {
+#content .filters .multiselect__select {
   height: 2rem;
   width: 2rem;
+}
+
+#content .multiselect__placeholder {
+  padding-top: 0;
 }
 
 #content .multiselect__input,

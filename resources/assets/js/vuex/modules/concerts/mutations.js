@@ -1,14 +1,17 @@
 export default {
     FETCH(state, concerts) {
-        state.items = concerts;
+        Vue.set(state, 'items', concerts);
     },
     SHOW(state, concert) {
-        state.concert = concert;
+        Vue.set(state, 'concert', concert);
     },
     PARTICIPANTS(state, users) {
-        state.concert.participants = users;
+        Vue.set(state.concert, 'participants', users);
     },
     OPTIONS(state, options) {
-        state.options = options;
+        Vue.set(state, 'options', options);
+    },
+    OTHER_USERS(state, users) {
+        Vue.set(state.concert, 'other_users', users);
     }
 }

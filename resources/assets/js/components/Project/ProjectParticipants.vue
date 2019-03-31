@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <add-participants-modal
+                type="project"
+        ></add-participants-modal>
+
+        <loader v-if="loading"/>
 
         <div v-else>
             <div class="row clearfix my-3">
@@ -13,10 +17,10 @@
                 </div>
 
                 <div class="col text-right" v-if="currentUser.canManageProjects">
-                    <a class="btn btn-default btn-sm" :href="`/admin/project/${project.id}/addUser`" data-toggle="modal"
-                       data-target="#mainModal">
+                    <button :disabled="project.other_users && project.other_users.length === 0"
+                            class="btn btn-default btn-sm" v-b-modal.addParticipantsModal>
                         <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
-                    </a>
+                    </button>
                     <a class="btn btn-default btn-sm" :href="`/admin/project/export-participants/${project.id}`">
                         <span class="oi oi-account-login"></span> {{ $t('Export') }}
                     </a>
@@ -24,29 +28,24 @@
             </div>
 
             <user-list
+                    type="project"
                     v-show="view === 'list'"
                     :users="participants"
-                    :can-manage-users="currentUser.canManageUsers"
                     :show-roles="false"
-                    :voices="{}"
-                    :fetch-users-action="`/projects/load_participants/${project.id}`"
                     :sort-options="{
-                    firstname: $t('First Name'),
-                    surname: $t('Surname'),
-                    voice: $t('Voice'),
-                    id: $t('Created at')
-                }"
-                    :set-voice-route="`/projects/set_voice/${project.id}`"
+                        firstname: $t('First Name'),
+                        surname: $t('Surname'),
+                        voice: $t('Voice'),
+                        id: $t('Created at')
+                    }"
                     :remove-participants-route="`/projects/${project.id}`"
                     :actions="['removeParticipant', 'setVoice', 'editProfile']"
-                    :rehearsals="[]"
-                    :concerts="[]"
             ></user-list>
 
             <project-grid
-                    v-show="view === 'table'"
-                    :rehearsals="[]"
-                    :concerts="[]"
+                    v-if="view === 'table'"
+                    :rehearsals="project.rehearsals"
+                    :concerts="project.concerts"
                     :users="participants"
             ></project-grid>
         </div>
@@ -56,8 +55,11 @@
 <script>
     import UserList from "../UserList";
     import ProjectGrid from "./ProjectGrid";
+    import Loader from "../Loader";
+    import AddParticipantsModal from '../AddParticipantsModal';
+
     export default {
-        components: {ProjectGrid, UserList},
+        components: {Loader, ProjectGrid, UserList, AddParticipantsModal},
         computed: {
             project () {
                 return this.$store.state.projects.project;
@@ -85,7 +87,7 @@
             }
         },
         mounted () {
-            this.$store.dispatch('projects/participants', this.project.id).then(() => {
+            this.$store.dispatch('projects/participants', {id: this.project.id}).then(() => {
                 this.loading = false;
             });
         }

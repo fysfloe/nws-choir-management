@@ -33,10 +33,29 @@ export default {
                 this.dispatch(`${namespace}/fetch`);
             });
     },
-    participants({ commit }, id) {
-        return axios.get(`${paths.concerts}/participants/${id}`)
+    participants({commit}, {id: id, filters: filters}) {
+        return axios.get(`${paths.concerts}/${id}/participants`, {params: filters})
             .then(response => commit('PARTICIPANTS', response.data))
             .catch();
+    },
+    otherUsers({commit}, id) {
+        return axios.get(`${paths.concerts}/${id}/other_users`)
+            .then(response => commit('OTHER_USERS', response.data))
+            .catch();
+    },
+    addParticipants({}, {id, userIds}) {
+        return axios.post(`${paths.concerts}/${id}/add_participants`, {users: userIds})
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                this.dispatch(`${namespace}/otherUsers`, id);
+            })
+    },
+    removeParticipants({}, {id, userIds}) {
+        return axios.delete(`${paths.concerts}/${id}/remove_participants`, {data: {users: userIds}})
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                this.dispatch(`${namespace}/otherUsers`, id);
+            })
     },
     options({ commit }) {
         return axios.get(`${paths.concerts}/options`)
@@ -63,6 +82,21 @@ export default {
 
         return axios.post(path)
             .then(response => commit('SHOW', response.data))
+            .catch();
+    },
+    confirm({commit}, {id, userId}) {
+        return axios.post(`${paths.concerts}/${id}/confirm/${userId}`)
+            .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
+            .catch();
+    },
+    excuse({}, {id, userId}) {
+        return axios.post(`${paths.concerts}/${id}/excuse/${userId}`)
+            .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
+            .catch();
+    },
+    setUnexcused({}, {id, userId}) {
+        return axios.post(`${paths.concerts}/${id}/set_unexcused/${userId}`)
+            .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
             .catch();
     }
 }

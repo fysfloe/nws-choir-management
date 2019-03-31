@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
@@ -24,6 +22,10 @@ class CommentController extends Controller
         $where = [];
 
         foreach ($request->all() as $key => $value) {
+            if ($key === 'type') {
+                $value = 'App\\' . ucfirst($value);
+                $key = 'commentable_type';
+            }
             $where[] = [$key, '=', $value];
         }
 
@@ -68,8 +70,6 @@ class CommentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

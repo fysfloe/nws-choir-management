@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div v-else>
             <header class="page-header">
@@ -105,10 +105,12 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
+    import Loader from "../Loader";
 
     export default {
         name: 'dashboard',
+        components: {Loader},
         mounted () {
             this.$store.dispatch('dashboard/fetch')
                 .then(() => {

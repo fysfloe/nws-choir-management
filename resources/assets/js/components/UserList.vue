@@ -1,7 +1,11 @@
 <template>
     <div>
-        <set-voice-modal></set-voice-modal>
-        <multi-set-voice-modal></multi-set-voice-modal>
+        <set-voice-modal
+                :type="type"
+        ></set-voice-modal>
+        <multi-set-voice-modal
+                :type="type"
+        ></multi-set-voice-modal>
 
         <filters
                 :voices="voices"
@@ -12,7 +16,7 @@
                 :remove-filter="removeFilter"
         ></filters>
 
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div class="list-table" v-else-if="_users.length > 0">
             <header class="row">
@@ -34,7 +38,8 @@
                             <a v-if="showRoles && hasAction('setRole')" class="dropdown-item" data-href="/admin/role/set" :href="`/admin/role/set?${urlEncodeArray(selectedUsers, 'users')}`" data-toggle="modal" data-target="#mainModal">
                                 <span class="oi oi-key"></span> {{ $t('Set role') }}
                             </a>
-                            <a v-if="hasAction('removeParticipant')" class="dropdown-item" :href="removeParticipantsRoute" @click.prevent="postUserAction($event, true, $t('Do you really want to remove these participants?'))">
+                            <a v-if="hasAction('removeParticipant')" class="dropdown-item"
+                               @click.prevent="removeParticipants">
                                 <span class="oi oi-minus"></span> {{ $t('Remove participants') }}
                             </a>
                         </div>
@@ -73,7 +78,8 @@
                             <div class="name">
                                 {{ user.firstname }} {{ user.surname }}
                                 <div>
-                                    <a href="#" @click="$store.dispatch('users/show', user.id)" v-b-modal.setVoiceModal>
+                                    <a href="#" @click.prevent="$store.commit('users/SHOW', user)"
+                                       v-b-modal.setVoiceModal>
                                         <span class="badge badge-secondary badge-pill" v-if="user.voice">
                                             {{ user.voice.name }}
                                         </span>
@@ -91,14 +97,12 @@
                     </div>
                     <div class="col-md-3" v-if="withAttendanceConfirmation">
                         <attendance
-                                :routes="attendanceRoutes"
-                                :user="user"
+                                :user-id="user.id"
+                                :type="type"
                         ></attendance>
                     </div>
                     <div class="col-md-3" v-if="withAcceptDecline">
                         <accept-decline
-                                :accept-route="acceptDeclineRoutes['accept'] + '/' + user.id"
-                                :decline-route="acceptDeclineRoutes['decline'] + '/' + user.id"
                                 :accepted="hasAccepted(user.id)"
                                 :declined="hasDeclined(user.id)"
                         >
@@ -110,9 +114,10 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" :aria-labelledby="`singleUserActions${user.id}`">
-                            <a class="dropdown-item" :href="`/profile/edit/${user.id}`" v-if="hasAction('editProfile')">
+                            <router-link class="dropdown-item" :to="`/profile/edit/${user.id}`"
+                                         v-if="hasAction('editProfile')">
                                 <span class="oi oi-pencil"></span> {{ $t('Edit profile') }}
-                            </a>
+                            </router-link>
                             <form method="POST" class="form-inline" :action="`/admin/users/${user.id}`" v-if="hasAction('archive')">
                                 <input name="_method" type="hidden" value="DELETE">
                                 <button type="submit" v-confirm="$t('Do you really want to archive this user?')" class="btn btn-link dropdown-item">
@@ -120,14 +125,10 @@
                                 </button>
                                 <input type="hidden" name="_token" :value="csrf">
                             </form>
-                            <form method="POST" class="form-inline" :action="removeUserRoute" v-if="hasAction('removeParticipant')">
-                                <input name="_method" type="hidden" value="DELETE">
-                                <input type="hidden" name="user_id" :value="user.id">
-                                <button type="submit" v-confirm="$t('Do you really want to remove this user?')" class="btn btn-link dropdown-item">
-                                    <span class="oi oi-minus"></span> {{ $t('Remove participant') }}
-                                </button>
-                                <input type="hidden" name="_token" :value="csrf">
-                            </form>
+                            <button type="submit" @click="removeParticipant(user.id)"
+                                    class="btn btn-link dropdown-item">
+                                <span class="oi oi-minus"></span> {{ $t('Remove participant') }}
+                            </button>
                         </div>
                     </div>
                 </li>
@@ -141,24 +142,23 @@
     import Attendance from "./Attendance";
     import AcceptDecline from "./AcceptDecline";
     import Filters from "./Filters";
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
     import SetVoiceModal from "./User/SetVoiceModal";
     import MultiSetVoiceModal from "./User/MultiSetVoiceModal";
+    import Loader from "./Loader";
 
     export default {
-        components: {MultiSetVoiceModal, SetVoiceModal, Filters, AcceptDecline, Attendance},
+        components: {Loader, MultiSetVoiceModal, SetVoiceModal, Filters, AcceptDecline, Attendance},
         props: {
-            rehearsals: {
-                type: [Array, Object]
+            type: {
+                type: String,
+                default: ''
             },
             users: {
                 type: Array
             },
             showRoles: {
                 type: Boolean
-            },
-            fetchUsersAction: {
-                type: String
             },
             sortOptions: {
                 type: Object,
@@ -171,25 +171,13 @@
                     };
                 }
             },
-            setVoiceRoute: {
-                type: String
-            },
             withAttendanceConfirmation: {
                 type: Boolean
-            },
-            attendanceRoutes: {
-                type: Object
             },
             withAcceptDecline: {
                 type: Boolean
             },
-            acceptDeclineRoutes: {
-                type: Object
-            },
             removeUserRoute: {
-                type: String
-            },
-            removeParticipantsRoute: {
                 type: String
             },
             promises: {
@@ -249,6 +237,9 @@
             },
             _users () {
                 return this.users ? this.users : this.$store.state.users.items;
+            },
+            resource() {
+                return this.$store.state[`${this.type}s`][this.type];
             }
         },
         mounted() {
@@ -269,20 +260,31 @@
                     this.$store.dispatch('users/select', this.selectedUsers);
                 }
             },
-            postUserAction: function (event, confirm, confirmMessage) {
-                if (confirm) {
-                    this.$dialog.confirm(confirmMessage)
-                        .then(dialog => {
-                            let route = event.target.getAttribute('href');
+            removeParticipants() {
+                this.$dialog.confirm(this.$t('Do you really want to remove these participants?'))
+                    .then(() => {
+                        if (this.type) {
+                            this.$store.dispatch(`${this.type}s/removeParticipants`, {
+                                id: this.resource.id,
+                                userIds: this.selectedUsers
+                            });
+                        }
 
-                            this.$http.post(route, {users: this.selectedUsers, _token: this.csrf})
-                                .then(response => {
-                                    this.fetchUsers();
-                                }, response => {
-                                    console.log(response);
-                                });
-                        });
-                }
+                        this.$store.commit('users/DESELECT');
+                    })
+            },
+            removeParticipant(id) {
+                this.$dialog.confirm(this.$t('Do you really want to remove this user?'))
+                    .then(() => {
+                        if (this.type) {
+                            this.$store.dispatch(`${this.type}s/removeParticipants`, {
+                                id: this.resource.id,
+                                userIds: [id]
+                            });
+                        }
+
+                        this.$store.commit('users/DESELECT');
+                    })
             },
             checkAll: function (event) {
                 if (event.target.checked) {
@@ -313,8 +315,13 @@
                 filters.voices = filters.voices.map(option => option.value);
                 filters.concerts = filters.concerts.map(option => option.value);
 
-                this.$store.dispatch('users/fetch', filters)
-                    .then(() => this.loading = false);
+                if (this.type) {
+                    this.$store.dispatch(`${this.type}s/participants`, {id: this.resource.id, filters: filters})
+                        .then(() => this.loading = false)
+                } else {
+                    this.$store.dispatch('users/fetch', filters)
+                        .then(() => this.loading = false);
+                }
             },
             removeFilter: function (key) {
                 delete this.activeFilters[key];

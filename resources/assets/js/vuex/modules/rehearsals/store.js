@@ -6,14 +6,20 @@ export default {
     namespaced: true,
     state: {
         items: [],
-        rehearsal: {}
+        rehearsal: {
+            participants: [],
+            other_users: []
+        }
     },
     mutations: {
         ...mutations,
         updateField
     },
     getters: {
-        getField
+        getField,
+        participant: state => id => {
+            return state.rehearsal.participants.filter(user => user.id === id)[0]
+        }
     },
     actions: actions
 };

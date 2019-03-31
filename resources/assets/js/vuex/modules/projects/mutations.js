@@ -6,9 +6,15 @@ export default {
         state.project = project;
     },
     PARTICIPANTS(state, users) {
-        state.project.participants = users;
+        Vue.set(state.project, 'participants', users);
     },
     OPTIONS(state, options) {
-        state.options = options;
+        Vue.set(state, 'options', options);
+    },
+    GRID(state, grid) {
+        Vue.set(state.project, 'grid', grid);
+    },
+    OTHER_USERS(state, users) {
+        Vue.set(state.project, 'other_users', users);
     }
 }

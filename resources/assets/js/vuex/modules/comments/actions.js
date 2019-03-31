@@ -11,11 +11,16 @@ export default {
     },
     add({}, comment) {
         axios.post(`${paths.comments}`, comment)
-            .then(() => this.dispatch(`${namespace}/fetch`));
+            .then(() => this.dispatch(`${namespace}/fetch`, {
+                type: comment.type,
+                commentable_id: comment.commentable_id
+            }));
     },
-    delete({}, id) {
-        axios.delete(`${paths.comments}/${id}`)
-            .then(() => this.dispatch(`${namespace}/fetch`))
+    delete({}, comment) {
+        axios.delete(`${paths.comments}/${comment.id}`)
+            .then(() => {
+                this.dispatch(`${namespace}/fetch`, {type: comment.type, commentable_id: comment.commentable_id})
+            })
             .catch();
     }
 }

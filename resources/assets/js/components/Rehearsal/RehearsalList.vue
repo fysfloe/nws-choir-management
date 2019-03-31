@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="loader" v-if="loading"></div>
+        <loader v-if="loading"/>
 
         <div class="list-table" v-else-if="items.length > 0">
             <header class="row">
@@ -25,7 +25,7 @@
             </header>
 
             <ul class="rehearsals">
-                <a :href="`/rehearsal/${rehearsal.id}`" v-for="rehearsal in items" :key="rehearsal.id">
+                <a :href="`/rehearsals/${rehearsal.id}`" v-for="rehearsal in items" :key="rehearsal.id">
                     <li class="row align-items-center">
                         <div class="col-md-8">
                             <div class="flex align-items-center">
@@ -49,6 +49,7 @@
                                     :id="rehearsal.id"
                                     :accepted="rehearsal.accepted"
                                     :declined="rehearsal.declined"
+                                    :deadline="rehearsal.deadline"
                             >
                             </accept-decline>
                         </div>
@@ -81,8 +82,10 @@
 
 <script>
     import AcceptDecline from "../AcceptDecline";
+    import Loader from "../Loader";
+
     export default {
-        components: {AcceptDecline},
+        components: {Loader, AcceptDecline},
         props: {
             sortOptions: {
                 type: Object,
@@ -142,7 +145,7 @@
             fetchItems: function () {
                 this.loading = true;
 
-                this.$store.dispatch('rehearsals/fetch', Object.assign(this.filters, this.actionParameters)).then(() => {
+                this.$store.dispatch('rehearsals/fetch', Object.assign(this.filters, {project_id: this.$route.params.id})).then(() => {
                     this.loading = false;
                 });
             },

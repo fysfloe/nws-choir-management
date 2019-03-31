@@ -22,7 +22,9 @@ class CommentResource extends Resource
             'created_at' => (new \DateTime($this->created_at))->format('d.m.Y H:i'),
             'user' => new UserResource($this->user),
             'comment' => $this->comment,
-            'private' => $this->private
+            'private' => $this->private,
+            'type' => strtolower(str_replace('App\\', '', $this->commentable_type)),
+            'commentable_id' => $this->commentable_id
         ];
     }
 }

@@ -5,22 +5,22 @@
                 <thead>
                 <tr>
                     <th scope="col">{{ $t('User') }}</th>
-                    <th scope="col" v-for="date in dates" class="text-center">
+                    <th scope="col" v-for="date in grid" class="text-center">
                         <small :title="date.type === 'rehearsal' ? $t('Rehearsal') : $t('Concert')"
                                data-toggle="tooltip">
                             <span :class="{'oi': true, 'oi-audio': date.type === 'rehearsal', 'oi-musical-note': date.type === 'concert'}"></span>
-                            {{ new Date(date.date).toLocaleDateString() }}
+                            {{ date.date }}
                         </small>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="user in users">
+                <tr v-for="user in participants">
                     <td scope="row">{{ user.firstname }} {{ user.surname }}</td>
-                    <td v-for="date in dates"
-                        :class="{'text-center': true, 'table-danger': hasDeclined(user, date), 'table-success': hasAccepted(user, date)}">
+                    <td v-for="date in grid"
+                        :class="{'text-center': true, 'table-danger': hasDeclined(user, date), 'table-success': hasAccepted(user, date), 'table-warning': isExcused(user, date)}">
                         <span class="oi oi-question-mark muted"
-                              v-if="!hasAccepted(user, date) && !hasDeclined(user, date)"></span>
+                              v-if="!hasAccepted(user, date) && !hasDeclined(user, date) && !isExcused(user, date)"></span>
                     </td>
                 </tr>
                 </tbody>
@@ -30,57 +30,27 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex';
+
     export default {
-        props: {
-            'rehearsals': {
-                type: Array,
-                required: true
-            },
-            'concerts': {
-                type: Array,
-                required: true
-            },
-            'users': {
-                type: Array,
-                required: true
-            }
-        },
         computed: {
-            dates: {
-                get() {
-                    this.rehearsals.map((rehearsal) => {
-                        rehearsal.date = rehearsal.date.date;
-                        rehearsal.type = 'rehearsal';
-                    });
-
-                    this.concerts.map(concert => {
-                        concert.type = 'concert';
-                    });
-
-                    return this.rehearsals.concat(this.concerts).sort((a, b) => {
-                        return new Date(a.date) - new Date(b.date);
-                    });
-                }
-            }
+            ...mapState({
+                grid: state => state.projects.project.grid,
+                participants: state => state.projects.project.participants
+            })
+        },
+        mounted() {
+            this.$store.dispatch('projects/grid', this.$route.params.id);
         },
         methods: {
             hasAccepted(user, date) {
-                if (date.type === 'rehearsal') {
-                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && rehearsal.pivot.accepted && rehearsal.pivot.confirmed).length > 0;
-                }
-
-                if (date.type === 'concert') {
-                    return user.concerts.filter(concert => concert.id === date.id && concert.pivot.accepted && concert.pivot.confirmed).length > 0;
-                }
+                return date.participants.filter(participant => participant.id === user.id && participant.accepted === true).length > 0;
             },
             hasDeclined(user, date) {
-                if (date.type === 'rehearsal') {
-                    return user.rehearsals.filter(rehearsal => rehearsal.id === date.id && (!rehearsal.pivot.accepted || rehearsal.pivot.confirmed === 0)).length > 0;
-                }
-
-                if (date.type === 'concert') {
-                    return user.concerts.filter(concert => concert.id === date.id && (!concert.pivot.accepted || concert.pivot.confirmed === 0)).length > 0;
-                }
+                return date.participants.filter(participant => participant.id === user.id && participant.accepted === false).length > 0;
+            },
+            isExcused(user, date) {
+                return date.participants.filter(participant => participant.id === user.id && participant.excused === true).length > 0;
             }
         }
     }

@@ -9,6 +9,9 @@ export default {
         state.user = user;
     },
     SELECT(state, users) {
-        state.selected = users;
+        Vue.set(state, 'selected', users);
+    },
+    DESELECT(state) {
+        Vue.set(state, 'selected', []);
     }
 }

@@ -12,9 +12,14 @@
             <span v-if="info" class="oi oi-info" v-b-tooltip.hover :title="info"></span>
         </label>
         <textarea v-on="inputListeners" v-if="type === 'textarea'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control"></textarea>
-        <select v-on="inputListeners" v-else-if="type === 'select'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control">
-            <option v-for="(option, key) in options" :value="key" :key="key" :selected="value === key">{{ option }}</option>
+        <select v-else-if="type === 'select'" v-validate="validate" :name="name" :id="name" v-model="val"
+                class="form-control">
+            <option v-for="(option, key) in options" :value="key" :key="key" :selected="val === key">{{ option }}
+            </option>
         </select>
+        <multiselect v-else-if="type === 'multiselect'" v-validate="validate" selectLabel="" deselectLabel=""
+                     :options="options" :name="`${name}[]`" :id="name" label="label" track-by="value"
+                     multiple="multiple" v-model="val"></multiselect>
         <datetime v-else-if="isDatetime" value-zone="UTC+1" :type="type" input-class="form-control" v-model="val" :name="name" :id="name"></datetime>
         <input v-on="inputListeners" v-else v-validate="validate" :type="type" :name="name" :id="name" v-model="val" class="form-control">
 
@@ -29,7 +34,7 @@
         name: 'form-group',
         props: {
             value: {
-                type: [String, Boolean, Number, Object]
+                type: [String, Boolean, Number, Object, Array]
             },
             name: {
                 type: String,
@@ -48,7 +53,7 @@
                 default: false
             },
             options: {
-                type: Object,
+                type: [Object, Array],
                 default() {
                     return {};
                 }
@@ -80,18 +85,16 @@
             },
             isDatetime () {
                 return this.type === 'datetime' || this.type === 'date' || this.type === 'time';
-            }
-        },
-        data () {
-            return {
-                val: this.type === 'datetime' || this.type === 'date' ?
-                    moment(this.value).toISOString()
-                    : this.value
-            }
-        },
-        watch: {
-            val(val) {
-                this.$emit('input', val);
+            },
+            val: {
+                get() {
+                    return this.type === 'datetime' || this.type === 'date' ?
+                        moment(this.value).toISOString()
+                        : this.value
+                },
+                set(val) {
+                    this.$emit('input', val);
+                }
             }
         }
     }

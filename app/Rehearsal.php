@@ -48,7 +48,7 @@ class Rehearsal extends Model
     public function participants()
     {
         return $this->belongsToMany('App\User', 'user_rehearsal')
-            ->withPivot('accepted')
+            ->withPivot(['accepted', 'confirmed', 'excused'])
             ->withTimestamps();
     }
 

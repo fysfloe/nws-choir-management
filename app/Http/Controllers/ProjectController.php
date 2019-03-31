@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Comment;
 use App\Events\ProjectAnsweredEvent;
 use App\Http\Requests\StoreProject;
+use App\Http\Resources\ProjectGridResource;
 use App\Http\Resources\ProjectListResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\UserResource;
@@ -63,7 +64,7 @@ class ProjectController extends Controller
         $projects = (new GetFilteredProjectsService())
             ->handle(Auth::user(), $request->get('search'), $request->get('sort'), $request->get('dir'));
 
-        return json_encode(ProjectResource::collection($projects));
+        return json_encode(ProjectListResource::collection($projects));
     }
 
     /**
@@ -207,17 +208,10 @@ class ProjectController extends Controller
         return response()->json(UserResource::collection($users));
     }
 
-    public function voices(Request $request, Project $project)
-    {
-        $this->breadcrumbs->addCrumb($project->title, $project->slug);
-
-        return view('project.voices')->with([
-            'tab' => 'voices',
-            'project' => $project,
-            'breadcrumbs' => $this->breadcrumbs
-        ]);
-    }
-
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse|Response
+     */
     public function accept(Project $project)
     {
         $user = Auth::user();
@@ -232,6 +226,10 @@ class ProjectController extends Controller
         return response()->json(new ProjectResource($project));
     }
 
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function decline(Project $project)
     {
         $user = Auth::user();
@@ -243,98 +241,32 @@ class ProjectController extends Controller
         return response()->json(new ProjectResource($project));
     }
 
-    public function addVoices(Request $request, Project $project)
-    {
-        $voices = Voice::getListForSelect();
-
-        return view('project.addVoices')->with([
-            'project' => $project,
-            'voices' => $voices
-        ]);
-    }
-
-    public function editVoices(Request $request, Project $project)
-    {
-        $voices = Voice::all();
-
-        return view('project.editVoices')->with([
-            'project' => $project,
-            'voices' => $voices
-        ]);
-    }
-
-    public function saveVoices(Request $request, Project $project)
-    {
-        $voices = $request->get('voices');
-        $voiceNumbers = $request->get('voiceNumbers');
-
-        foreach ($voices as $key => $voice) {
-            $number = $voiceNumbers[$key];
-
-            if (!$number) {
-                $number = 1;
-            }
-
-            if ($voice !== null) {
-                $project->voices()->syncWithoutDetaching([$voice => ['number' => $number]]);
-            }
-        }
-
-        $request->session()->flash('alert-success', __('Voices successfully added.'));
-
-        return redirect()->route('project.participants', $project);
-    }
-
-    public function removeVoice(Request $request, Project $project, Voice $voice)
-    {
-        $project->voices()->detach($voice);
-
-        // $promisesWithVoice = $concert->promises()->wherePivot('voice_id', $voice->id)->get();
-        // $concert->promises()->detach($promisesWithVoice);
-
-        $request->session()->flash('alert-success', __('Voice successfully removed.'));
-
-        return redirect()->route('project.participants', $project);
-    }
-
-    public function showSetUserVoice(Request $request, Project $project, User $user)
-    {
-        $voices = Voice::getListForSelect();
-
-        $voice_id = $project->participants()->find($user->id)->pivot->voice_id;
-
-        return view('project.setUserVoice')->with([
-            'project' => $project,
-            'user' => $user,
-            'voices' => $voices,
-            'voice_id' => $voice_id
-        ]);
-    }
-
-    public function setUserVoice(Request $request, Project $project, User $user)
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setVoice(Request $request, Project $project)
     {
         $voice_id = $request->get('voice');
 
-        $project->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $voice_id]]);
-        $user->voices()->syncWithoutDetaching([$voice_id]);
+        $users = User::find($request->get('users'));
 
-        $request->session()->flash('alert-success', __('Voice successfully set.'));
+        foreach ($users as $user) {
+            $project->participants()->syncWithoutDetaching([$user->id => ['voice_id' => $voice_id]]);
+            $user->voices()->syncWithoutDetaching([$voice_id]);
+        }
 
-        return redirect()->route('project.participants', $project);
+        return response()->json();
     }
 
-    public function showSetUserVoices(Request $request, Project $project)
-    {
-        $users = $request->get('users');
-
-        return view('project.setUserVoices')->with([
-            'project' => $project,
-            'users' => $users,
-            'voices' => Voice::getListForSelect()
-        ]);
-    }
-
-    public function setUserVoices(Request $request, Project $project)
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setVoices(Request $request, Project $project)
     {
         $users = json_decode($request->get('users'));
         $voice_id = $request->get('voice');
@@ -348,27 +280,27 @@ class ProjectController extends Controller
 
         $request->session()->flash('alert-success', __('Voice successfully set.'));
 
-        return redirect()->route('project.participants', $project);
+        return response()->json();
     }
 
-    public function showAddUser(Request $request, Project $project)
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function otherUsers(Project $project)
     {
         $projectUsers = $project->promises()->pluck('id')->toArray();
         $users = User::whereNotIn('id', $projectUsers)->orderBy('surname')->get();
 
-        $usersForSelect = [];
-
-        foreach ($users as $user) {
-            $usersForSelect[$user->id] = "$user->firstname $user->surname";
-        }
-
-        return view('project.addUser')->with([
-            'project' => $project,
-            'users' => $usersForSelect
-        ]);
+        return response()->json(UserResource::collection($users));
     }
 
-    public function addUser(Request $request, Project $project)
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addParticipants(Request $request, Project $project)
     {
         $usersToAdd = $request->get('users');
 
@@ -380,11 +312,31 @@ class ProjectController extends Controller
             event(new ProjectAnsweredEvent($project, $user, true));
         }
 
-        return redirect()->route('project.participants', $project);
+        return response()->json();
+    }
+
+    /**
+     * @param Request $request
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeParticipants(Request $request, Project $project)
+    {
+        $users = $request->get('users');
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+
+            $project->participants()->detach($user);
+        }
+
+        return response()->json();
     }
 
     public function exportParticipants(Request $request, Project $project)
     {
+        return (new ProjectUsersExport($project))->download('project_participants.xlsx');
+
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
@@ -398,36 +350,9 @@ class ProjectController extends Controller
         })->download('csv');
     }
 
-    public function removeParticipant(Project $project, Request $request)
-    {
-        $user = User::find($request->get('user_id'));
-        
-        if ($user !== null) {
-            $project->participants()->detach($user);
-
-            $request->session()->flash('alert-success', __('Participant successfully removed from the project.'));
-        } else {
-            $request->session()->flash('alert-danger', __('Participant could not be found.'));
-        }
-
-        return redirect()->back();
-    }
-
-    public function removeParticipants(Project $project, Request $request)
-    {
-        $users = $request->get('users');
-
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-
-            $project->participants()->detach($user);
-        }
-
-        return response()->json([
-            'message' => __('Participants successfully removed from the project.')
-        ]);
-    }
-
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function options()
     {
         $projects = Project::where('deleted_at', '=', null)
@@ -441,5 +366,14 @@ class ProjectController extends Controller
         }
 
         return response()->json($projectOptions);
+    }
+
+    /**
+     * @param Project $project
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function grid(Project $project)
+    {
+        return response()->json(new ProjectGridResource($project));
     }
 }
