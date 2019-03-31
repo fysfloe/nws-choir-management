@@ -20,7 +20,7 @@ class SemesterResource extends Resource
             'name' => $this->name,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
-            'projects' => ProjectResource::collection($this->projects),
+            'projects' => ProjectListResource::collection($this->projects),
             'accepted' => $this->promises->contains(Auth::user()),
             'declined' => $this->denials->contains(Auth::user()),
             'deadline' => $this->deadline

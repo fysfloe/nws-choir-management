@@ -23,7 +23,7 @@ class ConcertResource extends Resource
             'date' => $this->date,
             'start_time' => (new \DateTime($this->start_time))->format('H:i'),
             'end_time' => (new \DateTime($this->end_time))->format('H:i'),
-            'rehearsals' => $this->project ? RehearsalResource::collection($this->project->rehearsals) : [],
+            'rehearsals' => $this->project ? RehearsalListResource::collection($this->project->rehearsals) : [],
             'project' => new ProjectListResource($this->project),
             'project_id' => $this->project_id,
             'semester_id' => $this->project ? $this->project->semester->id : null,
