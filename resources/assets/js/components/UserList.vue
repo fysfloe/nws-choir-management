@@ -234,7 +234,7 @@
             },
             permission () {
                 if (this.type) {
-                    let permission = 'canManage' + this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                    let permission = 'canManage' + this.type.charAt(0).toUpperCase() + this.type.slice(1) + 's';
 
                     return this.currentUser[permission];
                 } else {

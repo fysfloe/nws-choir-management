@@ -1,6 +1,7 @@
 {
   "Register": "Registrieren",
   "First Name": "Vorname",
+  "Firstname": "Vorname",
   "Surname": "Nachname",
   "E-Mail Address": "E-Mail-Adresse",
   "Gender": "Geschlecht",
@@ -235,5 +236,10 @@
   "No concerts found that belong to the project.": "Keine Konzerte zu diesem Projekt gefunden.",
   "No rehearsals found that belong to the project.": "Keine Proben zu diesem Projekt gefunden.",
   "Create Concert": "Konzert erstellen",
-  "Create Project": "Projekt erstellen"
+  "Create Project": "Projekt erstellen",
+  "Remove": "Entfernen",
+  "To do": "To do",
+  "Do you really want to remove this rehearsal?": "Diese Probe wirklich entfernen?",
+  "Deadline": "Deadline",
+  "Do you really want to delete this project?": "Dieses Projekt wirklich löschen?"
 }

@@ -2,6 +2,7 @@ export default {
     "de": {
         "Register": "Registrieren",
         "First Name": "Vorname",
+        "Firstname": "Vorname",
         "Surname": "Nachname",
         "E-Mail Address": "E-Mail-Adresse",
         "Gender": "Geschlecht",
@@ -237,6 +238,10 @@ export default {
         "No rehearsals found that belong to the project.": "Keine Proben zu diesem Projekt gefunden.",
         "Create Concert": "Konzert erstellen",
         "Create Project": "Projekt erstellen",
+        "Remove": "Entfernen",
+        "To do": "To do",
+        "Do you really want to remove this rehearsal?": "Diese Probe wirklich entfernen?",
+        "Deadline": "Deadline",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",

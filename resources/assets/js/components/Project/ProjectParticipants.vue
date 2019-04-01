@@ -32,12 +32,6 @@
                     v-show="view === 'list'"
                     :users="participants"
                     :show-roles="false"
-                    :sort-options="{
-                        firstname: $t('First Name'),
-                        surname: $t('Surname'),
-                        voice: $t('Voice'),
-                        id: $t('Created at')
-                    }"
                     :remove-participants-route="`/projects/${project.id}`"
                     :actions="['removeParticipant', 'setVoice', 'editProfile']"
             ></user-list>

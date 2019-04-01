@@ -30,6 +30,8 @@ $enable-flex: true !default;
 @import "flash";
 @import "datepicker";
 @import "multiselect";
+@import "confirm";
+@import "~vuejs-dialog/dist/vuejs-dialog.min.css";
 
 .navbar-dark .navbar-brand {
     font-family: "Pacifico", cursive;

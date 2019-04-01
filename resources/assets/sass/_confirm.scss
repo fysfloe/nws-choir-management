@@ -1,0 +1,47 @@
+.dg-main-content {
+  border-radius: 0;
+  padding: 0;
+}
+
+.dg-content-body {
+  border: none;
+  padding: 1.75rem;
+}
+
+.dg-content-footer {
+  padding: 0;
+  display: flex;
+
+  button {
+    border-radius: 0;
+    width: 50%;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0;
+    padding: 1em 0;
+
+    &.dg-btn--cancel {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d;
+
+      &:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+      }
+    }
+
+    &.dg-btn--ok {
+      color: white;
+      background-color: $brand-primary;
+      border-color: $brand-primary;
+
+      &:hover {
+        color: white;
+        background-color: darken($brand-primary, 10);
+        border-color: darken($brand-primary, 10);
+      }
+    }
+  }
+}
