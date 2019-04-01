@@ -244,7 +244,8 @@
         },
         mounted() {
             if (!this.users) {
-                this.$store.dispatch('users/fetch');
+                this.$store.dispatch('users/fetch')
+                    .then(() => this.loading = false);
             }
 
             this.$store.dispatch('voices/options');
