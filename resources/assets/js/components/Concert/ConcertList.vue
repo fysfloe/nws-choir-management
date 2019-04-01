@@ -120,7 +120,7 @@
         data() {
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                loading: false,
+                loading: true,
                 activeFilters: {},
                 filters: {
                     sort: 'date',
