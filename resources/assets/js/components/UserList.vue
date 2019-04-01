@@ -246,6 +246,8 @@
             if (!this.users) {
                 this.$store.dispatch('users/fetch')
                     .then(() => this.loading = false);
+            } else {
+                this.loading = false;
             }
 
             this.$store.dispatch('voices/options');
