@@ -1,7 +1,7 @@
 <template>
     <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
         <div class="row">
-            <div class="col-8">
+            <div class="col-md-8">
                 <div class="description">
                     <h3>{{ $t('Description') }}</h3>
                     <span v-if="project.description">{{ project.description }}</span>
@@ -9,7 +9,7 @@
                 </div>
             </div>
 
-            <div class="col-4 side-box">
+            <div class="col-md-4 side-box">
                 <concert-side-list
                         class="mb-4"
                         :concerts="project.concerts"
@@ -29,6 +29,7 @@
 <script>
     import ConcertSideList from "../Concert/ConcertSideList";
     import RehearsalSideList from "../Rehearsal/RehearsalSideList";
+
     export default {
         components: {RehearsalSideList, ConcertSideList},
         computed: {

@@ -9,6 +9,9 @@ $enable-flex: true !default;
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
 
 @import "forms";
 @import "buttons";
@@ -84,13 +87,29 @@ a {
     display: flex;
     align-items: stretch;
 
-    #sidebar {
+    #navContent {
+        align-items: flex-start;
         min-width: 200px;
         max-width: 200px;
         min-height: 100vh;
 
         background: $lightgrey;
         border-right: $light-border;
+
+        @include media-breakpoint-down(sm) {
+            max-width: 100vw;
+            width: 100vw;
+            position: fixed;
+            z-index: 1000;
+            min-height: auto;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 100%;
+        }
 
         .nav-item {
             border-bottom: $light-border;

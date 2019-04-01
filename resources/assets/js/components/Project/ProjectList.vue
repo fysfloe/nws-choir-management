@@ -21,7 +21,7 @@
 
         <div class="list-table" v-else-if="items.length > 0">
             <header class="row">
-                <div :class="{'col-md-10': true, 'has-checkbox': currentUser.canManageProjects}">
+                <div :class="{'col-10': true, 'has-checkbox': currentUser.canManageProjects}">
                     <input v-if="currentUser.canManageProjects" type="checkbox" @click="checkAll" class="check-all" :checked="checkedAll">&nbsp;
 
                     <div class="dropdown list-actions" v-if="selectedItems.length > 0">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 row-count">
+                <div class="col-2 row-count">
                     {{ $t('Total') + ': ' + items.length }}
                 </div>
             </header>
@@ -59,10 +59,10 @@
             <ul class="projects">
                 <router-link :to="`/projects/${project.id}`" v-for="project in items" :key="project.id">
                     <li class="row align-items-center">
-                        <div class="col-md-11">
+                        <div class="col-10">
                             <div class="flex align-items-center">
                                 <input v-if="currentUser.canManageProjects" type="checkbox" @click.stop="toggleItem($event, project.id)" :value="project.id" :checked="selectedItems.indexOf(project.id) !== -1">&nbsp;
-                                <div class="avatar avatar-default">
+                                <div class="avatar avatar-default d-none d-md-block">
                                     <span class="oi oi-musical-note"></span>
                                 </div>
                                 <div class="name">
@@ -74,8 +74,8 @@
                                     </small>
                                     <div>
                                         <small class="text-muted">
-                                            <span class="oi oi-plus"></span> {{ project.created_at }}
-                                            <span class="ml-2" v-if="currentUser.canManageProjects">
+                                            <span class="mr-2 d-none d-md-inline"><span class="oi oi-plus"></span> {{ project.created_at }}</span>
+                                            <span v-if="currentUser.canManageProjects">
                                                 <span class="oi oi-person"></span> {{ project.creator }}
                                             </span>
                                         </small>
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-1 actions" v-if="currentUser.canManageProjects">
+                        <div class="col-2 actions" v-if="currentUser.canManageProjects">
                             <b-dropdown variant="link" no-caret>
                                 <template slot="button-content">
                                     <span class="oi oi-ellipses"></span>

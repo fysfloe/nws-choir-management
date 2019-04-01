@@ -18,13 +18,13 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-dark">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                data-target="#navContent" aria-controls="navContent" aria-expanded="false"
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Chorganizer') }}</a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse">
             <!-- Left Side Of Navbar -->
             <div class="mr-auto">&nbsp;</div>
 
@@ -73,44 +73,68 @@
     </nav>
 
     <div class="wrapper">
-        <nav id="sidebar">
-            <ul class="navbar-nav">
-                @guest
-                @else
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/">
-                            <span class="oi oi-dashboard"></span>&nbsp;
-                            {{ __('Dashboard') }}
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/semesters" class="nav-link" active-class="active">
-                            <span class="oi oi-calendar"></span>&nbsp;
-                            {{ __('Semesters') }}
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/projects" class="nav-link" active-class="active">
-                            <span class="oi oi-project"></span>&nbsp;
-                            {{ __('Projects') }}
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/concerts" class="nav-link" active-class="active">
-                            <span class="oi oi-musical-note"></span>&nbsp;
-                            {{ __('Concerts') }}
-                        </router-link>
-                    </li>
-                    @if (Auth::user()->can('manageUsers'))
+        <nav id="sidebar" class="navbar-nav navbar-expand-md">
+            <div id="navContent" class="collapse navbar-collapse">
+                <ul>
+                    @guest
+                    @else
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/admin/users" active-class="active">
-                                <span class="oi oi-people"></span>&nbsp;
-                                {{ __('Users') }}
+                            <router-link class="nav-link" to="/">
+                                <span class="oi oi-dashboard"></span>&nbsp;
+                                {{ __('Dashboard') }}
                             </router-link>
                         </li>
-                    @endif
-                @endguest
-            </ul>
+                        <li class="nav-item">
+                            <router-link to="/semesters" class="nav-link" active-class="active">
+                                <span class="oi oi-calendar"></span>&nbsp;
+                                {{ __('Semesters') }}
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/projects" class="nav-link" active-class="active">
+                                <span class="oi oi-project"></span>&nbsp;
+                                {{ __('Projects') }}
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/concerts" class="nav-link" active-class="active">
+                                <span class="oi oi-musical-note"></span>&nbsp;
+                                {{ __('Concerts') }}
+                            </router-link>
+                        </li>
+                        @if (Auth::user()->can('manageUsers'))
+                            <li class="nav-item">
+                                <router-link class="nav-link" to="/admin/users" active-class="active">
+                                    <span class="oi oi-people"></span>&nbsp;
+                                    {{ __('Users') }}
+                                </router-link>
+                            </li>
+                        @endif
+                    @endguest
+                </ul>
+
+                <ul class="mt-3 d-block d-md-none">
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/profile/edit/{{ Auth::user()->id }}">
+                            <span class="oi oi-person"></span>&nbsp;
+                            {{ __('My Profile') }}
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                            <span class="oi oi-account-logout"></span>&nbsp;
+                            {{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                              style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </nav>
         <section id="content" class="container">
             <div class="flash-message">

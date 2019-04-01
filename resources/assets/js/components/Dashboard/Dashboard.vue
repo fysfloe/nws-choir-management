@@ -7,7 +7,7 @@
                 <h2>{{ $t('Dashboard') }}</h2>
             </header>
             <div class="row dashboard">
-                <div class="col-8">
+                <div class="col-md-8">
                     <h3>
                         <span class="oi oi-calendar"></span> {{ $t('Current Semester') }}
                         <small v-if="semester" class="text-muted">{{ semester.name }}</small>
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col dashboard-box">
+                            <div class="col-md dashboard-box">
                                 <h4>
                                     {{ $t('Concerts') }}
                                     <small>(<router-link to="/concerts">{{ $t('Show all') }}</router-link>)</small>
@@ -63,7 +63,7 @@
                                 </ul>
                                 <small v-else class="text-muted">{{ $t('No concerts this semester.') }}</small>
                             </div>
-                            <div class="col dashboard-box">
+                            <div class="col-md dashboard-box">
                                 <h4>{{ $t('Rehearsals') }}</h4>
                                 <ul v-if="semester.rehearsals.length > 0" class="rehearsals">
                                     <router-link v-for="rehearsal in semester.rehearsals" :to="`/rehearsals/${rehearsal.id}`" :key="rehearsal.id">
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4 side-box">
+                <div class="col-md-4 side-box">
                     <div>
                         <h3><span class="oi oi-task"></span> {{ $t('To do') }}</h3>
                         <ul v-if="hasTodos" class="todos">
