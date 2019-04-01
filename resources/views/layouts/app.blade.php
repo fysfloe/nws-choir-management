@@ -115,7 +115,7 @@
 
                 <ul class="mt-3 d-block d-md-none">
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/profile/edit/{{ Auth::user()->id }}">
+                        <router-link class="nav-link" to="/profile/edit/{{ Auth::user() ? Auth::user()->id : '' }}">
                             <span class="oi oi-person"></span>&nbsp;
                             {{ __('My Profile') }}
                         </router-link>
