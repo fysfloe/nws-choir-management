@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Rehearsal;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,9 +33,9 @@ class RehearsalResource extends Resource
             'accepted' => $this->promises->find(Auth::user()) !== null,
             'declined' => $this->denials->find(Auth::user()) !== null,
             'deadline' => $this->deadline,
-            'other_rehearsals' => RehearsalResource::collection($this->project->rehearsals->filter(function (Rehearsal $rehearsal) {
-                return $rehearsal->id !== $this->id;
-            })->values()),
+//            'other_rehearsals' => RehearsalResource::collection($this->project->rehearsals->filter(function (Rehearsal $rehearsal) {
+//                return $rehearsal->id !== $this->id;
+//            })->values()),
             'description' => $this->description,
             'project_id' => $this->project_id,
             'semester_id' => $this->semester_id
