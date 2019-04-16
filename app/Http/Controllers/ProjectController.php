@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Events\ProjectAnsweredEvent;
+use App\Exports\ProjectUsersExport;
 use App\Http\Requests\StoreProject;
 use App\Http\Resources\ProjectGridResource;
 use App\Http\Resources\ProjectListResource;

@@ -144,6 +144,14 @@ class Rehearsal extends Model
         return $dateString;
     }
 
+    /**
+     * @return string
+     */
+    public function spreadSheetHeading(): string
+    {
+        return __('Rehearsal') . ' (' . $this->date->format('d.m.Y') . ')';
+    }
+
     public function title()
     {
         return __('Rehearsal') . ': ' . $this->date->format('d.m.Y');

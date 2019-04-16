@@ -108,6 +108,14 @@ class Concert extends Model
         return $date;
     }
 
+    /**
+     * @return string
+     */
+    public function spreadSheetHeading(): string
+    {
+        return $this->title . ' (' . (new \DateTime($this->date))->format('d.m.Y') . ')';
+    }
+
     public static function getListForSelect()
     {
         $concerts = [];

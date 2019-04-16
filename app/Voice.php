@@ -12,7 +12,7 @@ class Voice extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug'
+        'name', 'slug', 'rank'
     ];
 
     /**
