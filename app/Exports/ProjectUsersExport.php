@@ -91,11 +91,9 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
                     $accepted = 'o';
                 } else if ($participant->pivot->excused) {
                     $accepted = 'e';
-                } else if ($participant->pivot->accepted && !$participant->pivot->confirmed) {
+                } else {
                     $accepted = 'x';
                 }
-            } else {
-                $accepted = 'x';
             }
 
             $mappedUser[] = $accepted;
