@@ -11,8 +11,8 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Events\AfterSheet;
-use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Conditional;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithEvents
 {
@@ -29,6 +29,7 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
 
     /**
      * @param Project $project
+     * @param Collection $users
      */
     public function __construct(Project $project)
     {
@@ -45,7 +46,7 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
      */
     public function collection()
     {
-        return $this->project->participants;
+        return $this->project->participants->sortBy('surname');
     }
 
     /**
@@ -82,7 +83,22 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
         ];
 
         foreach ($this->concertsAndRehearsals as $concertOrRehearsal) {
-            $mappedUser[] = $concertOrRehearsal->participants->contains($user) ? 'o' : 'x';
+            $participant = $concertOrRehearsal->participants->find($user);
+            $accepted = '?';
+
+            if ($participant) {
+                if ($participant->pivot->accepted && $participant->pivot->confirmed) {
+                    $accepted = 'o';
+                } else if ($participant->pivot->excused) {
+                    $accepted = 'e';
+                } else if ($participant->pivot->accepted && !$participant->pivot->confirmed) {
+                    $accepted = 'x';
+                }
+            } else {
+                $accepted = 'x';
+            }
+
+            $mappedUser[] = $accepted;
         }
 
         return $mappedUser;
@@ -97,14 +113,28 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
             AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setBold(true);
 
-                $conditions = [];
                 $conditional1 = new Conditional();
                 $conditional1->setConditionType(Conditional::CONDITION_CONTAINSTEXT);
-                $conditional1->setOperatorType(Conditional::OPERATOR_EQUAL);
-                $conditional1->addCondition('x');
-                $conditional1->getStyle()->getFont()->getColor()->setARGB(Color::COLOR_RED);
+                $conditional1->setOperatorType(Conditional::OPERATOR_BEGINSWITH);
+                $conditional1->setText('x');
+                $conditional1->getStyle()->getFill()->setFillType(Fill::FILL_SOLID);
+                $conditional1->getStyle()->getFill()->getEndColor()->setRGB('F5C6CB');
 
-                $conditions[] = $conditional1;
+                $conditional2 = new Conditional();
+                $conditional2->setConditionType(Conditional::CONDITION_CONTAINSTEXT);
+                $conditional2->setOperatorType(Conditional::OPERATOR_BEGINSWITH);
+                $conditional2->setText('o');
+                $conditional2->getStyle()->getFill()->setFillType(Fill::FILL_SOLID);
+                $conditional2->getStyle()->getFill()->getEndColor()->setRGB('C3E6CB');
+
+                $conditional3 = new Conditional();
+                $conditional3->setConditionType(Conditional::CONDITION_CONTAINSTEXT);
+                $conditional3->setOperatorType(Conditional::OPERATOR_BEGINSWITH);
+                $conditional3->setText('e');
+                $conditional3->getStyle()->getFill()->setFillType(Fill::FILL_SOLID);
+                $conditional3->getStyle()->getFill()->getEndColor()->setRGB('FFEEBA');
+
+                $conditions = [$conditional1, $conditional2, $conditional3];
 
                 $event->sheet->getDelegate()->getStyle('E2:Z200')->setConditionalStyles($conditions);
             },

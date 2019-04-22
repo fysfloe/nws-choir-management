@@ -337,21 +337,13 @@ class ProjectController extends Controller
         return response()->json();
     }
 
-    public function exportParticipants(Request $request, Project $project)
+    /**
+     * @param Project $project
+     * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportParticipants(Project $project)
     {
-        return (new ProjectUsersExport($project))->download('project_participants.xlsx');
-
-        $filters = $request->all();
-
-        $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
-
-        Excel::create('user_export', function ($excel) use ($users) {
-            $excel->sheet('users', function($sheet) use ($users) {
-
-                $sheet->fromArray($users);
-
-            });
-        })->download('csv');
+        return (new ProjectUsersExport($project))->download($project->title . '_participants.xlsx');
     }
 
     /**

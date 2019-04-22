@@ -24,7 +24,7 @@
                 <rehearsal-side-list
                         class="mb-4"
                         :rehearsals="concert.rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsals/create?project_id=${concert.project.id}&semester_id=${concert.semester_id}`"
+                        :add-rehearsal-route="`/admin/rehearsals/create` + (concert.project ? `?project_id=${concert.project.id}&` : '?') + `semester_id=${concert.semester_id}`"
                         :can-manage-rehearsals="currentUser.canManageRehearsals"
                         :user="currentUser"
                 ></rehearsal-side-list>
@@ -42,6 +42,7 @@
 
 <script>
     import RehearsalSideList from "../Rehearsal/RehearsalSideList";
+
     export default {
         components: {RehearsalSideList},
         computed: {
