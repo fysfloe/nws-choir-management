@@ -168,9 +168,9 @@
 
 <script>
     import FormGroup from "../FormGroup";
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
     import PictureInput from 'vue-picture-input'
-    import { mapFields } from 'vuex-map-fields';
+    import {mapFields} from 'vuex-map-fields';
     import ResourceForm from '../ResourceForm';
 
     export default {
@@ -212,10 +212,27 @@
         },
         mounted () {
             if (this.$route.params.id) {
-                this.$store.dispatch('users/show', this.$route.params.id)
+                this.$store.dispatch('users/SHOW', this.$route.params.id)
                     .then(() => this.loading = false);
             } else {
                 this.loading = false;
+                this.$store.commit('users/SHOW', {
+                    firstname: '',
+                    surname: '',
+                    username: '',
+                    birthdate: '',
+                    country_id: null,
+                    non_singing: false,
+                    voice_id: null,
+                    email: '',
+                    phone: '',
+                    address: {
+                        street: '',
+                        zip: '',
+                        city: '',
+                        country_id: null
+                    }
+                });
             }
 
             if (Object.entries(this.countries).length === 0) {
