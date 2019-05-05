@@ -4,7 +4,7 @@
             <div class="col-md-8">
                 <div class="description">
                     <h3>{{ $t('Description') }}</h3>
-                    <span v-if="project.description">{{ project.description }}</span>
+                    <span v-if="project.description" v-html="project.description"></span>
                     <small v-else class="text-muted">{{ $t('No description added.') }}</small>
                 </div>
             </div>

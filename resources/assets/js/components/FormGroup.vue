@@ -12,6 +12,7 @@
             <span v-if="info" class="oi oi-info" v-b-tooltip.hover :title="info"></span>
         </label>
         <textarea v-on="inputListeners" v-if="type === 'textarea'" v-validate="validate" :name="name" :id="name" v-model="val" class="form-control"></textarea>
+        <ckeditor v-if="type === 'ckeditor'" v-validate="validate" :editor="editor" v-model="val" :config="editorConfig"></ckeditor>
         <select v-else-if="type === 'select'" v-validate="validate" :name="name" :id="name" v-model="val"
                 class="form-control">
             <option v-for="(option, key) in options" :value="key" :key="key" :selected="val === key">{{ option }}
@@ -30,8 +31,14 @@
 </template>
 
 <script>
+    import CKEditor from '@ckeditor/ckeditor5-vue';
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
     export default {
         name: 'form-group',
+        components: {
+            ckeditor: CKEditor.component
+        },
         props: {
             value: {
                 type: [String, Boolean, Number, Object, Array]
@@ -63,6 +70,12 @@
             },
             validate: {
                 type: String
+            }
+        },
+        data () {
+            return {
+                editor: ClassicEditor,
+                editorConfig: {}
             }
         },
         inject: ['$validator'],

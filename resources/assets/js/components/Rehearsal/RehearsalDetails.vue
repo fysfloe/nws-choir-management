@@ -23,7 +23,7 @@
 
                 <div class="description">
                     <h3>{{ $t('Description') }}</h3>
-                    <span v-if="rehearsal.description">{{ rehearsal.description }}</span>
+                    <span v-if="rehearsal.description" v-html="rehearsal.description"></span>
                     <small v-else class="text-muted">{{ $t('No description added.') }}</small>
                 </div>
             </div>

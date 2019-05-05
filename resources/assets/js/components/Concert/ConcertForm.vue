@@ -27,7 +27,7 @@
                             :label="$t('Description')"
                             v-model="description"
                             name="description"
-                            type="textarea"
+                            type="ckeditor"
                     ></form-group>
 
                     <form-group
