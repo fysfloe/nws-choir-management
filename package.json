@@ -29,6 +29,7 @@
     "popper.js": "^1.14.7",
     "tempusdominus-bootstrap-4": "^5.1.2",
     "vee-validate": "^2.2.0",
+    "vue-click-outside": "^1.0.7",
     "vue-datetime": "^1.0.0-beta.10",
     "vue-flash-message": "^0.7.2",
     "vue-i18n": "^8.9.0",
