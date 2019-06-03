@@ -82,7 +82,9 @@
         },
         mounted () {
             if (!this.$route.params.id) {
-                this.$store.commit('semesters/SHOW', {});
+                this.$store.commit('semesters/SHOW', {
+                    name: ''
+                });
             }
         }
     }
