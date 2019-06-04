@@ -24,6 +24,13 @@
                     ></form-group>
 
                     <form-group
+                            :label="$t('Description')"
+                            v-model="description"
+                            name="description"
+                            type="ckeditor"
+                    ></form-group>
+
+                    <form-group
                             :label="$t('Start date')"
                             v-model="start_date"
                             name="start_date"
@@ -75,6 +82,7 @@
             }),
             ...mapFields('semesters', {
                 name: 'semester.name',
+                description: 'semester.description',
                 start_date: 'semester.start_date',
                 end_date: 'semester.end_date',
                 deadline: 'semester.deadline'

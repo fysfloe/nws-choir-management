@@ -18,6 +18,7 @@ class SemesterResource extends Resource
         $semester = [
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'projects' => ProjectListResource::collection($this->projects),

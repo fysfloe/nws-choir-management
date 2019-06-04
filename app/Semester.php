@@ -22,7 +22,7 @@ class Semester extends Model
      * @var array
      */
     protected $fillable = [
-        'start_date', 'end_date', 'created_by', 'name', 'deadline'
+        'start_date', 'end_date', 'created_by', 'name', 'deadline', 'description'
     ];
 
     /**
