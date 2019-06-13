@@ -51,11 +51,14 @@ class ConcertController extends Controller
     /**
      * @param StoreConcert $request
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function store(StoreConcert $request)
     {
         $concert = $request->all();
         $concert['slug'] = str_slug($concert['title'], '-');
+        $concert['start_time'] = (new \DateTime($concert['start_time']))->format('H:i');
+        $concert['end_time'] = (new \DateTime($concert['end_time']))->format('H:i');
 
         $concert = Auth::user()->concertsCreated()->create($concert);
         $semester = Semester::find($concert->semester_id);
