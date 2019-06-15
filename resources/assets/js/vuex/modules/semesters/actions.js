@@ -64,7 +64,7 @@ export default {
             .catch();
     },
     accept({ commit }, { id, userId }) {
-        let path = `${path}/accept/${id}`;
+        let path = `${paths.semesters}/accept/${id}`;
 
         if (userId) {
             path += `/${userId}`;
@@ -75,7 +75,7 @@ export default {
             .catch();
     },
     decline({ commit }, { id, userId }) {
-        let path = `${path}/decline/${id}`;
+        let path = `${paths.semesters}/decline/${id}`;
 
         if (userId) {
             path += `/${userId}`;
