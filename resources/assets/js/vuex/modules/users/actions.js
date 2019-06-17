@@ -37,5 +37,10 @@ export default {
     setVoice({ commit }, params) {
         axios.post(`${paths.voices}/set_multi`, params)
             .then(() => this.dispatch('users/fetch'));
+    },
+    delete({}, id) {
+        axios.delete(`${paths.users}/${id}`)
+            .then(() => this.dispatch('users/fetch'))
+            .catch();
     }
 }

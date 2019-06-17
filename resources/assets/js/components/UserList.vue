@@ -29,7 +29,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="userActions">
-                            <a v-if="hasAction('archive')" class="dropdown-item" href="/admin/users/multiArchive" @click.prevent="postUserAction($event, true, $t('Do you really want to archive these users?'))">
+                            <a v-if="hasAction('archive')" class="dropdown-item" href="/admin/users/multiArchive" @click.prevent="removeParticipants">
                                 <span class="oi oi-box"></span> {{ $t('Archive') }}
                             </a>
                             <a v-b-modal.multiSetVoiceModal v-if="hasAction('setVoice')" class="dropdown-item">
@@ -284,6 +284,8 @@
                                 id: this.resource.id,
                                 userIds: [id]
                             });
+                        } else {
+                            this.$store.dispatch('users/delete', id);
                         }
 
                         this.$store.commit('users/DESELECT');
