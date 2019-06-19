@@ -1,6 +1,6 @@
 <template>
     <div v-if="type === 'checkbox'" class="form-check">
-        <input v-on="inputListeners" v-validate="validate" class="form-check-input" type="checkbox" v-model="val" :id="name" :name="name">
+        <input v-validate="validate" class="form-check-input" type="checkbox" v-model="val" :id="name" :name="name">
         <label :for="name" class="form-check-label">
             {{ label }}
             <span v-if="info" class="oi oi-info" v-b-tooltip.hover :title="info"></span>

@@ -73,12 +73,20 @@
                         if (this.isEdit) {
                             this.$store.dispatch(`${this.namespace}/edit`, this.resource)
                                 .then(() => {
-                                    this.$router.push(`/${this.namespace}/${this.$route.params.id}`);
+                                    if (this.namespace !== 'users') {
+                                        this.$router.push(`/${this.namespace}/${this.$route.params.id}`);
+                                    } else {
+                                        this.$router.push('/admin/users');
+                                    }
                                 });
                         } else {
                             this.$store.dispatch(`${this.namespace}/add`, this.resource)
                                 .then(() => {
-                                    this.$router.push(`/${this.namespace}/${this.resource.id}`);
+                                    if (this.namespace !== 'users') {
+                                        this.$router.push(`/${this.namespace}/${this.resource.id}`);
+                                    } else {
+                                        this.$router.push('/admin/users');
+                                    }
                                 });
                         }
                     }

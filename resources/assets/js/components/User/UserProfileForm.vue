@@ -212,7 +212,7 @@
         },
         mounted () {
             if (this.$route.params.id) {
-                this.$store.dispatch('users/SHOW', this.$route.params.id)
+                this.$store.dispatch('users/show', this.$route.params.id)
                     .then(() => this.loading = false);
             } else {
                 this.loading = false;
@@ -243,21 +243,7 @@
                 this.$store.dispatch('voices/options');
             }
         },
-        methods: {
-            submit () {
-                if (this.isCreate) {
-                    this.$store.dispatch('users/add', this.user)
-                        .then(() => {
-                            this.flashSuccess(this.$t('User successfully created.'));
-                        });
-                } else {
-                    this.$store.dispatch('users/edit', this.user)
-                        .then(() => {
-                            this.flashSuccess(this.$t('Profile successfully saved.'));
-                        });
-                }
-            }
-        }
+        methods: {}
     }
 </script>
 
