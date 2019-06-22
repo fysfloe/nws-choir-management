@@ -65,7 +65,7 @@ const app = new Vue({
     mixins,
     store,
     mounted () {
-        if (this.$route.path !== '/login' && this.$route.path !== '/password/reset') {
+        if (this.$route.path !== '/login' && !this.$route.path.includes('/password/reset')) {
             this.$store.dispatch('users/getCurrent');
         }
     }
