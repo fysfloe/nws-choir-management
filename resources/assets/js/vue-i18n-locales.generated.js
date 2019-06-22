@@ -245,6 +245,8 @@ export default {
         "Do you really want to delete this project?": "Dieses Projekt wirklich löschen?",
         "Create User": "Benutzer erstellen",
         "User created": "Benutzer erstellt",
+        "Street": "Straße",
+        "There were errors with the form.": "Es gab Probleme beim Absenden des Formulars.",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",
@@ -317,7 +319,7 @@ export default {
             },
             "string": "The {attribute} must be a string.",
             "timezone": "The {attribute} must be a valid zone.",
-            "unique": "The {attribute} has already been taken.",
+            "unique": "Der/die {attribute} wird bereits verwendet.",
             "uploaded": "The {attribute} failed to upload.",
             "url": "The {attribute} format is invalid.",
             "custom": {

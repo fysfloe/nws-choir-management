@@ -21,6 +21,14 @@
                         <slot name="submitButton"></slot>
                     </button>
                 </div>
+
+                <div v-if="formErrors" class="alert alert-danger">
+                    <strong>{{ $t('There were errors with the form.') }}</strong>
+
+                    <ul class="mb-0">
+                        <li v-for="formError in formErrors">{{ formError[0] }}</li>
+                    </ul>
+                </div>
             </form>
         </slot>
     </div>
@@ -49,7 +57,8 @@
         },
         data () {
             return {
-                loading: true
+                loading: true,
+                formErrors: null
             }
         },
         computed: {
@@ -78,6 +87,9 @@
                                     } else {
                                         this.$router.push('/admin/users');
                                     }
+                                })
+                                .catch(response => {
+
                                 });
                         } else {
                             this.$store.dispatch(`${this.namespace}/add`, this.resource)
@@ -87,6 +99,9 @@
                                     } else {
                                         this.$router.push('/admin/users');
                                     }
+                                })
+                                .catch(error => {
+                                    this.formErrors = error.response.data.errors;
                                 });
                         }
                     }
