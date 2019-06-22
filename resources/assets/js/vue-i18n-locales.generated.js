@@ -242,6 +242,9 @@ export default {
         "To do": "To do",
         "Do you really want to remove this rehearsal?": "Diese Probe wirklich entfernen?",
         "Deadline": "Deadline",
+        "Do you really want to delete this project?": "Dieses Projekt wirklich löschen?",
+        "Create User": "Benutzer erstellen",
+        "User created": "Benutzer erstellt",
         "validation": {
             "accepted": "The {attribute} must be accepted.",
             "active_url": "The {attribute} is not a valid URL.",

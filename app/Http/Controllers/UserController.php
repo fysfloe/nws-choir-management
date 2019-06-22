@@ -6,11 +6,14 @@ use App\Address;
 use App\Http\Requests\StoreUser;
 use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\UserResource;
+use App\Mail\UserCreated;
 use App\Role;
 use App\Services\GetFilteredUsersService;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -44,12 +47,17 @@ class UserController extends Controller
     public function store(StoreUser $request)
     {
         $data = $request->all();
+        $password = str_random(8);
+
+        $data['password'] = bcrypt($password);
 
         $user  = User::create($data);
 
         $memberRole = Role::where('name', '=', 'member')->first();
 
         $user->roles()->attach($memberRole->id);
+
+        Mail::to($user)->send(new UserCreated($user, $password, App::getLocale()));
 
         return response()->json(new UserResource($user));
     }
