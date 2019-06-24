@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Address;
+use App\Exports\UsersExport;
 use App\Http\Requests\StoreUser;
 use App\Http\Resources\AuthUserResource;
 use App\Http\Resources\UserResource;
@@ -10,11 +11,12 @@ use App\Mail\UserCreated;
 use App\Role;
 use App\Services\GetFilteredUsersService;
 use App\User;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -106,19 +108,13 @@ class UserController extends Controller
         return response()->json();
     }
 
-    public function export(Request $request)
+    /**
+     * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \Exception
+     */
+    public function export()
     {
-        $filters = $request->all();
-
-        $users = (new GetFilteredUsersService())->handle($filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
-
-        Excel::create('user_export', function ($excel) use ($users) {
-            $excel->sheet('users', function($sheet) use ($users) {
-
-                $sheet->fromArray($users);
-
-            });
-        })->download('csv');
+        return (new UsersExport)->download('chorganizer_users_' . (new DateTime())->format('Y-m-d') . '.xlsx');
     }
 
     public function multiArchive(Request $request)
