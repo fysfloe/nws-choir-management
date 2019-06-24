@@ -56,7 +56,7 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping, ShouldAu
             $user->firstname,
             $user->surname,
             $user->username,
-            $user->voice->name,
+            $user->voice ? $user->voice->name : null,
             $user->email,
             $user->phone,
             $user->birthdate,

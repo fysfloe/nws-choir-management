@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DashboardResource;
-
 use App\Semester;
 
 class HomeController extends Controller
@@ -30,7 +29,7 @@ class HomeController extends Controller
         if ($currentSemester) {
             return response()->json(new DashboardResource($currentSemester));
         } else {
-            return response()->json();
+            return response(null);
         }
     }
 }
