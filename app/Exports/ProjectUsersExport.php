@@ -19,6 +19,10 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
     use Exportable;
 
     /**
+     * @var Collection
+     */
+    private $users;
+    /**
      * @var Project
      */
     private $project;
@@ -31,10 +35,11 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
      * @param Project $project
      * @param Collection $users
      */
-    public function __construct(Project $project)
+    public function __construct(Project $project, Collection $users)
     {
         $this->project = $project;
         $this->concertsAndRehearsals = array_merge($this->project->rehearsals->all(), $this->project->concerts->all());
+        $this->users = $users;
 
         usort($this->concertsAndRehearsals, function ($a, $b) {
             return $a->date > $b->date;
@@ -46,7 +51,7 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
      */
     public function collection()
     {
-        return $this->project->participants->sortBy('surname');
+        return $this->users;
     }
 
     /**

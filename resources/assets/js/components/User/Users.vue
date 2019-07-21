@@ -4,7 +4,7 @@
             <h2>{{ $t('Users') }}</h2>
 
             <div class="main-actions" v-if="currentUser.canManageUsers">
-                <a class="btn btn-secondary btn-sm" :href="`/admin/users/export`">
+                <a class="btn btn-secondary btn-sm" @click.prevent="exportUsers" href>
                     <span class="oi oi-account-login"></span> {{ $t('Export') }}
                 </a>
 
@@ -27,8 +27,19 @@
         components: {UserList},
         computed: {
             ...mapState({
-                currentUser: state => state.users.current
+                currentUser: state => state.users.current,
+                filters: state => state.users.filters
             })
+        },
+        methods: {
+            exportUsers () {
+                let filters = JSON.parse(JSON.stringify(this.filters));
+
+                filters.voices = filters.voices.map(option => option.value);
+                filters.concerts = filters.concerts.map(option => option.value);
+
+                this.$store.dispatch('users/export', filters);
+            }
         }
     }
 </script>

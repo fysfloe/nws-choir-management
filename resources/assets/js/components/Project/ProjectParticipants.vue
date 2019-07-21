@@ -21,7 +21,7 @@
                             class="btn btn-default btn-sm" v-b-modal.addParticipantsModal>
                         <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
                     </button>
-                    <a class="btn btn-default btn-sm" :href="`/admin/project/export-participants/${project.id}`">
+                    <a class="btn btn-default btn-sm" @click.prevent="exportParticipants" href>
                         <span class="oi oi-account-login"></span> {{ $t('Export') }}
                     </a>
                 </div>
@@ -49,21 +49,25 @@
 <script>
     import UserList from "../UserList";
     import ProjectGrid from "./ProjectGrid";
+    import {mapState} from 'vuex';
     import Loader from "../Loader";
     import AddParticipantsModal from '../AddParticipantsModal';
 
     export default {
         components: {Loader, ProjectGrid, UserList, AddParticipantsModal},
         computed: {
-            project () {
+            project() {
                 return this.$store.state.projects.project;
             },
-            currentUser () {
+            currentUser() {
                 return this.$store.state.users.current;
             },
-            participants () {
+            participants() {
                 return this.project.participants;
-            }
+            },
+            ...mapState({
+                filters: state => state.users.filters
+            }),
         },
         data() {
             return {
@@ -78,6 +82,14 @@
                 } else {
                     this.view = 'list';
                 }
+            },
+            exportParticipants () {
+                let filters = JSON.parse(JSON.stringify(this.filters));
+
+                filters.voices = filters.voices.map(option => option.value);
+                filters.concerts = filters.concerts.map(option => option.value);
+
+                this.$store.dispatch('projects/exportParticipants', {project: this.project, filters: filters});
             }
         },
         mounted () {

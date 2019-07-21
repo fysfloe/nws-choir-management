@@ -42,5 +42,20 @@ export default {
         axios.delete(`${paths.users}/${id}`)
             .then(() => this.dispatch('users/fetch'))
             .catch();
+    },
+    export ({}, filters) {
+        axios({
+            method: 'post',
+            url: '/admin/users/export',
+            responseType: 'arraybuffer',
+            data: filters
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'chorganizer_users_' + new Date(Date.now()).toLocaleDateString() + '.xlsx');
+            document.body.appendChild(link);
+            link.click();
+        }).catch(error => console.log(error));
     }
 }

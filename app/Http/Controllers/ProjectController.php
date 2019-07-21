@@ -337,11 +337,16 @@ class ProjectController extends Controller
 
     /**
      * @param Project $project
+     * @param Request $request
      * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportParticipants(Project $project)
+    public function exportParticipants(Project $project, Request $request)
     {
-        return (new ProjectUsersExport($project))->download($project->title . '_participants.xlsx');
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        return (new ProjectUsersExport($project, $users))->download($project->title . '_participants.xlsx');
     }
 
     /**

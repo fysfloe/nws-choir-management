@@ -89,5 +89,20 @@ export default {
     setVoice({commit}, {id, userIds, voiceId}) {
         return axios.post(`${paths.projects}/${id}/set_voice`, {users: userIds, voice: voiceId})
             .then(() => this.dispatch(`${namespace}/participants`, {id: id}));
+    },
+    exportParticipants({}, {project, filters}) {
+        axios({
+            method: 'post',
+            url: `/admin/project/export-participants/${project.id}`,
+            responseType: 'arraybuffer',
+            data: filters
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${project.title}_participants.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+        }).catch(error => console.log(error));
     }
 }

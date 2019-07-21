@@ -114,6 +114,8 @@ class UserController extends Controller
      */
     public function export()
     {
+
+
         return (new UsersExport)->download('chorganizer_users_' . (new DateTime())->format('Y-m-d') . '.xlsx');
     }
 

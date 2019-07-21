@@ -22,6 +22,7 @@ Route::group(['api', 'middleware' => 'auth:api'], function () {
     Route::post('/projects/{project}/set_voice', 'ProjectController@setVoice');
     Route::post('/projects/{project}/add_participants', 'ProjectController@addParticipants');
     Route::delete('/projects/{project}/remove_participants', 'ProjectController@removeParticipants');
+    Route::post('/admin/projects/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
     Route::resource('projects', 'ProjectController');
 
     Route::post('/rehearsals/accept/{rehearsal}/{user_id?}', 'RehearsalController@accept');
