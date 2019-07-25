@@ -148,7 +148,7 @@ class GetFilteredUsersService {
         }
 
         if ($sort === 'voice') {
-            $sort = 'voice.rank';
+            $sort = 'voices.rank';
         }
 
         $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";

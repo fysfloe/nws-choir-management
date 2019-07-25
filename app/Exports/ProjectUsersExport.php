@@ -63,6 +63,7 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
             '#',
             __('First Name'),
             __('Surname'),
+            __('Voice'),
             __('Email')
         ];
 
@@ -84,6 +85,7 @@ class ProjectUsersExport implements FromCollection, WithHeadings, WithMapping, S
             $user->id,
             $user->firstname,
             $user->surname,
+            $user->voiceName,
             $user->email
         ];
 
