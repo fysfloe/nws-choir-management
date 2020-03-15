@@ -12967,7 +12967,7 @@ label.control-label {
 h3 {
   font-size: 1.25rem;
   font-weight: bold;
-  border-bottom: 0.1em solid #c2d4e1;
+  border-bottom: 1px solid #c2d4e1;
   padding-bottom: 0.25rem;
   margin-bottom: 1em;
 }

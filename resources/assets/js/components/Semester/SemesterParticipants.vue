@@ -13,7 +13,7 @@
                             class="btn btn-default btn-sm" v-b-modal.addParticipantsModal>
                         <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
                     </button>
-                    <a class="btn btn-default btn-sm" :href="`/admin/semesters/export-participants/${semester.id}`">
+                    <a class="btn btn-default btn-sm" @click.prevent="exportParticipants" href>
                         <span class="oi oi-account-login"></span> {{ $t('Export') }}
                     </a>
                 </div>
@@ -24,6 +24,7 @@
                     :users="participants"
                     :show-roles="false"
                     :actions="['removeParticipant', 'editProfile']"
+                    :filters="filters"
             ></user-list>
         </div>
     </div>
@@ -33,19 +34,19 @@
     import UserList from "../UserList";
     import Loader from "../Loader";
     import AddParticipantsModal from "../AddParticipantsModal";
+    import {mapState} from "vuex";
 
     export default {
         components: {Loader, UserList, AddParticipantsModal},
         computed: {
-            semester () {
-                return this.$store.state.semesters.semester;
-            },
-            currentUser () {
-                return this.$store.state.users.current;
-            },
             participants () {
                 return this.semester.participants;
-            }
+            },
+            ...mapState({
+                semester: state => state.semesters.semester,
+                currentUser: state => state.users.current,
+                filters: state => state.semesters.participant_filters
+            })
         },
         data() {
             return {
@@ -56,6 +57,16 @@
             this.$store.dispatch('semesters/participants', {id: this.semester.id}).then(() => {
                 this.loading = false;
             });
+        },
+        methods: {
+            exportParticipants () {
+                let filters = JSON.parse(JSON.stringify(this.filters));
+
+                filters.voices = filters.voices.map(option => option.value);
+                filters.concerts = filters.concerts.map(option => option.value);
+
+                this.$store.dispatch('semesters/exportParticipants', {semester: this.semester, filters: filters});
+            }
         }
     }
 </script>

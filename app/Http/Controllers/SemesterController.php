@@ -13,6 +13,7 @@ use App\User;
 use App\Voice;
 use Auth;
 use Illuminate\Http\Request;
+use App\Exports\SemesterUsersExport;
 
 class SemesterController extends Controller
 {
@@ -169,7 +170,7 @@ class SemesterController extends Controller
         $semester->participants()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
         event(new SemesterAnsweredEvent($semester, $user, true));
-        
+
         return response()->json(new SemesterResource($semester));
     }
 
@@ -224,5 +225,19 @@ class SemesterController extends Controller
         }
 
         return response()->json();
+    }
+
+    /**
+     * @param Semester $semester
+     * @param Request $request
+     * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportParticipants(Semester $semester, Request $request)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->semesterParticipants($semester, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        return (new SemesterUsersExport($semester, $users))->download($semester->name . '_participants.xlsx');
     }
 }
