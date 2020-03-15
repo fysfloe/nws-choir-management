@@ -95,7 +95,7 @@ export default {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `${semester.name.replace(/[^\w\s]/gi, '')}_participants.xlsx`);
+            link.setAttribute('download', `${semester.name.replace(/[^\w\s]/gi, '_')}_participants.xlsx`);
             document.body.appendChild(link);
             link.click();
         }).catch(error => console.log(error));

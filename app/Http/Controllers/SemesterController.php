@@ -238,6 +238,6 @@ class SemesterController extends Controller
 
         $users = (new GetFilteredUsersService())->semesterParticipants($semester, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
-        return (new SemesterUsersExport($semester, $users))->download($semester->name . '_participants.xlsx');
+        return (new SemesterUsersExport($semester, $users))->download(preg_replace('/[^A-Za-z0-9\-]/', '_', $semester->name) . '_participants.xlsx');
     }
 }
