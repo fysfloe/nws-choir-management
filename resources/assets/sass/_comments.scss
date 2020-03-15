@@ -2,36 +2,17 @@
     padding: 2rem 0;
 
     .comment {
-        border: 0.1rem solid $lightgrey;
-        border-bottom: 0.2rem solid $brand-primary;
-        margin: 0 0 1.5rem;
+        border-bottom: 0.1rem solid $lightgrey;
+        margin: 0;
+        padding: 1.5rem 0;
 
         .comment-info {
-            background: $lightgrey;
-            padding: 0.5rem;
             align-items: center;
 
             .avatar {
                 margin-right: 0.5rem;
                 width: 2.8rem;
                 height: 2.8rem;
-            }
-        }
-
-        .comment-content {
-            padding: 0.75rem;
-        }
-
-        .remove-comment-form {
-            position: absolute;
-            right: 0.25rem;
-            top: 0.25rem;
-            line-height: 0;
-
-            .btn {
-                font-size: 0.75rem;
-                padding: 0;
-                line-height: 1;
             }
         }
     }

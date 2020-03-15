@@ -34,6 +34,7 @@ Route::group(['api', 'middleware' => 'auth:api'], function () {
     Route::post('/rehearsals/{rehearsal}/set_unexcused/{user}', 'RehearsalController@setUnexcused');
     Route::post('/rehearsals/{rehearsal}/add_participants', 'RehearsalController@addParticipants');
     Route::delete('/rehearsals/{rehearsal}/remove_participants', 'RehearsalController@removeParticipants');
+    Route::post('/admin/rehearsals/export-participants/{rehearsal}', 'RehearsalController@exportParticipants')->name('rehearsal.exportParticipants');
     Route::resource('rehearsals', 'RehearsalController');
 
     Route::resource('comments', 'CommentController');

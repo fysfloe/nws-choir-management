@@ -35,13 +35,6 @@ class Rehearsal extends Model
         return $this->belongsTo('App\User', 'created_by');
     }
 
-    public function users()
-    {
-        return $this->belongsToMany('App\User', 'user_rehearsal')
-            ->withPivot('accepted')
-            ->withTimestamps();
-    }
-
     /**
      * Get the users for the rehearsal.
      */

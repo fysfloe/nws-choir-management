@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "fysfloe/chorganizer",
+    "description": "A management system for the Neue Wiener Stimmen choir.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",

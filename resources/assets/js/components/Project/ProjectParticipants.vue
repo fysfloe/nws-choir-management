@@ -34,6 +34,7 @@
                     :show-roles="false"
                     :remove-participants-route="`/projects/${project.id}`"
                     :actions="['removeParticipant', 'setVoice', 'editProfile']"
+                    :filters="filters"
             ></user-list>
 
             <project-grid
@@ -56,17 +57,13 @@
     export default {
         components: {Loader, ProjectGrid, UserList, AddParticipantsModal},
         computed: {
-            project() {
-                return this.$store.state.projects.project;
-            },
-            currentUser() {
-                return this.$store.state.users.current;
-            },
             participants() {
                 return this.project.participants;
             },
             ...mapState({
-                filters: state => state.users.filters
+                project: state => state.projects.project,
+                currentUser: state => state.users.current,
+                filters: state => state.projects.participant_filters
             }),
         },
         data() {
