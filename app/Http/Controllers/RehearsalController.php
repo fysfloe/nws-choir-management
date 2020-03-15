@@ -100,7 +100,7 @@ class RehearsalController extends Controller
     public function otherUsers(Rehearsal $rehearsal)
     {
         $rehearsalUsers = $rehearsal->promises()->pluck('id')->toArray();
-        $users = User::whereNotIn('id', $rehearsalUsers)->orderBy('surname')->get();
+        $users = $rehearsal->project->promises()->whereNotIn('id', $rehearsalUsers)->orderBy('surname')->get();
 
         return response()->json(UserResource::collection($users));
     }
@@ -148,7 +148,7 @@ class RehearsalController extends Controller
             $user = Auth::user();
         }
 
-        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
+        $rehearsal->participants()->syncWithoutDetaching([$user->id => ['accepted' => true]]);
 
         return response()->json(new RehearsalResource($rehearsal));
     }
@@ -166,7 +166,7 @@ class RehearsalController extends Controller
             $user = Auth::user();
         }
 
-        $rehearsal->users()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
+        $rehearsal->participants()->syncWithoutDetaching([$user->id => ['accepted' => false]]);
 
         return response()->json(new RehearsalResource($rehearsal));
     }

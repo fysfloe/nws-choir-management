@@ -1,6 +1,10 @@
 .modal-content {
     border-radius: 0;
 
+    .modal-title {
+        font-size: 1rem;
+    }
+
     .modal-footer {
         padding: 0;
 
@@ -11,7 +15,7 @@
             text-transform: uppercase;
             font-weight: 600;
             margin: 0;
-            padding: 1em 0;
+            padding: 0.75em 0;
         }
     }
 }

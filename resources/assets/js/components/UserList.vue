@@ -23,7 +23,7 @@
                 <div class="col-md-10 has-checkbox">
                     <input type="checkbox" @click="checkAll" class="check-all" :checked="checkedAll">&nbsp;
 
-                    <div class="dropdown list-actions" v-if="selectedUsers.length > 0">
+                    <div class="dropdown list-actions" v-if="selectedUsers.length > 0 && currentUser.canManageUsers">
                         <a class="dropdown-toggle no-caret" href="#" role="button" id="userActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="oi oi-ellipses"></span>
                         </a>
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3" v-if="withAttendanceConfirmation">
+                    <div class="col-md-3" v-if="withAttendanceConfirmation && currentUser.canManageUsers">
                         <attendance
                                 :user-id="user.id"
                                 :type="type"

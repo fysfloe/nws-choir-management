@@ -81,7 +81,7 @@ class ConcertController extends Controller
         if ($concert->project) {
             $this->breadcrumbs->addCrumb($concert->project->title, 'project/' . $concert->project->id);
         }
-        
+
         $this->breadcrumbs->addCrumb($concert->title, $concert->slug);
 
         return response()->json(new ConcertResource($concert));
@@ -124,7 +124,7 @@ class ConcertController extends Controller
     public function otherUsers(Concert $concert)
     {
         $concertUsers = $concert->promises()->pluck('id')->toArray();
-        $users = User::whereNotIn('id', $concertUsers)->orderBy('surname')->get();
+        $users = $concert->project->promises()->whereNotIn('id', $concertUsers)->orderBy('surname')->get();
 
         return response()->json(UserResource::collection($users));
     }

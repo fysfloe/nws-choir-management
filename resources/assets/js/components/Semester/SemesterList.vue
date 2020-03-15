@@ -61,6 +61,7 @@
                                     :id="semester.id"
                                     :accepted="semester.accepted"
                                     :declined="semester.declined"
+                                    :deadline="semester.deadline"
                             >
                             </accept-decline>
                         </div>
