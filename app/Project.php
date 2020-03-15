@@ -76,12 +76,14 @@ class Project extends Model
 
     public function rehearsals()
     {
-        return $this->hasMany('App\Rehearsal')->orderBy('date', 'DESC');
+        return $this->hasMany('App\Rehearsal')
+            ->orderBy('date', 'ASC');
     }
 
     public function concerts()
     {
-        return $this->hasMany('App\Concert')->orderBy('date', 'DESC');
+        return $this->hasMany('App\Concert')
+            ->orderBy('date', 'ASC');
     }
 
     public function voices()

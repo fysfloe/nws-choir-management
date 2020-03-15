@@ -5,7 +5,7 @@
         <div v-else>
             <header class="page-header">
                 <h2>
-                    {{ concert.title }}
+                    {{ $t('Concert') }}: {{ concert.title }}
                 </h2>
 
                 <accept-decline

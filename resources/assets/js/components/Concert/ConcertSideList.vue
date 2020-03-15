@@ -5,8 +5,8 @@
             <router-link :to="`/concerts/${concert.id}`" v-for="concert in concerts" :key="concert.id">
                 <li>
                     <span>
-                        <span class="oi oi-calendar text-muted"></span> {{ concert.title }} <br>
-                        <span class="oi oi-clock text-muted"></span> {{ concert.start_time }} – {{ concert.end_time }}
+                        {{ concert.title }}<br>
+                        <span class="oi oi-calendar text-muted"></span> {{ $d(new Date(concert.date)) }} &nbsp;<span class="oi oi-clock text-muted"></span> {{ concert.start_time }} – {{ concert.end_time }}
                     </span>
                     <accept-decline
                             class="text-right"
