@@ -7,11 +7,6 @@ use App\Semester;
 use App\User;
 
 class GetFilteredUsersService {
-    public function __construct()
-    {
-        //
-    }
-
     public function handle($filters, $search, $sort = 'surname', $dir = 'ASC')
     {
         if (!$sort) $sort = 'surname';

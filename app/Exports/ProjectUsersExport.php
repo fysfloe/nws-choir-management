@@ -81,7 +81,7 @@ class ProjectUsersExport extends ParticipantsExport
             $accepted = '?';
 
             if ($participant) {
-                if ($participant->pivot->accepted && $participant->pivot->confirmed) {
+                if ($participant->pivot->accepted && $participant->pivot->confirmed !== false) {
                     $accepted = 'o';
                 } else if ($participant->pivot->excused) {
                     $accepted = 'e';

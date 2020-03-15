@@ -46,7 +46,7 @@ Vue.component('multiselect', Multiselect);
 
 Vue.mixin(mixins.global);
 
-const lang = document.documentElement.lang.substr(0, 2); 
+const lang = document.documentElement.lang.substr(0, 2);
 
 const i18n = new VueInternationalization({
     locale: lang,
@@ -65,7 +65,7 @@ const app = new Vue({
     mixins,
     store,
     mounted () {
-        if (this.$route.path !== '/login' && !this.$route.path.includes('/password/reset')) {
+        if (this.$route.path !== '/login' && !this.$route.path.includes('/password/reset') && !this.$route.path.includes('/register')) {
             this.$store.dispatch('users/getCurrent');
         }
     }

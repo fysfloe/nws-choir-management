@@ -33,7 +33,6 @@
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                 @else
                     <li class="nav-item dropdown">
                         @if (Auth::user()->avatar)
@@ -96,12 +95,14 @@
                                 {{ __('Projects') }}
                             </router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link to="/concerts" class="nav-link" active-class="active">
-                                <span class="oi oi-musical-note"></span>&nbsp;
-                                {{ __('Concerts') }}
-                            </router-link>
-                        </li>
+                        @if (Auth::user()->can('manageConcerts'))
+                            <li class="nav-item">
+                                <router-link to="/concerts" class="nav-link" active-class="active">
+                                    <span class="oi oi-musical-note"></span>&nbsp;
+                                    {{ __('Concerts') }}
+                                </router-link>
+                            </li>
+                        @endif
                         @if (Auth::user()->can('manageUsers'))
                             <li class="nav-item">
                                 <router-link class="nav-link" to="/admin/users" active-class="active">

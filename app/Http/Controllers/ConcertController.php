@@ -239,13 +239,33 @@ class ConcertController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param Concert $concert
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addParticipants(Request $request, Concert $concert)
+    {
+        $usersToAdd = $request->get('users');
+
+        foreach ($usersToAdd as $user_id) {
+            $concert->participants()->syncWithoutDetaching([$user_id => ['accepted' => true]]);
+        }
+
+        return response()->json();
+    }
+
+    /**
      * @param Concert $concert
      * @param User $user
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function confirm(Concert $concert, User $user)
     {
-        $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
+        if (!$concert->participants->find($user)->pivot->confirmed) {
+            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
+        } else {
+            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
+        }
 
         return response()->json(new UserResource($user));
     }
@@ -257,7 +277,11 @@ class ConcertController extends Controller
      */
     public function excuse(Concert $concert, User $user)
     {
-        $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
+        if (!$concert->participants->find($user)->pivot->excused) {
+            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
+        } else {
+            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
+        }
 
         return response()->json(new UserResource($user));
     }
@@ -269,7 +293,13 @@ class ConcertController extends Controller
      */
     public function setUnexcused(Concert $concert, User $user)
     {
-        $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
+        $confirmed = $concert->participants->find($user)->pivot->confirmed;
+
+        if (null === $confirmed || true === (bool)$confirmed) {
+            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
+        } else {
+            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
+        }
 
         return response()->json(new UserResource($user));
     }

@@ -178,10 +178,11 @@ class RehearsalController extends Controller
      */
     public function confirm(Rehearsal $rehearsal, User $user)
     {
-        $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
-
-        $user->confirmed = true;
-        $user->excused = false;
+        if (!$rehearsal->participants->find($user)->pivot->confirmed) {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
+        } else {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
+        }
 
         return response()->json(new UserResource($user));
     }
@@ -193,7 +194,11 @@ class RehearsalController extends Controller
      */
     public function excuse(Rehearsal $rehearsal, User $user)
     {
-        $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
+        if (!$rehearsal->participants->find($user)->pivot->excused) {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
+        } else {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
+        }
 
         return response()->json(new UserResource($user));
     }
@@ -205,7 +210,13 @@ class RehearsalController extends Controller
      */
     public function setUnexcused(Rehearsal $rehearsal, User $user)
     {
-        $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
+        $confirmed = $rehearsal->participants->find($user)->pivot->confirmed;
+
+        if (null === $confirmed || true === (bool)$confirmed) {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
+        } else {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
+        }
 
         return response()->json(new UserResource($user));
     }
