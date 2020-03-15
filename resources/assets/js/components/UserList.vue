@@ -181,6 +181,21 @@
                 default () {
                     return ['setVoice', 'editProfile', 'setRole', 'archive']
                 }
+            },
+            filters: {
+                type: Object,
+                default () {
+                    return {
+                        search: '',
+                        voices: [],
+                        concerts: [],
+                        ageFrom: '',
+                        ageTo: '',
+                        sort: 'surname',
+                        dir: 'ASC'
+
+                    }
+                }
             }
         },
         data() {
@@ -217,7 +232,6 @@
 
                     return optionsArray;
                 },
-                filters: state => state.users.filters,
                 selectedUsers: state => state.users.selected,
                 currentUser: state => state.users.current
             }),

@@ -91,5 +91,20 @@ export default {
         return axios.post(`${paths.rehearsals}/${id}/set_unexcused/${userId}`)
             .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
             .catch();
+    },
+    exportParticipants({}, {rehearsal, filters}) {
+        axios({
+            method: 'post',
+            url: `/admin/rehearsal/export-participants/${rehearsal.id}`,
+            responseType: 'arraybuffer',
+            data: filters
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${rehearsal.date}_participants.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+        }).catch(error => console.log(error));
     }
 }

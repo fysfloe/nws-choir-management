@@ -18,6 +18,7 @@ Route::get('/projects/{project}/grid', 'ProjectController@grid');
 Route::group(['middleware' => 'auth'], function() {
     Route::group(['prefix' => 'admin', 'middleware' => ['role:admin']], function() {
         Route::post('/project/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
+        Route::post('/rehearsal/export-participants/{rehearsal}', 'RehearsalController@exportParticipants');
         Route::post('/users/export', 'UserController@export');
     });
 });

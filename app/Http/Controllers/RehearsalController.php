@@ -13,6 +13,7 @@ use App\Voice;
 use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Exports\RehearsalUsersExport;
 
 class RehearsalController extends Controller
 {
@@ -256,5 +257,19 @@ class RehearsalController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * @param Rehearsal $rehearsal
+     * @param Request $request
+     * @return Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportParticipants(Rehearsal $rehearsal, Request $request)
+    {
+        $filters = $request->all();
+
+        $users = (new GetFilteredUsersService())->rehearsalParticipants($rehearsal, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+
+        return (new RehearsalUsersExport($rehearsal, $users))->download(__('Rehearsal') . ': ' . $rehearsal->date->format('d.m.Y') . '_participants.xlsx');
     }
 }

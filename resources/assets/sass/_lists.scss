@@ -2,13 +2,12 @@
     padding: 0 15px;
     background: white;
     margin-top: 1em;
-    border: 0.05rem solid darken($lightgrey, 5);
 
     header {
         font-weight: bold;
-        box-shadow: 0 0.2rem 0.2rem -0.1rem darken($lightgrey, 10);
         background: $brand-primary;
         color: white;
+        padding: 0.5rem 0;
 
         > div {
             padding-top: 0.5rem;
@@ -39,10 +38,16 @@
                 .dropdown-toggle {
                     padding: 9px 5px;
                     display: inline-block;
-    
+
                     &:hover, &:focus {
                         background: darken($brand-primary, 10);
                     }
+                }
+            }
+
+            .dropdown-item {
+                span.oi {
+                    margin-right: 0.25rem;
                 }
             }
         }
@@ -64,14 +69,14 @@
                 text-decoration: none;
 
                 li {
-                    background: $lightgrey;
+                    border-color: $brand-primary;
                 }
             }
         }
 
         li {
             padding: 1rem 0;
-            border-bottom: 0.1rem solid darken($lightgrey, 5);
+            border: 0.05rem solid darken($lightgrey, 5);
         }
     }
 

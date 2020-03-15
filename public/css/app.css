@@ -12186,15 +12186,13 @@ input.date {
   padding: 0 15px;
   background: white;
   margin-top: 1em;
-  border: 0.05rem solid #e4ecf2;
 }
 
 .list-table header {
   font-weight: bold;
-  -webkit-box-shadow: 0 0.2rem 0.2rem -0.1rem #d3e0e9;
-          box-shadow: 0 0.2rem 0.2rem -0.1rem #d3e0e9;
   background: #149EB5;
   color: white;
+  padding: 0.5rem 0;
 }
 
 .list-table header > div {
@@ -12241,6 +12239,10 @@ input.date {
   background: #0f7687;
 }
 
+.list-table header .dropdown .dropdown-item span.oi {
+  margin-right: 0.25rem;
+}
+
 .list-table header .btn-group {
   margin-left: 0.5em;
 }
@@ -12260,12 +12262,12 @@ input.date {
 }
 
 .list-table ul > a:hover li {
-  background: #f5f8fa;
+  border-color: #149EB5;
 }
 
 .list-table ul li {
   padding: 1rem 0;
-  border-bottom: 0.1rem solid #e4ecf2;
+  border: 0.05rem solid #e4ecf2;
 }
 
 .list-table a.list-sort {
@@ -12630,14 +12632,12 @@ ul.concerts .avatar {
 }
 
 .comment-stream .comment {
-  border: 0.1rem solid #f5f8fa;
-  border-bottom: 0.2rem solid #149EB5;
-  margin: 0 0 1.5rem;
+  border-bottom: 0.1rem solid #f5f8fa;
+  margin: 0;
+  padding: 1.5rem 0;
 }
 
 .comment-stream .comment .comment-info {
-  background: #f5f8fa;
-  padding: 0.5rem;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -12647,23 +12647,6 @@ ul.concerts .avatar {
   margin-right: 0.5rem;
   width: 2.8rem;
   height: 2.8rem;
-}
-
-.comment-stream .comment .comment-content {
-  padding: 0.75rem;
-}
-
-.comment-stream .comment .remove-comment-form {
-  position: absolute;
-  right: 0.25rem;
-  top: 0.25rem;
-  line-height: 0;
-}
-
-.comment-stream .comment .remove-comment-form .btn {
-  font-size: 0.75rem;
-  padding: 0;
-  line-height: 1;
 }
 
 .flash__message {
