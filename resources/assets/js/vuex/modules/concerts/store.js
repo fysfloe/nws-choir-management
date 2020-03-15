@@ -6,6 +6,15 @@ export default {
     namespaced: true,
     state: {
         items: [],
+        participant_filters: {
+            search: '',
+            voices: [],
+            concerts: [],
+            ageFrom: '',
+            ageTo: '',
+            sort: 'surname',
+            dir: 'ASC'
+        },
         concert: {
             participants: [],
             other_users: []

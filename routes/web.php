@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/project/export-participants/{project}', 'ProjectController@exportParticipants')->name('project.exportParticipants');
         Route::post('/rehearsal/export-participants/{rehearsal}', 'RehearsalController@exportParticipants');
         Route::post('/semester/export-participants/{semester}', 'SemesterController@exportParticipants');
+        Route::post('/concert/export-participants/{concert}', 'ConcertController@exportParticipants');
         Route::post('/users/export', 'UserController@export');
     });
 });

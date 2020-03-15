@@ -13,7 +13,7 @@
                             class="btn btn-default btn-sm" v-b-modal.addParticipantsModal>
                         <span class="oi oi-plus"></span> {{ $t('Add a participant') }}
                     </button>
-                    <a class="btn btn-default btn-sm" :href="`/admin/concerts/export-participants/${concert.id}`">
+                    <a class="btn btn-default btn-sm" @click.prevent="exportParticipants" href>
                         <span class="oi oi-account-login"></span> {{ $t('Export') }}
                     </a>
                 </div>
@@ -25,6 +25,7 @@
                     :show-roles="false"
                     :actions="['removeParticipant', 'setVoice', 'editProfile']"
                     with-attendance-confirmation
+                    :filters="filters"
             ></user-list>
         </div>
     </div>
@@ -34,19 +35,19 @@
     import UserList from "../UserList";
     import Loader from "../Loader";
     import AddParticipantsModal from "../AddParticipantsModal";
+    import {mapState} from "vuex";
 
     export default {
         components: {Loader, UserList, AddParticipantsModal},
         computed: {
-            concert () {
-                return this.$store.state.concerts.concert;
-            },
-            currentUser () {
-                return this.$store.state.users.current;
-            },
             participants () {
                 return this.concert.participants;
-            }
+            },
+            ...mapState({
+                concert: state => state.concerts.concert,
+                currentUser: state => state.users.current,
+                filters: state => state.concerts.participant_filters
+            })
         },
         data() {
             return {
@@ -57,6 +58,16 @@
             this.$store.dispatch('concerts/participants', {id: this.concert.id}).then(() => {
                 this.loading = false;
             });
+        },
+        methods: {
+            exportParticipants () {
+                let filters = JSON.parse(JSON.stringify(this.filters));
+
+                filters.voices = filters.voices.map(option => option.value);
+                filters.concerts = filters.concerts.map(option => option.value);
+
+                this.$store.dispatch('concerts/exportParticipants', {concert: this.concert, filters: filters});
+            }
         }
     }
 </script>

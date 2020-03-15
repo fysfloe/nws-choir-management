@@ -98,5 +98,20 @@ export default {
         return axios.post(`${paths.concerts}/${id}/set_unexcused/${userId}`)
             .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
             .catch();
+    },
+    exportParticipants({}, {concert, filters}) {
+        axios({
+            method: 'post',
+            url: `/admin/concert/export-participants/${concert.id}`,
+            responseType: 'arraybuffer',
+            data: filters
+        }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${concert.title}_participants.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+        }).catch(error => console.log(error));
     }
 }

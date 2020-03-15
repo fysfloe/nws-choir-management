@@ -117,7 +117,7 @@ class GetFilteredUsersService {
 
         $query .= "WHERE users.deleted_at IS NULL
         AND users.non_singing = 0
-        AND (user_project.project_id = $project->id OR user_project.project_id IS NULL) 
+        AND (user_project.project_id = $project->id OR user_project.project_id IS NULL)
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
         if (isset($filters['accepted'])) {
@@ -129,7 +129,7 @@ class GetFilteredUsersService {
         } else {
             $query .= "AND user_project.accepted = 1 ";
         }
-        
+
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
         if ($ageFrom) {
             $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
@@ -165,10 +165,10 @@ class GetFilteredUsersService {
         $voices = isset($filters['voices']) ? $filters['voices'] : null;
 
         $query = "SELECT users.*, user_rehearsal.confirmed as confirmed, user_rehearsal.excused as excused"
-            . " FROM users 
-            LEFT OUTER JOIN user_project ON users.id = user_project.user_id 
+            . " FROM users
+            LEFT OUTER JOIN user_project ON users.id = user_project.user_id
             LEFT OUTER JOIN user_rehearsal ON users.id = user_rehearsal.user_id";
-        
+
         $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL
@@ -214,7 +214,7 @@ class GetFilteredUsersService {
         $query = "SELECT users.* "
             . "FROM users
             LEFT OUTER JOIN user_semester ON users.id = user_semester.user_id ";
-        
+
         $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
 
         $query .= "WHERE users.deleted_at IS NULL
@@ -222,13 +222,13 @@ class GetFilteredUsersService {
         AND user_semester.accepted = 1
         AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
 
-        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;        
+        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
         if ($ageFrom) {
             $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
             $query .= "AND users.birthdate < '$minDate' ";
         }
 
-        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;       
+        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
         if ($ageTo) {
             $ageTo += 1;
             $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');

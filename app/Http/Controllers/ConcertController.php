@@ -13,6 +13,7 @@ use App\User;
 use App\Voice;
 use Auth;
 use DB;
+use App\Exports\ConcertUsersExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -208,19 +209,18 @@ class ConcertController extends Controller
         return response()->json(new ConcertResource($concert));
     }
 
+    /**
+     * @param  Request $request
+     * @param  Concert $concert
+     * @return [type]           [description]
+     */
     public function exportParticipants(Request $request, Concert $concert)
     {
         $filters = $request->all();
 
-        $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'))->toArray();
+        $users = (new GetFilteredUsersService())->concertParticipants($concert, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
 
-        Excel::create('user_export', function ($excel) use ($users) {
-            $excel->sheet('users', function($sheet) use ($users) {
-
-                $sheet->fromArray($users);
-
-            });
-        })->download('csv');
+        return (new ConcertUsersExport($concert, $users))->download(__('Concert') . ': ' . $concert->title . '_participants.xlsx');
     }
 
     public function removeParticipants(Concert $concert, Request $request)
