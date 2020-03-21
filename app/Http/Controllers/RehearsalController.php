@@ -14,9 +14,12 @@ use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Exports\RehearsalUsersExport;
+use App\Traits\AttendanceTrait;
 
 class RehearsalController extends Controller
 {
+    use AttendanceTrait;
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -178,13 +181,7 @@ class RehearsalController extends Controller
      */
     public function confirm(Rehearsal $rehearsal, User $user)
     {
-        $participant = $rehearsal->participants->find($user);
-        if (!$participant || !$participant->pivot->confirmed) {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['accepted' => true, 'confirmed' => true, 'excused' => false]]);
-        } else {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
-        }
-
+        $this->doConfirm($rehearsal, $user);
         return response()->json(new UserResource($user));
     }
 
@@ -195,12 +192,7 @@ class RehearsalController extends Controller
      */
     public function excuse(Rehearsal $rehearsal, User $user)
     {
-        if (!$rehearsal->participants->find($user)->pivot->excused) {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
-        } else {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
-        }
-
+        $this->doExcuse($rehearsal, $user);
         return response()->json(new UserResource($user));
     }
 
@@ -211,14 +203,7 @@ class RehearsalController extends Controller
      */
     public function setUnexcused(Rehearsal $rehearsal, User $user)
     {
-        $confirmed = $rehearsal->participants->find($user)->pivot->confirmed;
-
-        if (null === $confirmed || true === (bool)$confirmed) {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
-        } else {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
-        }
-
+        $this->doSetUnexcused($rehearsal, $user);
         return response()->json(new UserResource($user));
     }
 

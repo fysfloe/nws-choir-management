@@ -3,10 +3,11 @@
 namespace App;
 
 use Auth;
+use App\Interfaces\AttendanceAware;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Concert extends Model
+class Concert extends Model implements AttendanceAware
 {
     use SoftDeletes;
 

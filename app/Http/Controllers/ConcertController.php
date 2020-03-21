@@ -16,9 +16,12 @@ use DB;
 use App\Exports\ConcertUsersExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Traits\AttendanceTrait;
 
 class ConcertController extends Controller
 {
+    use AttendanceTrait;
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -261,12 +264,7 @@ class ConcertController extends Controller
      */
     public function confirm(Concert $concert, User $user)
     {
-        if (!$concert->participants->find($user)->pivot->confirmed) {
-            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
-        } else {
-            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
-        }
-
+        $this->doConfirm($concert, $user);
         return response()->json(new UserResource($user));
     }
 
@@ -277,12 +275,7 @@ class ConcertController extends Controller
      */
     public function excuse(Concert $concert, User $user)
     {
-        if (!$concert->participants->find($user)->pivot->excused) {
-            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => true]]);
-        } else {
-            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
-        }
-
+        $this->doExcuse($concert, $user);
         return response()->json(new UserResource($user));
     }
 
@@ -293,14 +286,7 @@ class ConcertController extends Controller
      */
     public function setUnexcused(Concert $concert, User $user)
     {
-        $confirmed = $concert->participants->find($user)->pivot->confirmed;
-
-        if (null === $confirmed || true === (bool)$confirmed) {
-            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => false, 'excused' => false]]);
-        } else {
-            $concert->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
-        }
-
+        $this->doSetUnexcused($concert, $user);
         return response()->json(new UserResource($user));
     }
 }

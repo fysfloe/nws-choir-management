@@ -3,11 +3,12 @@
 namespace App;
 
 use Auth;
+use App\Interfaces\AttendanceAware;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Rehearsal extends Model
+class Rehearsal extends Model implements AttendanceAware
 {
     use SoftDeletes;
 

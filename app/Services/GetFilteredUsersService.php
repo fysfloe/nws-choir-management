@@ -6,6 +6,7 @@ use App\Rehearsal;
 use App\Semester;
 use App\User;
 use App\Project;
+use App\Concert;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,6 +32,7 @@ class GetFilteredUsersService
     public function concertParticipants(Concert $concert, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
         $qb = $this->getUsersQueryBuilder()
+            ->select('users.*', 'voices.name as voiceName', 'voices.id as voiceId', 'user_concert.confirmed as confirmed', 'user_concert.excused as excused')
             ->leftJoin('user_concert', 'users.id', '=', 'user_concert.user_id')
             ->leftJoin('voices', 'voices.id', '=', 'user_concert.voice_id')
             ->where('users.non_singing', false)
