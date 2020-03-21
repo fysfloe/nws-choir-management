@@ -41,10 +41,11 @@ export default {
             .then(response => commit('OTHER_USERS', response.data))
             .catch();
     },
-    addParticipants({}, {id, userIds}) {
+    addParticipants({commit}, {id, userIds}) {
         return axios.post(`${paths.rehearsals}/${id}/add_participants`, {users: userIds})
             .then(() => {
                 this.dispatch(`${namespace}/participants`, {id: id});
+                commit('RESET_FILTERS');
                 this.dispatch(`${namespace}/otherUsers`, id);
             })
     },
@@ -79,17 +80,26 @@ export default {
     },
     confirm({commit}, {id, userId}) {
         return axios.post(`${paths.rehearsals}/${id}/confirm/${userId}`)
-            .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                commit('RESET_FILTERS');
+            })
             .catch();
     },
-    excuse({}, {id, userId}) {
+    excuse({commit}, {id, userId}) {
         return axios.post(`${paths.rehearsals}/${id}/excuse/${userId}`)
-            .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                commit('RESET_FILTERS');
+            })
             .catch();
     },
-    setUnexcused({}, {id, userId}) {
+    setUnexcused({commit}, {id, userId}) {
         return axios.post(`${paths.rehearsals}/${id}/set_unexcused/${userId}`)
-            .then(() => this.dispatch(`${namespace}/participants`, {id: id}))
+            .then(() => {
+                this.dispatch(`${namespace}/participants`, {id: id});
+                commit('RESET_FILTERS');
+            })
             .catch();
     },
     exportParticipants({}, {rehearsal, filters}) {

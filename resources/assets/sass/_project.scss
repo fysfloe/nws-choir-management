@@ -32,7 +32,7 @@ header {
             border-color: $midgrey;
         }
     }
-} 
+}
 
 .accept-decline > span,
 .attendance-buttons a {
@@ -51,7 +51,7 @@ header {
         &.text-danger {
             border-color: $brand-danger;
         }
-        
+
         &:hover {
             cursor: pointer;
         }
@@ -61,6 +61,16 @@ header {
   table {
     border: 0.1rem solid darken($lightgrey, 10);
 
+    thead {
+        a {
+            color: white;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+    
     td, th {
       border: 0.1rem solid darken($lightgrey, 10);
       white-space: nowrap;

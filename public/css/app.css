@@ -12149,6 +12149,10 @@ input.date {
   border-radius: 0 .25rem .25rem 0;
 }
 
+.ck-editor__editable_inline {
+  min-height: 10em;
+}
+
 .btn-default {
   border: 0.1em solid #2c2e33;
   font-weight: bold;
@@ -12475,6 +12479,14 @@ header.page-header a.btn-link {
 
 .project-grid table {
   border: 0.1rem solid #d3e0e9;
+}
+
+.project-grid table thead a {
+  color: white;
+}
+
+.project-grid table thead a:hover {
+  text-decoration: none;
 }
 
 .project-grid table td,
@@ -12863,7 +12875,6 @@ a:hover {
   .wrapper #navContent {
     max-width: 100vw;
     width: 100vw;
-    position: fixed;
     z-index: 1000;
     min-height: auto;
   }

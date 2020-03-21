@@ -66,7 +66,7 @@
 
             <ul class="users">
                 <li class="row align-items-center" v-for="user in _users" :key="user.id">
-                    <div :class="'col-md-' + (withAttendanceConfirmation ? '8' : '11')">
+                    <div :class="'col-md-' + (showAttendanceConfirmation ? '8' : '11')">
                         <div class="flex align-items-center">
                             <input type="checkbox" @click="toggleUser($event, user.id)" :value="user.id" :checked="selectedUsers.indexOf(user.id) !== -1">&nbsp;
                             <div class="avatar" v-if="user.avatar">
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3" v-if="withAttendanceConfirmation && currentUser.canManageUsers">
+                    <div class="col-md-3" v-if="showAttendanceConfirmation">
                         <attendance
                                 :user-id="user.id"
                                 :type="type"
@@ -254,6 +254,9 @@
                 } else {
                     return this.currentUser.canManageUsers;
                 }
+            },
+            showAttendanceConfirmation () {
+                return this.withAttendanceConfirmation && this.currentUser.canManageUsers;
             }
         },
         mounted() {

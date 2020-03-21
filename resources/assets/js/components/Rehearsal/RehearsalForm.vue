@@ -14,7 +14,37 @@
 
         <template v-slot:form>
             <div class="row">
-                <div class="col">
+                <div class="col-md">
+                    <form-group
+                            :label="$t('Description')"
+                            v-model="description"
+                            name="description"
+                            type="ckeditor"
+                    ></form-group>
+
+                    <form-group
+                            :label="$t('Place')"
+                            v-model="place"
+                            name="place"
+                            type="text"
+                            validate="required"
+                    ></form-group>
+
+                    <form-group
+                            :label="$t('Project')"
+                            v-model="project_id"
+                            name="project_id"
+                            type="select"
+                            :options="projects"
+                            validate="required"
+                    ></form-group>
+                </div>
+                <div class="col-md side-box">
+                    <h3>
+                        <span class="oi oi-calendar"></span>
+                        {{ $t('Date') }}
+                    </h3>
+
                     <form-group
                             :label="$t('Date')"
                             v-model="date"
@@ -40,21 +70,6 @@
                     ></form-group>
 
                     <form-group
-                            :label="$t('Description')"
-                            v-model="description"
-                            name="description"
-                            type="ckeditor"
-                    ></form-group>
-
-                    <form-group
-                            :label="$t('Place')"
-                            v-model="place"
-                            name="place"
-                            type="text"
-                            validate="required"
-                    ></form-group>
-
-                    <form-group
                             :label="$t('Deadline')"
                             v-model="deadline"
                             name="deadline"
@@ -62,23 +77,6 @@
                             validate="required"
                     ></form-group>
 
-                    <form-group
-                            :label="$t('Project')"
-                            v-model="project_id"
-                            name="project_id"
-                            type="select"
-                            :options="projects"
-                            validate="required"
-                    ></form-group>
-
-                    <form-group
-                            :label="$t('Semester')"
-                            v-model="semester_id"
-                            name="semester_id"
-                            type="select"
-                            :options="semesters"
-                            validate="required"
-                    ></form-group>
                 </div><!-- .col -->
             </div><!-- .row -->
         </template>

@@ -13,7 +13,8 @@ export default {
             ageFrom: '',
             ageTo: '',
             sort: 'surname',
-            dir: 'ASC'
+            dir: 'ASC',
+            accepted: 1
         },
         rehearsal: {
             participants: [],

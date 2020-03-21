@@ -178,8 +178,9 @@ class RehearsalController extends Controller
      */
     public function confirm(Rehearsal $rehearsal, User $user)
     {
-        if (!$rehearsal->participants->find($user)->pivot->confirmed) {
-            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => true, 'excused' => false]]);
+        $participant = $rehearsal->participants->find($user);
+        if (!$participant || !$participant->pivot->confirmed) {
+            $rehearsal->promises()->syncWithoutDetaching([$user->id => ['accepted' => true, 'confirmed' => true, 'excused' => false]]);
         } else {
             $rehearsal->promises()->syncWithoutDetaching([$user->id => ['confirmed' => null, 'excused' => null]]);
         }

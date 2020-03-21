@@ -63,6 +63,6 @@
             _removeFilter: function (key) {
                 this.removeFilter(key);
             }
-        },
+        }
     }
 </script>

@@ -5,239 +5,202 @@ namespace App\Services;
 use App\Rehearsal;
 use App\Semester;
 use App\User;
+use App\Project;
 
-class GetFilteredUsersService {
-    public function handle($filters, $search, $sort = 'surname', $dir = 'ASC')
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
+
+class GetFilteredUsersService
+{
+    const DEFAULT_SORT = 'surname';
+    const DEFAULT_SORT_DIR = 'ASC';
+
+    public function handle(array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
-        if (!$sort) $sort = 'surname';
+        $qb = $this->getUsersQueryBuilder()
+            ->leftJoin('user_concert', 'users.id', '=', 'user_concert.user_id')
+            ->leftJoin('voices', 'voices.id', '=', 'users.voice_id');
 
-        $voices = isset($filters['voices']) ? $filters['voices'] : null;
-        $concerts = isset($filters['concerts']) ? $filters['concerts'] : null;
+        $this->addSearch($qb, $search);
+        $this->addFilters($qb, $filters);
+        $this->addSort($qb, $sort, $dir);
 
-        $query = "SELECT users.* "
-            . "FROM users ";
-
-        $query .= " LEFT JOIN user_concert ON users.id = user_concert.user_id ";
-        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = isset($filters['ageFrom']) ? $filters['ageFrom'] : null;
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = isset($filters['ageTo']) ? $filters['ageTo'] : null;
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND users.voice_id IN ($voices) ";
-        }
-        if ($concerts !== null && count($concerts) > 0) {
-            $concerts = implode(',', $concerts);
-            $query .= "AND user_concert.concert_id IN ($concerts) AND user_concert.accepted = 1 ";
-        }
-
-        if ($sort === 'id') {
-            $sort = 'users.id';
-        }
-
-        if ($sort === 'voice') {
-            $sort = 'voice.rank';
-        }
-
-        $query .= "GROUP BY users.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
-
-        return $users;
+        return $qb->get();
     }
 
-    public function concertParticipants($concert, $filters, $search, $sort = 'surname', $dir = 'ASC')
+    public function concertParticipants(Concert $concert, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
-        if (!$sort) $sort = 'surname';
+        $qb = $this->getUsersQueryBuilder()
+            ->leftJoin('user_concert', 'users.id', '=', 'user_concert.user_id')
+            ->leftJoin('voices', 'voices.id', '=', 'user_concert.voice_id')
+            ->where('users.non_singing', false)
+            ->where(function ($query) use ($concert) {
+                $query->where('user_concert.concert_id', '=', $concert->id)
+                    ->orWhereNull('user_concert.concert_id');
+            });
 
-        $voices = isset($filters['voices']) ? $filters['voices'] : null;
+        $this->addSearch($qb, $search);
+        $this->addFilters($qb, $filters, 'user_concert');
+        $this->addSort($qb, $sort, $dir);
 
-        $query = "SELECT users.*, voices.name as voiceName, user_concert.confirmed as confirmed, user_concert.excused as excused "
-            . "FROM users
-            LEFT OUTER JOIN user_concert ON users.id = user_concert.user_id
-            LEFT OUTER JOIN voices ON voices.id = user_concert.voice_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL
-        AND users.non_singing = 0
-        AND user_concert.concert_id = $concert->id
-        AND user_concert.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND voices.id IN ($voices) ";
-        }
-
-        $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
-
-        return $users;
+        return $qb->get();
     }
 
-    public function projectParticipants($project, $filters, $search = '', $sort = 'surname', $dir = 'ASC')
+    public function projectParticipants(Project $project, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
-        if (!$sort) $sort = 'surname';
+        $qb = $this->getUsersQueryBuilder()
+            ->leftJoin('user_project', 'users.id', '=', 'user_project.user_id')
+            ->leftJoin('voices', 'voices.id', '=', 'user_project.voice_id')
+            ->where('users.non_singing', false)
+            ->where(function ($query) use ($project) {
+                $query->where('user_project.project_id', '=', $project->id)
+                    ->orWhereNull('user_project.project_id');
+            });
 
-        $voices = isset($filters['voices']) ? $filters['voices'] : null;
+        $this->addSearch($qb, $search);
+        $this->addFilters($qb, $filters, 'user_project');
+        $this->addSort($qb, $sort, $dir);
 
-        $query = "SELECT users.*, voices.name as voiceName, voices.id as voiceId "
-            . "FROM users
-            LEFT OUTER JOIN user_project ON users.id = user_project.user_id
-            LEFT OUTER JOIN voices ON voices.id = user_project.voice_id ";
+        return $qb->get();
+    }
 
-        $query .= "WHERE users.deleted_at IS NULL
-        AND users.non_singing = 0
-        AND (user_project.project_id = $project->id OR user_project.project_id IS NULL)
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
+    public function rehearsalParticipants(Rehearsal $rehearsal, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
+    {
+        $qb = $this->getUsersQueryBuilder()
+            ->select('users.*', 'voices.name as voiceName', 'voices.id as voiceId', 'user_rehearsal.confirmed as confirmed', 'user_rehearsal.excused as excused')
+            ->leftJoin('user_project', function ($join) use ($rehearsal) {
+                $join->on('users.id', '=', 'user_project.user_id')
+                    ->where('user_project.project_id', '=', $rehearsal->project->id);
+            })
+            ->leftJoin('user_rehearsal', 'users.id', '=', 'user_rehearsal.user_id')
+            ->leftJoin('voices', 'voices.id', '=', 'users.voice_id')
+            ->where('users.non_singing', false)
+            ->where(function ($query) use ($rehearsal) {
+                $query->where('user_rehearsal.rehearsal_id', '=', $rehearsal->id)
+                    ->orWhereNull('user_rehearsal.rehearsal_id');
+            });
 
-        if (isset($filters['accepted'])) {
-            if ($filters['accepted'] === 'not answered') {
-                $query .= "AND user_project.accepted IS NULL ";
+        $this->addSearch($qb, $search);
+        $this->addFilters($qb, $filters, 'user_rehearsal', 'user_project');
+        $this->addSort($qb, $sort, $dir);
+
+        return $qb->get();
+    }
+
+    public function semesterParticipants(Semester $semester, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
+    {
+        $qb = $this->getUsersQueryBuilder()
+            ->leftJoin('user_semester', 'users.id', '=', 'user_semester.user_id')
+            ->leftJoin('voices', 'voices.id', '=', 'users.voice_id')
+            ->where('users.non_singing', false)
+            ->where(function ($query) use ($semester) {
+                $query->where('user_semester.semester_id', '=', $semester->id)
+                ->orWhereNull('user_semester.semester_id');
+            });
+
+        $this->addSearch($qb, $search);
+        $this->addFilters($qb, $filters, 'user_semester');
+        $this->addSort($qb, $sort, $dir);
+
+        return $qb->get();
+    }
+
+    private function getUsersQueryBuilder(): Builder
+    {
+        return User::select('users.*', 'voices.name as voiceName', 'voices.id as voiceId')
+            ->distinct()
+            ->whereNull('users.deleted_at')
+            ->groupBy('users.id');
+    }
+
+    /**
+     * @param  Builder $query
+     * @param  array  $filters
+     * @param  string $relationTableAlias
+     * @return Builder
+     */
+    private function addFilters(
+        Builder $qb,
+        array $filters,
+        string $relationTableAlias = null,
+        string $acceptedWhenNotAnsweredAlias = null
+    ): Builder {
+        if (null !== $relationTableAlias) {
+            if (isset($filters['accepted'])) {
+                if ($filters['accepted'] === 'not answered') {
+                    $qb->where(function ($query) use ($relationTableAlias, $acceptedWhenNotAnsweredAlias) {
+                        $query->whereNull("$relationTableAlias.accepted");
+
+                        if (null !== $acceptedWhenNotAnsweredAlias) {
+                            $query->where("$acceptedWhenNotAnsweredAlias.accepted", true);
+                        }
+                    });
+                } else {
+                    $qb->where("$relationTableAlias.accepted", $filters['accepted']);
+                }
             } else {
-                $query .= "AND user_project.accepted = " . $filters['accepted'] . " ";
+                $qb->where("$relationTableAlias.accepted", true);
             }
-        } else {
-            $query .= "AND user_project.accepted = 1 ";
         }
 
         $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
+
         if ($ageFrom) {
             $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
+            $qb->where('users.birthdate', '<', $minDate);
         }
 
         $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
+
         if ($ageTo) {
             $ageTo += 1;
             $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
+            $qb->where('users.birthdate', '>=', $maxDate);
         }
+
+        $voices = isset($filters['voices']) ? $filters['voices'] : null;
+
         if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND voices.id IN ($voices) ";
+            $qb->whereIn('voices.id', $voices);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * @param  string $query
+     * @param  string $sort
+     * @param  string $sortDir
+     * @return string
+     */
+    private function addSort(Builder $qb, $sort = self::DEFAULT_SORT, $sortDir = self::DEFAULT_SORT_DIR): Builder
+    {
+        if (!$sort) {
+            $sort = 'surname';
         }
 
         if ($sort === 'voice') {
             $sort = 'voices.rank';
         }
 
-        $query .= "GROUP BY users.id, voices.id ORDER BY $sort $dir";
+        $qb->orderBy($sort, $sortDir);
 
-        $users = User::fromQuery($query);
-
-        return $users;
+        return $qb;
     }
 
-    public function rehearsalParticipants(Rehearsal $rehearsal, $filters, $search, $sort = 'surname', $dir = 'ASC')
+    /**
+     * @param  Builder $query
+     * @param  string $search
+     * @return Builder
+     */
+    private function addSearch(Builder $qb, $search = ''): Builder
     {
-        if (!$sort) $sort = 'surname';
+        $qb->where(function ($query) use ($search) {
+            $query->where('users.firstname', 'like', "%$search%")
+                ->orWhere('users.surname', 'like', "%$search%")
+                ->orWhere('users.email', 'like', "%$search%");
 
-        $voices = isset($filters['voices']) ? $filters['voices'] : null;
-
-        $query = "SELECT users.*, user_rehearsal.confirmed as confirmed, user_rehearsal.excused as excused"
-            . " FROM users
-            LEFT OUTER JOIN user_project ON users.id = user_project.user_id
-            LEFT OUTER JOIN user_rehearsal ON users.id = user_rehearsal.user_id";
-
-        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL
-        AND users.non_singing = 0
-        AND user_rehearsal.rehearsal_id = $rehearsal->id
-        AND user_rehearsal.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND voice.id IN ($voices) ";
-        }
-
-        if ($sort === 'voice') {
-            $sort = 'voice.rank';
-        }
-
-        $query .= "GROUP BY users.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
-
-        return $users;
-    }
-
-    public function semesterParticipants(Semester $semester, $filters, $search, $sort = 'surname', $dir = 'ASC')
-    {
-        if (!$sort) $sort = 'surname';
-
-        $voices = isset($filters['voices']) ? $filters['voices'] : null;
-
-        $query = "SELECT users.* "
-            . "FROM users
-            LEFT OUTER JOIN user_semester ON users.id = user_semester.user_id ";
-
-        $query .= " LEFT JOIN voices as voice ON voice.id = users.voice_id ";
-
-        $query .= "WHERE users.deleted_at IS NULL
-        AND user_semester.semester_id = $semester->id
-        AND user_semester.accepted = 1
-        AND (users.firstname LIKE '%$search%' OR users.surname LIKE '%$search%' OR users.email LIKE '%$search%') ";
-
-        $ageFrom = isset($filters['age-from']) ? $filters['age-from'] : null;
-        if ($ageFrom) {
-            $minDate = (new \DateTime("- $ageFrom years"))->format('Y-m-d');
-            $query .= "AND users.birthdate < '$minDate' ";
-        }
-
-        $ageTo = isset($filters['age-to']) ? $filters['age-to'] : null;
-        if ($ageTo) {
-            $ageTo += 1;
-            $maxDate = (new \DateTime("- $ageTo years"))->format('Y-m-d');
-            $query .= "AND users.birthdate >= '$maxDate' ";
-        }
-        if ($voices !== null && count($voices) > 0) {
-            $voices = implode(',', $voices);
-            $query .= "AND users.voice_id IN ($voices) ";
-        }
-
-        $query .= "GROUP BY users.id ORDER BY $sort $dir";
-
-        $users = User::fromQuery($query);
-
-        return $users;
+        });
+        return $qb;
     }
 }

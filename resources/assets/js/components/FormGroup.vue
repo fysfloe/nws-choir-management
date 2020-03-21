@@ -75,7 +75,9 @@
         data () {
             return {
                 editor: ClassicEditor,
-                editorConfig: {}
+                editorConfig: {
+                    height: '500px'
+                }
             }
         },
         inject: ['$validator'],

@@ -10,5 +10,17 @@ export default {
     },
     OTHER_USERS(state, users) {
         Vue.set(state.rehearsal, 'other_users', users);
+    },
+    RESET_FILTERS(state) {
+        state.participant_filters = {
+            search: '',
+            voices: [],
+            concerts: [],
+            ageFrom: '',
+            ageTo: '',
+            sort: 'surname',
+            dir: 'ASC',
+            accepted: 1
+        };
     }
 }

@@ -9,7 +9,7 @@
                         <small :title="date.type === 'rehearsal' ? $t('Rehearsal') : $t('Concert')"
                                data-toggle="tooltip">
                             <span :class="{'oi': true, 'oi-audio': date.type === 'rehearsal', 'oi-musical-note': date.type === 'concert'}"></span>
-                            {{ date.date }}
+                            <router-link :to="`/${date.type}s/${date.id}`">{{ date.date }}</router-link>
                         </small>
                     </th>
                 </tr>

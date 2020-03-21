@@ -33,7 +33,12 @@ class ProjectGridResource extends Resource
                 $type = 'concert';
             }
 
-            $addToGrid = ['type' => $type, 'date' => (new \DateTime($date))->format('d.m.Y'), 'participants' => []];
+            $addToGrid = [
+                'type' => $type,
+                'date' => (new \DateTime($date))->format('d.m.Y'),
+                'participants' => [],
+                'id' => $concertOrReharsal->id
+            ];
 
             foreach ($this->participants as $participant) {
                 $participantInfo = ['id' => $participant->id];
@@ -41,7 +46,7 @@ class ProjectGridResource extends Resource
                 if ($concertOrReharsal->participants->contains($participant)) {
                     $participant = $concertOrReharsal->participants->find($participant);
 
-                    if ($participant->pivot->accepted && $participant->pivot->confirmed) {
+                    if ($participant->pivot->accepted && $participant->pivot->confirmed !== false) {
                         $participantInfo['accepted'] = true;
                     } else if ($participant->pivot->excused) {
                         $participantInfo['excused'] = true;
