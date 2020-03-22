@@ -70,7 +70,7 @@ class GetFilteredUsersService
     public function rehearsalParticipants(Rehearsal $rehearsal, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
         $qb = $this->getUsersQueryBuilder()
-            ->adSselect('user_rehearsal.confirmed as confirmed', 'user_rehearsal.excused as excused')
+            ->addSelect('user_rehearsal.confirmed as confirmed', 'user_rehearsal.excused as excused')
             ->leftJoin('user_project', function ($join) use ($rehearsal) {
                 $join->on('users.id', '=', 'user_project.user_id')
                     ->where('user_project.project_id', '=', $rehearsal->project->id);
