@@ -93,6 +93,9 @@
                                     </a>
                                 </div>
                             </div>
+                            <div v-if="user.hasOwnProperty('missed_rehearsals_count')" class="missed-rehearsals-count flex">
+                                {{ $t('missed rehearsals') }}:&nbsp;<span :class="missedRehearsalsClass(user)" :id="`missed-rehearsals-${user.id}`">{{ user.missed_rehearsals_count }}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-3" v-if="showAttendanceConfirmation">
@@ -367,6 +370,17 @@
             },
             hasAction: function (name) {
                 return this.actions.indexOf(name) !== -1
+            },
+            missedRehearsalsClass (user) {
+                if (user.missed_rehearsals_count === 0) {
+                    return 'text-success';
+                }
+
+                if (user.missed_rehearsals_count > 0 && user.missed_rehearsals_count < 3) {
+                    return 'text-warning';
+                }
+
+                return 'text-danger';
             }
         }
     }

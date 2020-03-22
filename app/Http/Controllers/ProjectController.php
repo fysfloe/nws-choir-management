@@ -8,6 +8,7 @@ use App\Exports\ProjectUsersExport;
 use App\Http\Requests\StoreProject;
 use App\Http\Resources\ProjectGridResource;
 use App\Http\Resources\ProjectListResource;
+use App\Http\Resources\ProjectParticipantResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\UserResource;
 use App\Project;
@@ -206,8 +207,9 @@ class ProjectController extends Controller
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
+        $participants = ProjectParticipantResource::collection($users);
 
-        return response()->json(UserResource::collection($users));
+        return response()->json($participants);
     }
 
     /**

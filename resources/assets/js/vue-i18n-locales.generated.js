@@ -248,6 +248,7 @@ export default {
         "Street": "Straße",
         "There were errors with the form.": "Es gab Probleme beim Absenden des Formulars.",
         "Create Rehearsal": "Probe erstellen",
+        "missed rehearsals": "Fehlproben",
         "auth": {
             "failed": "Benutzername und/oder Password sind falsch.",
             "throttle": "Zu viele Login-Versuche. Bitte in {seconds} Sekunden erneut versuchen."

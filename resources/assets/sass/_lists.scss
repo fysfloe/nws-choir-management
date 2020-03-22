@@ -80,6 +80,14 @@
         }
     }
 
+    .missed-rehearsals-count {
+        justify-content: flex-end;
+        flex-grow: 100;
+        font-weight: bold;
+        font-size: 0.8rem;
+        color: darken($lightgrey, 30);
+    }
+
     a.list-sort {
         font-size: 0.75rem;
         color: darken($lightgrey, 20);

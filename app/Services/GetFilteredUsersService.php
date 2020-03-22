@@ -32,7 +32,7 @@ class GetFilteredUsersService
     public function concertParticipants(Concert $concert, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
         $qb = $this->getUsersQueryBuilder()
-            ->select('users.*', 'voices.name as voiceName', 'voices.id as voiceId', 'user_concert.confirmed as confirmed', 'user_concert.excused as excused')
+            ->addSelect('user_concert.confirmed as confirmed', 'user_concert.excused as excused')
             ->leftJoin('user_concert', 'users.id', '=', 'user_concert.user_id')
             ->leftJoin('voices', 'voices.id', '=', 'user_concert.voice_id')
             ->where('users.non_singing', false)
@@ -69,7 +69,7 @@ class GetFilteredUsersService
     public function rehearsalParticipants(Rehearsal $rehearsal, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
         $qb = $this->getUsersQueryBuilder()
-            ->select('users.*', 'voices.name as voiceName', 'voices.id as voiceId', 'user_rehearsal.confirmed as confirmed', 'user_rehearsal.excused as excused')
+            ->adSselect('user_rehearsal.confirmed as confirmed', 'user_rehearsal.excused as excused')
             ->leftJoin('user_project', function ($join) use ($rehearsal) {
                 $join->on('users.id', '=', 'user_project.user_id')
                     ->where('user_project.project_id', '=', $rehearsal->project->id);

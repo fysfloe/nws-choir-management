@@ -12274,6 +12274,18 @@ input.date {
   border: 0.05rem solid #e4ecf2;
 }
 
+.list-table .missed-rehearsals-count {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-flex: 100;
+      -ms-flex-positive: 100;
+          flex-grow: 100;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #8fb1c7;
+}
+
 .list-table a.list-sort {
   font-size: 0.75rem;
   color: #b1c8d8;
