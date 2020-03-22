@@ -20,6 +20,7 @@ use App\Voice;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -207,9 +208,26 @@ class ProjectController extends Controller
         $filters = $request->all();
 
         $users = (new GetFilteredUsersService())->projectParticipants($project, $filters, $request->get('search'), $request->get('sort'), $request->get('dir'));
-        $participants = ProjectParticipantResource::collection($users);
 
-        return response()->json($participants);
+        $users = $users->map(function (User $user) use ($project) {
+            $user->missed_rehearsals_count = DB::table('rehearsals')
+               ->distinct()
+               ->leftJoin('user_rehearsal', function ($join) use ($user) {
+                   $join->on('user_rehearsal.rehearsal_id', '=', 'rehearsals.id')
+                       ->where('user_rehearsal.user_id', $user->id);
+               })
+               ->where(function ($query) {
+                   $query->where('user_rehearsal.confirmed', false)
+                       ->orWhereNull('user_rehearsal.user_id');
+               })
+               ->where('rehearsals.date', '<', (new \DateTime())->format('Y-m-d'))
+               ->where('rehearsals.project_id', $project->id)
+               ->count();
+
+           return $user;
+        });
+
+        return response()->json(ProjectParticipantResource::collection($users));
     }
 
     /**

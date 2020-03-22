@@ -51,6 +51,7 @@ class GetFilteredUsersService
     public function projectParticipants(Project $project, array $filters, $search = '', $sort = self::DEFAULT_SORT, $dir = self::DEFAULT_SORT_DIR)
     {
         $qb = $this->getUsersQueryBuilder()
+            ->selectRaw($project->id . ' as projectId')
             ->leftJoin('user_project', 'users.id', '=', 'user_project.user_id')
             ->leftJoin('voices', 'voices.id', '=', 'user_project.voice_id')
             ->where('users.non_singing', false)
