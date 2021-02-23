@@ -124,21 +124,21 @@
                     }
                 ];
 
-                if (this.rehearsal.project_id) {
-                    let project = this.projects.find(project => project.id === this.rehearsal.project_id);
-
-                    if (project) {
-                        breadcrumbs.push({
-                            text: this.$t('Projects'),
-                            to: '/projects'
-                        });
-
-                        breadcrumbs.push({
-                            text: project.title,
-                            to: '/projects/' + project.id
-                        });
-                    }
-                }
+                // if (this.rehearsal.project_id) {
+                //     let project = this.projects.find(project => project.id === this.rehearsal.project_id);
+                //
+                //     if (project) {
+                //         breadcrumbs.push({
+                //             text: this.$t('Projects'),
+                //             to: '/projects'
+                //         });
+                //
+                //         breadcrumbs.push({
+                //             text: project.title,
+                //             to: '/projects/' + project.id
+                //         });
+                //     }
+                // }
 
                 breadcrumbs.push({
                     text: this.$t('New Rehearsal'),
