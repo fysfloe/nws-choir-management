@@ -3,6 +3,8 @@
         <loader v-if="loading"/>
 
         <div v-else>
+            <b-breadcrumb :items="breadcrumbs"></b-breadcrumb>
+
             <header class="page-header">
                 <h2>
                     {{ rehearsal.title }}
@@ -60,7 +62,27 @@
             ...mapState({
                 rehearsal: state => state.rehearsals.rehearsal,
                 currentUser: state => state.users.current
-            })
+            }),
+            breadcrumbs () {
+                return [
+                    {
+                        text: this.$t('Dashboard'),
+                        to: '/'
+                    },
+                    {
+                        text: this.$t('Projects'),
+                        to: '/projects'
+                    },
+                    {
+                        text: this.rehearsal.project.title,
+                        to: '/projects/' + this.rehearsal.project.id
+                    },
+                    {
+                        text: this.rehearsal.title,
+                        active: true
+                    }
+                ]
+            }
         },
         data () {
             return {

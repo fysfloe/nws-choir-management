@@ -59,7 +59,7 @@
         computed: {
             isActive: {
                 get() {
-                    return this.deadline && (new Date()).getTime() <= (new Date(this.deadline)).getTime();
+                    return this.deadline && moment(this.deadline).isAfter(moment());
                 }
             }
         },

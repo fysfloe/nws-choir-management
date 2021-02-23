@@ -159,10 +159,6 @@
                 </p>
             @endif
 
-            @if (isset($breadcrumbs))
-                {!! $breadcrumbs->render() !!}
-            @endif
-
             <router-view></router-view>
             @yield('content')
         </section>

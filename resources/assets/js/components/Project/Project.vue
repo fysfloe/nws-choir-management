@@ -3,6 +3,8 @@
         <loader v-if="loading"/>
 
         <div v-else>
+            <b-breadcrumb :items="breadcrumbs"></b-breadcrumb>
+
             <header class="page-header">
                 <h2>
                     {{ project.title }}
@@ -61,7 +63,7 @@
         components: {ProjectParticipants, RehearsalList, AcceptDecline, Comments, ProjectDetails, Loader},
         data () {
             return {
-                loading: true
+                loading: true,
             }
         },
         computed: {
@@ -70,6 +72,22 @@
             },
             project () {
                 return this.$store.state.projects.project;
+            },
+            breadcrumbs () {
+                return [
+                    {
+                        text: this.$t('Dashboard'),
+                        to: '/'
+                    },
+                    {
+                        text: this.$t('Projects'),
+                        to: '/projects'
+                    },
+                    {
+                        text: this.project.title,
+                        active: true
+                    }
+                ]
             }
         },
         mounted () {

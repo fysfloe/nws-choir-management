@@ -408,3 +408,15 @@ ul.no-list-style {
     list-style: none;
     padding-left: 0;
 }
+
+.breadcrumb {
+    padding: 0;
+    margin: 1rem 0;
+    list-style: none;
+    background: none;
+    font-size: 0.8rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "»";
+}
