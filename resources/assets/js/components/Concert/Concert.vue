@@ -74,6 +74,13 @@
                 return this.$store.state.concerts.concert;
             }
         },
+        beforeRouteUpdate (to, from, next) {
+            this.$store.dispatch('concerts/show', to.params.id)
+                .then(() => {
+                    this.loading = false;
+                    next();
+                });
+        },
         mounted () {
             this.$store.dispatch('concerts/show', this.$route.params.id)
                 .then(() => {

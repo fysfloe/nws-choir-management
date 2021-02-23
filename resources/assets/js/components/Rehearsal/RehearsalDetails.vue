@@ -38,7 +38,7 @@
                         v-if="rehearsal.other_rehearsals"
                         class="mb-4"
                         :rehearsals="rehearsal.other_rehearsals"
-                        :add-rehearsal-route="`/admin/rehearsal/create?project=${rehearsal.project.id}&semester=${rehearsal.semester_id}`"
+                        :add-rehearsal-route="`/admin/rehearsals/create?project_id=${rehearsal.project.id}&semester_id=${rehearsal.semester_id}`"
                         :can-manage-rehearsals="user.canManageRehearsals"
                         :user="user"
                 ></rehearsal-side-list>

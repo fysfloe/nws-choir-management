@@ -89,6 +89,13 @@
                 loading: true
             }
         },
+        beforeRouteUpdate (to, from, next) {
+            this.$store.dispatch('rehearsals/show', to.params.id)
+              .then(() => {
+                this.loading = false;
+                next();
+              });
+        },
         mounted () {
             this.$store.dispatch('rehearsals/show', this.$route.params.id)
                 .then(() => {
