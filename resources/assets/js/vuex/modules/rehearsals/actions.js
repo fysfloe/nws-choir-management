@@ -64,7 +64,6 @@ export default {
         }
 
         return axios.post(path)
-            .then(response => commit('SHOW', response.data))
             .catch();
     },
     decline({ commit }, { id, userId }) {
@@ -75,7 +74,6 @@ export default {
         }
 
         return axios.post(path)
-            .then(response => commit('SHOW', response.data))
             .catch();
     },
     confirm({commit}, {id, userId}) {

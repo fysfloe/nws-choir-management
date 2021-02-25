@@ -56,6 +56,14 @@
                 }
             }
         },
+        watch: {
+            accepted () {
+                this.hasAccepted = this.accepted;
+            },
+            declined () {
+                this.hasDeclined = this.declined;
+            }
+        },
         computed: {
             isActive: {
                 get() {
