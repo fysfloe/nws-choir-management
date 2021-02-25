@@ -12184,6 +12184,10 @@ input.date {
   background: #d3e0e9;
 }
 
+.nav-tabs .nav-item .nav-link.router-link-exact-active {
+  background: #d3e0e9;
+}
+
 .navbar-dark .navbar-toggler {
   border: none;
 }

@@ -13,6 +13,10 @@
             &:not(.active):hover {
                 background: darken($lightgrey, 10);
             }
+
+            &.router-link-exact-active {
+                background: darken($lightgrey, 10);
+            }
         }
     }
 }
