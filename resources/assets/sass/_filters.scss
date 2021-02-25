@@ -55,7 +55,14 @@
 .filter-form {
     margin-bottom: 1em;
     padding: 0.5em;
-    display: flex;
+
+    .filter-form-fields {
+        display: flex;
+    }
+
+    .multiselect__tags {
+        overflow: hidden;
+    }
 
     .form-group {
         margin: 0 0.5em 0 0;
@@ -76,6 +83,14 @@
     }
 
     .age-filter {
+        .input-group {
+            flex-wrap: nowrap;
+
+            input {
+                max-width: 4rem;
+            }
+        }
+
         label {
             display: block;
         }

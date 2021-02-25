@@ -12394,9 +12394,16 @@ input.date {
 .filter-form {
   margin-bottom: 1em;
   padding: 0.5em;
+}
+
+.filter-form .filter-form-fields {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.filter-form .multiselect__tags {
+  overflow: hidden;
 }
 
 .filter-form .form-group {
@@ -12417,6 +12424,15 @@ input.date {
 
 .filter-form .form-group .btn-group {
   display: block;
+}
+
+.filter-form .age-filter .input-group {
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.filter-form .age-filter .input-group input {
+  max-width: 4rem;
 }
 
 .filter-form .age-filter label {
